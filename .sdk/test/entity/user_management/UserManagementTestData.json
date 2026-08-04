@@ -1,0 +1,73 @@
+{
+  "existing": {
+    "user_management": {
+      "USER_MANAGEMENT00": {
+        "created_at": "s8c",
+        "email": [],
+        "family_name": "s8e",
+        "given_name": "s8f",
+        "id": "USER_MANAGEMENT00",
+        "metadata": {},
+        "mfa_config": {},
+        "name": "s93",
+        "passkey": [],
+        "picture": "s95",
+        "security_key": [],
+        "updated_at": "s97",
+        "user_id": "USER01",
+        "username": {}
+      },
+      "USER_MANAGEMENT01": {
+        "created_at": "s118",
+        "email": [],
+        "family_name": "s11a",
+        "given_name": "s11b",
+        "id": "USER_MANAGEMENT01",
+        "metadata": {},
+        "mfa_config": {},
+        "name": "s11f",
+        "passkey": [],
+        "picture": "s121",
+        "security_key": [],
+        "updated_at": "s123",
+        "user_id": "USER01",
+        "username": {}
+      },
+      "USER_MANAGEMENT02": {
+        "created_at": "s1a4",
+        "email": [],
+        "family_name": "s1a6",
+        "given_name": "s1a7",
+        "id": "USER_MANAGEMENT02",
+        "metadata": {},
+        "mfa_config": {},
+        "name": "s1ab",
+        "passkey": [],
+        "picture": "s1ad",
+        "security_key": [],
+        "updated_at": "s1af",
+        "user_id": "USER01",
+        "username": {}
+      }
+    }
+  },
+  "new": {
+    "user_management": {
+      "user_management_ref01": {
+        "created_at": "s230",
+        "email": [],
+        "family_name": "s232",
+        "given_name": "s233",
+        "metadata": {},
+        "mfa_config": {},
+        "name": "s237",
+        "passkey": [],
+        "picture": "s239",
+        "security_key": [],
+        "updated_at": "s23b",
+        "user_id": "USER01",
+        "username": {}
+      }
+    }
+  }
+}

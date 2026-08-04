@@ -1,0 +1,14 @@
+{
+  "existing": {
+    "create_user_response_object": {
+      "CREATE_USER_RESPONSE_OBJECT00": {},
+      "CREATE_USER_RESPONSE_OBJECT01": {},
+      "CREATE_USER_RESPONSE_OBJECT02": {}
+    }
+  },
+  "new": {
+    "create_user_response_object": {
+      "create_user_response_object_ref01": {}
+    }
+  }
+}

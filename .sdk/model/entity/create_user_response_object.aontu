@@ -1,0 +1,10 @@
+# Entity: create_user_response_object
+
+main: kit: entity: create_user_response_object: {
+
+  alias: field: {}
+
+  name: "create_user_response_object"
+
+
+}

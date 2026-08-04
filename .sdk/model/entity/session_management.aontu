@@ -1,0 +1,80 @@
+# Entity: session_management
+
+main: kit: entity: session_management: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "claim"
+      req: true
+      type: "`$OBJECT`"
+    }
+    {
+      name: "expiration_time"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "idle_expires_at"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "is_valid"
+      req: false
+      type: "`$BOOLEAN`"
+    }
+    {
+      name: "session_token"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "user_id"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  name: "session_management"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          method: "POST"
+          orig: "/sessions/validate"
+          parts: [
+            "sessions"
+            "validate"
+          ]
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          method: "GET"
+          orig: "/sessions/validate"
+          parts: [
+            "sessions"
+            "validate"
+          ]
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

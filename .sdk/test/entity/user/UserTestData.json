@@ -1,0 +1,89 @@
+{
+  "existing": {
+    "user": {
+      "USER00": {
+        "created_at": "sb4",
+        "email": [],
+        "email_id": "EMAIL01",
+        "family_name": "sb7",
+        "given_name": "sb8",
+        "has_webauthn_credential": false,
+        "id": "USER00",
+        "metadata": {},
+        "mfa_config": {},
+        "name": "sbd",
+        "passkey": [],
+        "picture": "sbf",
+        "security_key": [],
+        "updated_at": "sc1",
+        "user_id": "USER01",
+        "username": "sc3",
+        "verified": true,
+        "webauthn_credential": []
+      },
+      "USER01": {
+        "created_at": "s168",
+        "email": [],
+        "email_id": "EMAIL01",
+        "family_name": "s16b",
+        "given_name": "s16c",
+        "has_webauthn_credential": false,
+        "id": "USER01",
+        "metadata": {},
+        "mfa_config": {},
+        "name": "s171",
+        "passkey": [],
+        "picture": "s173",
+        "security_key": [],
+        "updated_at": "s175",
+        "user_id": "USER01",
+        "username": "s177",
+        "verified": true,
+        "webauthn_credential": []
+      },
+      "USER02": {
+        "created_at": "s21c",
+        "email": [],
+        "email_id": "EMAIL01",
+        "family_name": "s21f",
+        "given_name": "s220",
+        "has_webauthn_credential": false,
+        "id": "USER02",
+        "metadata": {},
+        "mfa_config": {},
+        "name": "s225",
+        "passkey": [],
+        "picture": "s227",
+        "security_key": [],
+        "updated_at": "s229",
+        "user_id": "USER01",
+        "username": "s22b",
+        "verified": true,
+        "webauthn_credential": []
+      }
+    }
+  },
+  "new": {
+    "user": {
+      "user_ref01": {
+        "created_at": "s2d0",
+        "email": [],
+        "email_id": "EMAIL01",
+        "family_name": "s2d3",
+        "given_name": "s2d4",
+        "has_webauthn_credential": false,
+        "metadata": {},
+        "mfa_config": {},
+        "name": "s2d9",
+        "passkey": [],
+        "picture": "s2db",
+        "security_key": [],
+        "updated_at": "s2dd",
+        "user_id": "USER01",
+        "username": "s2df",
+        "verified": true,
+        "webauthn_credential": []
+      }
+    }
+  }
+}

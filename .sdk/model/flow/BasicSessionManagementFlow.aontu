@@ -1,0 +1,36 @@
+# BasicSessionManagementFlow
+
+main: kit: flow: BasicSessionManagementFlow:
+{
+  entity: "session_management",
+  kind: "basic",
+  name: "BasicSessionManagementFlow",
+  step: [
+    {
+      input: {
+        ref: "session_management_ref01"
+      }
+
+      op: "create"
+    }
+
+    {
+      input: {
+        ref: "session_management_ref01",
+        srcdatavar: "session_management_ref01_data",
+        suffix: "_dt0"
+      }
+
+      op: "load",
+      valid: [
+        {
+          apply: "TextFieldMark",
+          def: {
+            mark: "Mark01-session_management_ref01"
+          }
+        }
+      ]
+    }
+  ],
+  "key$": "BasicSessionManagementFlow"
+}

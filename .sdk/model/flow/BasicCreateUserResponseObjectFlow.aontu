@@ -1,0 +1,9 @@
+# BasicCreateUserResponseObjectFlow
+
+main: kit: flow: BasicCreateUserResponseObjectFlow:
+{
+  entity: "create_user_response_object",
+  kind: "basic",
+  name: "BasicCreateUserResponseObjectFlow",
+  "key$": "BasicCreateUserResponseObjectFlow"
+}

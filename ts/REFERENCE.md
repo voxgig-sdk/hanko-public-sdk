@@ -1,0 +1,1485 @@
+# HankoPublic TypeScript SDK Reference
+
+Complete API reference for the HankoPublic TypeScript SDK.
+
+
+## HankoPublicSDK
+
+### Constructor
+
+```ts
+new HankoPublicSDK(options?: object)
+```
+
+Create a new SDK client instance.
+
+**Parameters:**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| `options` | `object` | SDK configuration options. |
+| `options.apikey` | `string` | API key for authentication. |
+| `options.base` | `string` | Base URL for API requests. |
+| `options.prefix` | `string` | URL prefix appended after base. |
+| `options.suffix` | `string` | URL suffix appended after path. |
+| `options.headers` | `object` | Custom headers for all requests. |
+| `options.feature` | `object` | Feature configuration. |
+| `options.system` | `object` | System overrides (e.g. custom fetch). |
+
+
+### Static Methods
+
+#### `HankoPublicSDK.test(testopts?, sdkopts?)`
+
+Create a test client with mock features active.
+
+```ts
+const client = HankoPublicSDK.test()
+```
+
+**Parameters:**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| `testopts` | `object` | Test feature options. |
+| `sdkopts` | `object` | Additional SDK options merged with test defaults. |
+
+**Returns:** `HankoPublicSDK` instance in test mode.
+
+
+### Instance Methods
+
+#### `CreateUserResponseObject(data?: object)`
+
+Create a new `CreateUserResponseObject` entity instance.
+
+**Parameters:**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| `data` | `object` | Initial entity data. |
+
+**Returns:** `CreateUserResponseObjectEntity` instance.
+
+#### `Credential(data?: object)`
+
+Create a new `Credential` entity instance.
+
+**Parameters:**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| `data` | `object` | Initial entity data. |
+
+**Returns:** `CredentialEntity` instance.
+
+#### `CredentialCreationOption(data?: object)`
+
+Create a new `CredentialCreationOption` entity instance.
+
+**Parameters:**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| `data` | `object` | Initial entity data. |
+
+**Returns:** `CredentialCreationOptionEntity` instance.
+
+#### `CredentialRequestOption(data?: object)`
+
+Create a new `CredentialRequestOption` entity instance.
+
+**Parameters:**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| `data` | `object` | Initial entity data. |
+
+**Returns:** `CredentialRequestOptionEntity` instance.
+
+#### `Email(data?: object)`
+
+Create a new `Email` entity instance.
+
+**Parameters:**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| `data` | `object` | Initial entity data. |
+
+**Returns:** `EmailEntity` instance.
+
+#### `EmailManagement(data?: object)`
+
+Create a new `EmailManagement` entity instance.
+
+**Parameters:**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| `data` | `object` | Initial entity data. |
+
+**Returns:** `EmailManagementEntity` instance.
+
+#### `HankoConfiguration(data?: object)`
+
+Create a new `HankoConfiguration` entity instance.
+
+**Parameters:**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| `data` | `object` | Initial entity data. |
+
+**Returns:** `HankoConfigurationEntity` instance.
+
+#### `JsonWebKeySet(data?: object)`
+
+Create a new `JsonWebKeySet` entity instance.
+
+**Parameters:**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| `data` | `object` | Initial entity data. |
+
+**Returns:** `JsonWebKeySetEntity` instance.
+
+#### `Passcode(data?: object)`
+
+Create a new `Passcode` entity instance.
+
+**Parameters:**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| `data` | `object` | Initial entity data. |
+
+**Returns:** `PasscodeEntity` instance.
+
+#### `Password(data?: object)`
+
+Create a new `Password` entity instance.
+
+**Parameters:**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| `data` | `object` | Initial entity data. |
+
+**Returns:** `PasswordEntity` instance.
+
+#### `Saml(data?: object)`
+
+Create a new `Saml` entity instance.
+
+**Parameters:**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| `data` | `object` | Initial entity data. |
+
+**Returns:** `SamlEntity` instance.
+
+#### `SessionManagement(data?: object)`
+
+Create a new `SessionManagement` entity instance.
+
+**Parameters:**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| `data` | `object` | Initial entity data. |
+
+**Returns:** `SessionManagementEntity` instance.
+
+#### `Status(data?: object)`
+
+Create a new `Status` entity instance.
+
+**Parameters:**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| `data` | `object` | Initial entity data. |
+
+**Returns:** `StatusEntity` instance.
+
+#### `ThirdParty(data?: object)`
+
+Create a new `ThirdParty` entity instance.
+
+**Parameters:**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| `data` | `object` | Initial entity data. |
+
+**Returns:** `ThirdPartyEntity` instance.
+
+#### `Token(data?: object)`
+
+Create a new `Token` entity instance.
+
+**Parameters:**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| `data` | `object` | Initial entity data. |
+
+**Returns:** `TokenEntity` instance.
+
+#### `User(data?: object)`
+
+Create a new `User` entity instance.
+
+**Parameters:**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| `data` | `object` | Initial entity data. |
+
+**Returns:** `UserEntity` instance.
+
+#### `UserManagement(data?: object)`
+
+Create a new `UserManagement` entity instance.
+
+**Parameters:**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| `data` | `object` | Initial entity data. |
+
+**Returns:** `UserManagementEntity` instance.
+
+#### `WebAuthn(data?: object)`
+
+Create a new `WebAuthn` entity instance.
+
+**Parameters:**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| `data` | `object` | Initial entity data. |
+
+**Returns:** `WebAuthnEntity` instance.
+
+#### `WebauthnLogin(data?: object)`
+
+Create a new `WebauthnLogin` entity instance.
+
+**Parameters:**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| `data` | `object` | Initial entity data. |
+
+**Returns:** `WebauthnLoginEntity` instance.
+
+#### `options()`
+
+Return a deep copy of the current SDK options.
+
+**Returns:** `object`
+
+#### `utility()`
+
+Return a copy of the SDK utility object.
+
+**Returns:** `object`
+
+#### `direct(fetchargs?: object)`
+
+Make a direct HTTP request to any API endpoint.
+
+**Parameters:**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| `fetchargs.path` | `string` | URL path with optional `{param}` placeholders. |
+| `fetchargs.method` | `string` | HTTP method (default: `GET`). |
+| `fetchargs.params` | `object` | Path parameter values for `{param}` substitution. |
+| `fetchargs.query` | `object` | Query string parameters. |
+| `fetchargs.headers` | `object` | Request headers (merged with defaults). |
+| `fetchargs.body` | `any` | Request body (objects are JSON-serialized). |
+| `fetchargs.ctrl` | `object` | Control options (e.g. `{ explain: true }`). |
+
+**Returns:** `Promise<{ ok, status, headers, data } | Error>`
+
+#### `prepare(fetchargs?: object)`
+
+Prepare a fetch definition without sending the request. Accepts the
+same parameters as `direct()`.
+
+**Returns:** `Promise<{ url, method, headers, body } | Error>`
+
+#### `tester(testopts?, sdkopts?)`
+
+Alias for `HankoPublicSDK.test()`.
+
+**Returns:** `HankoPublicSDK` instance in test mode.
+
+
+---
+
+## CreateUserResponseObjectEntity
+
+```ts
+const create_user_response_object = client.CreateUserResponseObject()
+```
+
+### Common Methods
+
+#### `data(data?: object)`
+
+Get or set the entity data. When called with data, sets the entity's
+internal data and returns the current data. When called without
+arguments, returns a copy of the current data.
+
+#### `match(match?: object)`
+
+Get or set the entity match criteria. Works the same as `data()`.
+
+#### `make()`
+
+Create a new `CreateUserResponseObjectEntity` instance with the same client and
+options.
+
+#### `client()`
+
+Return the parent `HankoPublicSDK` instance.
+
+#### `entopts()`
+
+Return a copy of the entity options.
+
+
+---
+
+## CredentialEntity
+
+```ts
+const credential = client.Credential()
+```
+
+### Fields
+
+| Field | Type | Required | Description |
+| --- | --- | --- | --- |
+| `aaguid` | `string` | No |  |
+| `attestation_type` | `string` | No |  |
+| `backup_eligible` | `boolean` | No |  |
+| `backup_state` | `boolean` | No |  |
+| `created_at` | `string` | No |  |
+| `id` | `string` | No |  |
+| `last_used_at` | `string` | No |  |
+| `mfa_only` | `boolean` | No |  |
+| `name` | `string` | No |  |
+| `public_key` | `string` | No |  |
+| `transport` | `any[]` | No |  |
+
+### Operations
+
+#### `list(match: object, ctrl?: object)`
+
+List entities matching the given criteria. Returns an array.
+
+```ts
+const results = await client.Credential().list()
+```
+
+### Common Methods
+
+#### `data(data?: object)`
+
+Get or set the entity data. When called with data, sets the entity's
+internal data and returns the current data. When called without
+arguments, returns a copy of the current data.
+
+#### `match(match?: object)`
+
+Get or set the entity match criteria. Works the same as `data()`.
+
+#### `make()`
+
+Create a new `CredentialEntity` instance with the same client and
+options.
+
+#### `client()`
+
+Return the parent `HankoPublicSDK` instance.
+
+#### `entopts()`
+
+Return a copy of the entity options.
+
+
+---
+
+## CredentialCreationOptionEntity
+
+```ts
+const credential_creation_option = client.CredentialCreationOption()
+```
+
+### Fields
+
+| Field | Type | Required | Description |
+| --- | --- | --- | --- |
+| `attestation` | `string` | No |  |
+| `authenticator_selection` | `Record<string, any>` | No |  |
+| `challenge` | `string` | No |  |
+| `pub_key_cred_param` | `any[]` | No |  |
+| `rp` | `Record<string, any>` | No |  |
+| `timeout` | `number` | No |  |
+| `user` | `Record<string, any>` | No |  |
+
+### Operations
+
+#### `create(data: object, ctrl?: object)`
+
+Create a new entity with the given data.
+
+```ts
+const result = await client.CredentialCreationOption().create({
+})
+```
+
+### Common Methods
+
+#### `data(data?: object)`
+
+Get or set the entity data. When called with data, sets the entity's
+internal data and returns the current data. When called without
+arguments, returns a copy of the current data.
+
+#### `match(match?: object)`
+
+Get or set the entity match criteria. Works the same as `data()`.
+
+#### `make()`
+
+Create a new `CredentialCreationOptionEntity` instance with the same client and
+options.
+
+#### `client()`
+
+Return the parent `HankoPublicSDK` instance.
+
+#### `entopts()`
+
+Return a copy of the entity options.
+
+
+---
+
+## CredentialRequestOptionEntity
+
+```ts
+const credential_request_option = client.CredentialRequestOption()
+```
+
+### Fields
+
+| Field | Type | Required | Description |
+| --- | --- | --- | --- |
+| `allow_credential` | `any[]` | No |  |
+| `challenge` | `string` | No |  |
+| `rp_id` | `string` | No |  |
+| `timeout` | `number` | No |  |
+| `user_id` | `string` | No |  |
+| `user_verification` | `string` | No |  |
+
+### Operations
+
+#### `create(data: object, ctrl?: object)`
+
+Create a new entity with the given data.
+
+```ts
+const result = await client.CredentialRequestOption().create({
+})
+```
+
+### Common Methods
+
+#### `data(data?: object)`
+
+Get or set the entity data. When called with data, sets the entity's
+internal data and returns the current data. When called without
+arguments, returns a copy of the current data.
+
+#### `match(match?: object)`
+
+Get or set the entity match criteria. Works the same as `data()`.
+
+#### `make()`
+
+Create a new `CredentialRequestOptionEntity` instance with the same client and
+options.
+
+#### `client()`
+
+Return the parent `HankoPublicSDK` instance.
+
+#### `entopts()`
+
+Return a copy of the entity options.
+
+
+---
+
+## EmailEntity
+
+```ts
+const email = client.Email()
+```
+
+### Fields
+
+| Field | Type | Required | Description |
+| --- | --- | --- | --- |
+| `address` | `string` | Yes |  |
+| `id` | `string` | No |  |
+| `identity` | `any` | No |  |
+| `is_primary` | `boolean` | No |  |
+| `is_verified` | `boolean` | No |  |
+
+### Field Usage by Operation
+
+| Field | list | create | remove |
+| --- | --- | --- | --- |
+| `address` | Yes | - | - |
+| `id` | - | - | - |
+| `identity` | - | - | - |
+| `is_primary` | - | - | - |
+| `is_verified` | - | - | - |
+
+### Operations
+
+#### `create(data: object, ctrl?: object)`
+
+Create a new entity with the given data.
+
+```ts
+const result = await client.Email().create({
+  address: 'example_address',
+})
+```
+
+#### `list(match: object, ctrl?: object)`
+
+List entities matching the given criteria. Returns an array.
+
+```ts
+const results = await client.Email().list()
+```
+
+#### `remove(match: object, ctrl?: object)`
+
+Remove the entity matching the given criteria.
+
+```ts
+const result = await client.Email().remove({ id: 'id' })
+```
+
+### Common Methods
+
+#### `data(data?: object)`
+
+Get or set the entity data. When called with data, sets the entity's
+internal data and returns the current data. When called without
+arguments, returns a copy of the current data.
+
+#### `match(match?: object)`
+
+Get or set the entity match criteria. Works the same as `data()`.
+
+#### `make()`
+
+Create a new `EmailEntity` instance with the same client and
+options.
+
+#### `client()`
+
+Return the parent `HankoPublicSDK` instance.
+
+#### `entopts()`
+
+Return a copy of the entity options.
+
+
+---
+
+## EmailManagementEntity
+
+```ts
+const email_management = client.EmailManagement()
+```
+
+### Operations
+
+#### `create(data: object, ctrl?: object)`
+
+Create a new entity with the given data.
+
+```ts
+const result = await client.EmailManagement().create({
+  id: 'example_id',
+})
+```
+
+### Common Methods
+
+#### `data(data?: object)`
+
+Get or set the entity data. When called with data, sets the entity's
+internal data and returns the current data. When called without
+arguments, returns a copy of the current data.
+
+#### `match(match?: object)`
+
+Get or set the entity match criteria. Works the same as `data()`.
+
+#### `make()`
+
+Create a new `EmailManagementEntity` instance with the same client and
+options.
+
+#### `client()`
+
+Return the parent `HankoPublicSDK` instance.
+
+#### `entopts()`
+
+Return a copy of the entity options.
+
+
+---
+
+## HankoConfigurationEntity
+
+```ts
+const hanko_configuration = client.HankoConfiguration()
+```
+
+### Fields
+
+| Field | Type | Required | Description |
+| --- | --- | --- | --- |
+| `account` | `Record<string, any>` | No |  |
+| `email` | `Record<string, any>` | No |  |
+| `password` | `Record<string, any>` | No |  |
+
+### Operations
+
+#### `load(match: object, ctrl?: object)`
+
+Load a single entity matching the given criteria.
+
+```ts
+const result = await client.HankoConfiguration().load()
+```
+
+### Common Methods
+
+#### `data(data?: object)`
+
+Get or set the entity data. When called with data, sets the entity's
+internal data and returns the current data. When called without
+arguments, returns a copy of the current data.
+
+#### `match(match?: object)`
+
+Get or set the entity match criteria. Works the same as `data()`.
+
+#### `make()`
+
+Create a new `HankoConfigurationEntity` instance with the same client and
+options.
+
+#### `client()`
+
+Return the parent `HankoPublicSDK` instance.
+
+#### `entopts()`
+
+Return a copy of the entity options.
+
+
+---
+
+## JsonWebKeySetEntity
+
+```ts
+const json_web_key_set = client.JsonWebKeySet()
+```
+
+### Fields
+
+| Field | Type | Required | Description |
+| --- | --- | --- | --- |
+| `alg` | `string` | No |  |
+| `e` | `string` | No |  |
+| `kid` | `string` | No |  |
+| `kty` | `string` | No |  |
+| `n` | `string` | No |  |
+| `use` | `string` | No |  |
+
+### Operations
+
+#### `list(match: object, ctrl?: object)`
+
+List entities matching the given criteria. Returns an array.
+
+```ts
+const results = await client.JsonWebKeySet().list()
+```
+
+### Common Methods
+
+#### `data(data?: object)`
+
+Get or set the entity data. When called with data, sets the entity's
+internal data and returns the current data. When called without
+arguments, returns a copy of the current data.
+
+#### `match(match?: object)`
+
+Get or set the entity match criteria. Works the same as `data()`.
+
+#### `make()`
+
+Create a new `JsonWebKeySetEntity` instance with the same client and
+options.
+
+#### `client()`
+
+Return the parent `HankoPublicSDK` instance.
+
+#### `entopts()`
+
+Return a copy of the entity options.
+
+
+---
+
+## PasscodeEntity
+
+```ts
+const passcode = client.Passcode()
+```
+
+### Fields
+
+| Field | Type | Required | Description |
+| --- | --- | --- | --- |
+| `code` | `string` | No |  |
+| `created_at` | `string` | No |  |
+| `email_id` | `string` | No |  |
+| `id` | `string` | No |  |
+| `ttl` | `number` | No |  |
+| `user_id` | `string` | Yes |  |
+
+### Operations
+
+#### `create(data: object, ctrl?: object)`
+
+Create a new entity with the given data.
+
+```ts
+const result = await client.Passcode().create({
+  user_id: 'example_user_id',
+})
+```
+
+### Common Methods
+
+#### `data(data?: object)`
+
+Get or set the entity data. When called with data, sets the entity's
+internal data and returns the current data. When called without
+arguments, returns a copy of the current data.
+
+#### `match(match?: object)`
+
+Get or set the entity match criteria. Works the same as `data()`.
+
+#### `make()`
+
+Create a new `PasscodeEntity` instance with the same client and
+options.
+
+#### `client()`
+
+Return the parent `HankoPublicSDK` instance.
+
+#### `entopts()`
+
+Return a copy of the entity options.
+
+
+---
+
+## PasswordEntity
+
+```ts
+const password = client.Password()
+```
+
+### Fields
+
+| Field | Type | Required | Description |
+| --- | --- | --- | --- |
+| `password` | `string` | Yes |  |
+| `user_id` | `string` | Yes |  |
+
+### Operations
+
+#### `create(data: object, ctrl?: object)`
+
+Create a new entity with the given data.
+
+```ts
+const result = await client.Password().create({
+  password: 'example_password',
+  user_id: 'example_user_id',
+})
+```
+
+#### `update(data: object, ctrl?: object)`
+
+Update an existing entity. The data must include the entity `id`.
+
+```ts
+const result = await client.Password().update({
+  // Fields to update
+})
+```
+
+### Common Methods
+
+#### `data(data?: object)`
+
+Get or set the entity data. When called with data, sets the entity's
+internal data and returns the current data. When called without
+arguments, returns a copy of the current data.
+
+#### `match(match?: object)`
+
+Get or set the entity match criteria. Works the same as `data()`.
+
+#### `make()`
+
+Create a new `PasswordEntity` instance with the same client and
+options.
+
+#### `client()`
+
+Return the parent `HankoPublicSDK` instance.
+
+#### `entopts()`
+
+Return a copy of the entity options.
+
+
+---
+
+## SamlEntity
+
+```ts
+const saml = client.Saml()
+```
+
+### Fields
+
+| Field | Type | Required | Description |
+| --- | --- | --- | --- |
+| `attribute_map` | `Record<string, any>` | No |  |
+| `domain` | `string` | No |  |
+| `enabled` | `boolean` | No |  |
+| `metadata_url` | `string` | No |  |
+| `name` | `string` | No |  |
+| `skip_email_verification` | `boolean` | No |  |
+
+### Operations
+
+#### `create(data: object, ctrl?: object)`
+
+Create a new entity with the given data.
+
+```ts
+const result = await client.Saml().create({
+})
+```
+
+#### `load(match: object, ctrl?: object)`
+
+Load a single entity matching the given criteria.
+
+```ts
+const result = await client.Saml().load()
+```
+
+### Common Methods
+
+#### `data(data?: object)`
+
+Get or set the entity data. When called with data, sets the entity's
+internal data and returns the current data. When called without
+arguments, returns a copy of the current data.
+
+#### `match(match?: object)`
+
+Get or set the entity match criteria. Works the same as `data()`.
+
+#### `make()`
+
+Create a new `SamlEntity` instance with the same client and
+options.
+
+#### `client()`
+
+Return the parent `HankoPublicSDK` instance.
+
+#### `entopts()`
+
+Return a copy of the entity options.
+
+
+---
+
+## SessionManagementEntity
+
+```ts
+const session_management = client.SessionManagement()
+```
+
+### Fields
+
+| Field | Type | Required | Description |
+| --- | --- | --- | --- |
+| `claim` | `Record<string, any>` | Yes |  |
+| `expiration_time` | `string` | No |  |
+| `idle_expires_at` | `string` | No |  |
+| `is_valid` | `boolean` | No |  |
+| `session_token` | `string` | Yes |  |
+| `user_id` | `string` | No |  |
+
+### Operations
+
+#### `create(data: object, ctrl?: object)`
+
+Create a new entity with the given data.
+
+```ts
+const result = await client.SessionManagement().create({
+  claim: {},
+  session_token: 'example_session_token',
+})
+```
+
+#### `load(match: object, ctrl?: object)`
+
+Load a single entity matching the given criteria.
+
+```ts
+const result = await client.SessionManagement().load()
+```
+
+### Common Methods
+
+#### `data(data?: object)`
+
+Get or set the entity data. When called with data, sets the entity's
+internal data and returns the current data. When called without
+arguments, returns a copy of the current data.
+
+#### `match(match?: object)`
+
+Get or set the entity match criteria. Works the same as `data()`.
+
+#### `make()`
+
+Create a new `SessionManagementEntity` instance with the same client and
+options.
+
+#### `client()`
+
+Return the parent `HankoPublicSDK` instance.
+
+#### `entopts()`
+
+Return a copy of the entity options.
+
+
+---
+
+## StatusEntity
+
+```ts
+const status = client.Status()
+```
+
+### Operations
+
+#### `load(match: object, ctrl?: object)`
+
+Load a single entity matching the given criteria.
+
+```ts
+const result = await client.Status().load()
+```
+
+### Common Methods
+
+#### `data(data?: object)`
+
+Get or set the entity data. When called with data, sets the entity's
+internal data and returns the current data. When called without
+arguments, returns a copy of the current data.
+
+#### `match(match?: object)`
+
+Get or set the entity match criteria. Works the same as `data()`.
+
+#### `make()`
+
+Create a new `StatusEntity` instance with the same client and
+options.
+
+#### `client()`
+
+Return the parent `HankoPublicSDK` instance.
+
+#### `entopts()`
+
+Return a copy of the entity options.
+
+
+---
+
+## ThirdPartyEntity
+
+```ts
+const third_party = client.ThirdParty()
+```
+
+### Operations
+
+#### `load(match: object, ctrl?: object)`
+
+Load a single entity matching the given criteria.
+
+```ts
+const result = await client.ThirdParty().load()
+```
+
+### Common Methods
+
+#### `data(data?: object)`
+
+Get or set the entity data. When called with data, sets the entity's
+internal data and returns the current data. When called without
+arguments, returns a copy of the current data.
+
+#### `match(match?: object)`
+
+Get or set the entity match criteria. Works the same as `data()`.
+
+#### `make()`
+
+Create a new `ThirdPartyEntity` instance with the same client and
+options.
+
+#### `client()`
+
+Return the parent `HankoPublicSDK` instance.
+
+#### `entopts()`
+
+Return a copy of the entity options.
+
+
+---
+
+## TokenEntity
+
+```ts
+const token = client.Token()
+```
+
+### Fields
+
+| Field | Type | Required | Description |
+| --- | --- | --- | --- |
+| `value` | `string` | No |  |
+
+### Operations
+
+#### `create(data: object, ctrl?: object)`
+
+Create a new entity with the given data.
+
+```ts
+const result = await client.Token().create({
+})
+```
+
+### Common Methods
+
+#### `data(data?: object)`
+
+Get or set the entity data. When called with data, sets the entity's
+internal data and returns the current data. When called without
+arguments, returns a copy of the current data.
+
+#### `match(match?: object)`
+
+Get or set the entity match criteria. Works the same as `data()`.
+
+#### `make()`
+
+Create a new `TokenEntity` instance with the same client and
+options.
+
+#### `client()`
+
+Return the parent `HankoPublicSDK` instance.
+
+#### `entopts()`
+
+Return a copy of the entity options.
+
+
+---
+
+## UserEntity
+
+```ts
+const user = client.User()
+```
+
+### Fields
+
+| Field | Type | Required | Description |
+| --- | --- | --- | --- |
+| `created_at` | `string` | No |  |
+| `email` | `any[]` | No |  |
+| `email_id` | `string` | No |  |
+| `family_name` | `string` | No |  |
+| `given_name` | `string` | No |  |
+| `has_webauthn_credential` | `boolean` | No |  |
+| `id` | `string` | No |  |
+| `metadata` | `Record<string, any>` | No |  |
+| `mfa_config` | `Record<string, any>` | No |  |
+| `name` | `string` | No |  |
+| `passkey` | `any[]` | No |  |
+| `picture` | `string` | No |  |
+| `security_key` | `any[]` | No |  |
+| `updated_at` | `string` | No |  |
+| `user_id` | `string` | No |  |
+| `username` | `string` | No |  |
+| `verified` | `boolean` | No |  |
+| `webauthn_credential` | `any[]` | No |  |
+
+### Field Usage by Operation
+
+| Field | load | create | remove |
+| --- | --- | --- | --- |
+| `created_at` | - | - | - |
+| `email` | - | Yes | - |
+| `email_id` | - | - | - |
+| `family_name` | - | - | - |
+| `given_name` | - | - | - |
+| `has_webauthn_credential` | - | - | - |
+| `id` | - | - | - |
+| `metadata` | - | - | - |
+| `mfa_config` | - | - | - |
+| `name` | - | - | - |
+| `passkey` | - | - | - |
+| `picture` | - | - | - |
+| `security_key` | - | - | - |
+| `updated_at` | - | - | - |
+| `user_id` | - | - | - |
+| `username` | - | - | - |
+| `verified` | - | - | - |
+| `webauthn_credential` | - | - | - |
+
+### Operations
+
+#### `create(data: object, ctrl?: object)`
+
+Create a new entity with the given data.
+
+```ts
+const result = await client.User().create({
+})
+```
+
+#### `load(match: object, ctrl?: object)`
+
+Load a single entity matching the given criteria.
+
+```ts
+const result = await client.User().load({ id: 'user_id' })
+```
+
+#### `remove(match: object, ctrl?: object)`
+
+Remove the entity matching the given criteria.
+
+```ts
+const result = await client.User().remove({ id: 'user_id' })
+```
+
+### Common Methods
+
+#### `data(data?: object)`
+
+Get or set the entity data. When called with data, sets the entity's
+internal data and returns the current data. When called without
+arguments, returns a copy of the current data.
+
+#### `match(match?: object)`
+
+Get or set the entity match criteria. Works the same as `data()`.
+
+#### `make()`
+
+Create a new `UserEntity` instance with the same client and
+options.
+
+#### `client()`
+
+Return the parent `HankoPublicSDK` instance.
+
+#### `entopts()`
+
+Return a copy of the entity options.
+
+
+---
+
+## UserManagementEntity
+
+```ts
+const user_management = client.UserManagement()
+```
+
+### Fields
+
+| Field | Type | Required | Description |
+| --- | --- | --- | --- |
+| `created_at` | `string` | No |  |
+| `email` | `any[]` | No |  |
+| `family_name` | `string` | No |  |
+| `given_name` | `string` | No |  |
+| `id` | `string` | No |  |
+| `metadata` | `Record<string, any>` | No |  |
+| `mfa_config` | `Record<string, any>` | No |  |
+| `name` | `string` | No |  |
+| `passkey` | `any[]` | No |  |
+| `picture` | `string` | No |  |
+| `security_key` | `any[]` | No |  |
+| `updated_at` | `string` | No |  |
+| `user_id` | `string` | No |  |
+| `username` | `Record<string, any>` | No |  |
+
+### Operations
+
+#### `create(data: object, ctrl?: object)`
+
+Create a new entity with the given data.
+
+```ts
+const result = await client.UserManagement().create({
+})
+```
+
+#### `list(match: object, ctrl?: object)`
+
+List entities matching the given criteria. Returns an array.
+
+```ts
+const results = await client.UserManagement().list()
+```
+
+### Common Methods
+
+#### `data(data?: object)`
+
+Get or set the entity data. When called with data, sets the entity's
+internal data and returns the current data. When called without
+arguments, returns a copy of the current data.
+
+#### `match(match?: object)`
+
+Get or set the entity match criteria. Works the same as `data()`.
+
+#### `make()`
+
+Create a new `UserManagementEntity` instance with the same client and
+options.
+
+#### `client()`
+
+Return the parent `HankoPublicSDK` instance.
+
+#### `entopts()`
+
+Return a copy of the entity options.
+
+
+---
+
+## WebAuthnEntity
+
+```ts
+const web_authn = client.WebAuthn()
+```
+
+### Fields
+
+| Field | Type | Required | Description |
+| --- | --- | --- | --- |
+| `credential_id` | `string` | No |  |
+| `id` | `string` | No |  |
+| `name` | `string` | No |  |
+| `raw_id` | `string` | No |  |
+| `response` | `Record<string, any>` | No |  |
+| `type` | `string` | No |  |
+| `user_id` | `string` | No |  |
+
+### Operations
+
+#### `create(data: object, ctrl?: object)`
+
+Create a new entity with the given data.
+
+```ts
+const result = await client.WebAuthn().create({
+})
+```
+
+#### `remove(match: object, ctrl?: object)`
+
+Remove the entity matching the given criteria.
+
+```ts
+const result = await client.WebAuthn().remove({ id: 'id' })
+```
+
+#### `update(data: object, ctrl?: object)`
+
+Update an existing entity. The data must include the entity `id`.
+
+```ts
+const result = await client.WebAuthn().update({
+  id: 'id',
+  // Fields to update
+})
+```
+
+### Common Methods
+
+#### `data(data?: object)`
+
+Get or set the entity data. When called with data, sets the entity's
+internal data and returns the current data. When called without
+arguments, returns a copy of the current data.
+
+#### `match(match?: object)`
+
+Get or set the entity match criteria. Works the same as `data()`.
+
+#### `make()`
+
+Create a new `WebAuthnEntity` instance with the same client and
+options.
+
+#### `client()`
+
+Return the parent `HankoPublicSDK` instance.
+
+#### `entopts()`
+
+Return a copy of the entity options.
+
+
+---
+
+## WebauthnLoginEntity
+
+```ts
+const webauthn_login = client.WebauthnLogin()
+```
+
+### Fields
+
+| Field | Type | Required | Description |
+| --- | --- | --- | --- |
+| `credential_id` | `string` | No |  |
+| `id` | `string` | No |  |
+| `raw_id` | `string` | No |  |
+| `response` | `Record<string, any>` | No |  |
+| `type` | `string` | No |  |
+| `user_id` | `string` | No |  |
+
+### Operations
+
+#### `create(data: object, ctrl?: object)`
+
+Create a new entity with the given data.
+
+```ts
+const result = await client.WebauthnLogin().create({
+})
+```
+
+### Common Methods
+
+#### `data(data?: object)`
+
+Get or set the entity data. When called with data, sets the entity's
+internal data and returns the current data. When called without
+arguments, returns a copy of the current data.
+
+#### `match(match?: object)`
+
+Get or set the entity match criteria. Works the same as `data()`.
+
+#### `make()`
+
+Create a new `WebauthnLoginEntity` instance with the same client and
+options.
+
+#### `client()`
+
+Return the parent `HankoPublicSDK` instance.
+
+#### `entopts()`
+
+Return a copy of the entity options.
+
+
+---
+
+## Features
+
+| Feature | Version | Description |
+| --- | --- | --- |
+| `test` | 0.0.1 | In-memory mock transport for testing without a live server |
+
+
+Features are activated via the `feature` option:
+
+```ts
+const client = new HankoPublicSDK({
+  feature: {
+    test: { active: true },
+  }
+})
+```
+

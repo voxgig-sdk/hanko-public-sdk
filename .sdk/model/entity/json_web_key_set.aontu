@@ -1,0 +1,63 @@
+# Entity: json_web_key_set
+
+main: kit: entity: json_web_key_set: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "alg"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "e"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "kid"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "kty"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "n"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "use"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  name: "json_web_key_set"
+  op: {
+    list: {
+      name: "list"
+      points: [
+        {
+          method: "GET"
+          orig: "/.well-known/jwks.json"
+          parts: [
+            ".well-known"
+            "jwks.json"
+          ]
+          transform: {
+            req: "`reqdata`"
+            res: "`body.keys`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

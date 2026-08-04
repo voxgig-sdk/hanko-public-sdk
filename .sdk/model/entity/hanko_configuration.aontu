@@ -1,0 +1,48 @@
+# Entity: hanko_configuration
+
+main: kit: entity: hanko_configuration: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "account"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "email"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "password"
+      req: false
+      type: "`$OBJECT`"
+    }
+  ]
+
+  name: "hanko_configuration"
+  op: {
+    load: {
+      name: "load"
+      points: [
+        {
+          method: "GET"
+          orig: "/.well-known/config"
+          parts: [
+            ".well-known"
+            "config"
+          ]
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

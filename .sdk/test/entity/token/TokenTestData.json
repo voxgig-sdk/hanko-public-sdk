@@ -1,0 +1,25 @@
+{
+  "existing": {
+    "token": {
+      "TOKEN00": {
+        "value": "sa",
+        "id": "TOKEN00"
+      },
+      "TOKEN01": {
+        "value": "s14",
+        "id": "TOKEN01"
+      },
+      "TOKEN02": {
+        "value": "s1e",
+        "id": "TOKEN02"
+      }
+    }
+  },
+  "new": {
+    "token": {
+      "token_ref01": {
+        "value": "s28"
+      }
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "existing": {
+    "email_management": {
+      "EMAIL_MANAGEMENT00": {
+        "id": "EMAIL_MANAGEMENT00"
+      },
+      "EMAIL_MANAGEMENT01": {
+        "id": "EMAIL_MANAGEMENT01"
+      },
+      "EMAIL_MANAGEMENT02": {
+        "id": "EMAIL_MANAGEMENT02"
+      }
+    }
+  },
+  "new": {
+    "email_management": {
+      "email_management_ref01": {}
+    }
+  }
+}

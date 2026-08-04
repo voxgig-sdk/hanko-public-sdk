@@ -1,0 +1,18 @@
+# BasicPasscodeFlow
+
+main: kit: flow: BasicPasscodeFlow:
+{
+  entity: "passcode",
+  kind: "basic",
+  name: "BasicPasscodeFlow",
+  step: [
+    {
+      input: {
+        ref: "passcode_ref01"
+      }
+
+      op: "create"
+    }
+  ],
+  "key$": "BasicPasscodeFlow"
+}

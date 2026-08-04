@@ -1,0 +1,36 @@
+# BasicSamlFlow
+
+main: kit: flow: BasicSamlFlow:
+{
+  entity: "saml",
+  kind: "basic",
+  name: "BasicSamlFlow",
+  step: [
+    {
+      input: {
+        ref: "saml_ref01"
+      }
+
+      op: "create"
+    }
+
+    {
+      input: {
+        ref: "saml_ref01",
+        srcdatavar: "saml_ref01_data",
+        suffix: "_dt0"
+      }
+
+      op: "load",
+      valid: [
+        {
+          apply: "TextFieldMark",
+          def: {
+            mark: "Mark01-saml_ref01"
+          }
+        }
+      ]
+    }
+  ],
+  "key$": "BasicSamlFlow"
+}

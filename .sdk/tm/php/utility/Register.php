@@ -1,0 +1,67 @@
+<?php
+declare(strict_types=1);
+
+// HankoPublic SDK utility registration
+
+require_once __DIR__ . '/../core/UtilityType.php';
+require_once __DIR__ . '/Clean.php';
+require_once __DIR__ . '/Done.php';
+require_once __DIR__ . '/MakeError.php';
+require_once __DIR__ . '/FeatureAdd.php';
+require_once __DIR__ . '/FeatureHook.php';
+require_once __DIR__ . '/FeatureInit.php';
+require_once __DIR__ . '/Fetcher.php';
+require_once __DIR__ . '/MakeFetchDef.php';
+require_once __DIR__ . '/MakeContext.php';
+require_once __DIR__ . '/MakeOptions.php';
+require_once __DIR__ . '/MakeRequest.php';
+require_once __DIR__ . '/MakeResponse.php';
+require_once __DIR__ . '/MakeResult.php';
+require_once __DIR__ . '/MakePoint.php';
+require_once __DIR__ . '/MakeSpec.php';
+require_once __DIR__ . '/MakeUrl.php';
+require_once __DIR__ . '/Param.php';
+require_once __DIR__ . '/PrepareAuth.php';
+require_once __DIR__ . '/PrepareBody.php';
+require_once __DIR__ . '/PrepareHeaders.php';
+require_once __DIR__ . '/PrepareMethod.php';
+require_once __DIR__ . '/PrepareParams.php';
+require_once __DIR__ . '/PreparePath.php';
+require_once __DIR__ . '/PrepareQuery.php';
+require_once __DIR__ . '/ResultBasic.php';
+require_once __DIR__ . '/ResultBody.php';
+require_once __DIR__ . '/ResultHeaders.php';
+require_once __DIR__ . '/TransformRequest.php';
+require_once __DIR__ . '/TransformResponse.php';
+
+HankoPublicUtility::setRegistrar(function (HankoPublicUtility $u): void {
+    $u->clean = [HankoPublicClean::class, 'call'];
+    $u->done = [HankoPublicDone::class, 'call'];
+    $u->make_error = [HankoPublicMakeError::class, 'call'];
+    $u->feature_add = [HankoPublicFeatureAdd::class, 'call'];
+    $u->feature_hook = [HankoPublicFeatureHook::class, 'call'];
+    $u->feature_init = [HankoPublicFeatureInit::class, 'call'];
+    $u->fetcher = [HankoPublicFetcher::class, 'call'];
+    $u->make_fetch_def = [HankoPublicMakeFetchDef::class, 'call'];
+    $u->make_context = [HankoPublicMakeContext::class, 'call'];
+    $u->make_options = [HankoPublicMakeOptions::class, 'call'];
+    $u->make_request = [HankoPublicMakeRequest::class, 'call'];
+    $u->make_response = [HankoPublicMakeResponse::class, 'call'];
+    $u->make_result = [HankoPublicMakeResult::class, 'call'];
+    $u->make_point = [HankoPublicMakePoint::class, 'call'];
+    $u->make_spec = [HankoPublicMakeSpec::class, 'call'];
+    $u->make_url = [HankoPublicMakeUrl::class, 'call'];
+    $u->param = [HankoPublicParam::class, 'call'];
+    $u->prepare_auth = [HankoPublicPrepareAuth::class, 'call'];
+    $u->prepare_body = [HankoPublicPrepareBody::class, 'call'];
+    $u->prepare_headers = [HankoPublicPrepareHeaders::class, 'call'];
+    $u->prepare_method = [HankoPublicPrepareMethod::class, 'call'];
+    $u->prepare_params = [HankoPublicPrepareParams::class, 'call'];
+    $u->prepare_path = [HankoPublicPreparePath::class, 'call'];
+    $u->prepare_query = [HankoPublicPrepareQuery::class, 'call'];
+    $u->result_basic = [HankoPublicResultBasic::class, 'call'];
+    $u->result_body = [HankoPublicResultBody::class, 'call'];
+    $u->result_headers = [HankoPublicResultHeaders::class, 'call'];
+    $u->transform_request = [HankoPublicTransformRequest::class, 'call'];
+    $u->transform_response = [HankoPublicTransformResponse::class, 'call'];
+});

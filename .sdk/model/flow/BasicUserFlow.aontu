@@ -1,0 +1,49 @@
+# BasicUserFlow
+
+main: kit: flow: BasicUserFlow:
+{
+  entity: "user",
+  kind: "basic",
+  name: "BasicUserFlow",
+  step: [
+    {
+      input: {
+        ref: "user_ref01"
+      }
+
+      op: "create"
+    }
+
+    {
+      input: {
+        ref: "user_ref01",
+        srcdatavar: "user_ref01_data",
+        suffix: "_dt0"
+      }
+
+      match: {
+        id: "user01"
+      }
+
+      op: "load",
+      valid: [
+        {
+          apply: "TextFieldMark",
+          def: {
+            mark: "Mark01-user_ref01"
+          }
+        }
+      ]
+    }
+
+    {
+      input: {
+        ref: "user_ref01",
+        suffix: "_rm0"
+      }
+
+      op: "remove"
+    }
+  ],
+  "key$": "BasicUserFlow"
+}

@@ -1,0 +1,42 @@
+{
+  "existing": {
+    "json_web_key_set": {
+      "JSON_WEB_KEY_SET00": {
+        "alg": "s3c",
+        "e": "s3d",
+        "kid": "s3e",
+        "kty": "s3f",
+        "n": "s40",
+        "use": "s41"
+      },
+      "JSON_WEB_KEY_SET01": {
+        "alg": "s78",
+        "e": "s79",
+        "kid": "s7a",
+        "kty": "s7b",
+        "n": "s7c",
+        "use": "s7d"
+      },
+      "JSON_WEB_KEY_SET02": {
+        "alg": "sb4",
+        "e": "sb5",
+        "kid": "sb6",
+        "kty": "sb7",
+        "n": "sb8",
+        "use": "sb9"
+      }
+    }
+  },
+  "new": {
+    "json_web_key_set": {
+      "json_web_key_set_ref01": {
+        "alg": "sf0",
+        "e": "sf1",
+        "kid": "sf2",
+        "kty": "sf3",
+        "n": "sf4",
+        "use": "sf5"
+      }
+    }
+  }
+}

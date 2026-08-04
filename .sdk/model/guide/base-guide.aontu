@@ -1,0 +1,164 @@
+# Guide
+
+guide: {
+  metrics: count: entity: 19
+  metrics: count: path: 28
+  metrics: count: method: 32
+
+  entity: create_user_response_object: {
+  }
+
+  entity: credential: {
+    path: "/webauthn/credentials": {
+      op: list: method: *GET
+    }
+  }
+
+  entity: credential_creation_option: {
+    path: "/webauthn/registration/initialize": {
+      op: create: method: *POST
+      op: create: transform: res: *("`body.publicKey`")|top
+    }
+  }
+
+  entity: credential_request_option: {
+    path: "/webauthn/login/initialize": {
+      op: create: method: *POST
+      op: create: transform: res: *("`body.publicKey`")|top
+    }
+  }
+
+  entity: email: {
+    path: "/emails": {
+      op: create: method: *POST
+      op: list: method: *GET
+    }
+    path: "/emails/{id}": {
+      op: remove: method: *DELETE
+    }
+  }
+
+  entity: email_management: {
+    path: "/emails/{id}/set_primary": {
+      action: "set_primary": {}
+      op: create: method: *POST
+    }
+  }
+
+  entity: hanko_configuration: {
+    path: "/.well-known/config": {
+      op: load: method: *GET
+    }
+  }
+
+  entity: json_web_key_set: {
+    path: "/.well-known/jwks.json": {
+      op: list: method: *GET
+      op: list: transform: res: *("`body.keys`")|top
+    }
+  }
+
+  entity: passcode: {
+    path: "/passcode/login/finalize": {
+      op: create: method: *POST
+    }
+    path: "/passcode/login/initialize": {
+      op: create: method: *POST
+    }
+  }
+
+  entity: password: {
+    path: "/password": {
+      op: update: method: *PUT
+      op: update: transform: req: "password": *("`reqdata`")|top
+    }
+    path: "/password/login": {
+      action: "login": {}
+      op: create: method: *POST
+      op: create: transform: req: "password": *("`reqdata`")|top
+    }
+  }
+
+  entity: saml: {
+    path: "/saml/callback": {
+      action: "callback": {}
+      op: create: method: *POST
+    }
+    path: "/saml/metadata": {
+      action: "metadata": {}
+      op: load: method: *GET
+    }
+    path: "/saml/provider": {
+      action: "provider": {}
+      op: load: method: *GET
+    }
+  }
+
+  entity: session_management: {
+    path: "/sessions/validate": {
+      op: create: method: *POST
+      op: load: method: *GET
+    }
+  }
+
+  entity: status: {
+    path: "/": {
+      op: load: method: *GET
+    }
+  }
+
+  entity: third_party: {
+    path: "/thirdparty/auth": {
+      op: load: method: *GET
+    }
+    path: "/thirdparty/callback": {
+      op: load: method: *GET
+    }
+  }
+
+  entity: token: {
+    path: "/token": {
+      op: create: method: *POST
+      op: create: transform: res: *("`body.user_id`")|top
+    }
+  }
+
+  entity: user: {
+    path: "/user": {
+      op: create: method: *POST
+      op: remove: method: *DELETE
+    }
+    path: "/users": {
+      op: create: method: *POST
+    }
+    path: "/users/{id}": {
+      op: load: method: *GET
+    }
+  }
+
+  entity: user_management: {
+    path: "/logout": {
+      op: create: method: *POST
+    }
+    path: "/me": {
+      op: list: method: *GET
+    }
+  }
+
+  entity: web_authn: {
+    path: "/webauthn/credentials/{id}": {
+      op: patch: method: *PATCH
+      op: remove: method: *DELETE
+    }
+    path: "/webauthn/registration/finalize": {
+      op: create: method: *POST
+    }
+  }
+
+  entity: webauthn_login: {
+    path: "/webauthn/login/finalize": {
+      op: create: method: *POST
+    }
+  }
+
+}

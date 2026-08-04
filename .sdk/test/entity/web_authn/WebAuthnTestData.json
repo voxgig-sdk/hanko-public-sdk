@@ -1,0 +1,45 @@
+{
+  "existing": {
+    "web_authn": {
+      "WEB_AUTHN00": {
+        "credential_id": "CREDENTIAL01",
+        "id": "WEB_AUTHN00",
+        "name": "s48",
+        "raw_id": "RAW01",
+        "response": {},
+        "type": "s4b",
+        "user_id": "USER01"
+      },
+      "WEB_AUTHN01": {
+        "credential_id": "CREDENTIAL01",
+        "id": "WEB_AUTHN01",
+        "name": "s8e",
+        "raw_id": "RAW01",
+        "response": {},
+        "type": "s91",
+        "user_id": "USER01"
+      },
+      "WEB_AUTHN02": {
+        "credential_id": "CREDENTIAL01",
+        "id": "WEB_AUTHN02",
+        "name": "sd4",
+        "raw_id": "RAW01",
+        "response": {},
+        "type": "sd7",
+        "user_id": "USER01"
+      }
+    }
+  },
+  "new": {
+    "web_authn": {
+      "web_authn_ref01": {
+        "credential_id": "CREDENTIAL01",
+        "name": "s11a",
+        "raw_id": "RAW01",
+        "response": {},
+        "type": "s11d",
+        "user_id": "USER01"
+      }
+    }
+  }
+}

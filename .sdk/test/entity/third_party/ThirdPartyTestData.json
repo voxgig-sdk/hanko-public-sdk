@@ -1,0 +1,20 @@
+{
+  "existing": {
+    "third_party": {
+      "THIRD_PARTY00": {
+        "id": "THIRD_PARTY00"
+      },
+      "THIRD_PARTY01": {
+        "id": "THIRD_PARTY01"
+      },
+      "THIRD_PARTY02": {
+        "id": "THIRD_PARTY02"
+      }
+    }
+  },
+  "new": {
+    "third_party": {
+      "third_party_ref01": {}
+    }
+  }
+}

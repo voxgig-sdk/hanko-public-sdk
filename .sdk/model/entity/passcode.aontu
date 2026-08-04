@@ -1,0 +1,82 @@
+# Entity: passcode
+
+main: kit: entity: passcode: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "code"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "created_at"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "email_id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "ttl"
+      req: false
+      type: "`$INTEGER`"
+    }
+    {
+      name: "user_id"
+      req: true
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "passcode"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          method: "POST"
+          orig: "/passcode/login/finalize"
+          parts: [
+            "passcode"
+            "login"
+            "finalize"
+          ]
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          method: "POST"
+          orig: "/passcode/login/initialize"
+          parts: [
+            "passcode"
+            "login"
+            "initialize"
+          ]
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

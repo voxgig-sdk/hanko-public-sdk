@@ -1,0 +1,45 @@
+{
+  "existing": {
+    "session_management": {
+      "SESSION_MANAGEMENT00": {
+        "claim": {},
+        "expiration_time": "s3d",
+        "idle_expires_at": "s3e",
+        "is_valid": false,
+        "session_token": "s40",
+        "user_id": "USER01",
+        "id": "SESSION_MANAGEMENT00"
+      },
+      "SESSION_MANAGEMENT01": {
+        "claim": {},
+        "expiration_time": "s79",
+        "idle_expires_at": "s7a",
+        "is_valid": false,
+        "session_token": "s7c",
+        "user_id": "USER01",
+        "id": "SESSION_MANAGEMENT01"
+      },
+      "SESSION_MANAGEMENT02": {
+        "claim": {},
+        "expiration_time": "sb5",
+        "idle_expires_at": "sb6",
+        "is_valid": false,
+        "session_token": "sb8",
+        "user_id": "USER01",
+        "id": "SESSION_MANAGEMENT02"
+      }
+    }
+  },
+  "new": {
+    "session_management": {
+      "session_management_ref01": {
+        "claim": {},
+        "expiration_time": "sf1",
+        "idle_expires_at": "sf2",
+        "is_valid": false,
+        "session_token": "sf4",
+        "user_id": "USER01"
+      }
+    }
+  }
+}

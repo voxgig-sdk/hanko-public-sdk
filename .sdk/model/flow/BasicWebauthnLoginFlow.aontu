@@ -1,0 +1,18 @@
+# BasicWebauthnLoginFlow
+
+main: kit: flow: BasicWebauthnLoginFlow:
+{
+  entity: "webauthn_login",
+  kind: "basic",
+  name: "BasicWebauthnLoginFlow",
+  step: [
+    {
+      input: {
+        ref: "webauthn_login_ref01"
+      }
+
+      op: "create"
+    }
+  ],
+  "key$": "BasicWebauthnLoginFlow"
+}

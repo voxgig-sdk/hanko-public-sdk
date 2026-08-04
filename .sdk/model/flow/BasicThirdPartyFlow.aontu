@@ -1,0 +1,28 @@
+# BasicThirdPartyFlow
+
+main: kit: flow: BasicThirdPartyFlow:
+{
+  entity: "third_party",
+  kind: "basic",
+  name: "BasicThirdPartyFlow",
+  step: [
+    {
+      input: {
+        ref: "third_party_ref01",
+        srcdatavar: "third_party_ref01_data",
+        suffix: "_dt0"
+      }
+
+      op: "load",
+      valid: [
+        {
+          apply: "TextFieldMark",
+          def: {
+            mark: "Mark01-third_party_ref01"
+          }
+        }
+      ]
+    }
+  ],
+  "key$": "BasicThirdPartyFlow"
+}

@@ -1,0 +1,69 @@
+# Entity: webauthn_login
+
+main: kit: entity: webauthn_login: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "credential_id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "raw_id"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "response"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "type"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "user_id"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "webauthn_login"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          method: "POST"
+          orig: "/webauthn/login/finalize"
+          parts: [
+            "webauthn"
+            "login"
+            "finalize"
+          ]
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

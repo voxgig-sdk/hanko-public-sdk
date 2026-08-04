@@ -1,0 +1,106 @@
+# Entity: third_party
+
+main: kit: entity: third_party: {
+
+  alias: field: {}
+
+  name: "third_party"
+  op: {
+    load: {
+      name: "load"
+      points: [
+        {
+          args: {
+            query: [
+              {
+                kind: "query"
+                name: "code"
+                orig: "code"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "query"
+                name: "error"
+                orig: "error"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "query"
+                name: "error_description"
+                orig: "error_description"
+                reqd: false
+                type: "`$STRING`"
+              }
+              {
+                kind: "query"
+                name: "state"
+                orig: "state"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/thirdparty/callback"
+          parts: [
+            "thirdparty"
+            "callback"
+          ]
+          select: {
+            exist: [
+              "code"
+              "error"
+              "error_description"
+              "state"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          args: {
+            query: [
+              {
+                kind: "query"
+                name: "provider"
+                orig: "provider"
+                reqd: true
+                type: "`$STRING`"
+              }
+              {
+                kind: "query"
+                name: "redirect_to"
+                orig: "redirect_to"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/thirdparty/auth"
+          parts: [
+            "thirdparty"
+            "auth"
+          ]
+          select: {
+            exist: [
+              "provider"
+              "redirect_to"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}
