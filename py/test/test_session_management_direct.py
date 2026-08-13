@@ -3,9 +3,9 @@
 import json
 import pytest
 
-from utility.voxgig_struct import voxgig_struct as vs
+from hankopublic_sdk.utility.voxgig_struct import voxgig_struct as vs
 from hankopublic_sdk import HankoPublicSDK
-from core import helpers
+from hankopublic_sdk.core import helpers
 from test import runner
 
 
@@ -56,16 +56,16 @@ def _session_management_direct_setup(mockres):
     calls = []
 
     env = runner.env_override({
-        "HANKOPUBLIC_TEST_SESSION_MANAGEMENT_ENTID": {},
-        "HANKOPUBLIC_TEST_LIVE": "FALSE",
-        "HANKOPUBLIC_APIKEY": "NONE",
+        "HANKO_PUBLIC_TEST_SESSION_MANAGEMENT_ENTID": {},
+        "HANKO_PUBLIC_TEST_LIVE": "FALSE",
+        "HANKO_PUBLIC_APIKEY": "NONE",
     })
 
-    live = env.get("HANKOPUBLIC_TEST_LIVE") == "TRUE"
+    live = env.get("HANKO_PUBLIC_TEST_LIVE") == "TRUE"
 
     if live:
         merged_opts = {
-            "apikey": env.get("HANKOPUBLIC_APIKEY"),
+            "apikey": env.get("HANKO_PUBLIC_APIKEY"),
         }
         client = HankoPublicSDK(merged_opts)
         return {

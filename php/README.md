@@ -41,7 +41,7 @@ Entity operations throw a `\Throwable` on failure, so wrap them in
 
 ```php
 try {
-    $jsonwebkeysets = $client->JsonWebKeySet()->list();
+    $credentials = $client->Credential()->list();
 } catch (\Throwable $err) {
     echo "Error: " . $err->getMessage();
 }
@@ -113,9 +113,10 @@ Create a mock client for unit testing — no server required:
 ```php
 $client = HankoPublicSDK::test();
 
-// Entity ops return the bare mock record (throws on error).
-$jsonwebkeyset = $client->JsonWebKeySet()->list();
-print_r($jsonwebkeyset);
+// Entity ops return the ENTITY (throws on error);
+// call data_get() for the mock record.
+$credential = $client->Credential()->list();
+print_r($credential);
 ```
 
 ### Use a custom fetch function
@@ -236,7 +237,7 @@ All entities share the same interface.
 
 ### Result shape
 
-Entity operations return the bare result data (an `array` for single-entity
+Entity operations return the ENTITY (call data_get() for the record) (an `array` for single-entity
 ops, a `list` for `list`) and throw on error. Wrap calls in
 `try`/`catch` to handle failures.
 
@@ -276,8 +277,8 @@ API path: ``
 | `last_used_at` |  |
 | `mfa_only` |  |
 | `name` |  |
-| `public_key` |  |
-| `transport` |  |
+| `publickey` |  |
+| `transports` |  |
 
 Operations: List.
 
@@ -288,9 +289,9 @@ API path: `/webauthn/credentials`
 | Field | Description |
 | --- | --- |
 | `attestation` |  |
-| `authenticator_selection` |  |
+| `authenticatorSelection` |  |
 | `challenge` |  |
-| `pub_key_cred_param` |  |
+| `pubKeyCredParams` |  |
 | `rp` |  |
 | `timeout` |  |
 | `user` |  |
@@ -303,12 +304,12 @@ API path: `/webauthn/registration/initialize`
 
 | Field | Description |
 | --- | --- |
-| `allow_credential` |  |
+| `allowCredentials` |  |
 | `challenge` |  |
-| `rp_id` |  |
+| `rpId` |  |
 | `timeout` |  |
+| `userVerification` |  |
 | `user_id` |  |
-| `user_verification` |  |
 
 Operations: Create.
 
@@ -320,6 +321,7 @@ API path: `/webauthn/login/initialize`
 | --- | --- |
 | `address` |  |
 | `id` |  |
+| `identities` |  |
 | `identity` |  |
 | `is_primary` |  |
 | `is_verified` |  |
@@ -342,7 +344,7 @@ API path: `/emails/{id}/set_primary`
 | Field | Description |
 | --- | --- |
 | `account` |  |
-| `email` |  |
+| `emails` |  |
 | `password` |  |
 
 Operations: Load.
@@ -369,10 +371,8 @@ API path: `/.well-known/jwks.json`
 | Field | Description |
 | --- | --- |
 | `code` |  |
-| `created_at` |  |
 | `email_id` |  |
 | `id` |  |
-| `ttl` |  |
 | `user_id` |  |
 
 Operations: Create.
@@ -394,12 +394,24 @@ API path: `/password/login`
 
 | Field | Description |
 | --- | --- |
-| `attribute_map` |  |
-| `domain` |  |
-| `enabled` |  |
-| `metadata_url` |  |
+| `birthdate` |  |
+| `email` |  |
+| `email_verified` |  |
+| `family_name` |  |
+| `gender` |  |
+| `given_name` |  |
+| `locale` |  |
+| `middle_name` |  |
 | `name` |  |
-| `skip_email_verification` |  |
+| `nickname` |  |
+| `phone` |  |
+| `phone_verified` |  |
+| `picture` |  |
+| `preferred_username` |  |
+| `profile` |  |
+| `updated_at` |  |
+| `website` |  |
+| `zone_info` |  |
 
 Operations: Create, Load.
 
@@ -409,12 +421,15 @@ API path: `/saml/callback`
 
 | Field | Description |
 | --- | --- |
-| `claim` |  |
-| `expiration_time` |  |
-| `idle_expires_at` |  |
-| `is_valid` |  |
+| `amr` |  |
+| `audience` |  |
+| `email` |  |
+| `expiration` |  |
+| `issued_at` |  |
+| `issuer` |  |
+| `session_id` |  |
 | `session_token` |  |
-| `user_id` |  |
+| `subject` |  |
 
 Operations: Create, Load.
 
@@ -455,6 +470,7 @@ API path: `/token`
 | `created_at` |  |
 | `email` |  |
 | `email_id` |  |
+| `emails` |  |
 | `family_name` |  |
 | `given_name` |  |
 | `has_webauthn_credential` |  |
@@ -462,14 +478,14 @@ API path: `/token`
 | `metadata` |  |
 | `mfa_config` |  |
 | `name` |  |
-| `passkey` |  |
+| `passkeys` |  |
 | `picture` |  |
-| `security_key` |  |
+| `security_keys` |  |
 | `updated_at` |  |
 | `user_id` |  |
 | `username` |  |
 | `verified` |  |
-| `webauthn_credential` |  |
+| `webauthn_credentials` |  |
 
 Operations: Create, Load, Remove.
 
@@ -480,16 +496,16 @@ API path: `/user`
 | Field | Description |
 | --- | --- |
 | `created_at` |  |
-| `email` |  |
+| `emails` |  |
 | `family_name` |  |
 | `given_name` |  |
 | `id` |  |
 | `metadata` |  |
 | `mfa_config` |  |
 | `name` |  |
-| `passkey` |  |
+| `passkeys` |  |
 | `picture` |  |
-| `security_key` |  |
+| `security_keys` |  |
 | `updated_at` |  |
 | `user_id` |  |
 | `username` |  |
@@ -502,13 +518,11 @@ API path: `/logout`
 
 | Field | Description |
 | --- | --- |
-| `credential_id` |  |
 | `id` |  |
 | `name` |  |
-| `raw_id` |  |
+| `rawId` |  |
 | `response` |  |
 | `type` |  |
-| `user_id` |  |
 
 Operations: Create, Remove, Update.
 
@@ -520,7 +534,7 @@ API path: `/webauthn/registration/finalize`
 | --- | --- |
 | `credential_id` |  |
 | `id` |  |
-| `raw_id` |  |
+| `rawId` |  |
 | `response` |  |
 | `type` |  |
 | `user_id` |  |
@@ -562,8 +576,8 @@ Create an instance: `$credential = $client->Credential();`
 | `last_used_at` | `string` |  |
 | `mfa_only` | `bool` |  |
 | `name` | `string` |  |
-| `public_key` | `string` |  |
-| `transport` | `array` |  |
+| `publickey` | `string` |  |
+| `transports` | `array` |  |
 
 #### Example: List
 
@@ -588,9 +602,9 @@ Create an instance: `$credential_creation_option = $client->CredentialCreationOp
 | Field | Type | Description |
 | --- | --- | --- |
 | `attestation` | `string` |  |
-| `authenticator_selection` | `array` |  |
+| `authenticatorSelection` | `array` |  |
 | `challenge` | `string` |  |
-| `pub_key_cred_param` | `array` |  |
+| `pubKeyCredParams` | `array` |  |
 | `rp` | `array` |  |
 | `timeout` | `int` |  |
 | `user` | `array` |  |
@@ -617,12 +631,12 @@ Create an instance: `$credential_request_option = $client->CredentialRequestOpti
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `allow_credential` | `array` |  |
+| `allowCredentials` | `array` |  |
 | `challenge` | `string` |  |
-| `rp_id` | `string` |  |
+| `rpId` | `string` |  |
 | `timeout` | `int` |  |
+| `userVerification` | `string` |  |
 | `user_id` | `string` |  |
-| `user_verification` | `string` |  |
 
 #### Example: Create
 
@@ -650,6 +664,7 @@ Create an instance: `$email = $client->Email();`
 | --- | --- | --- |
 | `address` | `string` |  |
 | `id` | `string` |  |
+| `identities` | `mixed` |  |
 | `identity` | `mixed` |  |
 | `is_primary` | `bool` |  |
 | `is_verified` | `bool` |  |
@@ -704,13 +719,13 @@ Create an instance: `$hanko_configuration = $client->HankoConfiguration();`
 | Field | Type | Description |
 | --- | --- | --- |
 | `account` | `array` |  |
-| `email` | `array` |  |
+| `emails` | `array` |  |
 | `password` | `array` |  |
 
 #### Example: Load
 
 ```php
-// load() returns the bare HankoConfiguration record (throws on error).
+// load() returns the ENTITY — call data_get() for the HankoConfiguration record (throws on error).
 $hanko_configuration = $client->HankoConfiguration()->load();
 ```
 
@@ -759,10 +774,8 @@ Create an instance: `$passcode = $client->Passcode();`
 | Field | Type | Description |
 | --- | --- | --- |
 | `code` | `string` |  |
-| `created_at` | `string` |  |
 | `email_id` | `string` |  |
 | `id` | `string` |  |
-| `ttl` | `int` |  |
 | `user_id` | `string` |  |
 
 #### Example: Create
@@ -817,17 +830,29 @@ Create an instance: `$saml = $client->Saml();`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `attribute_map` | `array` |  |
-| `domain` | `string` |  |
-| `enabled` | `bool` |  |
-| `metadata_url` | `string` |  |
+| `birthdate` | `string` |  |
+| `email` | `string` |  |
+| `email_verified` | `string` |  |
+| `family_name` | `string` |  |
+| `gender` | `string` |  |
+| `given_name` | `string` |  |
+| `locale` | `string` |  |
+| `middle_name` | `string` |  |
 | `name` | `string` |  |
-| `skip_email_verification` | `bool` |  |
+| `nickname` | `string` |  |
+| `phone` | `string` |  |
+| `phone_verified` | `string` |  |
+| `picture` | `string` |  |
+| `preferred_username` | `string` |  |
+| `profile` | `string` |  |
+| `updated_at` | `string` |  |
+| `website` | `string` |  |
+| `zone_info` | `string` |  |
 
 #### Example: Load
 
 ```php
-// load() returns the bare Saml record (throws on error).
+// load() returns the ENTITY — call data_get() for the Saml record (throws on error).
 $saml = $client->Saml()->load();
 ```
 
@@ -854,17 +879,20 @@ Create an instance: `$session_management = $client->SessionManagement();`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `claim` | `array` |  |
-| `expiration_time` | `string` |  |
-| `idle_expires_at` | `string` |  |
-| `is_valid` | `bool` |  |
+| `amr` | `array` |  |
+| `audience` | `array` |  |
+| `email` | `array` |  |
+| `expiration` | `string` |  |
+| `issued_at` | `string` |  |
+| `issuer` | `string` |  |
+| `session_id` | `string` |  |
 | `session_token` | `string` |  |
-| `user_id` | `string` |  |
+| `subject` | `mixed` |  |
 
 #### Example: Load
 
 ```php
-// load() returns the bare SessionManagement record (throws on error).
+// load() returns the ENTITY — call data_get() for the SessionManagement record (throws on error).
 $session_management = $client->SessionManagement()->load();
 ```
 
@@ -872,8 +900,10 @@ $session_management = $client->SessionManagement()->load();
 
 ```php
 $session_management = $client->SessionManagement()->create([
-    "claim" => null, // array
+    "expiration" => null, // string
+    "session_id" => null, // string
     "session_token" => null, // string
+    "subject" => null, // mixed
 ]);
 ```
 
@@ -891,7 +921,7 @@ Create an instance: `$status = $client->Status();`
 #### Example: Load
 
 ```php
-// load() returns the bare Status record (throws on error).
+// load() returns the ENTITY — call data_get() for the Status record (throws on error).
 $status = $client->Status()->load();
 ```
 
@@ -909,7 +939,7 @@ Create an instance: `$third_party = $client->ThirdParty();`
 #### Example: Load
 
 ```php
-// load() returns the bare ThirdParty record (throws on error).
+// load() returns the ENTITY — call data_get() for the ThirdParty record (throws on error).
 $third_party = $client->ThirdParty()->load();
 ```
 
@@ -955,8 +985,9 @@ Create an instance: `$user = $client->User();`
 | Field | Type | Description |
 | --- | --- | --- |
 | `created_at` | `string` |  |
-| `email` | `array` |  |
+| `email` | `string` |  |
 | `email_id` | `string` |  |
+| `emails` | `array` |  |
 | `family_name` | `string` |  |
 | `given_name` | `string` |  |
 | `has_webauthn_credential` | `bool` |  |
@@ -964,19 +995,19 @@ Create an instance: `$user = $client->User();`
 | `metadata` | `array` |  |
 | `mfa_config` | `array` |  |
 | `name` | `string` |  |
-| `passkey` | `array` |  |
+| `passkeys` | `array` |  |
 | `picture` | `string` |  |
-| `security_key` | `array` |  |
+| `security_keys` | `array` |  |
 | `updated_at` | `string` |  |
 | `user_id` | `string` |  |
 | `username` | `string` |  |
 | `verified` | `bool` |  |
-| `webauthn_credential` | `array` |  |
+| `webauthn_credentials` | `array` |  |
 
 #### Example: Load
 
 ```php
-// load() returns the bare User record (throws on error).
+// load() returns the ENTITY — call data_get() for the User record (throws on error).
 $user = $client->User()->load(["id" => "user_id"]);
 ```
 
@@ -1004,16 +1035,16 @@ Create an instance: `$user_management = $client->UserManagement();`
 | Field | Type | Description |
 | --- | --- | --- |
 | `created_at` | `string` |  |
-| `email` | `array` |  |
+| `emails` | `array` |  |
 | `family_name` | `string` |  |
 | `given_name` | `string` |  |
 | `id` | `string` |  |
 | `metadata` | `array` |  |
 | `mfa_config` | `array` |  |
 | `name` | `string` |  |
-| `passkey` | `array` |  |
+| `passkeys` | `array` |  |
 | `picture` | `string` |  |
-| `security_key` | `array` |  |
+| `security_keys` | `array` |  |
 | `updated_at` | `string` |  |
 | `user_id` | `string` |  |
 | `username` | `array` |  |
@@ -1049,13 +1080,11 @@ Create an instance: `$web_authn = $client->WebAuthn();`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `credential_id` | `string` |  |
 | `id` | `string` |  |
 | `name` | `string` |  |
-| `raw_id` | `string` |  |
+| `rawId` | `string` |  |
 | `response` | `array` |  |
 | `type` | `string` |  |
-| `user_id` | `string` |  |
 
 #### Example: Create
 
@@ -1081,7 +1110,7 @@ Create an instance: `$webauthn_login = $client->WebauthnLogin();`
 | --- | --- | --- |
 | `credential_id` | `string` |  |
 | `id` | `string` |  |
-| `raw_id` | `string` |  |
+| `rawId` | `string` |  |
 | `response` | `array` |  |
 | `type` | `string` |  |
 | `user_id` | `string` |  |
@@ -1170,11 +1199,11 @@ Entity instances are stateful. After a successful `list`, the entity
 stores the returned data and match criteria internally.
 
 ```php
-$jsonwebkeyset = $client->JsonWebKeySet();
-$jsonwebkeyset->list();
+$credential = $client->Credential();
+$credential->list();
 
-// $jsonwebkeyset->data_get() now returns the jsonwebkeyset data from the last list
-// $jsonwebkeyset->match_get() returns the last match criteria
+// $credential->data_get() now returns the credential data from the last list
+// $credential->match_get() returns the last match criteria
 ```
 
 Call `make()` to create a fresh instance with the same configuration

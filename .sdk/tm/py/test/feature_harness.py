@@ -14,12 +14,12 @@ from __future__ import annotations
 
 from urllib.parse import quote
 
-from config import make_config
-from features import _make_feature
-from core.control import HankoPublicControl
-from core.error import HankoPublicError
-from core.result import HankoPublicResult
-from core.spec import HankoPublicSpec
+from projectname_sdk.config import make_config
+from projectname_sdk.features import _make_feature
+from projectname_sdk.core.control import HankoPublicControl
+from projectname_sdk.core.error import HankoPublicError
+from projectname_sdk.core.result import HankoPublicResult
+from projectname_sdk.core.spec import HankoPublicSpec
 
 
 # True when this SDK was generated with the named feature.

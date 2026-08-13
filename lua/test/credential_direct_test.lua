@@ -61,16 +61,16 @@ function credential_direct_setup(mockres)
   local calls = {}
 
   local env = runner.env_override({
-    ["HANKOPUBLIC_TEST_CREDENTIAL_ENTID"] = {},
-    ["HANKOPUBLIC_TEST_LIVE"] = "FALSE",
-    ["HANKOPUBLIC_APIKEY"] = "NONE",
+    ["HANKO_PUBLIC_TEST_CREDENTIAL_ENTID"] = {},
+    ["HANKO_PUBLIC_TEST_LIVE"] = "FALSE",
+    ["HANKO_PUBLIC_APIKEY"] = "NONE",
   })
 
-  local live = env["HANKOPUBLIC_TEST_LIVE"] == "TRUE"
+  local live = env["HANKO_PUBLIC_TEST_LIVE"] == "TRUE"
 
   if live then
     local merged_opts = {
-      apikey = env["HANKOPUBLIC_APIKEY"],
+      apikey = env["HANKO_PUBLIC_APIKEY"],
     }
     local client = sdk.new(merged_opts)
     return {

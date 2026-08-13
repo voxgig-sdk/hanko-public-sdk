@@ -23,6 +23,7 @@ require_once __DIR__ . '/MakeUrl.php';
 require_once __DIR__ . '/Param.php';
 require_once __DIR__ . '/PrepareAuth.php';
 require_once __DIR__ . '/PrepareBody.php';
+require_once __DIR__ . '/Graphql.php';
 require_once __DIR__ . '/PrepareHeaders.php';
 require_once __DIR__ . '/PrepareMethod.php';
 require_once __DIR__ . '/PrepareParams.php';
@@ -59,6 +60,8 @@ HankoPublicUtility::setRegistrar(function (HankoPublicUtility $u): void {
     $u->prepare_params = [HankoPublicPrepareParams::class, 'call'];
     $u->prepare_path = [HankoPublicPreparePath::class, 'call'];
     $u->prepare_query = [HankoPublicPrepareQuery::class, 'call'];
+    $u->graphql_body = [HankoPublicGraphql::class, 'body'];
+    $u->graphql_errors = [HankoPublicGraphql::class, 'errors'];
     $u->result_basic = [HankoPublicResultBasic::class, 'call'];
     $u->result_body = [HankoPublicResultBody::class, 'call'];
     $u->result_headers = [HankoPublicResultHeaders::class, 'call'];

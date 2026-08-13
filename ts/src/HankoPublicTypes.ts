@@ -18,8 +18,8 @@ export interface Credential {
   last_used_at?: string
   mfa_only?: boolean
   name?: string
-  public_key?: string
-  transport?: any[]
+  publickey?: string
+  transports?: any[]
 }
 
 export interface CredentialListMatch {
@@ -32,15 +32,15 @@ export interface CredentialListMatch {
   last_used_at?: string
   mfa_only?: boolean
   name?: string
-  public_key?: string
-  transport?: any[]
+  publickey?: string
+  transports?: any[]
 }
 
 export interface CredentialCreationOption {
   attestation?: string
-  authenticator_selection?: Record<string, any>
+  authenticatorSelection?: Record<string, any>
   challenge?: string
-  pub_key_cred_param?: any[]
+  pubKeyCredParams?: any[]
   rp?: Record<string, any>
   timeout?: number
   user?: Record<string, any>
@@ -48,35 +48,36 @@ export interface CredentialCreationOption {
 
 export interface CredentialCreationOptionCreateData {
   attestation?: string
-  authenticator_selection?: Record<string, any>
+  authenticatorSelection?: Record<string, any>
   challenge?: string
-  pub_key_cred_param?: any[]
+  pubKeyCredParams?: any[]
   rp?: Record<string, any>
   timeout?: number
   user?: Record<string, any>
 }
 
 export interface CredentialRequestOption {
-  allow_credential?: any[]
+  allowCredentials?: any[]
   challenge?: string
-  rp_id?: string
+  rpId?: string
   timeout?: number
+  userVerification?: string
   user_id?: string
-  user_verification?: string
 }
 
 export interface CredentialRequestOptionCreateData {
-  allow_credential?: any[]
+  allowCredentials?: any[]
   challenge?: string
-  rp_id?: string
+  rpId?: string
   timeout?: number
+  userVerification?: string
   user_id?: string
-  user_verification?: string
 }
 
 export interface Email {
   address: string
   id?: string
+  identities?: any
   identity?: any
   is_primary?: boolean
   is_verified?: boolean
@@ -85,6 +86,7 @@ export interface Email {
 export interface EmailListMatch {
   address?: string
   id?: string
+  identities?: any
   identity?: any
   is_primary?: boolean
   is_verified?: boolean
@@ -93,6 +95,7 @@ export interface EmailListMatch {
 export interface EmailCreateData {
   address: string
   id?: string
+  identities?: any
   identity?: any
   is_primary?: boolean
   is_verified?: boolean
@@ -107,17 +110,23 @@ export interface EmailManagement {
 
 export interface EmailManagementCreateData {
   id: string
+
+  // Selects a custom action instead of the plain create:
+  //   'set_primary'
+  // The remaining keys are that action's own payload.
+  $action?: string
+  [action: string]: any
 }
 
 export interface HankoConfiguration {
   account?: Record<string, any>
-  email?: Record<string, any>
+  emails?: Record<string, any>
   password?: Record<string, any>
 }
 
 export interface HankoConfigurationLoadMatch {
   account?: Record<string, any>
-  email?: Record<string, any>
+  emails?: Record<string, any>
   password?: Record<string, any>
 }
 
@@ -141,19 +150,15 @@ export interface JsonWebKeySetListMatch {
 
 export interface Passcode {
   code?: string
-  created_at?: string
   email_id?: string
   id?: string
-  ttl?: number
   user_id: string
 }
 
 export interface PasscodeCreateData {
   code?: string
-  created_at?: string
   email_id?: string
   id?: string
-  ttl?: number
   user_id: string
 }
 
@@ -165,6 +170,12 @@ export interface Password {
 export interface PasswordCreateData {
   password: string
   user_id: string
+
+  // Selects a custom action instead of the plain create:
+  //   'login'
+  // The remaining keys are that action's own payload.
+  $action?: string
+  [action: string]: any
 }
 
 export interface PasswordUpdateData {
@@ -173,57 +184,114 @@ export interface PasswordUpdateData {
 }
 
 export interface Saml {
-  attribute_map?: Record<string, any>
-  domain?: string
-  enabled?: boolean
-  metadata_url?: string
+  birthdate?: string
+  email?: string
+  email_verified?: string
+  family_name?: string
+  gender?: string
+  given_name?: string
+  locale?: string
+  middle_name?: string
   name?: string
-  skip_email_verification?: boolean
+  nickname?: string
+  phone?: string
+  phone_verified?: string
+  picture?: string
+  preferred_username?: string
+  profile?: string
+  updated_at?: string
+  website?: string
+  zone_info?: string
 }
 
 export interface SamlLoadMatch {
-  attribute_map?: Record<string, any>
-  domain?: string
-  enabled?: boolean
-  metadata_url?: string
+  birthdate?: string
+  email?: string
+  email_verified?: string
+  family_name?: string
+  gender?: string
+  given_name?: string
+  locale?: string
+  middle_name?: string
   name?: string
-  skip_email_verification?: boolean
+  nickname?: string
+  phone?: string
+  phone_verified?: string
+  picture?: string
+  preferred_username?: string
+  profile?: string
+  updated_at?: string
+  website?: string
+  zone_info?: string
+
+  // Selects a custom action instead of the plain load:
+  //   'metadata' | 'provider'
+  // The remaining keys are that action's own payload.
+  $action?: string
+  [action: string]: any
 }
 
 export interface SamlCreateData {
-  attribute_map?: Record<string, any>
-  domain?: string
-  enabled?: boolean
-  metadata_url?: string
+  birthdate?: string
+  email?: string
+  email_verified?: string
+  family_name?: string
+  gender?: string
+  given_name?: string
+  locale?: string
+  middle_name?: string
   name?: string
-  skip_email_verification?: boolean
+  nickname?: string
+  phone?: string
+  phone_verified?: string
+  picture?: string
+  preferred_username?: string
+  profile?: string
+  updated_at?: string
+  website?: string
+  zone_info?: string
+
+  // Selects a custom action instead of the plain create:
+  //   'callback'
+  // The remaining keys are that action's own payload.
+  $action?: string
+  [action: string]: any
 }
 
 export interface SessionManagement {
-  claim: Record<string, any>
-  expiration_time?: string
-  idle_expires_at?: string
-  is_valid?: boolean
+  amr?: any[]
+  audience?: any[]
+  email?: Record<string, any>
+  expiration: string
+  issued_at?: string
+  issuer?: string
+  session_id: string
   session_token: string
-  user_id?: string
+  subject: any
 }
 
 export interface SessionManagementLoadMatch {
-  claim?: Record<string, any>
-  expiration_time?: string
-  idle_expires_at?: string
-  is_valid?: boolean
+  amr?: any[]
+  audience?: any[]
+  email?: Record<string, any>
+  expiration?: string
+  issued_at?: string
+  issuer?: string
+  session_id?: string
   session_token?: string
-  user_id?: string
+  subject?: any
 }
 
 export interface SessionManagementCreateData {
-  claim: Record<string, any>
-  expiration_time?: string
-  idle_expires_at?: string
-  is_valid?: boolean
+  amr?: any[]
+  audience?: any[]
+  email?: Record<string, any>
+  expiration: string
+  issued_at?: string
+  issuer?: string
+  session_id: string
   session_token: string
-  user_id?: string
+  subject: any
 }
 
 export interface Status {
@@ -248,8 +316,9 @@ export interface TokenCreateData {
 
 export interface User {
   created_at?: string
-  email?: any[]
+  email?: string
   email_id?: string
+  emails?: any[]
   family_name?: string
   given_name?: string
   has_webauthn_credential?: boolean
@@ -257,14 +326,14 @@ export interface User {
   metadata?: Record<string, any>
   mfa_config?: Record<string, any>
   name?: string
-  passkey?: any[]
+  passkeys?: any[]
   picture?: string
-  security_key?: any[]
+  security_keys?: any[]
   updated_at?: string
   user_id?: string
   username?: string
   verified?: boolean
-  webauthn_credential?: any[]
+  webauthn_credentials?: any[]
 }
 
 export interface UserLoadMatch {
@@ -273,8 +342,9 @@ export interface UserLoadMatch {
 
 export interface UserCreateData {
   created_at?: string
-  email?: any[]
+  email?: string
   email_id?: string
+  emails?: any[]
   family_name?: string
   given_name?: string
   has_webauthn_credential?: boolean
@@ -282,20 +352,21 @@ export interface UserCreateData {
   metadata?: Record<string, any>
   mfa_config?: Record<string, any>
   name?: string
-  passkey?: any[]
+  passkeys?: any[]
   picture?: string
-  security_key?: any[]
+  security_keys?: any[]
   updated_at?: string
   user_id?: string
   username?: string
   verified?: boolean
-  webauthn_credential?: any[]
+  webauthn_credentials?: any[]
 }
 
 export interface UserRemoveMatch {
   created_at?: string
-  email?: any[]
+  email?: string
   email_id?: string
+  emails?: any[]
   family_name?: string
   given_name?: string
   has_webauthn_credential?: boolean
@@ -303,28 +374,28 @@ export interface UserRemoveMatch {
   metadata?: Record<string, any>
   mfa_config?: Record<string, any>
   name?: string
-  passkey?: any[]
+  passkeys?: any[]
   picture?: string
-  security_key?: any[]
+  security_keys?: any[]
   updated_at?: string
   user_id?: string
   username?: string
   verified?: boolean
-  webauthn_credential?: any[]
+  webauthn_credentials?: any[]
 }
 
 export interface UserManagement {
   created_at?: string
-  email?: any[]
+  emails?: any[]
   family_name?: string
   given_name?: string
   id?: string
   metadata?: Record<string, any>
   mfa_config?: Record<string, any>
   name?: string
-  passkey?: any[]
+  passkeys?: any[]
   picture?: string
-  security_key?: any[]
+  security_keys?: any[]
   updated_at?: string
   user_id?: string
   username?: Record<string, any>
@@ -332,16 +403,16 @@ export interface UserManagement {
 
 export interface UserManagementListMatch {
   created_at?: string
-  email?: any[]
+  emails?: any[]
   family_name?: string
   given_name?: string
   id?: string
   metadata?: Record<string, any>
   mfa_config?: Record<string, any>
   name?: string
-  passkey?: any[]
+  passkeys?: any[]
   picture?: string
-  security_key?: any[]
+  security_keys?: any[]
   updated_at?: string
   user_id?: string
   username?: Record<string, any>
@@ -349,49 +420,43 @@ export interface UserManagementListMatch {
 
 export interface UserManagementCreateData {
   created_at?: string
-  email?: any[]
+  emails?: any[]
   family_name?: string
   given_name?: string
   id?: string
   metadata?: Record<string, any>
   mfa_config?: Record<string, any>
   name?: string
-  passkey?: any[]
+  passkeys?: any[]
   picture?: string
-  security_key?: any[]
+  security_keys?: any[]
   updated_at?: string
   user_id?: string
   username?: Record<string, any>
 }
 
 export interface WebAuthn {
-  credential_id?: string
   id?: string
   name?: string
-  raw_id?: string
+  rawId?: string
   response?: Record<string, any>
   type?: string
-  user_id?: string
 }
 
 export interface WebAuthnCreateData {
-  credential_id?: string
   id?: string
   name?: string
-  raw_id?: string
+  rawId?: string
   response?: Record<string, any>
   type?: string
-  user_id?: string
 }
 
 export interface WebAuthnUpdateData {
   id: string
-  credential_id?: string
   name?: string
-  raw_id?: string
+  rawId?: string
   response?: Record<string, any>
   type?: string
-  user_id?: string
 }
 
 export interface WebAuthnRemoveMatch {
@@ -401,7 +466,7 @@ export interface WebAuthnRemoveMatch {
 export interface WebauthnLogin {
   credential_id?: string
   id?: string
-  raw_id?: string
+  rawId?: string
   response?: Record<string, any>
   type?: string
   user_id?: string
@@ -410,7 +475,7 @@ export interface WebauthnLogin {
 export interface WebauthnLoginCreateData {
   credential_id?: string
   id?: string
-  raw_id?: string
+  rawId?: string
   response?: Record<string, any>
   type?: string
   user_id?: string

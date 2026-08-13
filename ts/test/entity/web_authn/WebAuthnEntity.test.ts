@@ -26,8 +26,8 @@ import {
 describe('WebAuthnEntity', async () => {
 
   // Per-test live pacing. Delay is read from sdk-test-control.json's
-  // `test.live.delayMs`; only sleeps when HANKOPUBLIC_TEST_LIVE=TRUE.
-  afterEach(liveDelay('HANKOPUBLIC_TEST_LIVE'))
+  // `test.live.delayMs`; only sleeps when HANKO_PUBLIC_TEST_LIVE=TRUE.
+  afterEach(liveDelay('HANKO_PUBLIC_TEST_LIVE'))
 
   test('instance', async () => {
     const testsdk = HankoPublicSDK.test()
@@ -62,7 +62,7 @@ describe('WebAuthnEntity', async () => {
     const web_authn_ref01_ent = client.WebAuthn()
     let web_authn_ref01_data = setup.data.new.web_authn['web_authn_ref01']
 
-    web_authn_ref01_data = await web_authn_ref01_ent.create(web_authn_ref01_data)
+    web_authn_ref01_data = (await web_authn_ref01_ent.create(web_authn_ref01_data)).data()
     assert(null != web_authn_ref01_data.id)
 
 
@@ -70,10 +70,10 @@ describe('WebAuthnEntity', async () => {
     const web_authn_ref01_data_up0: any = {}
     web_authn_ref01_data_up0.id = web_authn_ref01_data.id
 
-    const web_authn_ref01_markdef_up0 = { name: 'credential_id', value: 'Mark01-web_authn_ref01_' + setup.now }
+    const web_authn_ref01_markdef_up0 = { name: 'name', value: 'Mark01-web_authn_ref01_' + setup.now }
     ;(web_authn_ref01_data_up0 as any)[web_authn_ref01_markdef_up0.name] = web_authn_ref01_markdef_up0.value
 
-    const web_authn_ref01_resdata_up0 = await web_authn_ref01_ent.update(web_authn_ref01_data_up0)
+    const web_authn_ref01_resdata_up0 = (await web_authn_ref01_ent.update(web_authn_ref01_data_up0)).data()
     assert(web_authn_ref01_resdata_up0.id === web_authn_ref01_data_up0.id)
 
     assert((web_authn_ref01_resdata_up0 as any)[web_authn_ref01_markdef_up0.name] === web_authn_ref01_markdef_up0.value)

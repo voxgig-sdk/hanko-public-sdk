@@ -26,8 +26,8 @@ import {
 describe('JsonWebKeySetEntity', async () => {
 
   // Per-test live pacing. Delay is read from sdk-test-control.json's
-  // `test.live.delayMs`; only sleeps when HANKOPUBLIC_TEST_LIVE=TRUE.
-  afterEach(liveDelay('HANKOPUBLIC_TEST_LIVE'))
+  // `test.live.delayMs`; only sleeps when HANKO_PUBLIC_TEST_LIVE=TRUE.
+  afterEach(liveDelay('HANKO_PUBLIC_TEST_LIVE'))
 
   test('instance', async () => {
     const testsdk = HankoPublicSDK.test()
@@ -63,7 +63,7 @@ describe('JsonWebKeySetEntity', async () => {
     const json_web_key_set_ref01_ent = client.JsonWebKeySet()
     const json_web_key_set_ref01_match: any = {}
 
-    const json_web_key_set_ref01_list = await json_web_key_set_ref01_ent.list(json_web_key_set_ref01_match)
+    const json_web_key_set_ref01_list = (await json_web_key_set_ref01_ent.list(json_web_key_set_ref01_match)).map((e: any) => e.data())
 
 
   })

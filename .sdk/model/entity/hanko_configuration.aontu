@@ -11,7 +11,7 @@ main: kit: entity: hanko_configuration: {
       type: "`$OBJECT`"
     }
     {
-      name: "email"
+      name: "emails"
       req: false
       type: "`$OBJECT`"
     }

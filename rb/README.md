@@ -39,7 +39,7 @@ Entity operations raise on failure, so rescue them:
 
 ```ruby
 begin
-  jsonwebkeysets = client.JsonWebKeySet.list()
+  credentials = client.Credential.list()
 rescue => err
   warn "list failed: #{err}"
 end
@@ -107,9 +107,10 @@ Create a mock client for unit testing — no server required:
 ```ruby
 client = HankoPublicSDK.test
 
-# Entity ops return the bare mock record (raises on error).
-jsonwebkeyset = client.JsonWebKeySet.list()
-puts jsonwebkeyset
+# Entity ops return the ENTITY (raises on error);
+# call data_get for the mock record.
+credential = client.Credential.list()
+puts credential
 ```
 
 ### Use a custom fetch function
@@ -266,8 +267,8 @@ API path: ``
 | `last_used_at` |  |
 | `mfa_only` |  |
 | `name` |  |
-| `public_key` |  |
-| `transport` |  |
+| `publickey` |  |
+| `transports` |  |
 
 Operations: List.
 
@@ -278,9 +279,9 @@ API path: `/webauthn/credentials`
 | Field | Description |
 | --- | --- |
 | `attestation` |  |
-| `authenticator_selection` |  |
+| `authenticatorSelection` |  |
 | `challenge` |  |
-| `pub_key_cred_param` |  |
+| `pubKeyCredParams` |  |
 | `rp` |  |
 | `timeout` |  |
 | `user` |  |
@@ -293,12 +294,12 @@ API path: `/webauthn/registration/initialize`
 
 | Field | Description |
 | --- | --- |
-| `allow_credential` |  |
+| `allowCredentials` |  |
 | `challenge` |  |
-| `rp_id` |  |
+| `rpId` |  |
 | `timeout` |  |
+| `userVerification` |  |
 | `user_id` |  |
-| `user_verification` |  |
 
 Operations: Create.
 
@@ -310,6 +311,7 @@ API path: `/webauthn/login/initialize`
 | --- | --- |
 | `address` |  |
 | `id` |  |
+| `identities` |  |
 | `identity` |  |
 | `is_primary` |  |
 | `is_verified` |  |
@@ -332,7 +334,7 @@ API path: `/emails/{id}/set_primary`
 | Field | Description |
 | --- | --- |
 | `account` |  |
-| `email` |  |
+| `emails` |  |
 | `password` |  |
 
 Operations: Load.
@@ -359,10 +361,8 @@ API path: `/.well-known/jwks.json`
 | Field | Description |
 | --- | --- |
 | `code` |  |
-| `created_at` |  |
 | `email_id` |  |
 | `id` |  |
-| `ttl` |  |
 | `user_id` |  |
 
 Operations: Create.
@@ -384,12 +384,24 @@ API path: `/password/login`
 
 | Field | Description |
 | --- | --- |
-| `attribute_map` |  |
-| `domain` |  |
-| `enabled` |  |
-| `metadata_url` |  |
+| `birthdate` |  |
+| `email` |  |
+| `email_verified` |  |
+| `family_name` |  |
+| `gender` |  |
+| `given_name` |  |
+| `locale` |  |
+| `middle_name` |  |
 | `name` |  |
-| `skip_email_verification` |  |
+| `nickname` |  |
+| `phone` |  |
+| `phone_verified` |  |
+| `picture` |  |
+| `preferred_username` |  |
+| `profile` |  |
+| `updated_at` |  |
+| `website` |  |
+| `zone_info` |  |
 
 Operations: Create, Load.
 
@@ -399,12 +411,15 @@ API path: `/saml/callback`
 
 | Field | Description |
 | --- | --- |
-| `claim` |  |
-| `expiration_time` |  |
-| `idle_expires_at` |  |
-| `is_valid` |  |
+| `amr` |  |
+| `audience` |  |
+| `email` |  |
+| `expiration` |  |
+| `issued_at` |  |
+| `issuer` |  |
+| `session_id` |  |
 | `session_token` |  |
-| `user_id` |  |
+| `subject` |  |
 
 Operations: Create, Load.
 
@@ -445,6 +460,7 @@ API path: `/token`
 | `created_at` |  |
 | `email` |  |
 | `email_id` |  |
+| `emails` |  |
 | `family_name` |  |
 | `given_name` |  |
 | `has_webauthn_credential` |  |
@@ -452,14 +468,14 @@ API path: `/token`
 | `metadata` |  |
 | `mfa_config` |  |
 | `name` |  |
-| `passkey` |  |
+| `passkeys` |  |
 | `picture` |  |
-| `security_key` |  |
+| `security_keys` |  |
 | `updated_at` |  |
 | `user_id` |  |
 | `username` |  |
 | `verified` |  |
-| `webauthn_credential` |  |
+| `webauthn_credentials` |  |
 
 Operations: Create, Load, Remove.
 
@@ -470,16 +486,16 @@ API path: `/user`
 | Field | Description |
 | --- | --- |
 | `created_at` |  |
-| `email` |  |
+| `emails` |  |
 | `family_name` |  |
 | `given_name` |  |
 | `id` |  |
 | `metadata` |  |
 | `mfa_config` |  |
 | `name` |  |
-| `passkey` |  |
+| `passkeys` |  |
 | `picture` |  |
-| `security_key` |  |
+| `security_keys` |  |
 | `updated_at` |  |
 | `user_id` |  |
 | `username` |  |
@@ -492,13 +508,11 @@ API path: `/logout`
 
 | Field | Description |
 | --- | --- |
-| `credential_id` |  |
 | `id` |  |
 | `name` |  |
-| `raw_id` |  |
+| `rawId` |  |
 | `response` |  |
 | `type` |  |
-| `user_id` |  |
 
 Operations: Create, Remove, Update.
 
@@ -510,7 +524,7 @@ API path: `/webauthn/registration/finalize`
 | --- | --- |
 | `credential_id` |  |
 | `id` |  |
-| `raw_id` |  |
+| `rawId` |  |
 | `response` |  |
 | `type` |  |
 | `user_id` |  |
@@ -552,8 +566,8 @@ Create an instance: `credential = client.Credential`
 | `last_used_at` | `String` |  |
 | `mfa_only` | `Boolean` |  |
 | `name` | `String` |  |
-| `public_key` | `String` |  |
-| `transport` | `Array` |  |
+| `publickey` | `String` |  |
+| `transports` | `Array` |  |
 
 #### Example: List
 
@@ -578,9 +592,9 @@ Create an instance: `credential_creation_option = client.CredentialCreationOptio
 | Field | Type | Description |
 | --- | --- | --- |
 | `attestation` | `String` |  |
-| `authenticator_selection` | `Hash` |  |
+| `authenticatorSelection` | `Hash` |  |
 | `challenge` | `String` |  |
-| `pub_key_cred_param` | `Array` |  |
+| `pubKeyCredParams` | `Array` |  |
 | `rp` | `Hash` |  |
 | `timeout` | `Integer` |  |
 | `user` | `Hash` |  |
@@ -607,12 +621,12 @@ Create an instance: `credential_request_option = client.CredentialRequestOption`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `allow_credential` | `Array` |  |
+| `allowCredentials` | `Array` |  |
 | `challenge` | `String` |  |
-| `rp_id` | `String` |  |
+| `rpId` | `String` |  |
 | `timeout` | `Integer` |  |
+| `userVerification` | `String` |  |
 | `user_id` | `String` |  |
-| `user_verification` | `String` |  |
 
 #### Example: Create
 
@@ -640,6 +654,7 @@ Create an instance: `email = client.Email`
 | --- | --- | --- |
 | `address` | `String` |  |
 | `id` | `String` |  |
+| `identities` | `Object` |  |
 | `identity` | `Object` |  |
 | `is_primary` | `Boolean` |  |
 | `is_verified` | `Boolean` |  |
@@ -694,13 +709,13 @@ Create an instance: `hanko_configuration = client.HankoConfiguration`
 | Field | Type | Description |
 | --- | --- | --- |
 | `account` | `Hash` |  |
-| `email` | `Hash` |  |
+| `emails` | `Hash` |  |
 | `password` | `Hash` |  |
 
 #### Example: Load
 
 ```ruby
-# load returns the bare HankoConfiguration record (raises on error).
+# load returns the ENTITY — call data_get for the HankoConfiguration record (raises on error).
 hanko_configuration = client.HankoConfiguration.load()
 ```
 
@@ -749,10 +764,8 @@ Create an instance: `passcode = client.Passcode`
 | Field | Type | Description |
 | --- | --- | --- |
 | `code` | `String` |  |
-| `created_at` | `String` |  |
 | `email_id` | `String` |  |
 | `id` | `String` |  |
-| `ttl` | `Integer` |  |
 | `user_id` | `String` |  |
 
 #### Example: Create
@@ -807,17 +820,29 @@ Create an instance: `saml = client.Saml`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `attribute_map` | `Hash` |  |
-| `domain` | `String` |  |
-| `enabled` | `Boolean` |  |
-| `metadata_url` | `String` |  |
+| `birthdate` | `String` |  |
+| `email` | `String` |  |
+| `email_verified` | `String` |  |
+| `family_name` | `String` |  |
+| `gender` | `String` |  |
+| `given_name` | `String` |  |
+| `locale` | `String` |  |
+| `middle_name` | `String` |  |
 | `name` | `String` |  |
-| `skip_email_verification` | `Boolean` |  |
+| `nickname` | `String` |  |
+| `phone` | `String` |  |
+| `phone_verified` | `String` |  |
+| `picture` | `String` |  |
+| `preferred_username` | `String` |  |
+| `profile` | `String` |  |
+| `updated_at` | `String` |  |
+| `website` | `String` |  |
+| `zone_info` | `String` |  |
 
 #### Example: Load
 
 ```ruby
-# load returns the bare Saml record (raises on error).
+# load returns the ENTITY — call data_get for the Saml record (raises on error).
 saml = client.Saml.load()
 ```
 
@@ -844,17 +869,20 @@ Create an instance: `session_management = client.SessionManagement`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `claim` | `Hash` |  |
-| `expiration_time` | `String` |  |
-| `idle_expires_at` | `String` |  |
-| `is_valid` | `Boolean` |  |
+| `amr` | `Array` |  |
+| `audience` | `Array` |  |
+| `email` | `Hash` |  |
+| `expiration` | `String` |  |
+| `issued_at` | `String` |  |
+| `issuer` | `String` |  |
+| `session_id` | `String` |  |
 | `session_token` | `String` |  |
-| `user_id` | `String` |  |
+| `subject` | `Object` |  |
 
 #### Example: Load
 
 ```ruby
-# load returns the bare SessionManagement record (raises on error).
+# load returns the ENTITY — call data_get for the SessionManagement record (raises on error).
 session_management = client.SessionManagement.load()
 ```
 
@@ -862,8 +890,10 @@ session_management = client.SessionManagement.load()
 
 ```ruby
 session_management = client.SessionManagement.create({
-  "claim" => {}, # Hash
+  "expiration" => "example_expiration", # String
+  "session_id" => "example_session_id", # String
   "session_token" => "example_session_token", # String
+  "subject" => "example_subject", # Object
 })
 ```
 
@@ -881,7 +911,7 @@ Create an instance: `status = client.Status`
 #### Example: Load
 
 ```ruby
-# load returns the bare Status record (raises on error).
+# load returns the ENTITY — call data_get for the Status record (raises on error).
 status = client.Status.load()
 ```
 
@@ -899,7 +929,7 @@ Create an instance: `third_party = client.ThirdParty`
 #### Example: Load
 
 ```ruby
-# load returns the bare ThirdParty record (raises on error).
+# load returns the ENTITY — call data_get for the ThirdParty record (raises on error).
 third_party = client.ThirdParty.load()
 ```
 
@@ -945,8 +975,9 @@ Create an instance: `user = client.User`
 | Field | Type | Description |
 | --- | --- | --- |
 | `created_at` | `String` |  |
-| `email` | `Array` |  |
+| `email` | `String` |  |
 | `email_id` | `String` |  |
+| `emails` | `Array` |  |
 | `family_name` | `String` |  |
 | `given_name` | `String` |  |
 | `has_webauthn_credential` | `Boolean` |  |
@@ -954,19 +985,19 @@ Create an instance: `user = client.User`
 | `metadata` | `Hash` |  |
 | `mfa_config` | `Hash` |  |
 | `name` | `String` |  |
-| `passkey` | `Array` |  |
+| `passkeys` | `Array` |  |
 | `picture` | `String` |  |
-| `security_key` | `Array` |  |
+| `security_keys` | `Array` |  |
 | `updated_at` | `String` |  |
 | `user_id` | `String` |  |
 | `username` | `String` |  |
 | `verified` | `Boolean` |  |
-| `webauthn_credential` | `Array` |  |
+| `webauthn_credentials` | `Array` |  |
 
 #### Example: Load
 
 ```ruby
-# load returns the bare User record (raises on error).
+# load returns the ENTITY — call data_get for the User record (raises on error).
 user = client.User.load({ "id" => "user_id" })
 ```
 
@@ -994,16 +1025,16 @@ Create an instance: `user_management = client.UserManagement`
 | Field | Type | Description |
 | --- | --- | --- |
 | `created_at` | `String` |  |
-| `email` | `Array` |  |
+| `emails` | `Array` |  |
 | `family_name` | `String` |  |
 | `given_name` | `String` |  |
 | `id` | `String` |  |
 | `metadata` | `Hash` |  |
 | `mfa_config` | `Hash` |  |
 | `name` | `String` |  |
-| `passkey` | `Array` |  |
+| `passkeys` | `Array` |  |
 | `picture` | `String` |  |
-| `security_key` | `Array` |  |
+| `security_keys` | `Array` |  |
 | `updated_at` | `String` |  |
 | `user_id` | `String` |  |
 | `username` | `Hash` |  |
@@ -1039,13 +1070,11 @@ Create an instance: `web_authn = client.WebAuthn`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `credential_id` | `String` |  |
 | `id` | `String` |  |
 | `name` | `String` |  |
-| `raw_id` | `String` |  |
+| `rawId` | `String` |  |
 | `response` | `Hash` |  |
 | `type` | `String` |  |
-| `user_id` | `String` |  |
 
 #### Example: Create
 
@@ -1071,7 +1100,7 @@ Create an instance: `webauthn_login = client.WebauthnLogin`
 | --- | --- | --- |
 | `credential_id` | `String` |  |
 | `id` | `String` |  |
-| `raw_id` | `String` |  |
+| `rawId` | `String` |  |
 | `response` | `Hash` |  |
 | `type` | `String` |  |
 | `user_id` | `String` |  |
@@ -1160,11 +1189,11 @@ Entity instances are stateful. After a successful `list`, the entity
 stores the returned data and match criteria internally.
 
 ```ruby
-jsonwebkeyset = client.JsonWebKeySet
-jsonwebkeyset.list()
+credential = client.Credential
+credential.list()
 
-# jsonwebkeyset.data_get now returns the jsonwebkeyset data from the last list
-# jsonwebkeyset.match_get returns the last match criteria
+# credential.data_get now returns the credential data from the last list
+# credential.match_get returns the last match criteria
 ```
 
 Call `make` to create a fresh instance with the same configuration

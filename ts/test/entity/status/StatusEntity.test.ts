@@ -26,8 +26,8 @@ import {
 describe('StatusEntity', async () => {
 
   // Per-test live pacing. Delay is read from sdk-test-control.json's
-  // `test.live.delayMs`; only sleeps when HANKOPUBLIC_TEST_LIVE=TRUE.
-  afterEach(liveDelay('HANKOPUBLIC_TEST_LIVE'))
+  // `test.live.delayMs`; only sleeps when HANKO_PUBLIC_TEST_LIVE=TRUE.
+  afterEach(liveDelay('HANKO_PUBLIC_TEST_LIVE'))
 
   test('instance', async () => {
     const testsdk = HankoPublicSDK.test()
@@ -62,7 +62,7 @@ describe('StatusEntity', async () => {
     // LOAD
     const status_ref01_ent = client.Status()
     const status_ref01_match_dt0: any = {}
-    const status_ref01_data_dt0 = await status_ref01_ent.load(status_ref01_match_dt0)
+    const status_ref01_data_dt0 = (await status_ref01_ent.load(status_ref01_match_dt0)).data()
     assert(null != status_ref01_data_dt0)
 
 

@@ -26,8 +26,8 @@ import {
 describe('PasswordEntity', async () => {
 
   // Per-test live pacing. Delay is read from sdk-test-control.json's
-  // `test.live.delayMs`; only sleeps when HANKOPUBLIC_TEST_LIVE=TRUE.
-  afterEach(liveDelay('HANKOPUBLIC_TEST_LIVE'))
+  // `test.live.delayMs`; only sleeps when HANKO_PUBLIC_TEST_LIVE=TRUE.
+  afterEach(liveDelay('HANKO_PUBLIC_TEST_LIVE'))
 
   test('instance', async () => {
     const testsdk = HankoPublicSDK.test()
@@ -62,7 +62,7 @@ describe('PasswordEntity', async () => {
     const password_ref01_ent = client.Password()
     let password_ref01_data = setup.data.new.password['password_ref01']
 
-    password_ref01_data = await password_ref01_ent.create(password_ref01_data)
+    password_ref01_data = (await password_ref01_ent.create(password_ref01_data)).data()
     assert(null != password_ref01_data)
 
 
@@ -72,7 +72,7 @@ describe('PasswordEntity', async () => {
     const password_ref01_markdef_up0 = { name: 'password', value: 'Mark01-password_ref01_' + setup.now }
     ;(password_ref01_data_up0 as any)[password_ref01_markdef_up0.name] = password_ref01_markdef_up0.value
 
-    const password_ref01_resdata_up0 = await password_ref01_ent.update(password_ref01_data_up0)
+    const password_ref01_resdata_up0 = (await password_ref01_ent.update(password_ref01_data_up0)).data()
     assert(null != password_ref01_resdata_up0)
 
     assert((password_ref01_resdata_up0 as any)[password_ref01_markdef_up0.name] === password_ref01_markdef_up0.value)

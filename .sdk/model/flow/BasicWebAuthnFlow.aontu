@@ -19,7 +19,7 @@ main: kit: flow: BasicWebAuthnFlow:
         ref: "web_authn_ref01",
         srcdatavar: "web_authn_ref01_data",
         suffix: "_up0",
-        textfield: "credential_id"
+        textfield: "name"
       }
 
       op: "update",

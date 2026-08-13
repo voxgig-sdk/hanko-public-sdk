@@ -16,11 +16,11 @@
 import pytest
 
 from hankopublic_sdk import HankoPublicSDK
-from core.error import HankoPublicError
-from core.result import HankoPublicResult
-from core.response import HankoPublicResponse
-from core.spec import HankoPublicSpec
-from feature.base_feature import HankoPublicBaseFeature
+from hankopublic_sdk.core.error import HankoPublicError
+from hankopublic_sdk.core.result import HankoPublicResult
+from hankopublic_sdk.core.response import HankoPublicResponse
+from hankopublic_sdk.core.spec import HankoPublicSpec
+from hankopublic_sdk.feature.base_feature import HankoPublicBaseFeature
 
 
 def _client():

@@ -376,8 +376,8 @@ const credential = client.Credential()
 | `last_used_at` | `string` | No |  |
 | `mfa_only` | `boolean` | No |  |
 | `name` | `string` | No |  |
-| `public_key` | `string` | No |  |
-| `transport` | `any[]` | No |  |
+| `publickey` | `string` | No |  |
+| `transports` | `any[]` | No |  |
 
 ### Operations
 
@@ -428,9 +428,9 @@ const credential_creation_option = client.CredentialCreationOption()
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
 | `attestation` | `string` | No |  |
-| `authenticator_selection` | `Record<string, any>` | No |  |
+| `authenticatorSelection` | `Record<string, any>` | No |  |
 | `challenge` | `string` | No |  |
-| `pub_key_cred_param` | `any[]` | No |  |
+| `pubKeyCredParams` | `any[]` | No |  |
 | `rp` | `Record<string, any>` | No |  |
 | `timeout` | `number` | No |  |
 | `user` | `Record<string, any>` | No |  |
@@ -484,12 +484,12 @@ const credential_request_option = client.CredentialRequestOption()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `allow_credential` | `any[]` | No |  |
+| `allowCredentials` | `any[]` | No |  |
 | `challenge` | `string` | No |  |
-| `rp_id` | `string` | No |  |
+| `rpId` | `string` | No |  |
 | `timeout` | `number` | No |  |
+| `userVerification` | `string` | No |  |
 | `user_id` | `string` | No |  |
-| `user_verification` | `string` | No |  |
 
 ### Operations
 
@@ -542,6 +542,7 @@ const email = client.Email()
 | --- | --- | --- | --- |
 | `address` | `string` | Yes |  |
 | `id` | `string` | No |  |
+| `identities` | `any` | No |  |
 | `identity` | `any` | No |  |
 | `is_primary` | `boolean` | No |  |
 | `is_verified` | `boolean` | No |  |
@@ -552,6 +553,7 @@ const email = client.Email()
 | --- | --- | --- | --- |
 | `address` | Yes | - | - |
 | `id` | - | - | - |
+| `identities` | - | - | - |
 | `identity` | - | - | - |
 | `is_primary` | - | - | - |
 | `is_verified` | - | - | - |
@@ -618,6 +620,26 @@ Return a copy of the entity options.
 const email_management = client.EmailManagement()
 ```
 
+### Actions
+
+This entity exposes custom API actions in addition to the standard
+operations. Select one with `$action` in the call's argument; the
+remaining keys are sent as that action's payload.
+
+| Action | Route | Call |
+| --- | --- | --- |
+| `set_primary` | `/emails/{id}/set_primary` | `client.EmailManagement().create({ $action: 'set_primary', ... })` |
+
+An action returns that action's OWN response, which is not necessarily a
+EmailManagement record — check the API definition for its shape.
+
+```ts
+const result = await client.EmailManagement().create({
+  $action: 'set_primary',
+  /* ...the action's own arguments */
+})
+```
+
 ### Operations
 
 #### `create(data: object, ctrl?: object)`
@@ -669,7 +691,7 @@ const hanko_configuration = client.HankoConfiguration()
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
 | `account` | `Record<string, any>` | No |  |
-| `email` | `Record<string, any>` | No |  |
+| `emails` | `Record<string, any>` | No |  |
 | `password` | `Record<string, any>` | No |  |
 
 ### Operations
@@ -776,10 +798,8 @@ const passcode = client.Passcode()
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
 | `code` | `string` | No |  |
-| `created_at` | `string` | No |  |
 | `email_id` | `string` | No |  |
 | `id` | `string` | No |  |
-| `ttl` | `number` | No |  |
 | `user_id` | `string` | Yes |  |
 
 ### Operations
@@ -834,6 +854,26 @@ const password = client.Password()
 | --- | --- | --- | --- |
 | `password` | `string` | Yes |  |
 | `user_id` | `string` | Yes |  |
+
+### Actions
+
+This entity exposes custom API actions in addition to the standard
+operations. Select one with `$action` in the call's argument; the
+remaining keys are sent as that action's payload.
+
+| Action | Route | Call |
+| --- | --- | --- |
+| `login` | `/password/login` | `client.Password().create({ $action: 'login', ... })` |
+
+An action returns that action's OWN response, which is not necessarily a
+Password record — check the API definition for its shape.
+
+```ts
+const result = await client.Password().create({
+  $action: 'login',
+  /* ...the action's own arguments */
+})
+```
 
 ### Operations
 
@@ -896,12 +936,46 @@ const saml = client.Saml()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `attribute_map` | `Record<string, any>` | No |  |
-| `domain` | `string` | No |  |
-| `enabled` | `boolean` | No |  |
-| `metadata_url` | `string` | No |  |
+| `birthdate` | `string` | No |  |
+| `email` | `string` | No |  |
+| `email_verified` | `string` | No |  |
+| `family_name` | `string` | No |  |
+| `gender` | `string` | No |  |
+| `given_name` | `string` | No |  |
+| `locale` | `string` | No |  |
+| `middle_name` | `string` | No |  |
 | `name` | `string` | No |  |
-| `skip_email_verification` | `boolean` | No |  |
+| `nickname` | `string` | No |  |
+| `phone` | `string` | No |  |
+| `phone_verified` | `string` | No |  |
+| `picture` | `string` | No |  |
+| `preferred_username` | `string` | No |  |
+| `profile` | `string` | No |  |
+| `updated_at` | `string` | No |  |
+| `website` | `string` | No |  |
+| `zone_info` | `string` | No |  |
+
+### Actions
+
+This entity exposes custom API actions in addition to the standard
+operations. Select one with `$action` in the call's argument; the
+remaining keys are sent as that action's payload.
+
+| Action | Route | Call |
+| --- | --- | --- |
+| `callback` | `/saml/callback` | `client.Saml().create({ $action: 'callback', ... })` |
+| `metadata` | `/saml/metadata` | `client.Saml().load({ $action: 'metadata', ... })` |
+| `provider` | `/saml/provider` | `client.Saml().load({ $action: 'provider', ... })` |
+
+An action returns that action's OWN response, which is not necessarily a
+Saml record — check the API definition for its shape.
+
+```ts
+const result = await client.Saml().create({
+  $action: 'callback',
+  /* ...the action's own arguments */
+})
+```
 
 ### Operations
 
@@ -960,12 +1034,15 @@ const session_management = client.SessionManagement()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `claim` | `Record<string, any>` | Yes |  |
-| `expiration_time` | `string` | No |  |
-| `idle_expires_at` | `string` | No |  |
-| `is_valid` | `boolean` | No |  |
+| `amr` | `any[]` | No |  |
+| `audience` | `any[]` | No |  |
+| `email` | `Record<string, any>` | No |  |
+| `expiration` | `string` | Yes |  |
+| `issued_at` | `string` | No |  |
+| `issuer` | `string` | No |  |
+| `session_id` | `string` | Yes |  |
 | `session_token` | `string` | Yes |  |
-| `user_id` | `string` | No |  |
+| `subject` | `any` | Yes |  |
 
 ### Operations
 
@@ -975,8 +1052,10 @@ Create a new entity with the given data.
 
 ```ts
 const result = await client.SessionManagement().create({
-  claim: {},
+  expiration: 'example_expiration',
+  session_id: 'example_session_id',
   session_token: 'example_session_token',
+  subject: 'example_subject',
 })
 ```
 
@@ -1166,8 +1245,9 @@ const user = client.User()
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
 | `created_at` | `string` | No |  |
-| `email` | `any[]` | No |  |
+| `email` | `string` | No |  |
 | `email_id` | `string` | No |  |
+| `emails` | `any[]` | No |  |
 | `family_name` | `string` | No |  |
 | `given_name` | `string` | No |  |
 | `has_webauthn_credential` | `boolean` | No |  |
@@ -1175,14 +1255,14 @@ const user = client.User()
 | `metadata` | `Record<string, any>` | No |  |
 | `mfa_config` | `Record<string, any>` | No |  |
 | `name` | `string` | No |  |
-| `passkey` | `any[]` | No |  |
+| `passkeys` | `any[]` | No |  |
 | `picture` | `string` | No |  |
-| `security_key` | `any[]` | No |  |
+| `security_keys` | `any[]` | No |  |
 | `updated_at` | `string` | No |  |
 | `user_id` | `string` | No |  |
 | `username` | `string` | No |  |
 | `verified` | `boolean` | No |  |
-| `webauthn_credential` | `any[]` | No |  |
+| `webauthn_credentials` | `any[]` | No |  |
 
 ### Field Usage by Operation
 
@@ -1191,6 +1271,7 @@ const user = client.User()
 | `created_at` | - | - | - |
 | `email` | - | Yes | - |
 | `email_id` | - | - | - |
+| `emails` | - | - | - |
 | `family_name` | - | - | - |
 | `given_name` | - | - | - |
 | `has_webauthn_credential` | - | - | - |
@@ -1198,14 +1279,14 @@ const user = client.User()
 | `metadata` | - | - | - |
 | `mfa_config` | - | - | - |
 | `name` | - | - | - |
-| `passkey` | - | - | - |
+| `passkeys` | - | - | - |
 | `picture` | - | - | - |
-| `security_key` | - | - | - |
+| `security_keys` | - | - | - |
 | `updated_at` | - | - | - |
 | `user_id` | - | - | - |
 | `username` | - | - | - |
 | `verified` | - | - | - |
-| `webauthn_credential` | - | - | - |
+| `webauthn_credentials` | - | - | - |
 
 ### Operations
 
@@ -1273,16 +1354,16 @@ const user_management = client.UserManagement()
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
 | `created_at` | `string` | No |  |
-| `email` | `any[]` | No |  |
+| `emails` | `any[]` | No |  |
 | `family_name` | `string` | No |  |
 | `given_name` | `string` | No |  |
 | `id` | `string` | No |  |
 | `metadata` | `Record<string, any>` | No |  |
 | `mfa_config` | `Record<string, any>` | No |  |
 | `name` | `string` | No |  |
-| `passkey` | `any[]` | No |  |
+| `passkeys` | `any[]` | No |  |
 | `picture` | `string` | No |  |
-| `security_key` | `any[]` | No |  |
+| `security_keys` | `any[]` | No |  |
 | `updated_at` | `string` | No |  |
 | `user_id` | `string` | No |  |
 | `username` | `Record<string, any>` | No |  |
@@ -1344,13 +1425,11 @@ const web_authn = client.WebAuthn()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `credential_id` | `string` | No |  |
 | `id` | `string` | No |  |
 | `name` | `string` | No |  |
-| `raw_id` | `string` | No |  |
+| `rawId` | `string` | No |  |
 | `response` | `Record<string, any>` | No |  |
 | `type` | `string` | No |  |
-| `user_id` | `string` | No |  |
 
 ### Operations
 
@@ -1422,7 +1501,7 @@ const webauthn_login = client.WebauthnLogin()
 | --- | --- | --- | --- |
 | `credential_id` | `string` | No |  |
 | `id` | `string` | No |  |
-| `raw_id` | `string` | No |  |
+| `rawId` | `string` | No |  |
 | `response` | `Record<string, any>` | No |  |
 | `type` | `string` | No |  |
 | `user_id` | `string` | No |  |

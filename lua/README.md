@@ -42,7 +42,7 @@ Entity operations return `(value, err)`. Check `err` before using
 the value:
 
 ```lua
-local jsonwebkeysets, err = client:JsonWebKeySet():list()
+local credentials, err = client:Credential():list()
 if err then error(err) end
 ```
 
@@ -100,7 +100,7 @@ Create a mock client for unit testing — no server required:
 ```lua
 local client = sdk.test()
 
-local result, err = client:JsonWebKeySet():list()
+local result, err = client:Credential():list()
 -- result is the returned data; err is set on failure
 ```
 
@@ -231,9 +231,9 @@ data **directly** — there is no wrapper:
 
 Check `err` first (it is non-`nil` on failure), then use `value`:
 
-    local create_user_response_object, err = client:CreateUserResponseObject():load()
+    local hanko_configuration, err = client:HankoConfiguration():load()
     if err then error(err) end
-    -- create_user_response_object is the loaded record
+    -- hanko_configuration is the loaded record
 
 Only `direct()` returns a response envelope — a `table` with `ok`,
 `status`, `headers`, and `data` keys.
@@ -262,8 +262,8 @@ API path: ``
 | `last_used_at` |  |
 | `mfa_only` |  |
 | `name` |  |
-| `public_key` |  |
-| `transport` |  |
+| `publickey` |  |
+| `transports` |  |
 
 Operations: List.
 
@@ -274,9 +274,9 @@ API path: `/webauthn/credentials`
 | Field | Description |
 | --- | --- |
 | `attestation` |  |
-| `authenticator_selection` |  |
+| `authenticatorSelection` |  |
 | `challenge` |  |
-| `pub_key_cred_param` |  |
+| `pubKeyCredParams` |  |
 | `rp` |  |
 | `timeout` |  |
 | `user` |  |
@@ -289,12 +289,12 @@ API path: `/webauthn/registration/initialize`
 
 | Field | Description |
 | --- | --- |
-| `allow_credential` |  |
+| `allowCredentials` |  |
 | `challenge` |  |
-| `rp_id` |  |
+| `rpId` |  |
 | `timeout` |  |
+| `userVerification` |  |
 | `user_id` |  |
-| `user_verification` |  |
 
 Operations: Create.
 
@@ -306,6 +306,7 @@ API path: `/webauthn/login/initialize`
 | --- | --- |
 | `address` |  |
 | `id` |  |
+| `identities` |  |
 | `identity` |  |
 | `is_primary` |  |
 | `is_verified` |  |
@@ -328,7 +329,7 @@ API path: `/emails/{id}/set_primary`
 | Field | Description |
 | --- | --- |
 | `account` |  |
-| `email` |  |
+| `emails` |  |
 | `password` |  |
 
 Operations: Load.
@@ -355,10 +356,8 @@ API path: `/.well-known/jwks.json`
 | Field | Description |
 | --- | --- |
 | `code` |  |
-| `created_at` |  |
 | `email_id` |  |
 | `id` |  |
-| `ttl` |  |
 | `user_id` |  |
 
 Operations: Create.
@@ -380,12 +379,24 @@ API path: `/password/login`
 
 | Field | Description |
 | --- | --- |
-| `attribute_map` |  |
-| `domain` |  |
-| `enabled` |  |
-| `metadata_url` |  |
+| `birthdate` |  |
+| `email` |  |
+| `email_verified` |  |
+| `family_name` |  |
+| `gender` |  |
+| `given_name` |  |
+| `locale` |  |
+| `middle_name` |  |
 | `name` |  |
-| `skip_email_verification` |  |
+| `nickname` |  |
+| `phone` |  |
+| `phone_verified` |  |
+| `picture` |  |
+| `preferred_username` |  |
+| `profile` |  |
+| `updated_at` |  |
+| `website` |  |
+| `zone_info` |  |
 
 Operations: Create, Load.
 
@@ -395,12 +406,15 @@ API path: `/saml/callback`
 
 | Field | Description |
 | --- | --- |
-| `claim` |  |
-| `expiration_time` |  |
-| `idle_expires_at` |  |
-| `is_valid` |  |
+| `amr` |  |
+| `audience` |  |
+| `email` |  |
+| `expiration` |  |
+| `issued_at` |  |
+| `issuer` |  |
+| `session_id` |  |
 | `session_token` |  |
-| `user_id` |  |
+| `subject` |  |
 
 Operations: Create, Load.
 
@@ -441,6 +455,7 @@ API path: `/token`
 | `created_at` |  |
 | `email` |  |
 | `email_id` |  |
+| `emails` |  |
 | `family_name` |  |
 | `given_name` |  |
 | `has_webauthn_credential` |  |
@@ -448,14 +463,14 @@ API path: `/token`
 | `metadata` |  |
 | `mfa_config` |  |
 | `name` |  |
-| `passkey` |  |
+| `passkeys` |  |
 | `picture` |  |
-| `security_key` |  |
+| `security_keys` |  |
 | `updated_at` |  |
 | `user_id` |  |
 | `username` |  |
 | `verified` |  |
-| `webauthn_credential` |  |
+| `webauthn_credentials` |  |
 
 Operations: Create, Load, Remove.
 
@@ -466,16 +481,16 @@ API path: `/user`
 | Field | Description |
 | --- | --- |
 | `created_at` |  |
-| `email` |  |
+| `emails` |  |
 | `family_name` |  |
 | `given_name` |  |
 | `id` |  |
 | `metadata` |  |
 | `mfa_config` |  |
 | `name` |  |
-| `passkey` |  |
+| `passkeys` |  |
 | `picture` |  |
-| `security_key` |  |
+| `security_keys` |  |
 | `updated_at` |  |
 | `user_id` |  |
 | `username` |  |
@@ -488,13 +503,11 @@ API path: `/logout`
 
 | Field | Description |
 | --- | --- |
-| `credential_id` |  |
 | `id` |  |
 | `name` |  |
-| `raw_id` |  |
+| `rawId` |  |
 | `response` |  |
 | `type` |  |
-| `user_id` |  |
 
 Operations: Create, Remove, Update.
 
@@ -506,7 +519,7 @@ API path: `/webauthn/registration/finalize`
 | --- | --- |
 | `credential_id` |  |
 | `id` |  |
-| `raw_id` |  |
+| `rawId` |  |
 | `response` |  |
 | `type` |  |
 | `user_id` |  |
@@ -548,8 +561,8 @@ Create an instance: `local credential = client:Credential(nil)`
 | `last_used_at` | `string` |  |
 | `mfa_only` | `boolean` |  |
 | `name` | `string` |  |
-| `public_key` | `string` |  |
-| `transport` | `table` |  |
+| `publickey` | `string` |  |
+| `transports` | `table` |  |
 
 #### Example: List
 
@@ -573,9 +586,9 @@ Create an instance: `local credential_creation_option = client:CredentialCreatio
 | Field | Type | Description |
 | --- | --- | --- |
 | `attestation` | `string` |  |
-| `authenticator_selection` | `table` |  |
+| `authenticatorSelection` | `table` |  |
 | `challenge` | `string` |  |
-| `pub_key_cred_param` | `table` |  |
+| `pubKeyCredParams` | `table` |  |
 | `rp` | `table` |  |
 | `timeout` | `number` |  |
 | `user` | `table` |  |
@@ -602,12 +615,12 @@ Create an instance: `local credential_request_option = client:CredentialRequestO
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `allow_credential` | `table` |  |
+| `allowCredentials` | `table` |  |
 | `challenge` | `string` |  |
-| `rp_id` | `string` |  |
+| `rpId` | `string` |  |
 | `timeout` | `number` |  |
+| `userVerification` | `string` |  |
 | `user_id` | `string` |  |
-| `user_verification` | `string` |  |
 
 #### Example: Create
 
@@ -635,6 +648,7 @@ Create an instance: `local email = client:Email(nil)`
 | --- | --- | --- |
 | `address` | `string` |  |
 | `id` | `string` |  |
+| `identities` | `any` |  |
 | `identity` | `any` |  |
 | `is_primary` | `boolean` |  |
 | `is_verified` | `boolean` |  |
@@ -688,7 +702,7 @@ Create an instance: `local hanko_configuration = client:HankoConfiguration(nil)`
 | Field | Type | Description |
 | --- | --- | --- |
 | `account` | `table` |  |
-| `email` | `table` |  |
+| `emails` | `table` |  |
 | `password` | `table` |  |
 
 #### Example: Load
@@ -741,10 +755,8 @@ Create an instance: `local passcode = client:Passcode(nil)`
 | Field | Type | Description |
 | --- | --- | --- |
 | `code` | `string` |  |
-| `created_at` | `string` |  |
 | `email_id` | `string` |  |
 | `id` | `string` |  |
-| `ttl` | `number` |  |
 | `user_id` | `string` |  |
 
 #### Example: Create
@@ -799,12 +811,24 @@ Create an instance: `local saml = client:Saml(nil)`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `attribute_map` | `table` |  |
-| `domain` | `string` |  |
-| `enabled` | `boolean` |  |
-| `metadata_url` | `string` |  |
+| `birthdate` | `string` |  |
+| `email` | `string` |  |
+| `email_verified` | `string` |  |
+| `family_name` | `string` |  |
+| `gender` | `string` |  |
+| `given_name` | `string` |  |
+| `locale` | `string` |  |
+| `middle_name` | `string` |  |
 | `name` | `string` |  |
-| `skip_email_verification` | `boolean` |  |
+| `nickname` | `string` |  |
+| `phone` | `string` |  |
+| `phone_verified` | `string` |  |
+| `picture` | `string` |  |
+| `preferred_username` | `string` |  |
+| `profile` | `string` |  |
+| `updated_at` | `string` |  |
+| `website` | `string` |  |
+| `zone_info` | `string` |  |
 
 #### Example: Load
 
@@ -835,12 +859,15 @@ Create an instance: `local session_management = client:SessionManagement(nil)`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `claim` | `table` |  |
-| `expiration_time` | `string` |  |
-| `idle_expires_at` | `string` |  |
-| `is_valid` | `boolean` |  |
+| `amr` | `table` |  |
+| `audience` | `table` |  |
+| `email` | `table` |  |
+| `expiration` | `string` |  |
+| `issued_at` | `string` |  |
+| `issuer` | `string` |  |
+| `session_id` | `string` |  |
 | `session_token` | `string` |  |
-| `user_id` | `string` |  |
+| `subject` | `any` |  |
 
 #### Example: Load
 
@@ -852,8 +879,10 @@ local session_management, err = client:SessionManagement():load()
 
 ```lua
 local session_management, err = client:SessionManagement():create({
-  claim = {}, -- table
+  expiration = "example_expiration", -- string
+  session_id = "example_session_id", -- string
   session_token = "example_session_token", -- string
+  subject = "example_subject", -- any
 })
 ```
 
@@ -933,8 +962,9 @@ Create an instance: `local user = client:User(nil)`
 | Field | Type | Description |
 | --- | --- | --- |
 | `created_at` | `string` |  |
-| `email` | `table` |  |
+| `email` | `string` |  |
 | `email_id` | `string` |  |
+| `emails` | `table` |  |
 | `family_name` | `string` |  |
 | `given_name` | `string` |  |
 | `has_webauthn_credential` | `boolean` |  |
@@ -942,14 +972,14 @@ Create an instance: `local user = client:User(nil)`
 | `metadata` | `table` |  |
 | `mfa_config` | `table` |  |
 | `name` | `string` |  |
-| `passkey` | `table` |  |
+| `passkeys` | `table` |  |
 | `picture` | `string` |  |
-| `security_key` | `table` |  |
+| `security_keys` | `table` |  |
 | `updated_at` | `string` |  |
 | `user_id` | `string` |  |
 | `username` | `string` |  |
 | `verified` | `boolean` |  |
-| `webauthn_credential` | `table` |  |
+| `webauthn_credentials` | `table` |  |
 
 #### Example: Load
 
@@ -981,16 +1011,16 @@ Create an instance: `local user_management = client:UserManagement(nil)`
 | Field | Type | Description |
 | --- | --- | --- |
 | `created_at` | `string` |  |
-| `email` | `table` |  |
+| `emails` | `table` |  |
 | `family_name` | `string` |  |
 | `given_name` | `string` |  |
 | `id` | `string` |  |
 | `metadata` | `table` |  |
 | `mfa_config` | `table` |  |
 | `name` | `string` |  |
-| `passkey` | `table` |  |
+| `passkeys` | `table` |  |
 | `picture` | `string` |  |
-| `security_key` | `table` |  |
+| `security_keys` | `table` |  |
 | `updated_at` | `string` |  |
 | `user_id` | `string` |  |
 | `username` | `table` |  |
@@ -1025,13 +1055,11 @@ Create an instance: `local web_authn = client:WebAuthn(nil)`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `credential_id` | `string` |  |
 | `id` | `string` |  |
 | `name` | `string` |  |
-| `raw_id` | `string` |  |
+| `rawId` | `string` |  |
 | `response` | `table` |  |
 | `type` | `string` |  |
-| `user_id` | `string` |  |
 
 #### Example: Create
 
@@ -1057,7 +1085,7 @@ Create an instance: `local webauthn_login = client:WebauthnLogin(nil)`
 | --- | --- | --- |
 | `credential_id` | `string` |  |
 | `id` | `string` |  |
-| `raw_id` | `string` |  |
+| `rawId` | `string` |  |
 | `response` | `table` |  |
 | `type` | `string` |  |
 | `user_id` | `string` |  |
@@ -1146,11 +1174,11 @@ Entity instances are stateful. After a successful `list`, the entity
 stores the returned data and match criteria internally.
 
 ```lua
-local jsonwebkeyset = client:JsonWebKeySet()
-jsonwebkeyset:list()
+local credential = client:Credential()
+credential:list()
 
--- jsonwebkeyset:data_get() now returns the jsonwebkeyset data from the last list
--- jsonwebkeyset:match_get() returns the last match criteria
+-- credential:data_get() now returns the credential data from the last list
+-- credential:match_get() returns the last match criteria
 ```
 
 Call `make()` to create a fresh instance with the same configuration

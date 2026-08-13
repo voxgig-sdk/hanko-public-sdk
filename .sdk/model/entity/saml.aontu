@@ -6,22 +6,42 @@ main: kit: entity: saml: {
 
   fields: [
     {
-      name: "attribute_map"
-      req: false
-      type: "`$OBJECT`"
-    }
-    {
-      name: "domain"
+      name: "birthdate"
       req: false
       type: "`$STRING`"
     }
     {
-      name: "enabled"
+      name: "email"
       req: false
-      type: "`$BOOLEAN`"
+      type: "`$STRING`"
     }
     {
-      name: "metadata_url"
+      name: "email_verified"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "family_name"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "gender"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "given_name"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "locale"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "middle_name"
       req: false
       type: "`$STRING`"
     }
@@ -31,9 +51,49 @@ main: kit: entity: saml: {
       type: "`$STRING`"
     }
     {
-      name: "skip_email_verification"
+      name: "nickname"
       req: false
-      type: "`$BOOLEAN`"
+      type: "`$STRING`"
+    }
+    {
+      name: "phone"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "phone_verified"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "picture"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "preferred_username"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "profile"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "updated_at"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "website"
+      req: false
+      type: "`$STRING`"
+    }
+    {
+      name: "zone_info"
+      req: false
+      type: "`$STRING`"
     }
   ]
 
@@ -125,7 +185,7 @@ main: kit: entity: saml: {
           }
           transform: {
             req: "`reqdata`"
-            res: "`body`"
+            res: "`body.attribute_map`"
           }
         }
       ]

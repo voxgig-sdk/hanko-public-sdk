@@ -26,8 +26,8 @@ import {
 describe('PasscodeEntity', async () => {
 
   // Per-test live pacing. Delay is read from sdk-test-control.json's
-  // `test.live.delayMs`; only sleeps when HANKOPUBLIC_TEST_LIVE=TRUE.
-  afterEach(liveDelay('HANKOPUBLIC_TEST_LIVE'))
+  // `test.live.delayMs`; only sleeps when HANKO_PUBLIC_TEST_LIVE=TRUE.
+  afterEach(liveDelay('HANKO_PUBLIC_TEST_LIVE'))
 
   test('instance', async () => {
     const testsdk = HankoPublicSDK.test()
@@ -62,7 +62,7 @@ describe('PasscodeEntity', async () => {
     const passcode_ref01_ent = client.Passcode()
     let passcode_ref01_data = setup.data.new.passcode['passcode_ref01']
 
-    passcode_ref01_data = await passcode_ref01_ent.create(passcode_ref01_data)
+    passcode_ref01_data = (await passcode_ref01_ent.create(passcode_ref01_data)).data()
     assert(null != passcode_ref01_data.id)
 
 

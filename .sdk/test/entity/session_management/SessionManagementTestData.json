@@ -2,30 +2,39 @@
   "existing": {
     "session_management": {
       "SESSION_MANAGEMENT00": {
-        "claim": {},
-        "expiration_time": "s3d",
-        "idle_expires_at": "s3e",
-        "is_valid": false,
-        "session_token": "s40",
-        "user_id": "USER01",
+        "amr": [],
+        "audience": [],
+        "email": {},
+        "expiration": "s5d",
+        "issued_at": "s5e",
+        "issuer": "s5f",
+        "session_id": "SESSION01",
+        "session_token": "s61",
+        "subject": "s62",
         "id": "SESSION_MANAGEMENT00"
       },
       "SESSION_MANAGEMENT01": {
-        "claim": {},
-        "expiration_time": "s79",
-        "idle_expires_at": "s7a",
-        "is_valid": false,
-        "session_token": "s7c",
-        "user_id": "USER01",
+        "amr": [],
+        "audience": [],
+        "email": {},
+        "expiration": "sb7",
+        "issued_at": "sb8",
+        "issuer": "sb9",
+        "session_id": "SESSION01",
+        "session_token": "sbb",
+        "subject": "sbc",
         "id": "SESSION_MANAGEMENT01"
       },
       "SESSION_MANAGEMENT02": {
-        "claim": {},
-        "expiration_time": "sb5",
-        "idle_expires_at": "sb6",
-        "is_valid": false,
-        "session_token": "sb8",
-        "user_id": "USER01",
+        "amr": [],
+        "audience": [],
+        "email": {},
+        "expiration": "s111",
+        "issued_at": "s112",
+        "issuer": "s113",
+        "session_id": "SESSION01",
+        "session_token": "s115",
+        "subject": "s116",
         "id": "SESSION_MANAGEMENT02"
       }
     }
@@ -33,12 +42,15 @@
   "new": {
     "session_management": {
       "session_management_ref01": {
-        "claim": {},
-        "expiration_time": "sf1",
-        "idle_expires_at": "sf2",
-        "is_valid": false,
-        "session_token": "sf4",
-        "user_id": "USER01"
+        "amr": [],
+        "audience": [],
+        "email": {},
+        "expiration": "s16b",
+        "issued_at": "s16c",
+        "issuer": "s16d",
+        "session_id": "SESSION01",
+        "session_token": "s16f",
+        "subject": "s170"
       }
     }
   }

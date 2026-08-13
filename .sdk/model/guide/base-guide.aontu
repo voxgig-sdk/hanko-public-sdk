@@ -61,9 +61,11 @@ guide: {
   entity: passcode: {
     path: "/passcode/login/finalize": {
       op: create: method: *POST
+      op: create: transform: res: *("`body.id`")|top
     }
     path: "/passcode/login/initialize": {
       op: create: method: *POST
+      op: create: transform: res: *("`body.id`")|top
     }
   }
 
@@ -91,13 +93,16 @@ guide: {
     path: "/saml/provider": {
       action: "provider": {}
       op: load: method: *GET
+      op: load: transform: res: *("`body.attribute_map`")|top
     }
   }
 
   entity: session_management: {
     path: "/sessions/validate": {
       op: create: method: *POST
+      op: create: transform: res: *("`body.claims`")|top
       op: load: method: *GET
+      op: load: transform: res: *("`body.claims`")|top
     }
   }
 
@@ -152,6 +157,7 @@ guide: {
     }
     path: "/webauthn/registration/finalize": {
       op: create: method: *POST
+      op: create: transform: res: *("`body.user_id`")|top
     }
   }
 

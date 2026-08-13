@@ -127,14 +127,14 @@ class HankoPublicConfig
             ],
             [
               'active' => true,
-              'name' => 'public_key',
+              'name' => 'publickey',
               'req' => false,
               'type' => '`$STRING`',
               'index$' => 9,
             ],
             [
               'active' => true,
-              'name' => 'transport',
+              'name' => 'transports',
               'req' => false,
               'type' => '`$ARRAY`',
               'index$' => 10,
@@ -149,6 +149,7 @@ class HankoPublicConfig
                 [
                   'active' => true,
                   'args' => [],
+                  'kind' => 'http',
                   'method' => 'GET',
                   'orig' => '/webauthn/credentials',
                   'parts' => [
@@ -181,7 +182,7 @@ class HankoPublicConfig
             ],
             [
               'active' => true,
-              'name' => 'authenticator_selection',
+              'name' => 'authenticatorSelection',
               'req' => false,
               'type' => '`$OBJECT`',
               'index$' => 1,
@@ -195,7 +196,7 @@ class HankoPublicConfig
             ],
             [
               'active' => true,
-              'name' => 'pub_key_cred_param',
+              'name' => 'pubKeyCredParams',
               'req' => false,
               'type' => '`$ARRAY`',
               'index$' => 3,
@@ -231,6 +232,7 @@ class HankoPublicConfig
                 [
                   'active' => true,
                   'args' => [],
+                  'kind' => 'http',
                   'method' => 'POST',
                   'orig' => '/webauthn/registration/initialize',
                   'parts' => [
@@ -257,7 +259,7 @@ class HankoPublicConfig
           'fields' => [
             [
               'active' => true,
-              'name' => 'allow_credential',
+              'name' => 'allowCredentials',
               'req' => false,
               'type' => '`$ARRAY`',
               'index$' => 0,
@@ -271,7 +273,7 @@ class HankoPublicConfig
             ],
             [
               'active' => true,
-              'name' => 'rp_id',
+              'name' => 'rpId',
               'req' => false,
               'type' => '`$STRING`',
               'index$' => 2,
@@ -285,14 +287,14 @@ class HankoPublicConfig
             ],
             [
               'active' => true,
-              'name' => 'user_id',
+              'name' => 'userVerification',
               'req' => false,
               'type' => '`$STRING`',
               'index$' => 4,
             ],
             [
               'active' => true,
-              'name' => 'user_verification',
+              'name' => 'user_id',
               'req' => false,
               'type' => '`$STRING`',
               'index$' => 5,
@@ -307,6 +309,7 @@ class HankoPublicConfig
                 [
                   'active' => true,
                   'args' => [],
+                  'kind' => 'http',
                   'method' => 'POST',
                   'orig' => '/webauthn/login/initialize',
                   'parts' => [
@@ -353,24 +356,31 @@ class HankoPublicConfig
             ],
             [
               'active' => true,
-              'name' => 'identity',
+              'name' => 'identities',
               'req' => false,
               'type' => '`$ANY`',
               'index$' => 2,
             ],
             [
               'active' => true,
+              'name' => 'identity',
+              'req' => false,
+              'type' => '`$ANY`',
+              'index$' => 3,
+            ],
+            [
+              'active' => true,
               'name' => 'is_primary',
               'req' => false,
               'type' => '`$BOOLEAN`',
-              'index$' => 3,
+              'index$' => 4,
             ],
             [
               'active' => true,
               'name' => 'is_verified',
               'req' => false,
               'type' => '`$BOOLEAN`',
-              'index$' => 4,
+              'index$' => 5,
             ],
           ],
           'name' => 'email',
@@ -382,6 +392,7 @@ class HankoPublicConfig
                 [
                   'active' => true,
                   'args' => [],
+                  'kind' => 'http',
                   'method' => 'POST',
                   'orig' => '/emails',
                   'parts' => [
@@ -404,6 +415,7 @@ class HankoPublicConfig
                 [
                   'active' => true,
                   'args' => [],
+                  'kind' => 'http',
                   'method' => 'GET',
                   'orig' => '/emails',
                   'parts' => [
@@ -439,6 +451,7 @@ class HankoPublicConfig
                       ],
                     ],
                   ],
+                  'kind' => 'http',
                   'method' => 'DELETE',
                   'orig' => '/emails/{id}',
                   'parts' => [
@@ -488,6 +501,7 @@ class HankoPublicConfig
                       ],
                     ],
                   ],
+                  'kind' => 'http',
                   'method' => 'POST',
                   'orig' => '/emails/{id}/set_primary',
                   'parts' => [
@@ -526,7 +540,7 @@ class HankoPublicConfig
             ],
             [
               'active' => true,
-              'name' => 'email',
+              'name' => 'emails',
               'req' => false,
               'type' => '`$OBJECT`',
               'index$' => 1,
@@ -548,6 +562,7 @@ class HankoPublicConfig
                 [
                   'active' => true,
                   'args' => [],
+                  'kind' => 'http',
                   'method' => 'GET',
                   'orig' => '/.well-known/config',
                   'parts' => [
@@ -623,6 +638,7 @@ class HankoPublicConfig
                 [
                   'active' => true,
                   'args' => [],
+                  'kind' => 'http',
                   'method' => 'GET',
                   'orig' => '/.well-known/jwks.json',
                   'parts' => [
@@ -655,38 +671,24 @@ class HankoPublicConfig
             ],
             [
               'active' => true,
-              'name' => 'created_at',
+              'name' => 'email_id',
               'req' => false,
               'type' => '`$STRING`',
               'index$' => 1,
             ],
             [
               'active' => true,
-              'name' => 'email_id',
+              'name' => 'id',
               'req' => false,
               'type' => '`$STRING`',
               'index$' => 2,
             ],
             [
               'active' => true,
-              'name' => 'id',
-              'req' => false,
-              'type' => '`$STRING`',
-              'index$' => 3,
-            ],
-            [
-              'active' => true,
-              'name' => 'ttl',
-              'req' => false,
-              'type' => '`$INTEGER`',
-              'index$' => 4,
-            ],
-            [
-              'active' => true,
               'name' => 'user_id',
               'req' => true,
               'type' => '`$STRING`',
-              'index$' => 5,
+              'index$' => 3,
             ],
           ],
           'name' => 'passcode',
@@ -698,6 +700,7 @@ class HankoPublicConfig
                 [
                   'active' => true,
                   'args' => [],
+                  'kind' => 'http',
                   'method' => 'POST',
                   'orig' => '/passcode/login/finalize',
                   'parts' => [
@@ -708,13 +711,14 @@ class HankoPublicConfig
                   'select' => [],
                   'transform' => [
                     'req' => '`reqdata`',
-                    'res' => '`body`',
+                    'res' => '`body.id`',
                   ],
                   'index$' => 0,
                 ],
                 [
                   'active' => true,
                   'args' => [],
+                  'kind' => 'http',
                   'method' => 'POST',
                   'orig' => '/passcode/login/initialize',
                   'parts' => [
@@ -725,7 +729,7 @@ class HankoPublicConfig
                   'select' => [],
                   'transform' => [
                     'req' => '`reqdata`',
-                    'res' => '`body`',
+                    'res' => '`body.id`',
                   ],
                   'index$' => 1,
                 ],
@@ -763,6 +767,7 @@ class HankoPublicConfig
                 [
                   'active' => true,
                   'args' => [],
+                  'kind' => 'http',
                   'method' => 'POST',
                   'orig' => '/password/login',
                   'parts' => [
@@ -790,6 +795,7 @@ class HankoPublicConfig
                 [
                   'active' => true,
                   'args' => [],
+                  'kind' => 'http',
                   'method' => 'PUT',
                   'orig' => '/password',
                   'parts' => [
@@ -816,45 +822,129 @@ class HankoPublicConfig
           'fields' => [
             [
               'active' => true,
-              'name' => 'attribute_map',
+              'name' => 'birthdate',
               'req' => false,
-              'type' => '`$OBJECT`',
+              'type' => '`$STRING`',
               'index$' => 0,
             ],
             [
               'active' => true,
-              'name' => 'domain',
+              'name' => 'email',
               'req' => false,
               'type' => '`$STRING`',
               'index$' => 1,
             ],
             [
               'active' => true,
-              'name' => 'enabled',
+              'name' => 'email_verified',
               'req' => false,
-              'type' => '`$BOOLEAN`',
+              'type' => '`$STRING`',
               'index$' => 2,
             ],
             [
               'active' => true,
-              'name' => 'metadata_url',
+              'name' => 'family_name',
               'req' => false,
               'type' => '`$STRING`',
               'index$' => 3,
             ],
             [
               'active' => true,
-              'name' => 'name',
+              'name' => 'gender',
               'req' => false,
               'type' => '`$STRING`',
               'index$' => 4,
             ],
             [
               'active' => true,
-              'name' => 'skip_email_verification',
+              'name' => 'given_name',
               'req' => false,
-              'type' => '`$BOOLEAN`',
+              'type' => '`$STRING`',
               'index$' => 5,
+            ],
+            [
+              'active' => true,
+              'name' => 'locale',
+              'req' => false,
+              'type' => '`$STRING`',
+              'index$' => 6,
+            ],
+            [
+              'active' => true,
+              'name' => 'middle_name',
+              'req' => false,
+              'type' => '`$STRING`',
+              'index$' => 7,
+            ],
+            [
+              'active' => true,
+              'name' => 'name',
+              'req' => false,
+              'type' => '`$STRING`',
+              'index$' => 8,
+            ],
+            [
+              'active' => true,
+              'name' => 'nickname',
+              'req' => false,
+              'type' => '`$STRING`',
+              'index$' => 9,
+            ],
+            [
+              'active' => true,
+              'name' => 'phone',
+              'req' => false,
+              'type' => '`$STRING`',
+              'index$' => 10,
+            ],
+            [
+              'active' => true,
+              'name' => 'phone_verified',
+              'req' => false,
+              'type' => '`$STRING`',
+              'index$' => 11,
+            ],
+            [
+              'active' => true,
+              'name' => 'picture',
+              'req' => false,
+              'type' => '`$STRING`',
+              'index$' => 12,
+            ],
+            [
+              'active' => true,
+              'name' => 'preferred_username',
+              'req' => false,
+              'type' => '`$STRING`',
+              'index$' => 13,
+            ],
+            [
+              'active' => true,
+              'name' => 'profile',
+              'req' => false,
+              'type' => '`$STRING`',
+              'index$' => 14,
+            ],
+            [
+              'active' => true,
+              'name' => 'updated_at',
+              'req' => false,
+              'type' => '`$STRING`',
+              'index$' => 15,
+            ],
+            [
+              'active' => true,
+              'name' => 'website',
+              'req' => false,
+              'type' => '`$STRING`',
+              'index$' => 16,
+            ],
+            [
+              'active' => true,
+              'name' => 'zone_info',
+              'req' => false,
+              'type' => '`$STRING`',
+              'index$' => 17,
             ],
           ],
           'name' => 'saml',
@@ -866,6 +956,7 @@ class HankoPublicConfig
                 [
                   'active' => true,
                   'args' => [],
+                  'kind' => 'http',
                   'method' => 'POST',
                   'orig' => '/saml/callback',
                   'parts' => [
@@ -910,6 +1001,7 @@ class HankoPublicConfig
                       ],
                     ],
                   ],
+                  'kind' => 'http',
                   'method' => 'GET',
                   'orig' => '/saml/metadata',
                   'parts' => [
@@ -943,6 +1035,7 @@ class HankoPublicConfig
                       ],
                     ],
                   ],
+                  'kind' => 'http',
                   'method' => 'GET',
                   'orig' => '/saml/provider',
                   'parts' => [
@@ -957,7 +1050,7 @@ class HankoPublicConfig
                   ],
                   'transform' => [
                     'req' => '`reqdata`',
-                    'res' => '`body`',
+                    'res' => '`body.attribute_map`',
                   ],
                   'index$' => 1,
                 ],
@@ -973,45 +1066,66 @@ class HankoPublicConfig
           'fields' => [
             [
               'active' => true,
-              'name' => 'claim',
-              'req' => true,
-              'type' => '`$OBJECT`',
+              'name' => 'amr',
+              'req' => false,
+              'type' => '`$ARRAY`',
               'index$' => 0,
             ],
             [
               'active' => true,
-              'name' => 'expiration_time',
+              'name' => 'audience',
               'req' => false,
-              'type' => '`$STRING`',
+              'type' => '`$ARRAY`',
               'index$' => 1,
             ],
             [
               'active' => true,
-              'name' => 'idle_expires_at',
+              'name' => 'email',
               'req' => false,
-              'type' => '`$STRING`',
+              'type' => '`$OBJECT`',
               'index$' => 2,
             ],
             [
               'active' => true,
-              'name' => 'is_valid',
-              'req' => false,
-              'type' => '`$BOOLEAN`',
+              'name' => 'expiration',
+              'req' => true,
+              'type' => '`$STRING`',
               'index$' => 3,
+            ],
+            [
+              'active' => true,
+              'name' => 'issued_at',
+              'req' => false,
+              'type' => '`$STRING`',
+              'index$' => 4,
+            ],
+            [
+              'active' => true,
+              'name' => 'issuer',
+              'req' => false,
+              'type' => '`$STRING`',
+              'index$' => 5,
+            ],
+            [
+              'active' => true,
+              'name' => 'session_id',
+              'req' => true,
+              'type' => '`$STRING`',
+              'index$' => 6,
             ],
             [
               'active' => true,
               'name' => 'session_token',
               'req' => true,
               'type' => '`$STRING`',
-              'index$' => 4,
+              'index$' => 7,
             ],
             [
               'active' => true,
-              'name' => 'user_id',
-              'req' => false,
-              'type' => '`$STRING`',
-              'index$' => 5,
+              'name' => 'subject',
+              'req' => true,
+              'type' => '`$ANY`',
+              'index$' => 8,
             ],
           ],
           'name' => 'session_management',
@@ -1023,6 +1137,7 @@ class HankoPublicConfig
                 [
                   'active' => true,
                   'args' => [],
+                  'kind' => 'http',
                   'method' => 'POST',
                   'orig' => '/sessions/validate',
                   'parts' => [
@@ -1032,7 +1147,7 @@ class HankoPublicConfig
                   'select' => [],
                   'transform' => [
                     'req' => '`reqdata`',
-                    'res' => '`body`',
+                    'res' => '`body.claims`',
                   ],
                   'index$' => 0,
                 ],
@@ -1046,6 +1161,7 @@ class HankoPublicConfig
                 [
                   'active' => true,
                   'args' => [],
+                  'kind' => 'http',
                   'method' => 'GET',
                   'orig' => '/sessions/validate',
                   'parts' => [
@@ -1055,7 +1171,7 @@ class HankoPublicConfig
                   'select' => [],
                   'transform' => [
                     'req' => '`reqdata`',
-                    'res' => '`body`',
+                    'res' => '`body.claims`',
                   ],
                   'index$' => 0,
                 ],
@@ -1078,6 +1194,7 @@ class HankoPublicConfig
                 [
                   'active' => true,
                   'args' => [],
+                  'kind' => 'http',
                   'method' => 'GET',
                   'orig' => '/',
                   'parts' => [],
@@ -1142,6 +1259,7 @@ class HankoPublicConfig
                       ],
                     ],
                   ],
+                  'kind' => 'http',
                   'method' => 'GET',
                   'orig' => '/thirdparty/callback',
                   'parts' => [
@@ -1184,6 +1302,7 @@ class HankoPublicConfig
                       ],
                     ],
                   ],
+                  'kind' => 'http',
                   'method' => 'GET',
                   'orig' => '/thirdparty/auth',
                   'parts' => [
@@ -1229,6 +1348,7 @@ class HankoPublicConfig
                 [
                   'active' => true,
                   'args' => [],
+                  'kind' => 'http',
                   'method' => 'POST',
                   'orig' => '/token',
                   'parts' => [
@@ -1268,7 +1388,7 @@ class HankoPublicConfig
                 ],
               ],
               'req' => false,
-              'type' => '`$ARRAY`',
+              'type' => '`$STRING`',
               'index$' => 1,
             ],
             [
@@ -1280,108 +1400,115 @@ class HankoPublicConfig
             ],
             [
               'active' => true,
-              'name' => 'family_name',
+              'name' => 'emails',
               'req' => false,
-              'type' => '`$STRING`',
+              'type' => '`$ARRAY`',
               'index$' => 3,
             ],
             [
               'active' => true,
-              'name' => 'given_name',
+              'name' => 'family_name',
               'req' => false,
               'type' => '`$STRING`',
               'index$' => 4,
             ],
             [
               'active' => true,
+              'name' => 'given_name',
+              'req' => false,
+              'type' => '`$STRING`',
+              'index$' => 5,
+            ],
+            [
+              'active' => true,
               'name' => 'has_webauthn_credential',
               'req' => false,
               'type' => '`$BOOLEAN`',
-              'index$' => 5,
+              'index$' => 6,
             ],
             [
               'active' => true,
               'name' => 'id',
               'req' => false,
               'type' => '`$STRING`',
-              'index$' => 6,
+              'index$' => 7,
             ],
             [
               'active' => true,
               'name' => 'metadata',
               'req' => false,
               'type' => '`$OBJECT`',
-              'index$' => 7,
+              'index$' => 8,
             ],
             [
               'active' => true,
               'name' => 'mfa_config',
               'req' => false,
               'type' => '`$OBJECT`',
-              'index$' => 8,
+              'index$' => 9,
             ],
             [
               'active' => true,
               'name' => 'name',
               'req' => false,
               'type' => '`$STRING`',
-              'index$' => 9,
+              'index$' => 10,
             ],
             [
               'active' => true,
-              'name' => 'passkey',
+              'name' => 'passkeys',
               'req' => false,
               'type' => '`$ARRAY`',
-              'index$' => 10,
+              'index$' => 11,
             ],
             [
               'active' => true,
               'name' => 'picture',
               'req' => false,
               'type' => '`$STRING`',
-              'index$' => 11,
+              'index$' => 12,
             ],
             [
               'active' => true,
-              'name' => 'security_key',
+              'name' => 'security_keys',
               'req' => false,
               'type' => '`$ARRAY`',
-              'index$' => 12,
+              'index$' => 13,
             ],
             [
               'active' => true,
               'name' => 'updated_at',
               'req' => false,
               'type' => '`$STRING`',
-              'index$' => 13,
+              'index$' => 14,
             ],
             [
               'active' => true,
               'name' => 'user_id',
               'req' => false,
               'type' => '`$STRING`',
-              'index$' => 14,
+              'index$' => 15,
             ],
             [
               'active' => true,
               'name' => 'username',
               'req' => false,
               'type' => '`$STRING`',
-              'index$' => 15,
+              'index$' => 16,
             ],
             [
               'active' => true,
               'name' => 'verified',
               'req' => false,
               'type' => '`$BOOLEAN`',
-              'index$' => 16,
+              'index$' => 17,
             ],
             [
               'active' => true,
-              'name' => 'webauthn_credential',
+              'name' => 'webauthn_credentials',
               'req' => false,
               'type' => '`$ARRAY`',
-              'index$' => 17,
+              'index$' => 18,
             ],
           ],
           'name' => 'user',
@@ -1393,6 +1520,7 @@ class HankoPublicConfig
                 [
                   'active' => true,
                   'args' => [],
+                  'kind' => 'http',
                   'method' => 'POST',
                   'orig' => '/user',
                   'parts' => [
@@ -1408,6 +1536,7 @@ class HankoPublicConfig
                 [
                   'active' => true,
                   'args' => [],
+                  'kind' => 'http',
                   'method' => 'POST',
                   'orig' => '/users',
                   'parts' => [
@@ -1443,6 +1572,7 @@ class HankoPublicConfig
                       ],
                     ],
                   ],
+                  'kind' => 'http',
                   'method' => 'GET',
                   'orig' => '/users/{id}',
                   'parts' => [
@@ -1470,6 +1600,7 @@ class HankoPublicConfig
                 [
                   'active' => true,
                   'args' => [],
+                  'kind' => 'http',
                   'method' => 'DELETE',
                   'orig' => '/user',
                   'parts' => [
@@ -1501,7 +1632,7 @@ class HankoPublicConfig
             ],
             [
               'active' => true,
-              'name' => 'email',
+              'name' => 'emails',
               'req' => false,
               'type' => '`$ARRAY`',
               'index$' => 1,
@@ -1550,7 +1681,7 @@ class HankoPublicConfig
             ],
             [
               'active' => true,
-              'name' => 'passkey',
+              'name' => 'passkeys',
               'req' => false,
               'type' => '`$ARRAY`',
               'index$' => 8,
@@ -1564,7 +1695,7 @@ class HankoPublicConfig
             ],
             [
               'active' => true,
-              'name' => 'security_key',
+              'name' => 'security_keys',
               'req' => false,
               'type' => '`$ARRAY`',
               'index$' => 10,
@@ -1600,6 +1731,7 @@ class HankoPublicConfig
                 [
                   'active' => true,
                   'args' => [],
+                  'kind' => 'http',
                   'method' => 'POST',
                   'orig' => '/logout',
                   'parts' => [
@@ -1622,6 +1754,7 @@ class HankoPublicConfig
                 [
                   'active' => true,
                   'args' => [],
+                  'kind' => 'http',
                   'method' => 'GET',
                   'orig' => '/me',
                   'parts' => [
@@ -1646,52 +1779,38 @@ class HankoPublicConfig
           'fields' => [
             [
               'active' => true,
-              'name' => 'credential_id',
+              'name' => 'id',
               'req' => false,
               'type' => '`$STRING`',
               'index$' => 0,
             ],
             [
               'active' => true,
-              'name' => 'id',
+              'name' => 'name',
               'req' => false,
               'type' => '`$STRING`',
               'index$' => 1,
             ],
             [
               'active' => true,
-              'name' => 'name',
+              'name' => 'rawId',
               'req' => false,
               'type' => '`$STRING`',
               'index$' => 2,
             ],
             [
               'active' => true,
-              'name' => 'raw_id',
-              'req' => false,
-              'type' => '`$STRING`',
-              'index$' => 3,
-            ],
-            [
-              'active' => true,
               'name' => 'response',
               'req' => false,
               'type' => '`$OBJECT`',
-              'index$' => 4,
+              'index$' => 3,
             ],
             [
               'active' => true,
               'name' => 'type',
               'req' => false,
               'type' => '`$STRING`',
-              'index$' => 5,
-            ],
-            [
-              'active' => true,
-              'name' => 'user_id',
-              'req' => false,
-              'type' => '`$STRING`',
-              'index$' => 6,
+              'index$' => 4,
             ],
           ],
           'name' => 'web_authn',
@@ -1703,6 +1822,7 @@ class HankoPublicConfig
                 [
                   'active' => true,
                   'args' => [],
+                  'kind' => 'http',
                   'method' => 'POST',
                   'orig' => '/webauthn/registration/finalize',
                   'parts' => [
@@ -1713,7 +1833,7 @@ class HankoPublicConfig
                   'select' => [],
                   'transform' => [
                     'req' => '`reqdata`',
-                    'res' => '`body`',
+                    'res' => '`body.user_id`',
                   ],
                   'index$' => 0,
                 ],
@@ -1740,6 +1860,7 @@ class HankoPublicConfig
                       ],
                     ],
                   ],
+                  'kind' => 'http',
                   'method' => 'DELETE',
                   'orig' => '/webauthn/credentials/{id}',
                   'parts' => [
@@ -1781,6 +1902,7 @@ class HankoPublicConfig
                       ],
                     ],
                   ],
+                  'kind' => 'http',
                   'method' => 'PATCH',
                   'orig' => '/webauthn/credentials/{id}',
                   'parts' => [
@@ -1825,7 +1947,7 @@ class HankoPublicConfig
             ],
             [
               'active' => true,
-              'name' => 'raw_id',
+              'name' => 'rawId',
               'req' => false,
               'type' => '`$STRING`',
               'index$' => 2,
@@ -1861,6 +1983,7 @@ class HankoPublicConfig
                 [
                   'active' => true,
                   'args' => [],
+                  'kind' => 'http',
                   'method' => 'POST',
                   'orig' => '/webauthn/login/finalize',
                   'parts' => [

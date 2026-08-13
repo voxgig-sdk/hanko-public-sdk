@@ -37,7 +37,7 @@ class CredentialEntity extends HankoPublicEntityBase<Credential> {
 
 
 
-  async list(this: any, reqmatch?: CredentialListMatch, ctrl?: Control): Promise<Credential[]> {
+  async list(this: any, reqmatch?: CredentialListMatch, ctrl?: Control): Promise<CredentialEntity[]> {
 
     const utility = this._utility
 

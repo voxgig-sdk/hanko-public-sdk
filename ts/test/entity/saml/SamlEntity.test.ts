@@ -26,8 +26,8 @@ import {
 describe('SamlEntity', async () => {
 
   // Per-test live pacing. Delay is read from sdk-test-control.json's
-  // `test.live.delayMs`; only sleeps when HANKOPUBLIC_TEST_LIVE=TRUE.
-  afterEach(liveDelay('HANKOPUBLIC_TEST_LIVE'))
+  // `test.live.delayMs`; only sleeps when HANKO_PUBLIC_TEST_LIVE=TRUE.
+  afterEach(liveDelay('HANKO_PUBLIC_TEST_LIVE'))
 
   test('instance', async () => {
     const testsdk = HankoPublicSDK.test()
@@ -62,13 +62,13 @@ describe('SamlEntity', async () => {
     const saml_ref01_ent = client.Saml()
     let saml_ref01_data = setup.data.new.saml['saml_ref01']
 
-    saml_ref01_data = await saml_ref01_ent.create(saml_ref01_data)
+    saml_ref01_data = (await saml_ref01_ent.create(saml_ref01_data)).data()
     assert(null != saml_ref01_data)
 
 
     // LOAD
     const saml_ref01_match_dt0: any = {}
-    const saml_ref01_data_dt0 = await saml_ref01_ent.load(saml_ref01_match_dt0)
+    const saml_ref01_data_dt0 = (await saml_ref01_ent.load(saml_ref01_match_dt0)).data()
     assert(null != saml_ref01_data_dt0)
 
 

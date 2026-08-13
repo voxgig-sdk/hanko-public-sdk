@@ -2,27 +2,21 @@
   "existing": {
     "passcode": {
       "PASSCODE00": {
-        "code": "s3c",
-        "created_at": "s3d",
+        "code": "s28",
         "email_id": "EMAIL01",
         "id": "PASSCODE00",
-        "ttl": "s40",
         "user_id": "USER01"
       },
       "PASSCODE01": {
-        "code": "s78",
-        "created_at": "s79",
+        "code": "s50",
         "email_id": "EMAIL01",
         "id": "PASSCODE01",
-        "ttl": "s7c",
         "user_id": "USER01"
       },
       "PASSCODE02": {
-        "code": "sb4",
-        "created_at": "sb5",
+        "code": "s78",
         "email_id": "EMAIL01",
         "id": "PASSCODE02",
-        "ttl": "sb8",
         "user_id": "USER01"
       }
     }
@@ -30,10 +24,8 @@
   "new": {
     "passcode": {
       "passcode_ref01": {
-        "code": "sf0",
-        "created_at": "sf1",
+        "code": "sa0",
         "email_id": "EMAIL01",
-        "ttl": "sf4",
         "user_id": "USER01"
       }
     }

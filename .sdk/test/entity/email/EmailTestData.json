@@ -2,35 +2,39 @@
   "existing": {
     "email": {
       "EMAIL00": {
-        "address": "s32",
+        "address": "s3c",
         "id": "EMAIL00",
-        "identity": "s34",
-        "is_primary": false,
-        "is_verified": true
+        "identities": "s3e",
+        "identity": "s3f",
+        "is_primary": true,
+        "is_verified": false
       },
       "EMAIL01": {
-        "address": "s64",
+        "address": "s78",
         "id": "EMAIL01",
-        "identity": "s66",
-        "is_primary": false,
-        "is_verified": true
+        "identities": "s7a",
+        "identity": "s7b",
+        "is_primary": true,
+        "is_verified": false
       },
       "EMAIL02": {
-        "address": "s96",
+        "address": "sb4",
         "id": "EMAIL02",
-        "identity": "s98",
-        "is_primary": false,
-        "is_verified": true
+        "identities": "sb6",
+        "identity": "sb7",
+        "is_primary": true,
+        "is_verified": false
       }
     }
   },
   "new": {
     "email": {
       "email_ref01": {
-        "address": "sc8",
-        "identity": "sca",
-        "is_primary": false,
-        "is_verified": true
+        "address": "sf0",
+        "identities": "sf2",
+        "identity": "sf3",
+        "is_primary": true,
+        "is_verified": false
       }
     }
   }

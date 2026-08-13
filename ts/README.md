@@ -42,8 +42,8 @@ Entity operations reject on failure, so wrap them in `try` / `catch`:
 
 ```ts
 try {
-  const jsonwebkeysets = await client.JsonWebKeySet().list()
-  console.log(jsonwebkeysets)
+  const credentials = await client.Credential().list()
+  console.log(credentials)
 } catch (err) {
   console.error('list failed:', err)
 }
@@ -109,9 +109,10 @@ Create a mock client for unit testing — no server required:
 ```ts
 const client = HankoPublicSDK.test()
 
-const jsonwebkeyset = await client.JsonWebKeySet().list()
-// jsonwebkeyset is a bare entity populated with mock response data
-console.log(jsonwebkeyset)
+const credential = await client.Credential().list()
+// credential is the entity, populated with mock response data
+// — call credential.data() for the record itself
+console.log(credential)
 ```
 
 You can also use the instance method:
@@ -126,14 +127,14 @@ const testClient = client.tester()
 Entity instances remember their last match and data:
 
 ```ts
-const entity = client.JsonWebKeySet()
+const entity = client.Credential()
 
 // First call runs the operation and stores its result
 await entity.list()
 
 // Subsequent calls reuse the stored state
 const data = entity.data()
-console.log(data)
+console.log(data.id)
 ```
 
 ### Add custom middleware
@@ -320,8 +321,8 @@ API path: ``
 | `last_used_at` |  |
 | `mfa_only` |  |
 | `name` |  |
-| `public_key` |  |
-| `transport` |  |
+| `publickey` |  |
+| `transports` |  |
 
 Operations: list.
 
@@ -332,9 +333,9 @@ API path: `/webauthn/credentials`
 | Field | Description |
 | --- | --- |
 | `attestation` |  |
-| `authenticator_selection` |  |
+| `authenticatorSelection` |  |
 | `challenge` |  |
-| `pub_key_cred_param` |  |
+| `pubKeyCredParams` |  |
 | `rp` |  |
 | `timeout` |  |
 | `user` |  |
@@ -347,12 +348,12 @@ API path: `/webauthn/registration/initialize`
 
 | Field | Description |
 | --- | --- |
-| `allow_credential` |  |
+| `allowCredentials` |  |
 | `challenge` |  |
-| `rp_id` |  |
+| `rpId` |  |
 | `timeout` |  |
+| `userVerification` |  |
 | `user_id` |  |
-| `user_verification` |  |
 
 Operations: create.
 
@@ -364,6 +365,7 @@ API path: `/webauthn/login/initialize`
 | --- | --- |
 | `address` |  |
 | `id` |  |
+| `identities` |  |
 | `identity` |  |
 | `is_primary` |  |
 | `is_verified` |  |
@@ -386,7 +388,7 @@ API path: `/emails/{id}/set_primary`
 | Field | Description |
 | --- | --- |
 | `account` |  |
-| `email` |  |
+| `emails` |  |
 | `password` |  |
 
 Operations: load.
@@ -413,10 +415,8 @@ API path: `/.well-known/jwks.json`
 | Field | Description |
 | --- | --- |
 | `code` |  |
-| `created_at` |  |
 | `email_id` |  |
 | `id` |  |
-| `ttl` |  |
 | `user_id` |  |
 
 Operations: create.
@@ -438,12 +438,24 @@ API path: `/password/login`
 
 | Field | Description |
 | --- | --- |
-| `attribute_map` |  |
-| `domain` |  |
-| `enabled` |  |
-| `metadata_url` |  |
+| `birthdate` |  |
+| `email` |  |
+| `email_verified` |  |
+| `family_name` |  |
+| `gender` |  |
+| `given_name` |  |
+| `locale` |  |
+| `middle_name` |  |
 | `name` |  |
-| `skip_email_verification` |  |
+| `nickname` |  |
+| `phone` |  |
+| `phone_verified` |  |
+| `picture` |  |
+| `preferred_username` |  |
+| `profile` |  |
+| `updated_at` |  |
+| `website` |  |
+| `zone_info` |  |
 
 Operations: create, load.
 
@@ -453,12 +465,15 @@ API path: `/saml/callback`
 
 | Field | Description |
 | --- | --- |
-| `claim` |  |
-| `expiration_time` |  |
-| `idle_expires_at` |  |
-| `is_valid` |  |
+| `amr` |  |
+| `audience` |  |
+| `email` |  |
+| `expiration` |  |
+| `issued_at` |  |
+| `issuer` |  |
+| `session_id` |  |
 | `session_token` |  |
-| `user_id` |  |
+| `subject` |  |
 
 Operations: create, load.
 
@@ -499,6 +514,7 @@ API path: `/token`
 | `created_at` |  |
 | `email` |  |
 | `email_id` |  |
+| `emails` |  |
 | `family_name` |  |
 | `given_name` |  |
 | `has_webauthn_credential` |  |
@@ -506,14 +522,14 @@ API path: `/token`
 | `metadata` |  |
 | `mfa_config` |  |
 | `name` |  |
-| `passkey` |  |
+| `passkeys` |  |
 | `picture` |  |
-| `security_key` |  |
+| `security_keys` |  |
 | `updated_at` |  |
 | `user_id` |  |
 | `username` |  |
 | `verified` |  |
-| `webauthn_credential` |  |
+| `webauthn_credentials` |  |
 
 Operations: create, load, remove.
 
@@ -524,16 +540,16 @@ API path: `/user`
 | Field | Description |
 | --- | --- |
 | `created_at` |  |
-| `email` |  |
+| `emails` |  |
 | `family_name` |  |
 | `given_name` |  |
 | `id` |  |
 | `metadata` |  |
 | `mfa_config` |  |
 | `name` |  |
-| `passkey` |  |
+| `passkeys` |  |
 | `picture` |  |
-| `security_key` |  |
+| `security_keys` |  |
 | `updated_at` |  |
 | `user_id` |  |
 | `username` |  |
@@ -546,13 +562,11 @@ API path: `/logout`
 
 | Field | Description |
 | --- | --- |
-| `credential_id` |  |
 | `id` |  |
 | `name` |  |
-| `raw_id` |  |
+| `rawId` |  |
 | `response` |  |
 | `type` |  |
-| `user_id` |  |
 
 Operations: create, remove, update.
 
@@ -564,7 +578,7 @@ API path: `/webauthn/registration/finalize`
 | --- | --- |
 | `credential_id` |  |
 | `id` |  |
-| `raw_id` |  |
+| `rawId` |  |
 | `response` |  |
 | `type` |  |
 | `user_id` |  |
@@ -606,8 +620,8 @@ Create an instance: `const credential = client.Credential()`
 | `last_used_at` | `string` |  |
 | `mfa_only` | `boolean` |  |
 | `name` | `string` |  |
-| `public_key` | `string` |  |
-| `transport` | `any[]` |  |
+| `publickey` | `string` |  |
+| `transports` | `any[]` |  |
 
 #### Example: List
 
@@ -631,9 +645,9 @@ Create an instance: `const credential_creation_option = client.CredentialCreatio
 | Field | Type | Description |
 | --- | --- | --- |
 | `attestation` | `string` |  |
-| `authenticator_selection` | `Record<string, any>` |  |
+| `authenticatorSelection` | `Record<string, any>` |  |
 | `challenge` | `string` |  |
-| `pub_key_cred_param` | `any[]` |  |
+| `pubKeyCredParams` | `any[]` |  |
 | `rp` | `Record<string, any>` |  |
 | `timeout` | `number` |  |
 | `user` | `Record<string, any>` |  |
@@ -660,12 +674,12 @@ Create an instance: `const credential_request_option = client.CredentialRequestO
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `allow_credential` | `any[]` |  |
+| `allowCredentials` | `any[]` |  |
 | `challenge` | `string` |  |
-| `rp_id` | `string` |  |
+| `rpId` | `string` |  |
 | `timeout` | `number` |  |
+| `userVerification` | `string` |  |
 | `user_id` | `string` |  |
-| `user_verification` | `string` |  |
 
 #### Example: Create
 
@@ -693,6 +707,7 @@ Create an instance: `const email = client.Email()`
 | --- | --- | --- |
 | `address` | `string` |  |
 | `id` | `string` |  |
+| `identities` | `any` |  |
 | `identity` | `any` |  |
 | `is_primary` | `boolean` |  |
 | `is_verified` | `boolean` |  |
@@ -746,7 +761,7 @@ Create an instance: `const hanko_configuration = client.HankoConfiguration()`
 | Field | Type | Description |
 | --- | --- | --- |
 | `account` | `Record<string, any>` |  |
-| `email` | `Record<string, any>` |  |
+| `emails` | `Record<string, any>` |  |
 | `password` | `Record<string, any>` |  |
 
 #### Example: Load
@@ -799,10 +814,8 @@ Create an instance: `const passcode = client.Passcode()`
 | Field | Type | Description |
 | --- | --- | --- |
 | `code` | `string` |  |
-| `created_at` | `string` |  |
 | `email_id` | `string` |  |
 | `id` | `string` |  |
-| `ttl` | `number` |  |
 | `user_id` | `string` |  |
 
 #### Example: Create
@@ -857,12 +870,24 @@ Create an instance: `const saml = client.Saml()`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `attribute_map` | `Record<string, any>` |  |
-| `domain` | `string` |  |
-| `enabled` | `boolean` |  |
-| `metadata_url` | `string` |  |
+| `birthdate` | `string` |  |
+| `email` | `string` |  |
+| `email_verified` | `string` |  |
+| `family_name` | `string` |  |
+| `gender` | `string` |  |
+| `given_name` | `string` |  |
+| `locale` | `string` |  |
+| `middle_name` | `string` |  |
 | `name` | `string` |  |
-| `skip_email_verification` | `boolean` |  |
+| `nickname` | `string` |  |
+| `phone` | `string` |  |
+| `phone_verified` | `string` |  |
+| `picture` | `string` |  |
+| `preferred_username` | `string` |  |
+| `profile` | `string` |  |
+| `updated_at` | `string` |  |
+| `website` | `string` |  |
+| `zone_info` | `string` |  |
 
 #### Example: Load
 
@@ -893,12 +918,15 @@ Create an instance: `const session_management = client.SessionManagement()`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `claim` | `Record<string, any>` |  |
-| `expiration_time` | `string` |  |
-| `idle_expires_at` | `string` |  |
-| `is_valid` | `boolean` |  |
+| `amr` | `any[]` |  |
+| `audience` | `any[]` |  |
+| `email` | `Record<string, any>` |  |
+| `expiration` | `string` |  |
+| `issued_at` | `string` |  |
+| `issuer` | `string` |  |
+| `session_id` | `string` |  |
 | `session_token` | `string` |  |
-| `user_id` | `string` |  |
+| `subject` | `any` |  |
 
 #### Example: Load
 
@@ -910,8 +938,10 @@ const session_management = await client.SessionManagement().load()
 
 ```ts
 const session_management = await client.SessionManagement().create({
-  claim: {},
+  expiration: 'example_expiration',
+  session_id: 'example_session_id',
   session_token: 'example_session_token',
+  subject: 'example_subject',
 })
 ```
 
@@ -991,8 +1021,9 @@ Create an instance: `const user = client.User()`
 | Field | Type | Description |
 | --- | --- | --- |
 | `created_at` | `string` |  |
-| `email` | `any[]` |  |
+| `email` | `string` |  |
 | `email_id` | `string` |  |
+| `emails` | `any[]` |  |
 | `family_name` | `string` |  |
 | `given_name` | `string` |  |
 | `has_webauthn_credential` | `boolean` |  |
@@ -1000,14 +1031,14 @@ Create an instance: `const user = client.User()`
 | `metadata` | `Record<string, any>` |  |
 | `mfa_config` | `Record<string, any>` |  |
 | `name` | `string` |  |
-| `passkey` | `any[]` |  |
+| `passkeys` | `any[]` |  |
 | `picture` | `string` |  |
-| `security_key` | `any[]` |  |
+| `security_keys` | `any[]` |  |
 | `updated_at` | `string` |  |
 | `user_id` | `string` |  |
 | `username` | `string` |  |
 | `verified` | `boolean` |  |
-| `webauthn_credential` | `any[]` |  |
+| `webauthn_credentials` | `any[]` |  |
 
 #### Example: Load
 
@@ -1039,16 +1070,16 @@ Create an instance: `const user_management = client.UserManagement()`
 | Field | Type | Description |
 | --- | --- | --- |
 | `created_at` | `string` |  |
-| `email` | `any[]` |  |
+| `emails` | `any[]` |  |
 | `family_name` | `string` |  |
 | `given_name` | `string` |  |
 | `id` | `string` |  |
 | `metadata` | `Record<string, any>` |  |
 | `mfa_config` | `Record<string, any>` |  |
 | `name` | `string` |  |
-| `passkey` | `any[]` |  |
+| `passkeys` | `any[]` |  |
 | `picture` | `string` |  |
-| `security_key` | `any[]` |  |
+| `security_keys` | `any[]` |  |
 | `updated_at` | `string` |  |
 | `user_id` | `string` |  |
 | `username` | `Record<string, any>` |  |
@@ -1083,13 +1114,11 @@ Create an instance: `const web_authn = client.WebAuthn()`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `credential_id` | `string` |  |
 | `id` | `string` |  |
 | `name` | `string` |  |
-| `raw_id` | `string` |  |
+| `rawId` | `string` |  |
 | `response` | `Record<string, any>` |  |
 | `type` | `string` |  |
-| `user_id` | `string` |  |
 
 #### Example: Create
 
@@ -1115,7 +1144,7 @@ Create an instance: `const webauthn_login = client.WebauthnLogin()`
 | --- | --- | --- |
 | `credential_id` | `string` |  |
 | `id` | `string` |  |
-| `raw_id` | `string` |  |
+| `rawId` | `string` |  |
 | `response` | `Record<string, any>` |  |
 | `type` | `string` |  |
 | `user_id` | `string` |  |
@@ -1197,11 +1226,11 @@ stores the returned data and match criteria internally. Subsequent
 calls on the same instance can rely on this state.
 
 ```ts
-const jsonwebkeyset = client.JsonWebKeySet()
-await jsonwebkeyset.list()
+const credential = client.Credential()
+await credential.list()
 
-// jsonwebkeyset.data() now returns the jsonwebkeyset data from the last `list`
-// jsonwebkeyset.match() returns the last match criteria
+// credential.data() now returns the credential data from the last `list`
+// credential.match() returns the last match criteria
 ```
 
 Call `make()` to create a fresh instance with the same configuration

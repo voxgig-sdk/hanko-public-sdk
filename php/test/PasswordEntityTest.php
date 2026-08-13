@@ -33,7 +33,7 @@ class PasswordEntityTest extends TestCase
         // The basic flow consumes synthetic IDs from the fixture. In live mode
         // without an *_ENTID env override, those IDs hit the live API and 4xx.
         if (!empty($setup["synthetic_only"])) {
-            $this->markTestSkipped("live entity test uses synthetic IDs from fixture — set HANKOPUBLIC_TEST_PASSWORD_ENTID JSON to run live");
+            $this->markTestSkipped("live entity test uses synthetic IDs from fixture — set HANKO_PUBLIC_TEST_PASSWORD_ENTID JSON to run live");
             return;
         }
         $client = $setup["client"];
@@ -44,7 +44,7 @@ class PasswordEntityTest extends TestCase
             Vs::getpath($setup["data"], "new.password"), "password_ref01"));
 
         $password_ref01_data_result = $password_ref01_ent->create($password_ref01_data, null);
-        $password_ref01_data = Helpers::to_map($password_ref01_data_result);
+        $password_ref01_data = Helpers::to_map(is_object($password_ref01_data_result) && method_exists($password_ref01_data_result, 'data_get') ? $password_ref01_data_result->data_get() : $password_ref01_data_result);
         $this->assertNotNull($password_ref01_data);
 
         // UPDATE
@@ -56,7 +56,7 @@ class PasswordEntityTest extends TestCase
         $password_ref01_data_up0_up[$password_ref01_markdef_up0_name] = $password_ref01_markdef_up0_value;
 
         $password_ref01_resdata_up0_result = $password_ref01_ent->update($password_ref01_data_up0_up, null);
-        $password_ref01_resdata_up0 = Helpers::to_map($password_ref01_resdata_up0_result);
+        $password_ref01_resdata_up0 = Helpers::to_map(is_object($password_ref01_resdata_up0_result) && method_exists($password_ref01_resdata_up0_result, 'data_get') ? $password_ref01_resdata_up0_result->data_get() : $password_ref01_resdata_up0_result);
         $this->assertNotNull($password_ref01_resdata_up0);
         $this->assertEquals($password_ref01_resdata_up0[$password_ref01_markdef_up0_name], $password_ref01_markdef_up0_value);
 
@@ -85,39 +85,39 @@ function password_basic_setup($extra)
     // Detect ENTID env override before envOverride consumes it. When live
     // mode is on without a real override, the basic test runs against synthetic
     // IDs from the fixture and 4xx's. Surface this so the test can skip.
-    $entid_env_raw = getenv("HANKOPUBLIC_TEST_PASSWORD_ENTID");
+    $entid_env_raw = getenv("HANKO_PUBLIC_TEST_PASSWORD_ENTID");
     $idmap_overridden = $entid_env_raw !== false && str_starts_with(trim($entid_env_raw), "{");
 
     $env = Runner::env_override([
-        "HANKOPUBLIC_TEST_PASSWORD_ENTID" => $idmap,
-        "HANKOPUBLIC_TEST_LIVE" => "FALSE",
-        "HANKOPUBLIC_TEST_EXPLAIN" => "FALSE",
-        "HANKOPUBLIC_APIKEY" => "NONE",
+        "HANKO_PUBLIC_TEST_PASSWORD_ENTID" => $idmap,
+        "HANKO_PUBLIC_TEST_LIVE" => "FALSE",
+        "HANKO_PUBLIC_TEST_EXPLAIN" => "FALSE",
+        "HANKO_PUBLIC_APIKEY" => "NONE",
     ]);
 
     $idmap_resolved = Helpers::to_map(
-        $env["HANKOPUBLIC_TEST_PASSWORD_ENTID"]);
+        $env["HANKO_PUBLIC_TEST_PASSWORD_ENTID"]);
     if ($idmap_resolved === null) {
         $idmap_resolved = Helpers::to_map($idmap);
     }
 
-    if ($env["HANKOPUBLIC_TEST_LIVE"] === "TRUE") {
+    if ($env["HANKO_PUBLIC_TEST_LIVE"] === "TRUE") {
         $merged_opts = Vs::merge([
             [
-                "apikey" => $env["HANKOPUBLIC_APIKEY"],
+                "apikey" => $env["HANKO_PUBLIC_APIKEY"],
             ],
             $extra ?? [],
         ]);
         $client = new HankoPublicSDK(Helpers::to_map($merged_opts));
     }
 
-    $live = $env["HANKOPUBLIC_TEST_LIVE"] === "TRUE";
+    $live = $env["HANKO_PUBLIC_TEST_LIVE"] === "TRUE";
     return [
         "client" => $client,
         "data" => $entity_data,
         "idmap" => $idmap_resolved,
         "env" => $env,
-        "explain" => $env["HANKOPUBLIC_TEST_EXPLAIN"] === "TRUE",
+        "explain" => $env["HANKO_PUBLIC_TEST_EXPLAIN"] === "TRUE",
         "live" => $live,
         "synthetic_only" => $live && !$idmap_overridden,
         "now" => (int)(microtime(true) * 1000),

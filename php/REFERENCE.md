@@ -210,8 +210,8 @@ $credential = $client->Credential();
 | `last_used_at` | `string` | No |  |
 | `mfa_only` | `bool` | No |  |
 | `name` | `string` | No |  |
-| `public_key` | `string` | No |  |
-| `transport` | `array` | No |  |
+| `publickey` | `string` | No |  |
+| `transports` | `array` | No |  |
 
 ### Operations
 
@@ -264,9 +264,9 @@ $credential_creation_option = $client->CredentialCreationOption();
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
 | `attestation` | `string` | No |  |
-| `authenticator_selection` | `array` | No |  |
+| `authenticatorSelection` | `array` | No |  |
 | `challenge` | `string` | No |  |
-| `pub_key_cred_param` | `array` | No |  |
+| `pubKeyCredParams` | `array` | No |  |
 | `rp` | `array` | No |  |
 | `timeout` | `int` | No |  |
 | `user` | `array` | No |  |
@@ -322,12 +322,12 @@ $credential_request_option = $client->CredentialRequestOption();
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `allow_credential` | `array` | No |  |
+| `allowCredentials` | `array` | No |  |
 | `challenge` | `string` | No |  |
-| `rp_id` | `string` | No |  |
+| `rpId` | `string` | No |  |
 | `timeout` | `int` | No |  |
+| `userVerification` | `string` | No |  |
 | `user_id` | `string` | No |  |
-| `user_verification` | `string` | No |  |
 
 ### Operations
 
@@ -382,6 +382,7 @@ $email = $client->Email();
 | --- | --- | --- | --- |
 | `address` | `string` | Yes |  |
 | `id` | `string` | No |  |
+| `identities` | `mixed` | No |  |
 | `identity` | `mixed` | No |  |
 | `is_primary` | `bool` | No |  |
 | `is_verified` | `bool` | No |  |
@@ -392,6 +393,7 @@ $email = $client->Email();
 | --- | --- | --- | --- |
 | `address` | Yes | - | - |
 | `id` | - | - | - |
+| `identities` | - | - | - |
 | `identity` | - | - | - |
 | `is_primary` | - | - | - |
 | `is_verified` | - | - | - |
@@ -513,7 +515,7 @@ $hanko_configuration = $client->HankoConfiguration();
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
 | `account` | `array` | No |  |
-| `email` | `array` | No |  |
+| `emails` | `array` | No |  |
 | `password` | `array` | No |  |
 
 ### Operations
@@ -624,10 +626,8 @@ $passcode = $client->Passcode();
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
 | `code` | `string` | No |  |
-| `created_at` | `string` | No |  |
 | `email_id` | `string` | No |  |
 | `id` | `string` | No |  |
-| `ttl` | `int` | No |  |
 | `user_id` | `string` | Yes |  |
 
 ### Operations
@@ -748,12 +748,24 @@ $saml = $client->Saml();
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `attribute_map` | `array` | No |  |
-| `domain` | `string` | No |  |
-| `enabled` | `bool` | No |  |
-| `metadata_url` | `string` | No |  |
+| `birthdate` | `string` | No |  |
+| `email` | `string` | No |  |
+| `email_verified` | `string` | No |  |
+| `family_name` | `string` | No |  |
+| `gender` | `string` | No |  |
+| `given_name` | `string` | No |  |
+| `locale` | `string` | No |  |
+| `middle_name` | `string` | No |  |
 | `name` | `string` | No |  |
-| `skip_email_verification` | `bool` | No |  |
+| `nickname` | `string` | No |  |
+| `phone` | `string` | No |  |
+| `phone_verified` | `string` | No |  |
+| `picture` | `string` | No |  |
+| `preferred_username` | `string` | No |  |
+| `profile` | `string` | No |  |
+| `updated_at` | `string` | No |  |
+| `website` | `string` | No |  |
+| `zone_info` | `string` | No |  |
 
 ### Operations
 
@@ -814,12 +826,15 @@ $session_management = $client->SessionManagement();
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `claim` | `array` | Yes |  |
-| `expiration_time` | `string` | No |  |
-| `idle_expires_at` | `string` | No |  |
-| `is_valid` | `bool` | No |  |
+| `amr` | `array` | No |  |
+| `audience` | `array` | No |  |
+| `email` | `array` | No |  |
+| `expiration` | `string` | Yes |  |
+| `issued_at` | `string` | No |  |
+| `issuer` | `string` | No |  |
+| `session_id` | `string` | Yes |  |
 | `session_token` | `string` | Yes |  |
-| `user_id` | `string` | No |  |
+| `subject` | `mixed` | Yes |  |
 
 ### Operations
 
@@ -829,8 +844,10 @@ Create a new entity with the given data. Throws on error.
 
 ```php
 $result = $client->SessionManagement()->create([
-  "claim" => null, // array
+  "expiration" => null, // string
+  "session_id" => null, // string
   "session_token" => null, // string
+  "subject" => null, // mixed
 ]);
 ```
 
@@ -1028,8 +1045,9 @@ $user = $client->User();
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
 | `created_at` | `string` | No |  |
-| `email` | `array` | No |  |
+| `email` | `string` | No |  |
 | `email_id` | `string` | No |  |
+| `emails` | `array` | No |  |
 | `family_name` | `string` | No |  |
 | `given_name` | `string` | No |  |
 | `has_webauthn_credential` | `bool` | No |  |
@@ -1037,14 +1055,14 @@ $user = $client->User();
 | `metadata` | `array` | No |  |
 | `mfa_config` | `array` | No |  |
 | `name` | `string` | No |  |
-| `passkey` | `array` | No |  |
+| `passkeys` | `array` | No |  |
 | `picture` | `string` | No |  |
-| `security_key` | `array` | No |  |
+| `security_keys` | `array` | No |  |
 | `updated_at` | `string` | No |  |
 | `user_id` | `string` | No |  |
 | `username` | `string` | No |  |
 | `verified` | `bool` | No |  |
-| `webauthn_credential` | `array` | No |  |
+| `webauthn_credentials` | `array` | No |  |
 
 ### Field Usage by Operation
 
@@ -1053,6 +1071,7 @@ $user = $client->User();
 | `created_at` | - | - | - |
 | `email` | - | Yes | - |
 | `email_id` | - | - | - |
+| `emails` | - | - | - |
 | `family_name` | - | - | - |
 | `given_name` | - | - | - |
 | `has_webauthn_credential` | - | - | - |
@@ -1060,14 +1079,14 @@ $user = $client->User();
 | `metadata` | - | - | - |
 | `mfa_config` | - | - | - |
 | `name` | - | - | - |
-| `passkey` | - | - | - |
+| `passkeys` | - | - | - |
 | `picture` | - | - | - |
-| `security_key` | - | - | - |
+| `security_keys` | - | - | - |
 | `updated_at` | - | - | - |
 | `user_id` | - | - | - |
 | `username` | - | - | - |
 | `verified` | - | - | - |
-| `webauthn_credential` | - | - | - |
+| `webauthn_credentials` | - | - | - |
 
 ### Operations
 
@@ -1137,16 +1156,16 @@ $user_management = $client->UserManagement();
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
 | `created_at` | `string` | No |  |
-| `email` | `array` | No |  |
+| `emails` | `array` | No |  |
 | `family_name` | `string` | No |  |
 | `given_name` | `string` | No |  |
 | `id` | `string` | No |  |
 | `metadata` | `array` | No |  |
 | `mfa_config` | `array` | No |  |
 | `name` | `string` | No |  |
-| `passkey` | `array` | No |  |
+| `passkeys` | `array` | No |  |
 | `picture` | `string` | No |  |
-| `security_key` | `array` | No |  |
+| `security_keys` | `array` | No |  |
 | `updated_at` | `string` | No |  |
 | `user_id` | `string` | No |  |
 | `username` | `array` | No |  |
@@ -1210,13 +1229,11 @@ $web_authn = $client->WebAuthn();
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `credential_id` | `string` | No |  |
 | `id` | `string` | No |  |
 | `name` | `string` | No |  |
-| `raw_id` | `string` | No |  |
+| `rawId` | `string` | No |  |
 | `response` | `array` | No |  |
 | `type` | `string` | No |  |
-| `user_id` | `string` | No |  |
 
 ### Operations
 
@@ -1290,7 +1307,7 @@ $webauthn_login = $client->WebauthnLogin();
 | --- | --- | --- | --- |
 | `credential_id` | `string` | No |  |
 | `id` | `string` | No |  |
-| `raw_id` | `string` | No |  |
+| `rawId` | `string` | No |  |
 | `response` | `array` | No |  |
 | `type` | `string` | No |  |
 | `user_id` | `string` | No |  |

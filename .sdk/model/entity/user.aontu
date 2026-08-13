@@ -19,12 +19,17 @@ main: kit: entity: user: {
         }
       }
       req: false
-      type: "`$ARRAY`"
+      type: "`$STRING`"
     }
     {
       name: "email_id"
       req: false
       type: "`$STRING`"
+    }
+    {
+      name: "emails"
+      req: false
+      type: "`$ARRAY`"
     }
     {
       name: "family_name"
@@ -62,7 +67,7 @@ main: kit: entity: user: {
       type: "`$STRING`"
     }
     {
-      name: "passkey"
+      name: "passkeys"
       req: false
       type: "`$ARRAY`"
     }
@@ -72,7 +77,7 @@ main: kit: entity: user: {
       type: "`$STRING`"
     }
     {
-      name: "security_key"
+      name: "security_keys"
       req: false
       type: "`$ARRAY`"
     }
@@ -97,7 +102,7 @@ main: kit: entity: user: {
       type: "`$BOOLEAN`"
     }
     {
-      name: "webauthn_credential"
+      name: "webauthn_credentials"
       req: false
       type: "`$ARRAY`"
     }

@@ -1,4 +1,4 @@
-# ProjectName SDK exists test
+# HankoPublic SDK exists test
 
 import pytest
 from hankopublic_sdk import HankoPublicSDK

@@ -6,11 +6,6 @@ main: kit: entity: web_authn: {
 
   fields: [
     {
-      name: "credential_id"
-      req: false
-      type: "`$STRING`"
-    }
-    {
       name: "id"
       req: false
       type: "`$STRING`"
@@ -21,7 +16,7 @@ main: kit: entity: web_authn: {
       type: "`$STRING`"
     }
     {
-      name: "raw_id"
+      name: "rawId"
       req: false
       type: "`$STRING`"
     }
@@ -32,11 +27,6 @@ main: kit: entity: web_authn: {
     }
     {
       name: "type"
-      req: false
-      type: "`$STRING`"
-    }
-    {
-      name: "user_id"
       req: false
       type: "`$STRING`"
     }
@@ -62,7 +52,7 @@ main: kit: entity: web_authn: {
           ]
           transform: {
             req: "`reqdata`"
-            res: "`body`"
+            res: "`body.user_id`"
           }
         }
       ]

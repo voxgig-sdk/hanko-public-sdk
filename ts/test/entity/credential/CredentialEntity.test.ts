@@ -26,8 +26,8 @@ import {
 describe('CredentialEntity', async () => {
 
   // Per-test live pacing. Delay is read from sdk-test-control.json's
-  // `test.live.delayMs`; only sleeps when HANKOPUBLIC_TEST_LIVE=TRUE.
-  afterEach(liveDelay('HANKOPUBLIC_TEST_LIVE'))
+  // `test.live.delayMs`; only sleeps when HANKO_PUBLIC_TEST_LIVE=TRUE.
+  afterEach(liveDelay('HANKO_PUBLIC_TEST_LIVE'))
 
   test('instance', async () => {
     const testsdk = HankoPublicSDK.test()
@@ -63,7 +63,7 @@ describe('CredentialEntity', async () => {
     const credential_ref01_ent = client.Credential()
     const credential_ref01_match: any = {}
 
-    const credential_ref01_list = await credential_ref01_ent.list(credential_ref01_match)
+    const credential_ref01_list = (await credential_ref01_ent.list(credential_ref01_match)).map((e: any) => e.data())
 
 
   })

@@ -63,12 +63,12 @@ Every entity operation returns `(value, error)`. Check `err` before
 using the value — there is no exception to catch:
 
 ```go
-jsonwebkeysets, err := client.JsonWebKeySet(nil).List(nil, nil)
+credentials, err := client.Credential(nil).List(nil, nil)
 if err != nil {
     // handle err
     return
 }
-_ = jsonwebkeysets
+_ = credentials
 ```
 
 `Direct` follows the same `(value, error)` convention:
@@ -132,13 +132,13 @@ Create a mock client for unit testing — no server required:
 ```go
 client := sdk.Test()
 
-jsonWebKeySet, err := client.JsonWebKeySet(nil).List(
+credential, err := client.Credential(nil).List(
     nil, nil,
 )
 if err != nil {
     panic(err)
 }
-fmt.Println(jsonWebKeySet) // the returned mock data
+fmt.Println(credential) // the returned mock data
 ```
 
 ### Use a custom fetch function
@@ -298,8 +298,8 @@ API path: ``
 | `"last_used_at"` |  |
 | `"mfa_only"` |  |
 | `"name"` |  |
-| `"public_key"` |  |
-| `"transport"` |  |
+| `"publickey"` |  |
+| `"transports"` |  |
 
 Operations: List.
 
@@ -310,9 +310,9 @@ API path: `/webauthn/credentials`
 | Field | Description |
 | --- | --- |
 | `"attestation"` |  |
-| `"authenticator_selection"` |  |
+| `"authenticatorSelection"` |  |
 | `"challenge"` |  |
-| `"pub_key_cred_param"` |  |
+| `"pubKeyCredParams"` |  |
 | `"rp"` |  |
 | `"timeout"` |  |
 | `"user"` |  |
@@ -325,12 +325,12 @@ API path: `/webauthn/registration/initialize`
 
 | Field | Description |
 | --- | --- |
-| `"allow_credential"` |  |
+| `"allowCredentials"` |  |
 | `"challenge"` |  |
-| `"rp_id"` |  |
+| `"rpId"` |  |
 | `"timeout"` |  |
+| `"userVerification"` |  |
 | `"user_id"` |  |
-| `"user_verification"` |  |
 
 Operations: Create.
 
@@ -342,6 +342,7 @@ API path: `/webauthn/login/initialize`
 | --- | --- |
 | `"address"` |  |
 | `"id"` |  |
+| `"identities"` |  |
 | `"identity"` |  |
 | `"is_primary"` |  |
 | `"is_verified"` |  |
@@ -364,7 +365,7 @@ API path: `/emails/{id}/set_primary`
 | Field | Description |
 | --- | --- |
 | `"account"` |  |
-| `"email"` |  |
+| `"emails"` |  |
 | `"password"` |  |
 
 Operations: Load.
@@ -391,10 +392,8 @@ API path: `/.well-known/jwks.json`
 | Field | Description |
 | --- | --- |
 | `"code"` |  |
-| `"created_at"` |  |
 | `"email_id"` |  |
 | `"id"` |  |
-| `"ttl"` |  |
 | `"user_id"` |  |
 
 Operations: Create.
@@ -416,12 +415,24 @@ API path: `/password/login`
 
 | Field | Description |
 | --- | --- |
-| `"attribute_map"` |  |
-| `"domain"` |  |
-| `"enabled"` |  |
-| `"metadata_url"` |  |
+| `"birthdate"` |  |
+| `"email"` |  |
+| `"email_verified"` |  |
+| `"family_name"` |  |
+| `"gender"` |  |
+| `"given_name"` |  |
+| `"locale"` |  |
+| `"middle_name"` |  |
 | `"name"` |  |
-| `"skip_email_verification"` |  |
+| `"nickname"` |  |
+| `"phone"` |  |
+| `"phone_verified"` |  |
+| `"picture"` |  |
+| `"preferred_username"` |  |
+| `"profile"` |  |
+| `"updated_at"` |  |
+| `"website"` |  |
+| `"zone_info"` |  |
 
 Operations: Create, Load.
 
@@ -431,12 +442,15 @@ API path: `/saml/callback`
 
 | Field | Description |
 | --- | --- |
-| `"claim"` |  |
-| `"expiration_time"` |  |
-| `"idle_expires_at"` |  |
-| `"is_valid"` |  |
+| `"amr"` |  |
+| `"audience"` |  |
+| `"email"` |  |
+| `"expiration"` |  |
+| `"issued_at"` |  |
+| `"issuer"` |  |
+| `"session_id"` |  |
 | `"session_token"` |  |
-| `"user_id"` |  |
+| `"subject"` |  |
 
 Operations: Create, Load.
 
@@ -477,6 +491,7 @@ API path: `/token`
 | `"created_at"` |  |
 | `"email"` |  |
 | `"email_id"` |  |
+| `"emails"` |  |
 | `"family_name"` |  |
 | `"given_name"` |  |
 | `"has_webauthn_credential"` |  |
@@ -484,14 +499,14 @@ API path: `/token`
 | `"metadata"` |  |
 | `"mfa_config"` |  |
 | `"name"` |  |
-| `"passkey"` |  |
+| `"passkeys"` |  |
 | `"picture"` |  |
-| `"security_key"` |  |
+| `"security_keys"` |  |
 | `"updated_at"` |  |
 | `"user_id"` |  |
 | `"username"` |  |
 | `"verified"` |  |
-| `"webauthn_credential"` |  |
+| `"webauthn_credentials"` |  |
 
 Operations: Create, Load, Remove.
 
@@ -502,16 +517,16 @@ API path: `/user`
 | Field | Description |
 | --- | --- |
 | `"created_at"` |  |
-| `"email"` |  |
+| `"emails"` |  |
 | `"family_name"` |  |
 | `"given_name"` |  |
 | `"id"` |  |
 | `"metadata"` |  |
 | `"mfa_config"` |  |
 | `"name"` |  |
-| `"passkey"` |  |
+| `"passkeys"` |  |
 | `"picture"` |  |
-| `"security_key"` |  |
+| `"security_keys"` |  |
 | `"updated_at"` |  |
 | `"user_id"` |  |
 | `"username"` |  |
@@ -524,13 +539,11 @@ API path: `/logout`
 
 | Field | Description |
 | --- | --- |
-| `"credential_id"` |  |
 | `"id"` |  |
 | `"name"` |  |
-| `"raw_id"` |  |
+| `"rawId"` |  |
 | `"response"` |  |
 | `"type"` |  |
-| `"user_id"` |  |
 
 Operations: Create, Remove, Update.
 
@@ -542,7 +555,7 @@ API path: `/webauthn/registration/finalize`
 | --- | --- |
 | `"credential_id"` |  |
 | `"id"` |  |
-| `"raw_id"` |  |
+| `"rawId"` |  |
 | `"response"` |  |
 | `"type"` |  |
 | `"user_id"` |  |
@@ -584,8 +597,8 @@ Create an instance: `credential := client.Credential(nil)`
 | `last_used_at` | `string` |  |
 | `mfa_only` | `bool` |  |
 | `name` | `string` |  |
-| `public_key` | `string` |  |
-| `transport` | `[]any` |  |
+| `publickey` | `string` |  |
+| `transports` | `[]any` |  |
 
 #### Example: List
 
@@ -613,9 +626,9 @@ Create an instance: `credentialCreationOption := client.CredentialCreationOption
 | Field | Type | Description |
 | --- | --- | --- |
 | `attestation` | `string` |  |
-| `authenticator_selection` | `map[string]any` |  |
+| `authenticatorSelection` | `map[string]any` |  |
 | `challenge` | `string` |  |
-| `pub_key_cred_param` | `[]any` |  |
+| `pubKeyCredParams` | `[]any` |  |
 | `rp` | `map[string]any` |  |
 | `timeout` | `int` |  |
 | `user` | `map[string]any` |  |
@@ -646,12 +659,12 @@ Create an instance: `credentialRequestOption := client.CredentialRequestOption(n
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `allow_credential` | `[]any` |  |
+| `allowCredentials` | `[]any` |  |
 | `challenge` | `string` |  |
-| `rp_id` | `string` |  |
+| `rpId` | `string` |  |
 | `timeout` | `int` |  |
+| `userVerification` | `string` |  |
 | `user_id` | `string` |  |
-| `user_verification` | `string` |  |
 
 #### Example: Create
 
@@ -683,6 +696,7 @@ Create an instance: `email := client.Email(nil)`
 | --- | --- | --- |
 | `address` | `string` |  |
 | `id` | `string` |  |
+| `identities` | `any` |  |
 | `identity` | `any` |  |
 | `is_primary` | `bool` |  |
 | `is_verified` | `bool` |  |
@@ -748,7 +762,7 @@ Create an instance: `hankoConfiguration := client.HankoConfiguration(nil)`
 | Field | Type | Description |
 | --- | --- | --- |
 | `account` | `map[string]any` |  |
-| `email` | `map[string]any` |  |
+| `emails` | `map[string]any` |  |
 | `password` | `map[string]any` |  |
 
 #### Example: Load
@@ -809,10 +823,8 @@ Create an instance: `passcode := client.Passcode(nil)`
 | Field | Type | Description |
 | --- | --- | --- |
 | `code` | `string` |  |
-| `created_at` | `string` |  |
 | `email_id` | `string` |  |
 | `id` | `string` |  |
-| `ttl` | `int` |  |
 | `user_id` | `string` |  |
 
 #### Example: Create
@@ -875,12 +887,24 @@ Create an instance: `saml := client.Saml(nil)`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `attribute_map` | `map[string]any` |  |
-| `domain` | `string` |  |
-| `enabled` | `bool` |  |
-| `metadata_url` | `string` |  |
+| `birthdate` | `string` |  |
+| `email` | `string` |  |
+| `email_verified` | `string` |  |
+| `family_name` | `string` |  |
+| `gender` | `string` |  |
+| `given_name` | `string` |  |
+| `locale` | `string` |  |
+| `middle_name` | `string` |  |
 | `name` | `string` |  |
-| `skip_email_verification` | `bool` |  |
+| `nickname` | `string` |  |
+| `phone` | `string` |  |
+| `phone_verified` | `string` |  |
+| `picture` | `string` |  |
+| `preferred_username` | `string` |  |
+| `profile` | `string` |  |
+| `updated_at` | `string` |  |
+| `website` | `string` |  |
+| `zone_info` | `string` |  |
 
 #### Example: Load
 
@@ -919,12 +943,15 @@ Create an instance: `sessionManagement := client.SessionManagement(nil)`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `claim` | `map[string]any` |  |
-| `expiration_time` | `string` |  |
-| `idle_expires_at` | `string` |  |
-| `is_valid` | `bool` |  |
+| `amr` | `[]any` |  |
+| `audience` | `[]any` |  |
+| `email` | `map[string]any` |  |
+| `expiration` | `string` |  |
+| `issued_at` | `string` |  |
+| `issuer` | `string` |  |
+| `session_id` | `string` |  |
 | `session_token` | `string` |  |
-| `user_id` | `string` |  |
+| `subject` | `any` |  |
 
 #### Example: Load
 
@@ -940,8 +967,10 @@ fmt.Println(sessionManagement) // the loaded record
 
 ```go
 result, err := client.SessionManagement(nil).Create(map[string]any{
-    "claim": map[string]any{},
+    "expiration": "example_expiration",
+    "session_id": "example_session_id",
     "session_token": "example_session_token",
+    "subject": "example_subject",
 }, nil)
 if err != nil {
     panic(err)
@@ -1037,8 +1066,9 @@ Create an instance: `user := client.User(nil)`
 | Field | Type | Description |
 | --- | --- | --- |
 | `created_at` | `string` |  |
-| `email` | `[]any` |  |
+| `email` | `string` |  |
 | `email_id` | `string` |  |
+| `emails` | `[]any` |  |
 | `family_name` | `string` |  |
 | `given_name` | `string` |  |
 | `has_webauthn_credential` | `bool` |  |
@@ -1046,14 +1076,14 @@ Create an instance: `user := client.User(nil)`
 | `metadata` | `map[string]any` |  |
 | `mfa_config` | `map[string]any` |  |
 | `name` | `string` |  |
-| `passkey` | `[]any` |  |
+| `passkeys` | `[]any` |  |
 | `picture` | `string` |  |
-| `security_key` | `[]any` |  |
+| `security_keys` | `[]any` |  |
 | `updated_at` | `string` |  |
 | `user_id` | `string` |  |
 | `username` | `string` |  |
 | `verified` | `bool` |  |
-| `webauthn_credential` | `[]any` |  |
+| `webauthn_credentials` | `[]any` |  |
 
 #### Example: Load
 
@@ -1093,16 +1123,16 @@ Create an instance: `userManagement := client.UserManagement(nil)`
 | Field | Type | Description |
 | --- | --- | --- |
 | `created_at` | `string` |  |
-| `email` | `[]any` |  |
+| `emails` | `[]any` |  |
 | `family_name` | `string` |  |
 | `given_name` | `string` |  |
 | `id` | `string` |  |
 | `metadata` | `map[string]any` |  |
 | `mfa_config` | `map[string]any` |  |
 | `name` | `string` |  |
-| `passkey` | `[]any` |  |
+| `passkeys` | `[]any` |  |
 | `picture` | `string` |  |
-| `security_key` | `[]any` |  |
+| `security_keys` | `[]any` |  |
 | `updated_at` | `string` |  |
 | `user_id` | `string` |  |
 | `username` | `map[string]any` |  |
@@ -1145,13 +1175,11 @@ Create an instance: `webAuthn := client.WebAuthn(nil)`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `credential_id` | `string` |  |
 | `id` | `string` |  |
 | `name` | `string` |  |
-| `raw_id` | `string` |  |
+| `rawId` | `string` |  |
 | `response` | `map[string]any` |  |
 | `type` | `string` |  |
-| `user_id` | `string` |  |
 
 #### Example: Create
 
@@ -1181,7 +1209,7 @@ Create an instance: `webauthnLogin := client.WebauthnLogin(nil)`
 | --- | --- | --- |
 | `credential_id` | `string` |  |
 | `id` | `string` |  |
-| `raw_id` | `string` |  |
+| `rawId` | `string` |  |
 | `response` | `map[string]any` |  |
 | `type` | `string` |  |
 | `user_id` | `string` |  |
@@ -1271,11 +1299,11 @@ Entity instances are stateful. After a successful `List`, the entity
 stores the returned data and match criteria internally.
 
 ```go
-jsonwebkeyset := client.JsonWebKeySet(nil)
-jsonwebkeyset.List(nil, nil)
+credential := client.Credential(nil)
+credential.List(nil, nil)
 
-// jsonwebkeyset.Data() now returns the jsonwebkeyset data from the last list
-// jsonwebkeyset.Match() returns the last match criteria
+// credential.Data() now returns the credential data from the last list
+// credential.Match() returns the last match criteria
 ```
 
 Call `Make()` to create a fresh instance with the same configuration

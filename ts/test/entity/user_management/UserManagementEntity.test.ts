@@ -26,8 +26,8 @@ import {
 describe('UserManagementEntity', async () => {
 
   // Per-test live pacing. Delay is read from sdk-test-control.json's
-  // `test.live.delayMs`; only sleeps when HANKOPUBLIC_TEST_LIVE=TRUE.
-  afterEach(liveDelay('HANKOPUBLIC_TEST_LIVE'))
+  // `test.live.delayMs`; only sleeps when HANKO_PUBLIC_TEST_LIVE=TRUE.
+  afterEach(liveDelay('HANKO_PUBLIC_TEST_LIVE'))
 
   test('instance', async () => {
     const testsdk = HankoPublicSDK.test()
@@ -62,14 +62,14 @@ describe('UserManagementEntity', async () => {
     const user_management_ref01_ent = client.UserManagement()
     let user_management_ref01_data = setup.data.new.user_management['user_management_ref01']
 
-    user_management_ref01_data = await user_management_ref01_ent.create(user_management_ref01_data)
+    user_management_ref01_data = (await user_management_ref01_ent.create(user_management_ref01_data)).data()
     assert(null != user_management_ref01_data.id)
 
 
     // LIST
     const user_management_ref01_match: any = {}
 
-    const user_management_ref01_list = await user_management_ref01_ent.list(user_management_ref01_match)
+    const user_management_ref01_list = (await user_management_ref01_ent.list(user_management_ref01_match)).map((e: any) => e.data())
 
     assert(!isempty(select(user_management_ref01_list, { id: user_management_ref01_data.id })))
 

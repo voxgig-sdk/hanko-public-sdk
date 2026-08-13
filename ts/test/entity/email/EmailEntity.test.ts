@@ -26,8 +26,8 @@ import {
 describe('EmailEntity', async () => {
 
   // Per-test live pacing. Delay is read from sdk-test-control.json's
-  // `test.live.delayMs`; only sleeps when HANKOPUBLIC_TEST_LIVE=TRUE.
-  afterEach(liveDelay('HANKOPUBLIC_TEST_LIVE'))
+  // `test.live.delayMs`; only sleeps when HANKO_PUBLIC_TEST_LIVE=TRUE.
+  afterEach(liveDelay('HANKO_PUBLIC_TEST_LIVE'))
 
   test('instance', async () => {
     const testsdk = HankoPublicSDK.test()
@@ -62,14 +62,14 @@ describe('EmailEntity', async () => {
     const email_ref01_ent = client.Email()
     let email_ref01_data = setup.data.new.email['email_ref01']
 
-    email_ref01_data = await email_ref01_ent.create(email_ref01_data)
+    email_ref01_data = (await email_ref01_ent.create(email_ref01_data)).data()
     assert(null != email_ref01_data.id)
 
 
     // LIST
     const email_ref01_match: any = {}
 
-    const email_ref01_list = await email_ref01_ent.list(email_ref01_match)
+    const email_ref01_list = (await email_ref01_ent.list(email_ref01_match)).map((e: any) => e.data())
 
     assert(!isempty(select(email_ref01_list, { id: email_ref01_data.id })))
 
@@ -82,7 +82,7 @@ describe('EmailEntity', async () => {
     // LIST
     const email_ref01_match_rt0: any = {}
 
-    const email_ref01_list_rt0 = await email_ref01_ent.list(email_ref01_match_rt0)
+    const email_ref01_list_rt0 = (await email_ref01_ent.list(email_ref01_match_rt0)).map((e: any) => e.data())
 
     assert(isempty(select(email_ref01_list_rt0, { id: email_ref01_data.id })))
 

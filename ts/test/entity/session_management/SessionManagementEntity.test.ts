@@ -26,8 +26,8 @@ import {
 describe('SessionManagementEntity', async () => {
 
   // Per-test live pacing. Delay is read from sdk-test-control.json's
-  // `test.live.delayMs`; only sleeps when HANKOPUBLIC_TEST_LIVE=TRUE.
-  afterEach(liveDelay('HANKOPUBLIC_TEST_LIVE'))
+  // `test.live.delayMs`; only sleeps when HANKO_PUBLIC_TEST_LIVE=TRUE.
+  afterEach(liveDelay('HANKO_PUBLIC_TEST_LIVE'))
 
   test('instance', async () => {
     const testsdk = HankoPublicSDK.test()
@@ -62,13 +62,13 @@ describe('SessionManagementEntity', async () => {
     const session_management_ref01_ent = client.SessionManagement()
     let session_management_ref01_data = setup.data.new.session_management['session_management_ref01']
 
-    session_management_ref01_data = await session_management_ref01_ent.create(session_management_ref01_data)
+    session_management_ref01_data = (await session_management_ref01_ent.create(session_management_ref01_data)).data()
     assert(null != session_management_ref01_data)
 
 
     // LOAD
     const session_management_ref01_match_dt0: any = {}
-    const session_management_ref01_data_dt0 = await session_management_ref01_ent.load(session_management_ref01_match_dt0)
+    const session_management_ref01_data_dt0 = (await session_management_ref01_ent.load(session_management_ref01_match_dt0)).data()
     assert(null != session_management_ref01_data_dt0)
 
 

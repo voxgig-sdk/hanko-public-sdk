@@ -26,8 +26,8 @@ import {
 describe('WebauthnLoginEntity', async () => {
 
   // Per-test live pacing. Delay is read from sdk-test-control.json's
-  // `test.live.delayMs`; only sleeps when HANKOPUBLIC_TEST_LIVE=TRUE.
-  afterEach(liveDelay('HANKOPUBLIC_TEST_LIVE'))
+  // `test.live.delayMs`; only sleeps when HANKO_PUBLIC_TEST_LIVE=TRUE.
+  afterEach(liveDelay('HANKO_PUBLIC_TEST_LIVE'))
 
   test('instance', async () => {
     const testsdk = HankoPublicSDK.test()
@@ -62,7 +62,7 @@ describe('WebauthnLoginEntity', async () => {
     const webauthn_login_ref01_ent = client.WebauthnLogin()
     let webauthn_login_ref01_data = setup.data.new.webauthn_login['webauthn_login_ref01']
 
-    webauthn_login_ref01_data = await webauthn_login_ref01_ent.create(webauthn_login_ref01_data)
+    webauthn_login_ref01_data = (await webauthn_login_ref01_ent.create(webauthn_login_ref01_data)).data()
     assert(null != webauthn_login_ref01_data.id)
 
 

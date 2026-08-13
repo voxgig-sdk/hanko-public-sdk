@@ -26,8 +26,8 @@ import {
 describe('CredentialCreationOptionEntity', async () => {
 
   // Per-test live pacing. Delay is read from sdk-test-control.json's
-  // `test.live.delayMs`; only sleeps when HANKOPUBLIC_TEST_LIVE=TRUE.
-  afterEach(liveDelay('HANKOPUBLIC_TEST_LIVE'))
+  // `test.live.delayMs`; only sleeps when HANKO_PUBLIC_TEST_LIVE=TRUE.
+  afterEach(liveDelay('HANKO_PUBLIC_TEST_LIVE'))
 
   test('instance', async () => {
     const testsdk = HankoPublicSDK.test()
@@ -62,7 +62,7 @@ describe('CredentialCreationOptionEntity', async () => {
     const credential_creation_option_ref01_ent = client.CredentialCreationOption()
     let credential_creation_option_ref01_data = setup.data.new.credential_creation_option['credential_creation_option_ref01']
 
-    credential_creation_option_ref01_data = await credential_creation_option_ref01_ent.create(credential_creation_option_ref01_data)
+    credential_creation_option_ref01_data = (await credential_creation_option_ref01_ent.create(credential_creation_option_ref01_data)).data()
     assert(null != credential_creation_option_ref01_data)
 
 

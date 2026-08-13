@@ -16,7 +16,7 @@ main: kit: entity: webauthn_login: {
       type: "`$STRING`"
     }
     {
-      name: "raw_id"
+      name: "rawId"
       req: false
       type: "`$STRING`"
     }

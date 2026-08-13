@@ -23,8 +23,8 @@ module HankoPublicTestRunner
   end
 
   def self.env_override(m)
-    live = getenv("HANKOPUBLIC_TEST_LIVE")
-    override = getenv("HANKOPUBLIC_TEST_OVERRIDE")
+    live = getenv("HANKO_PUBLIC_TEST_LIVE")
+    override = getenv("HANKO_PUBLIC_TEST_OVERRIDE")
 
     if live == "TRUE" || override == "TRUE"
       m.each_key do |key|
@@ -44,8 +44,8 @@ module HankoPublicTestRunner
       end
     end
 
-    explain = getenv("HANKOPUBLIC_TEST_EXPLAIN")
-    m["HANKOPUBLIC_TEST_EXPLAIN"] = explain if explain && !explain.empty?
+    explain = getenv("HANKO_PUBLIC_TEST_EXPLAIN")
+    m["HANKO_PUBLIC_TEST_EXPLAIN"] = explain if explain && !explain.empty?
 
     m
   end

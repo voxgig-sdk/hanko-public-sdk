@@ -33,7 +33,7 @@ class UserEntityTest extends TestCase
         // The basic flow consumes synthetic IDs from the fixture. In live mode
         // without an *_ENTID env override, those IDs hit the live API and 4xx.
         if (!empty($setup["synthetic_only"])) {
-            $this->markTestSkipped("live entity test uses synthetic IDs from fixture — set HANKOPUBLIC_TEST_USER_ENTID JSON to run live");
+            $this->markTestSkipped("live entity test uses synthetic IDs from fixture — set HANKO_PUBLIC_TEST_USER_ENTID JSON to run live");
             return;
         }
         $client = $setup["client"];
@@ -44,7 +44,7 @@ class UserEntityTest extends TestCase
             Vs::getpath($setup["data"], "new.user"), "user_ref01"));
 
         $user_ref01_data_result = $user_ref01_ent->create($user_ref01_data, null);
-        $user_ref01_data = Helpers::to_map($user_ref01_data_result);
+        $user_ref01_data = Helpers::to_map(is_object($user_ref01_data_result) && method_exists($user_ref01_data_result, 'data_get') ? $user_ref01_data_result->data_get() : $user_ref01_data_result);
         $this->assertNotNull($user_ref01_data);
         $this->assertNotNull($user_ref01_data["id"]);
 
@@ -53,7 +53,7 @@ class UserEntityTest extends TestCase
             "id" => $user_ref01_data["id"],
         ];
         $user_ref01_data_dt0_loaded = $user_ref01_ent->load($user_ref01_match_dt0, null);
-        $user_ref01_data_dt0_load_result = Helpers::to_map($user_ref01_data_dt0_loaded);
+        $user_ref01_data_dt0_load_result = Helpers::to_map(is_object($user_ref01_data_dt0_loaded) && method_exists($user_ref01_data_dt0_loaded, 'data_get') ? $user_ref01_data_dt0_loaded->data_get() : $user_ref01_data_dt0_loaded);
         $this->assertNotNull($user_ref01_data_dt0_load_result);
         $this->assertEquals($user_ref01_data_dt0_load_result["id"], $user_ref01_data["id"]);
 
@@ -88,39 +88,39 @@ function user_basic_setup($extra)
     // Detect ENTID env override before envOverride consumes it. When live
     // mode is on without a real override, the basic test runs against synthetic
     // IDs from the fixture and 4xx's. Surface this so the test can skip.
-    $entid_env_raw = getenv("HANKOPUBLIC_TEST_USER_ENTID");
+    $entid_env_raw = getenv("HANKO_PUBLIC_TEST_USER_ENTID");
     $idmap_overridden = $entid_env_raw !== false && str_starts_with(trim($entid_env_raw), "{");
 
     $env = Runner::env_override([
-        "HANKOPUBLIC_TEST_USER_ENTID" => $idmap,
-        "HANKOPUBLIC_TEST_LIVE" => "FALSE",
-        "HANKOPUBLIC_TEST_EXPLAIN" => "FALSE",
-        "HANKOPUBLIC_APIKEY" => "NONE",
+        "HANKO_PUBLIC_TEST_USER_ENTID" => $idmap,
+        "HANKO_PUBLIC_TEST_LIVE" => "FALSE",
+        "HANKO_PUBLIC_TEST_EXPLAIN" => "FALSE",
+        "HANKO_PUBLIC_APIKEY" => "NONE",
     ]);
 
     $idmap_resolved = Helpers::to_map(
-        $env["HANKOPUBLIC_TEST_USER_ENTID"]);
+        $env["HANKO_PUBLIC_TEST_USER_ENTID"]);
     if ($idmap_resolved === null) {
         $idmap_resolved = Helpers::to_map($idmap);
     }
 
-    if ($env["HANKOPUBLIC_TEST_LIVE"] === "TRUE") {
+    if ($env["HANKO_PUBLIC_TEST_LIVE"] === "TRUE") {
         $merged_opts = Vs::merge([
             [
-                "apikey" => $env["HANKOPUBLIC_APIKEY"],
+                "apikey" => $env["HANKO_PUBLIC_APIKEY"],
             ],
             $extra ?? [],
         ]);
         $client = new HankoPublicSDK(Helpers::to_map($merged_opts));
     }
 
-    $live = $env["HANKOPUBLIC_TEST_LIVE"] === "TRUE";
+    $live = $env["HANKO_PUBLIC_TEST_LIVE"] === "TRUE";
     return [
         "client" => $client,
         "data" => $entity_data,
         "idmap" => $idmap_resolved,
         "env" => $env,
-        "explain" => $env["HANKOPUBLIC_TEST_EXPLAIN"] === "TRUE",
+        "explain" => $env["HANKO_PUBLIC_TEST_EXPLAIN"] === "TRUE",
         "live" => $live,
         "synthetic_only" => $live && !$idmap_overridden,
         "now" => (int)(microtime(true) * 1000),

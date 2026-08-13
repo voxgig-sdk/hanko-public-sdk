@@ -37,7 +37,7 @@ class JsonWebKeySetEntity extends HankoPublicEntityBase<JsonWebKeySet> {
 
 
 
-  async list(this: any, reqmatch?: JsonWebKeySetListMatch, ctrl?: Control): Promise<JsonWebKeySet[]> {
+  async list(this: any, reqmatch?: JsonWebKeySetListMatch, ctrl?: Control): Promise<JsonWebKeySetEntity[]> {
 
     const utility = this._utility
 

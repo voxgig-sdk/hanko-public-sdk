@@ -6,24 +6,39 @@ main: kit: entity: session_management: {
 
   fields: [
     {
-      name: "claim"
-      req: true
+      name: "amr"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "audience"
+      req: false
+      type: "`$ARRAY`"
+    }
+    {
+      name: "email"
+      req: false
       type: "`$OBJECT`"
     }
     {
-      name: "expiration_time"
+      name: "expiration"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "issued_at"
       req: false
       type: "`$STRING`"
     }
     {
-      name: "idle_expires_at"
+      name: "issuer"
       req: false
       type: "`$STRING`"
     }
     {
-      name: "is_valid"
-      req: false
-      type: "`$BOOLEAN`"
+      name: "session_id"
+      req: true
+      type: "`$STRING`"
     }
     {
       name: "session_token"
@@ -31,9 +46,9 @@ main: kit: entity: session_management: {
       type: "`$STRING`"
     }
     {
-      name: "user_id"
-      req: false
-      type: "`$STRING`"
+      name: "subject"
+      req: true
+      type: "`$ANY`"
     }
   ]
 
@@ -51,7 +66,7 @@ main: kit: entity: session_management: {
           ]
           transform: {
             req: "`reqdata`"
-            res: "`body`"
+            res: "`body.claims`"
           }
         }
       ]
@@ -68,7 +83,7 @@ main: kit: entity: session_management: {
           ]
           transform: {
             req: "`reqdata`"
-            res: "`body`"
+            res: "`body.claims`"
           }
         }
       ]

@@ -26,8 +26,8 @@ import {
 describe('EmailManagementEntity', async () => {
 
   // Per-test live pacing. Delay is read from sdk-test-control.json's
-  // `test.live.delayMs`; only sleeps when HANKOPUBLIC_TEST_LIVE=TRUE.
-  afterEach(liveDelay('HANKOPUBLIC_TEST_LIVE'))
+  // `test.live.delayMs`; only sleeps when HANKO_PUBLIC_TEST_LIVE=TRUE.
+  afterEach(liveDelay('HANKO_PUBLIC_TEST_LIVE'))
 
   test('instance', async () => {
     const testsdk = HankoPublicSDK.test()
@@ -62,7 +62,7 @@ describe('EmailManagementEntity', async () => {
     const email_management_ref01_ent = client.EmailManagement()
     let email_management_ref01_data = setup.data.new.email_management['email_management_ref01']
 
-    email_management_ref01_data = await email_management_ref01_ent.create(email_management_ref01_data)
+    email_management_ref01_data = (await email_management_ref01_ent.create(email_management_ref01_data)).data()
     assert(null != email_management_ref01_data)
 
 

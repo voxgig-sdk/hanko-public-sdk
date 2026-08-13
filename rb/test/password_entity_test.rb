@@ -26,7 +26,7 @@ class PasswordEntityTest < Minitest::Test
     # The basic flow consumes synthetic IDs from the fixture. In live mode
     # without an *_ENTID env override, those IDs hit the live API and 4xx.
     if setup[:synthetic_only]
-      skip "live entity test uses synthetic IDs from fixture — set HANKOPUBLIC_TEST_PASSWORD_ENTID JSON to run live"
+      skip "live entity test uses synthetic IDs from fixture — set HANKO_PUBLIC_TEST_PASSWORD_ENTID JSON to run live"
       return
     end
     client = setup[:client]
@@ -37,7 +37,7 @@ class PasswordEntityTest < Minitest::Test
       Vs.getpath(setup[:data], "new.password"), "password_ref01"))
 
     password_ref01_data_result = password_ref01_ent.create(password_ref01_data, nil)
-    password_ref01_data = Helpers.to_map(password_ref01_data_result)
+    password_ref01_data = Helpers.to_map(password_ref01_data_result.respond_to?(:data_get) ? password_ref01_data_result.data_get : password_ref01_data_result)
     assert !password_ref01_data.nil?
 
     # UPDATE
@@ -49,7 +49,7 @@ class PasswordEntityTest < Minitest::Test
     password_ref01_data_up0_up[password_ref01_markdef_up0_name] = password_ref01_markdef_up0_value
 
     password_ref01_resdata_up0_result = password_ref01_ent.update(password_ref01_data_up0_up, nil)
-    password_ref01_resdata_up0 = Helpers.to_map(password_ref01_resdata_up0_result)
+    password_ref01_resdata_up0 = Helpers.to_map(password_ref01_resdata_up0_result.respond_to?(:data_get) ? password_ref01_resdata_up0_result.data_get : password_ref01_resdata_up0_result)
     assert !password_ref01_resdata_up0.nil?
     assert_equal password_ref01_resdata_up0[password_ref01_markdef_up0_name], password_ref01_markdef_up0_value
 
@@ -82,39 +82,39 @@ def password_basic_setup(extra)
   # Detect ENTID env override before envOverride consumes it. When live
   # mode is on without a real override, the basic test runs against synthetic
   # IDs from the fixture and 4xx's. Surface this so the test can skip.
-  entid_env_raw = ENV["HANKOPUBLIC_TEST_PASSWORD_ENTID"]
+  entid_env_raw = ENV["HANKO_PUBLIC_TEST_PASSWORD_ENTID"]
   idmap_overridden = !entid_env_raw.nil? && entid_env_raw.strip.start_with?("{")
 
   env = Runner.env_override({
-    "HANKOPUBLIC_TEST_PASSWORD_ENTID" => idmap,
-    "HANKOPUBLIC_TEST_LIVE" => "FALSE",
-    "HANKOPUBLIC_TEST_EXPLAIN" => "FALSE",
-    "HANKOPUBLIC_APIKEY" => "NONE",
+    "HANKO_PUBLIC_TEST_PASSWORD_ENTID" => idmap,
+    "HANKO_PUBLIC_TEST_LIVE" => "FALSE",
+    "HANKO_PUBLIC_TEST_EXPLAIN" => "FALSE",
+    "HANKO_PUBLIC_APIKEY" => "NONE",
   })
 
   idmap_resolved = Helpers.to_map(
-    env["HANKOPUBLIC_TEST_PASSWORD_ENTID"])
+    env["HANKO_PUBLIC_TEST_PASSWORD_ENTID"])
   if idmap_resolved.nil?
     idmap_resolved = Helpers.to_map(idmap)
   end
 
-  if env["HANKOPUBLIC_TEST_LIVE"] == "TRUE"
+  if env["HANKO_PUBLIC_TEST_LIVE"] == "TRUE"
     merged_opts = Vs.merge([
       {
-        "apikey" => env["HANKOPUBLIC_APIKEY"],
+        "apikey" => env["HANKO_PUBLIC_APIKEY"],
       },
       extra || {},
     ])
     client = HankoPublicSDK.new(Helpers.to_map(merged_opts))
   end
 
-  live = env["HANKOPUBLIC_TEST_LIVE"] == "TRUE"
+  live = env["HANKO_PUBLIC_TEST_LIVE"] == "TRUE"
   {
     client: client,
     data: entity_data,
     idmap: idmap_resolved,
     env: env,
-    explain: env["HANKOPUBLIC_TEST_EXPLAIN"] == "TRUE",
+    explain: env["HANKO_PUBLIC_TEST_EXPLAIN"] == "TRUE",
     live: live,
     synthetic_only: live && !idmap_overridden,
     now: (Time.now.to_f * 1000).to_i,

@@ -26,8 +26,8 @@ import {
 describe('ThirdPartyEntity', async () => {
 
   // Per-test live pacing. Delay is read from sdk-test-control.json's
-  // `test.live.delayMs`; only sleeps when HANKOPUBLIC_TEST_LIVE=TRUE.
-  afterEach(liveDelay('HANKOPUBLIC_TEST_LIVE'))
+  // `test.live.delayMs`; only sleeps when HANKO_PUBLIC_TEST_LIVE=TRUE.
+  afterEach(liveDelay('HANKO_PUBLIC_TEST_LIVE'))
 
   test('instance', async () => {
     const testsdk = HankoPublicSDK.test()
@@ -62,7 +62,7 @@ describe('ThirdPartyEntity', async () => {
     // LOAD
     const third_party_ref01_ent = client.ThirdParty()
     const third_party_ref01_match_dt0: any = {}
-    const third_party_ref01_data_dt0 = await third_party_ref01_ent.load(third_party_ref01_match_dt0)
+    const third_party_ref01_data_dt0 = (await third_party_ref01_ent.load(third_party_ref01_match_dt0)).data()
     assert(null != third_party_ref01_data_dt0)
 
 

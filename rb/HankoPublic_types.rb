@@ -41,10 +41,10 @@ end
 # @!attribute [rw] name
 #   @return [String, nil]
 #
-# @!attribute [rw] public_key
+# @!attribute [rw] publickey
 #   @return [String, nil]
 #
-# @!attribute [rw] transport
+# @!attribute [rw] transports
 #   @return [Array, nil]
 Credential = Struct.new(
   :aaguid,
@@ -56,8 +56,8 @@ Credential = Struct.new(
   :last_used_at,
   :mfa_only,
   :name,
-  :public_key,
-  :transport,
+  :publickey,
+  :transports,
   keyword_init: true
 )
 
@@ -90,10 +90,10 @@ Credential = Struct.new(
 # @!attribute [rw] name
 #   @return [String, nil]
 #
-# @!attribute [rw] public_key
+# @!attribute [rw] publickey
 #   @return [String, nil]
 #
-# @!attribute [rw] transport
+# @!attribute [rw] transports
 #   @return [Array, nil]
 CredentialListMatch = Struct.new(
   :aaguid,
@@ -105,8 +105,8 @@ CredentialListMatch = Struct.new(
   :last_used_at,
   :mfa_only,
   :name,
-  :public_key,
-  :transport,
+  :publickey,
+  :transports,
   keyword_init: true
 )
 
@@ -115,13 +115,13 @@ CredentialListMatch = Struct.new(
 # @!attribute [rw] attestation
 #   @return [String, nil]
 #
-# @!attribute [rw] authenticator_selection
+# @!attribute [rw] authenticatorSelection
 #   @return [Hash, nil]
 #
 # @!attribute [rw] challenge
 #   @return [String, nil]
 #
-# @!attribute [rw] pub_key_cred_param
+# @!attribute [rw] pubKeyCredParams
 #   @return [Array, nil]
 #
 # @!attribute [rw] rp
@@ -134,9 +134,9 @@ CredentialListMatch = Struct.new(
 #   @return [Hash, nil]
 CredentialCreationOption = Struct.new(
   :attestation,
-  :authenticator_selection,
+  :authenticatorSelection,
   :challenge,
-  :pub_key_cred_param,
+  :pubKeyCredParams,
   :rp,
   :timeout,
   :user,
@@ -148,13 +148,13 @@ CredentialCreationOption = Struct.new(
 # @!attribute [rw] attestation
 #   @return [String, nil]
 #
-# @!attribute [rw] authenticator_selection
+# @!attribute [rw] authenticatorSelection
 #   @return [Hash, nil]
 #
 # @!attribute [rw] challenge
 #   @return [String, nil]
 #
-# @!attribute [rw] pub_key_cred_param
+# @!attribute [rw] pubKeyCredParams
 #   @return [Array, nil]
 #
 # @!attribute [rw] rp
@@ -167,9 +167,9 @@ CredentialCreationOption = Struct.new(
 #   @return [Hash, nil]
 CredentialCreationOptionCreateData = Struct.new(
   :attestation,
-  :authenticator_selection,
+  :authenticatorSelection,
   :challenge,
-  :pub_key_cred_param,
+  :pubKeyCredParams,
   :rp,
   :timeout,
   :user,
@@ -178,59 +178,59 @@ CredentialCreationOptionCreateData = Struct.new(
 
 # CredentialRequestOption entity data model.
 #
-# @!attribute [rw] allow_credential
+# @!attribute [rw] allowCredentials
 #   @return [Array, nil]
 #
 # @!attribute [rw] challenge
 #   @return [String, nil]
 #
-# @!attribute [rw] rp_id
+# @!attribute [rw] rpId
 #   @return [String, nil]
 #
 # @!attribute [rw] timeout
 #   @return [Integer, nil]
 #
-# @!attribute [rw] user_id
+# @!attribute [rw] userVerification
 #   @return [String, nil]
 #
-# @!attribute [rw] user_verification
+# @!attribute [rw] user_id
 #   @return [String, nil]
 CredentialRequestOption = Struct.new(
-  :allow_credential,
+  :allowCredentials,
   :challenge,
-  :rp_id,
+  :rpId,
   :timeout,
+  :userVerification,
   :user_id,
-  :user_verification,
   keyword_init: true
 )
 
 # Request payload for CredentialRequestOption#create.
 #
-# @!attribute [rw] allow_credential
+# @!attribute [rw] allowCredentials
 #   @return [Array, nil]
 #
 # @!attribute [rw] challenge
 #   @return [String, nil]
 #
-# @!attribute [rw] rp_id
+# @!attribute [rw] rpId
 #   @return [String, nil]
 #
 # @!attribute [rw] timeout
 #   @return [Integer, nil]
 #
-# @!attribute [rw] user_id
+# @!attribute [rw] userVerification
 #   @return [String, nil]
 #
-# @!attribute [rw] user_verification
+# @!attribute [rw] user_id
 #   @return [String, nil]
 CredentialRequestOptionCreateData = Struct.new(
-  :allow_credential,
+  :allowCredentials,
   :challenge,
-  :rp_id,
+  :rpId,
   :timeout,
+  :userVerification,
   :user_id,
-  :user_verification,
   keyword_init: true
 )
 
@@ -241,6 +241,9 @@ CredentialRequestOptionCreateData = Struct.new(
 #
 # @!attribute [rw] id
 #   @return [String, nil]
+#
+# @!attribute [rw] identities
+#   @return [Object, nil]
 #
 # @!attribute [rw] identity
 #   @return [Object, nil]
@@ -253,6 +256,7 @@ CredentialRequestOptionCreateData = Struct.new(
 Email = Struct.new(
   :address,
   :id,
+  :identities,
   :identity,
   :is_primary,
   :is_verified,
@@ -267,6 +271,9 @@ Email = Struct.new(
 # @!attribute [rw] id
 #   @return [String, nil]
 #
+# @!attribute [rw] identities
+#   @return [Object, nil]
+#
 # @!attribute [rw] identity
 #   @return [Object, nil]
 #
@@ -278,6 +285,7 @@ Email = Struct.new(
 EmailListMatch = Struct.new(
   :address,
   :id,
+  :identities,
   :identity,
   :is_primary,
   :is_verified,
@@ -292,6 +300,9 @@ EmailListMatch = Struct.new(
 # @!attribute [rw] id
 #   @return [String, nil]
 #
+# @!attribute [rw] identities
+#   @return [Object, nil]
+#
 # @!attribute [rw] identity
 #   @return [Object, nil]
 #
@@ -303,6 +314,7 @@ EmailListMatch = Struct.new(
 EmailCreateData = Struct.new(
   :address,
   :id,
+  :identities,
   :identity,
   :is_primary,
   :is_verified,
@@ -336,14 +348,14 @@ EmailManagementCreateData = Struct.new(
 # @!attribute [rw] account
 #   @return [Hash, nil]
 #
-# @!attribute [rw] email
+# @!attribute [rw] emails
 #   @return [Hash, nil]
 #
 # @!attribute [rw] password
 #   @return [Hash, nil]
 HankoConfiguration = Struct.new(
   :account,
-  :email,
+  :emails,
   :password,
   keyword_init: true
 )
@@ -353,14 +365,14 @@ HankoConfiguration = Struct.new(
 # @!attribute [rw] account
 #   @return [Hash, nil]
 #
-# @!attribute [rw] email
+# @!attribute [rw] emails
 #   @return [Hash, nil]
 #
 # @!attribute [rw] password
 #   @return [Hash, nil]
 HankoConfigurationLoadMatch = Struct.new(
   :account,
-  :email,
+  :emails,
   :password,
   keyword_init: true
 )
@@ -428,26 +440,18 @@ JsonWebKeySetListMatch = Struct.new(
 # @!attribute [rw] code
 #   @return [String, nil]
 #
-# @!attribute [rw] created_at
-#   @return [String, nil]
-#
 # @!attribute [rw] email_id
 #   @return [String, nil]
 #
 # @!attribute [rw] id
 #   @return [String, nil]
 #
-# @!attribute [rw] ttl
-#   @return [Integer, nil]
-#
 # @!attribute [rw] user_id
 #   @return [String]
 Passcode = Struct.new(
   :code,
-  :created_at,
   :email_id,
   :id,
-  :ttl,
   :user_id,
   keyword_init: true
 )
@@ -457,26 +461,18 @@ Passcode = Struct.new(
 # @!attribute [rw] code
 #   @return [String, nil]
 #
-# @!attribute [rw] created_at
-#   @return [String, nil]
-#
 # @!attribute [rw] email_id
 #   @return [String, nil]
 #
 # @!attribute [rw] id
 #   @return [String, nil]
 #
-# @!attribute [rw] ttl
-#   @return [Integer, nil]
-#
 # @!attribute [rw] user_id
 #   @return [String]
 PasscodeCreateData = Struct.new(
   :code,
-  :created_at,
   :email_id,
   :id,
-  :ttl,
   :user_id,
   keyword_init: true
 )
@@ -522,175 +518,355 @@ PasswordUpdateData = Struct.new(
 
 # Saml entity data model.
 #
-# @!attribute [rw] attribute_map
-#   @return [Hash, nil]
-#
-# @!attribute [rw] domain
+# @!attribute [rw] birthdate
 #   @return [String, nil]
 #
-# @!attribute [rw] enabled
-#   @return [Boolean, nil]
+# @!attribute [rw] email
+#   @return [String, nil]
 #
-# @!attribute [rw] metadata_url
+# @!attribute [rw] email_verified
+#   @return [String, nil]
+#
+# @!attribute [rw] family_name
+#   @return [String, nil]
+#
+# @!attribute [rw] gender
+#   @return [String, nil]
+#
+# @!attribute [rw] given_name
+#   @return [String, nil]
+#
+# @!attribute [rw] locale
+#   @return [String, nil]
+#
+# @!attribute [rw] middle_name
 #   @return [String, nil]
 #
 # @!attribute [rw] name
 #   @return [String, nil]
 #
-# @!attribute [rw] skip_email_verification
-#   @return [Boolean, nil]
+# @!attribute [rw] nickname
+#   @return [String, nil]
+#
+# @!attribute [rw] phone
+#   @return [String, nil]
+#
+# @!attribute [rw] phone_verified
+#   @return [String, nil]
+#
+# @!attribute [rw] picture
+#   @return [String, nil]
+#
+# @!attribute [rw] preferred_username
+#   @return [String, nil]
+#
+# @!attribute [rw] profile
+#   @return [String, nil]
+#
+# @!attribute [rw] updated_at
+#   @return [String, nil]
+#
+# @!attribute [rw] website
+#   @return [String, nil]
+#
+# @!attribute [rw] zone_info
+#   @return [String, nil]
 Saml = Struct.new(
-  :attribute_map,
-  :domain,
-  :enabled,
-  :metadata_url,
+  :birthdate,
+  :email,
+  :email_verified,
+  :family_name,
+  :gender,
+  :given_name,
+  :locale,
+  :middle_name,
   :name,
-  :skip_email_verification,
+  :nickname,
+  :phone,
+  :phone_verified,
+  :picture,
+  :preferred_username,
+  :profile,
+  :updated_at,
+  :website,
+  :zone_info,
   keyword_init: true
 )
 
 # Request payload for Saml#load.
 #
-# @!attribute [rw] attribute_map
-#   @return [Hash, nil]
-#
-# @!attribute [rw] domain
+# @!attribute [rw] birthdate
 #   @return [String, nil]
 #
-# @!attribute [rw] enabled
-#   @return [Boolean, nil]
+# @!attribute [rw] email
+#   @return [String, nil]
 #
-# @!attribute [rw] metadata_url
+# @!attribute [rw] email_verified
+#   @return [String, nil]
+#
+# @!attribute [rw] family_name
+#   @return [String, nil]
+#
+# @!attribute [rw] gender
+#   @return [String, nil]
+#
+# @!attribute [rw] given_name
+#   @return [String, nil]
+#
+# @!attribute [rw] locale
+#   @return [String, nil]
+#
+# @!attribute [rw] middle_name
 #   @return [String, nil]
 #
 # @!attribute [rw] name
 #   @return [String, nil]
 #
-# @!attribute [rw] skip_email_verification
-#   @return [Boolean, nil]
+# @!attribute [rw] nickname
+#   @return [String, nil]
+#
+# @!attribute [rw] phone
+#   @return [String, nil]
+#
+# @!attribute [rw] phone_verified
+#   @return [String, nil]
+#
+# @!attribute [rw] picture
+#   @return [String, nil]
+#
+# @!attribute [rw] preferred_username
+#   @return [String, nil]
+#
+# @!attribute [rw] profile
+#   @return [String, nil]
+#
+# @!attribute [rw] updated_at
+#   @return [String, nil]
+#
+# @!attribute [rw] website
+#   @return [String, nil]
+#
+# @!attribute [rw] zone_info
+#   @return [String, nil]
 SamlLoadMatch = Struct.new(
-  :attribute_map,
-  :domain,
-  :enabled,
-  :metadata_url,
+  :birthdate,
+  :email,
+  :email_verified,
+  :family_name,
+  :gender,
+  :given_name,
+  :locale,
+  :middle_name,
   :name,
-  :skip_email_verification,
+  :nickname,
+  :phone,
+  :phone_verified,
+  :picture,
+  :preferred_username,
+  :profile,
+  :updated_at,
+  :website,
+  :zone_info,
   keyword_init: true
 )
 
 # Request payload for Saml#create.
 #
-# @!attribute [rw] attribute_map
-#   @return [Hash, nil]
-#
-# @!attribute [rw] domain
+# @!attribute [rw] birthdate
 #   @return [String, nil]
 #
-# @!attribute [rw] enabled
-#   @return [Boolean, nil]
+# @!attribute [rw] email
+#   @return [String, nil]
 #
-# @!attribute [rw] metadata_url
+# @!attribute [rw] email_verified
+#   @return [String, nil]
+#
+# @!attribute [rw] family_name
+#   @return [String, nil]
+#
+# @!attribute [rw] gender
+#   @return [String, nil]
+#
+# @!attribute [rw] given_name
+#   @return [String, nil]
+#
+# @!attribute [rw] locale
+#   @return [String, nil]
+#
+# @!attribute [rw] middle_name
 #   @return [String, nil]
 #
 # @!attribute [rw] name
 #   @return [String, nil]
 #
-# @!attribute [rw] skip_email_verification
-#   @return [Boolean, nil]
+# @!attribute [rw] nickname
+#   @return [String, nil]
+#
+# @!attribute [rw] phone
+#   @return [String, nil]
+#
+# @!attribute [rw] phone_verified
+#   @return [String, nil]
+#
+# @!attribute [rw] picture
+#   @return [String, nil]
+#
+# @!attribute [rw] preferred_username
+#   @return [String, nil]
+#
+# @!attribute [rw] profile
+#   @return [String, nil]
+#
+# @!attribute [rw] updated_at
+#   @return [String, nil]
+#
+# @!attribute [rw] website
+#   @return [String, nil]
+#
+# @!attribute [rw] zone_info
+#   @return [String, nil]
 SamlCreateData = Struct.new(
-  :attribute_map,
-  :domain,
-  :enabled,
-  :metadata_url,
+  :birthdate,
+  :email,
+  :email_verified,
+  :family_name,
+  :gender,
+  :given_name,
+  :locale,
+  :middle_name,
   :name,
-  :skip_email_verification,
+  :nickname,
+  :phone,
+  :phone_verified,
+  :picture,
+  :preferred_username,
+  :profile,
+  :updated_at,
+  :website,
+  :zone_info,
   keyword_init: true
 )
 
 # SessionManagement entity data model.
 #
-# @!attribute [rw] claim
-#   @return [Hash]
+# @!attribute [rw] amr
+#   @return [Array, nil]
 #
-# @!attribute [rw] expiration_time
+# @!attribute [rw] audience
+#   @return [Array, nil]
+#
+# @!attribute [rw] email
+#   @return [Hash, nil]
+#
+# @!attribute [rw] expiration
+#   @return [String]
+#
+# @!attribute [rw] issued_at
 #   @return [String, nil]
 #
-# @!attribute [rw] idle_expires_at
+# @!attribute [rw] issuer
 #   @return [String, nil]
 #
-# @!attribute [rw] is_valid
-#   @return [Boolean, nil]
+# @!attribute [rw] session_id
+#   @return [String]
 #
 # @!attribute [rw] session_token
 #   @return [String]
 #
-# @!attribute [rw] user_id
-#   @return [String, nil]
+# @!attribute [rw] subject
+#   @return [Object]
 SessionManagement = Struct.new(
-  :claim,
-  :expiration_time,
-  :idle_expires_at,
-  :is_valid,
+  :amr,
+  :audience,
+  :email,
+  :expiration,
+  :issued_at,
+  :issuer,
+  :session_id,
   :session_token,
-  :user_id,
+  :subject,
   keyword_init: true
 )
 
 # Request payload for SessionManagement#load.
 #
-# @!attribute [rw] claim
+# @!attribute [rw] amr
+#   @return [Array, nil]
+#
+# @!attribute [rw] audience
+#   @return [Array, nil]
+#
+# @!attribute [rw] email
 #   @return [Hash, nil]
 #
-# @!attribute [rw] expiration_time
+# @!attribute [rw] expiration
 #   @return [String, nil]
 #
-# @!attribute [rw] idle_expires_at
+# @!attribute [rw] issued_at
 #   @return [String, nil]
 #
-# @!attribute [rw] is_valid
-#   @return [Boolean, nil]
+# @!attribute [rw] issuer
+#   @return [String, nil]
+#
+# @!attribute [rw] session_id
+#   @return [String, nil]
 #
 # @!attribute [rw] session_token
 #   @return [String, nil]
 #
-# @!attribute [rw] user_id
-#   @return [String, nil]
+# @!attribute [rw] subject
+#   @return [Object, nil]
 SessionManagementLoadMatch = Struct.new(
-  :claim,
-  :expiration_time,
-  :idle_expires_at,
-  :is_valid,
+  :amr,
+  :audience,
+  :email,
+  :expiration,
+  :issued_at,
+  :issuer,
+  :session_id,
   :session_token,
-  :user_id,
+  :subject,
   keyword_init: true
 )
 
 # Request payload for SessionManagement#create.
 #
-# @!attribute [rw] claim
-#   @return [Hash]
+# @!attribute [rw] amr
+#   @return [Array, nil]
 #
-# @!attribute [rw] expiration_time
+# @!attribute [rw] audience
+#   @return [Array, nil]
+#
+# @!attribute [rw] email
+#   @return [Hash, nil]
+#
+# @!attribute [rw] expiration
+#   @return [String]
+#
+# @!attribute [rw] issued_at
 #   @return [String, nil]
 #
-# @!attribute [rw] idle_expires_at
+# @!attribute [rw] issuer
 #   @return [String, nil]
 #
-# @!attribute [rw] is_valid
-#   @return [Boolean, nil]
+# @!attribute [rw] session_id
+#   @return [String]
 #
 # @!attribute [rw] session_token
 #   @return [String]
 #
-# @!attribute [rw] user_id
-#   @return [String, nil]
+# @!attribute [rw] subject
+#   @return [Object]
 SessionManagementCreateData = Struct.new(
-  :claim,
-  :expiration_time,
-  :idle_expires_at,
-  :is_valid,
+  :amr,
+  :audience,
+  :email,
+  :expiration,
+  :issued_at,
+  :issuer,
+  :session_id,
   :session_token,
-  :user_id,
+  :subject,
   keyword_init: true
 )
 
@@ -734,10 +910,13 @@ TokenCreateData = Struct.new(
 #   @return [String, nil]
 #
 # @!attribute [rw] email
-#   @return [Array, nil]
+#   @return [String, nil]
 #
 # @!attribute [rw] email_id
 #   @return [String, nil]
+#
+# @!attribute [rw] emails
+#   @return [Array, nil]
 #
 # @!attribute [rw] family_name
 #   @return [String, nil]
@@ -760,13 +939,13 @@ TokenCreateData = Struct.new(
 # @!attribute [rw] name
 #   @return [String, nil]
 #
-# @!attribute [rw] passkey
+# @!attribute [rw] passkeys
 #   @return [Array, nil]
 #
 # @!attribute [rw] picture
 #   @return [String, nil]
 #
-# @!attribute [rw] security_key
+# @!attribute [rw] security_keys
 #   @return [Array, nil]
 #
 # @!attribute [rw] updated_at
@@ -781,12 +960,13 @@ TokenCreateData = Struct.new(
 # @!attribute [rw] verified
 #   @return [Boolean, nil]
 #
-# @!attribute [rw] webauthn_credential
+# @!attribute [rw] webauthn_credentials
 #   @return [Array, nil]
 User = Struct.new(
   :created_at,
   :email,
   :email_id,
+  :emails,
   :family_name,
   :given_name,
   :has_webauthn_credential,
@@ -794,14 +974,14 @@ User = Struct.new(
   :metadata,
   :mfa_config,
   :name,
-  :passkey,
+  :passkeys,
   :picture,
-  :security_key,
+  :security_keys,
   :updated_at,
   :user_id,
   :username,
   :verified,
-  :webauthn_credential,
+  :webauthn_credentials,
   keyword_init: true
 )
 
@@ -820,10 +1000,13 @@ UserLoadMatch = Struct.new(
 #   @return [String, nil]
 #
 # @!attribute [rw] email
-#   @return [Array, nil]
+#   @return [String, nil]
 #
 # @!attribute [rw] email_id
 #   @return [String, nil]
+#
+# @!attribute [rw] emails
+#   @return [Array, nil]
 #
 # @!attribute [rw] family_name
 #   @return [String, nil]
@@ -846,13 +1029,13 @@ UserLoadMatch = Struct.new(
 # @!attribute [rw] name
 #   @return [String, nil]
 #
-# @!attribute [rw] passkey
+# @!attribute [rw] passkeys
 #   @return [Array, nil]
 #
 # @!attribute [rw] picture
 #   @return [String, nil]
 #
-# @!attribute [rw] security_key
+# @!attribute [rw] security_keys
 #   @return [Array, nil]
 #
 # @!attribute [rw] updated_at
@@ -867,12 +1050,13 @@ UserLoadMatch = Struct.new(
 # @!attribute [rw] verified
 #   @return [Boolean, nil]
 #
-# @!attribute [rw] webauthn_credential
+# @!attribute [rw] webauthn_credentials
 #   @return [Array, nil]
 UserCreateData = Struct.new(
   :created_at,
   :email,
   :email_id,
+  :emails,
   :family_name,
   :given_name,
   :has_webauthn_credential,
@@ -880,14 +1064,14 @@ UserCreateData = Struct.new(
   :metadata,
   :mfa_config,
   :name,
-  :passkey,
+  :passkeys,
   :picture,
-  :security_key,
+  :security_keys,
   :updated_at,
   :user_id,
   :username,
   :verified,
-  :webauthn_credential,
+  :webauthn_credentials,
   keyword_init: true
 )
 
@@ -897,10 +1081,13 @@ UserCreateData = Struct.new(
 #   @return [String, nil]
 #
 # @!attribute [rw] email
-#   @return [Array, nil]
+#   @return [String, nil]
 #
 # @!attribute [rw] email_id
 #   @return [String, nil]
+#
+# @!attribute [rw] emails
+#   @return [Array, nil]
 #
 # @!attribute [rw] family_name
 #   @return [String, nil]
@@ -923,13 +1110,13 @@ UserCreateData = Struct.new(
 # @!attribute [rw] name
 #   @return [String, nil]
 #
-# @!attribute [rw] passkey
+# @!attribute [rw] passkeys
 #   @return [Array, nil]
 #
 # @!attribute [rw] picture
 #   @return [String, nil]
 #
-# @!attribute [rw] security_key
+# @!attribute [rw] security_keys
 #   @return [Array, nil]
 #
 # @!attribute [rw] updated_at
@@ -944,12 +1131,13 @@ UserCreateData = Struct.new(
 # @!attribute [rw] verified
 #   @return [Boolean, nil]
 #
-# @!attribute [rw] webauthn_credential
+# @!attribute [rw] webauthn_credentials
 #   @return [Array, nil]
 UserRemoveMatch = Struct.new(
   :created_at,
   :email,
   :email_id,
+  :emails,
   :family_name,
   :given_name,
   :has_webauthn_credential,
@@ -957,14 +1145,14 @@ UserRemoveMatch = Struct.new(
   :metadata,
   :mfa_config,
   :name,
-  :passkey,
+  :passkeys,
   :picture,
-  :security_key,
+  :security_keys,
   :updated_at,
   :user_id,
   :username,
   :verified,
-  :webauthn_credential,
+  :webauthn_credentials,
   keyword_init: true
 )
 
@@ -973,7 +1161,7 @@ UserRemoveMatch = Struct.new(
 # @!attribute [rw] created_at
 #   @return [String, nil]
 #
-# @!attribute [rw] email
+# @!attribute [rw] emails
 #   @return [Array, nil]
 #
 # @!attribute [rw] family_name
@@ -994,13 +1182,13 @@ UserRemoveMatch = Struct.new(
 # @!attribute [rw] name
 #   @return [String, nil]
 #
-# @!attribute [rw] passkey
+# @!attribute [rw] passkeys
 #   @return [Array, nil]
 #
 # @!attribute [rw] picture
 #   @return [String, nil]
 #
-# @!attribute [rw] security_key
+# @!attribute [rw] security_keys
 #   @return [Array, nil]
 #
 # @!attribute [rw] updated_at
@@ -1013,16 +1201,16 @@ UserRemoveMatch = Struct.new(
 #   @return [Hash, nil]
 UserManagement = Struct.new(
   :created_at,
-  :email,
+  :emails,
   :family_name,
   :given_name,
   :id,
   :metadata,
   :mfa_config,
   :name,
-  :passkey,
+  :passkeys,
   :picture,
-  :security_key,
+  :security_keys,
   :updated_at,
   :user_id,
   :username,
@@ -1034,7 +1222,7 @@ UserManagement = Struct.new(
 # @!attribute [rw] created_at
 #   @return [String, nil]
 #
-# @!attribute [rw] email
+# @!attribute [rw] emails
 #   @return [Array, nil]
 #
 # @!attribute [rw] family_name
@@ -1055,13 +1243,13 @@ UserManagement = Struct.new(
 # @!attribute [rw] name
 #   @return [String, nil]
 #
-# @!attribute [rw] passkey
+# @!attribute [rw] passkeys
 #   @return [Array, nil]
 #
 # @!attribute [rw] picture
 #   @return [String, nil]
 #
-# @!attribute [rw] security_key
+# @!attribute [rw] security_keys
 #   @return [Array, nil]
 #
 # @!attribute [rw] updated_at
@@ -1074,16 +1262,16 @@ UserManagement = Struct.new(
 #   @return [Hash, nil]
 UserManagementListMatch = Struct.new(
   :created_at,
-  :email,
+  :emails,
   :family_name,
   :given_name,
   :id,
   :metadata,
   :mfa_config,
   :name,
-  :passkey,
+  :passkeys,
   :picture,
-  :security_key,
+  :security_keys,
   :updated_at,
   :user_id,
   :username,
@@ -1095,7 +1283,7 @@ UserManagementListMatch = Struct.new(
 # @!attribute [rw] created_at
 #   @return [String, nil]
 #
-# @!attribute [rw] email
+# @!attribute [rw] emails
 #   @return [Array, nil]
 #
 # @!attribute [rw] family_name
@@ -1116,13 +1304,13 @@ UserManagementListMatch = Struct.new(
 # @!attribute [rw] name
 #   @return [String, nil]
 #
-# @!attribute [rw] passkey
+# @!attribute [rw] passkeys
 #   @return [Array, nil]
 #
 # @!attribute [rw] picture
 #   @return [String, nil]
 #
-# @!attribute [rw] security_key
+# @!attribute [rw] security_keys
 #   @return [Array, nil]
 #
 # @!attribute [rw] updated_at
@@ -1135,16 +1323,16 @@ UserManagementListMatch = Struct.new(
 #   @return [Hash, nil]
 UserManagementCreateData = Struct.new(
   :created_at,
-  :email,
+  :emails,
   :family_name,
   :given_name,
   :id,
   :metadata,
   :mfa_config,
   :name,
-  :passkey,
+  :passkeys,
   :picture,
-  :security_key,
+  :security_keys,
   :updated_at,
   :user_id,
   :username,
@@ -1153,16 +1341,13 @@ UserManagementCreateData = Struct.new(
 
 # WebAuthn entity data model.
 #
-# @!attribute [rw] credential_id
-#   @return [String, nil]
-#
 # @!attribute [rw] id
 #   @return [String, nil]
 #
 # @!attribute [rw] name
 #   @return [String, nil]
 #
-# @!attribute [rw] raw_id
+# @!attribute [rw] rawId
 #   @return [String, nil]
 #
 # @!attribute [rw] response
@@ -1170,32 +1355,24 @@ UserManagementCreateData = Struct.new(
 #
 # @!attribute [rw] type
 #   @return [String, nil]
-#
-# @!attribute [rw] user_id
-#   @return [String, nil]
 WebAuthn = Struct.new(
-  :credential_id,
   :id,
   :name,
-  :raw_id,
+  :rawId,
   :response,
   :type,
-  :user_id,
   keyword_init: true
 )
 
 # Request payload for WebAuthn#create.
 #
-# @!attribute [rw] credential_id
-#   @return [String, nil]
-#
 # @!attribute [rw] id
 #   @return [String, nil]
 #
 # @!attribute [rw] name
 #   @return [String, nil]
 #
-# @!attribute [rw] raw_id
+# @!attribute [rw] rawId
 #   @return [String, nil]
 #
 # @!attribute [rw] response
@@ -1203,17 +1380,12 @@ WebAuthn = Struct.new(
 #
 # @!attribute [rw] type
 #   @return [String, nil]
-#
-# @!attribute [rw] user_id
-#   @return [String, nil]
 WebAuthnCreateData = Struct.new(
-  :credential_id,
   :id,
   :name,
-  :raw_id,
+  :rawId,
   :response,
   :type,
-  :user_id,
   keyword_init: true
 )
 
@@ -1222,13 +1394,10 @@ WebAuthnCreateData = Struct.new(
 # @!attribute [rw] id
 #   @return [String]
 #
-# @!attribute [rw] credential_id
-#   @return [String, nil]
-#
 # @!attribute [rw] name
 #   @return [String, nil]
 #
-# @!attribute [rw] raw_id
+# @!attribute [rw] rawId
 #   @return [String, nil]
 #
 # @!attribute [rw] response
@@ -1236,17 +1405,12 @@ WebAuthnCreateData = Struct.new(
 #
 # @!attribute [rw] type
 #   @return [String, nil]
-#
-# @!attribute [rw] user_id
-#   @return [String, nil]
 WebAuthnUpdateData = Struct.new(
   :id,
-  :credential_id,
   :name,
-  :raw_id,
+  :rawId,
   :response,
   :type,
-  :user_id,
   keyword_init: true
 )
 
@@ -1267,7 +1431,7 @@ WebAuthnRemoveMatch = Struct.new(
 # @!attribute [rw] id
 #   @return [String, nil]
 #
-# @!attribute [rw] raw_id
+# @!attribute [rw] rawId
 #   @return [String, nil]
 #
 # @!attribute [rw] response
@@ -1281,7 +1445,7 @@ WebAuthnRemoveMatch = Struct.new(
 WebauthnLogin = Struct.new(
   :credential_id,
   :id,
-  :raw_id,
+  :rawId,
   :response,
   :type,
   :user_id,
@@ -1296,7 +1460,7 @@ WebauthnLogin = Struct.new(
 # @!attribute [rw] id
 #   @return [String, nil]
 #
-# @!attribute [rw] raw_id
+# @!attribute [rw] rawId
 #   @return [String, nil]
 #
 # @!attribute [rw] response
@@ -1310,7 +1474,7 @@ WebauthnLogin = Struct.new(
 WebauthnLoginCreateData = Struct.new(
   :credential_id,
   :id,
-  :raw_id,
+  :rawId,
   :response,
   :type,
   :user_id,

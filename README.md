@@ -35,18 +35,27 @@ network, and no credentials:
 ### TypeScript
 
 ```ts
-const client = HankoPublicSDK.test()
-const jsonwebkeysets = await client.JsonWebKeySet().list()
-// jsonwebkeysets is an array of bare JsonWebKeySet records populated with mock data
-console.log(jsonwebkeysets)
+// The offline mock starts EMPTY — seed it with the records the test needs.
+// Shape: { entity: { <entity-name>: { <id>: <record> } } }
+const client = HankoPublicSDK.test({
+  entity: {
+    credential: {
+      test01: { id: 'test01' },
+    },
+  },
+})
+const credentials = await client.Credential().list()
+// credentials is an array of Credential entities, populated with mock data
+// — call credentials[0].data() for the record itself
+console.log(credentials)
 ```
 
 ### Python
 
 ```python
 client = HankoPublicSDK.test()
-jsonwebkeysets = client.JsonWebKeySet().list()
-print(jsonwebkeysets)
+credentials = client.Credential().list()
+print(credentials)
 ```
 
 ### PHP
@@ -54,16 +63,16 @@ print(jsonwebkeysets)
 ```php
 // Seed fixture data so offline calls resolve without a live server.
 $client = HankoPublicSDK::test([
-    "entity" => ["jsonwebkeyset" => ["test01" => []]],
+    "entity" => ["credential" => ["test01" => []]],
 ]);
-$jsonwebkeysets = $client->JsonWebKeySet()->list();
+$credentials = $client->Credential()->list();
 ```
 
 ### Golang
 
 ```go
 client := sdk.Test()
-result, err := client.JsonWebKeySet(nil).List(
+result, err := client.Credential(nil).List(
     nil, nil,
 )
 ```
@@ -73,16 +82,16 @@ result, err := client.JsonWebKeySet(nil).List(
 ```ruby
 # Seed fixture data so offline calls resolve without a live server.
 client = HankoPublicSDK.test({
-  "entity" => { "jsonwebkeyset" => { "test01" => {} } },
+  "entity" => { "credential" => { "test01" => {} } },
 })
-jsonwebkeysets = client.JsonWebKeySet.list()
+credentials = client.Credential.list()
 ```
 
 ### Lua
 
 ```lua
 local client = sdk.test()
-local results, err = client:JsonWebKeySet():list()
+local results, err = client:Credential():list()
 ```
 
 ## Packages
@@ -159,13 +168,13 @@ The API exposes 19 entities:
 | **JsonWebKeySet** | The JsonWebKeySet entity (list). | `/.well-known/jwks.json` |
 | **Passcode** | The Passcode entity (create). | `/passcode/login/finalize` |
 | **Password** | The Password entity (create, update). | `/password/login` |
-| **Saml** | The Saml entity (create, load). | `/saml/callback` |
+| **Saml** | The Saml entity (create, load). | `/saml/metadata` |
 | **SessionManagement** | The SessionManagement entity (create, load). | `/sessions/validate` |
 | **Status** | The Status entity (load). | `/` |
 | **ThirdParty** | The ThirdParty entity (load). | `/thirdparty/callback` |
 | **Token** | The Token entity (create). | `/token` |
-| **User** | The User entity (create, load, remove). | `/user` |
-| **UserManagement** | The UserManagement entity (create, list). | `/logout` |
+| **User** | The User entity (create, load, remove). | `/users/{id}` |
+| **UserManagement** | The UserManagement entity (create, list). | `/me` |
 | **WebAuthn** | The WebAuthn entity (create, remove, update). | `/webauthn/registration/finalize` |
 | **WebauthnLogin** | The WebauthnLogin entity (create). | `/webauthn/login/finalize` |
 

@@ -4,7 +4,7 @@
       "WEBAUTHN_LOGIN00": {
         "credential_id": "CREDENTIAL01",
         "id": "WEBAUTHN_LOGIN00",
-        "raw_id": "RAW01",
+        "rawId": "s3e",
         "response": {},
         "type": "s40",
         "user_id": "USER01"
@@ -12,7 +12,7 @@
       "WEBAUTHN_LOGIN01": {
         "credential_id": "CREDENTIAL01",
         "id": "WEBAUTHN_LOGIN01",
-        "raw_id": "RAW01",
+        "rawId": "s7a",
         "response": {},
         "type": "s7c",
         "user_id": "USER01"
@@ -20,7 +20,7 @@
       "WEBAUTHN_LOGIN02": {
         "credential_id": "CREDENTIAL01",
         "id": "WEBAUTHN_LOGIN02",
-        "raw_id": "RAW01",
+        "rawId": "sb6",
         "response": {},
         "type": "sb8",
         "user_id": "USER01"
@@ -31,7 +31,7 @@
     "webauthn_login": {
       "webauthn_login_ref01": {
         "credential_id": "CREDENTIAL01",
-        "raw_id": "RAW01",
+        "rawId": "sf2",
         "response": {},
         "type": "sf4",
         "user_id": "USER01"

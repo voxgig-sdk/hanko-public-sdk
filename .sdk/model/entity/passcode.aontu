@@ -11,11 +11,6 @@ main: kit: entity: passcode: {
       type: "`$STRING`"
     }
     {
-      name: "created_at"
-      req: false
-      type: "`$STRING`"
-    }
-    {
       name: "email_id"
       req: false
       type: "`$STRING`"
@@ -24,11 +19,6 @@ main: kit: entity: passcode: {
       name: "id"
       req: false
       type: "`$STRING`"
-    }
-    {
-      name: "ttl"
-      req: false
-      type: "`$INTEGER`"
     }
     {
       name: "user_id"
@@ -57,7 +47,7 @@ main: kit: entity: passcode: {
           ]
           transform: {
             req: "`reqdata`"
-            res: "`body`"
+            res: "`body.id`"
           }
         }
         {
@@ -70,7 +60,7 @@ main: kit: entity: passcode: {
           ]
           transform: {
             req: "`reqdata`"
-            res: "`body`"
+            res: "`body.id`"
           }
         }
       ]

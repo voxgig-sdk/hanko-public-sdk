@@ -211,8 +211,8 @@ fmt.Println(credential.GetName()) // "credential"
 | `last_used_at` | `string` | No |  |
 | `mfa_only` | `bool` | No |  |
 | `name` | `string` | No |  |
-| `public_key` | `string` | No |  |
-| `transport` | `[]any` | No |  |
+| `publickey` | `string` | No |  |
+| `transports` | `[]any` | No |  |
 
 ### Operations
 
@@ -264,9 +264,9 @@ fmt.Println(credentialCreationOption.GetName()) // "credential_creation_option"
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
 | `attestation` | `string` | No |  |
-| `authenticator_selection` | `map[string]any` | No |  |
+| `authenticatorSelection` | `map[string]any` | No |  |
 | `challenge` | `string` | No |  |
-| `pub_key_cred_param` | `[]any` | No |  |
+| `pubKeyCredParams` | `[]any` | No |  |
 | `rp` | `map[string]any` | No |  |
 | `timeout` | `int` | No |  |
 | `user` | `map[string]any` | No |  |
@@ -321,12 +321,12 @@ fmt.Println(credentialRequestOption.GetName()) // "credential_request_option"
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `allow_credential` | `[]any` | No |  |
+| `allowCredentials` | `[]any` | No |  |
 | `challenge` | `string` | No |  |
-| `rp_id` | `string` | No |  |
+| `rpId` | `string` | No |  |
 | `timeout` | `int` | No |  |
+| `userVerification` | `string` | No |  |
 | `user_id` | `string` | No |  |
-| `user_verification` | `string` | No |  |
 
 ### Operations
 
@@ -380,6 +380,7 @@ fmt.Println(email.GetName()) // "email"
 | --- | --- | --- | --- |
 | `address` | `string` | Yes |  |
 | `id` | `string` | No |  |
+| `identities` | `any` | No |  |
 | `identity` | `any` | No |  |
 | `is_primary` | `bool` | No |  |
 | `is_verified` | `bool` | No |  |
@@ -390,6 +391,7 @@ fmt.Println(email.GetName()) // "email"
 | --- | --- | --- | --- |
 | `address` | Yes | - | - |
 | `id` | - | - | - |
+| `identities` | - | - | - |
 | `identity` | - | - | - |
 | `is_primary` | - | - | - |
 | `is_verified` | - | - | - |
@@ -517,7 +519,7 @@ fmt.Println(hankoConfiguration.GetName()) // "hanko_configuration"
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
 | `account` | `map[string]any` | No |  |
-| `email` | `map[string]any` | No |  |
+| `emails` | `map[string]any` | No |  |
 | `password` | `map[string]any` | No |  |
 
 ### Operations
@@ -626,10 +628,8 @@ fmt.Println(passcode.GetName()) // "passcode"
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
 | `code` | `string` | No |  |
-| `created_at` | `string` | No |  |
 | `email_id` | `string` | No |  |
 | `id` | `string` | No |  |
-| `ttl` | `int` | No |  |
 | `user_id` | `string` | Yes |  |
 
 ### Operations
@@ -752,12 +752,24 @@ fmt.Println(saml.GetName()) // "saml"
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `attribute_map` | `map[string]any` | No |  |
-| `domain` | `string` | No |  |
-| `enabled` | `bool` | No |  |
-| `metadata_url` | `string` | No |  |
+| `birthdate` | `string` | No |  |
+| `email` | `string` | No |  |
+| `email_verified` | `string` | No |  |
+| `family_name` | `string` | No |  |
+| `gender` | `string` | No |  |
+| `given_name` | `string` | No |  |
+| `locale` | `string` | No |  |
+| `middle_name` | `string` | No |  |
 | `name` | `string` | No |  |
-| `skip_email_verification` | `bool` | No |  |
+| `nickname` | `string` | No |  |
+| `phone` | `string` | No |  |
+| `phone_verified` | `string` | No |  |
+| `picture` | `string` | No |  |
+| `preferred_username` | `string` | No |  |
+| `profile` | `string` | No |  |
+| `updated_at` | `string` | No |  |
+| `website` | `string` | No |  |
+| `zone_info` | `string` | No |  |
 
 ### Operations
 
@@ -821,12 +833,15 @@ fmt.Println(sessionManagement.GetName()) // "session_management"
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `claim` | `map[string]any` | Yes |  |
-| `expiration_time` | `string` | No |  |
-| `idle_expires_at` | `string` | No |  |
-| `is_valid` | `bool` | No |  |
+| `amr` | `[]any` | No |  |
+| `audience` | `[]any` | No |  |
+| `email` | `map[string]any` | No |  |
+| `expiration` | `string` | Yes |  |
+| `issued_at` | `string` | No |  |
+| `issuer` | `string` | No |  |
+| `session_id` | `string` | Yes |  |
 | `session_token` | `string` | Yes |  |
-| `user_id` | `string` | No |  |
+| `subject` | `any` | Yes |  |
 
 ### Operations
 
@@ -848,8 +863,10 @@ Create a new entity with the given data.
 
 ```go
 result, err := client.SessionManagement(nil).Create(map[string]any{
-    "claim": map[string]any{},
+    "expiration": "example_expiration",
+    "session_id": "example_session_id",
     "session_token": "example_session_token",
+    "subject": "example_subject",
 }, nil)
 if err != nil {
     panic(err)
@@ -1035,8 +1052,9 @@ fmt.Println(user.GetName()) // "user"
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
 | `created_at` | `string` | No |  |
-| `email` | `[]any` | No |  |
+| `email` | `string` | No |  |
 | `email_id` | `string` | No |  |
+| `emails` | `[]any` | No |  |
 | `family_name` | `string` | No |  |
 | `given_name` | `string` | No |  |
 | `has_webauthn_credential` | `bool` | No |  |
@@ -1044,14 +1062,14 @@ fmt.Println(user.GetName()) // "user"
 | `metadata` | `map[string]any` | No |  |
 | `mfa_config` | `map[string]any` | No |  |
 | `name` | `string` | No |  |
-| `passkey` | `[]any` | No |  |
+| `passkeys` | `[]any` | No |  |
 | `picture` | `string` | No |  |
-| `security_key` | `[]any` | No |  |
+| `security_keys` | `[]any` | No |  |
 | `updated_at` | `string` | No |  |
 | `user_id` | `string` | No |  |
 | `username` | `string` | No |  |
 | `verified` | `bool` | No |  |
-| `webauthn_credential` | `[]any` | No |  |
+| `webauthn_credentials` | `[]any` | No |  |
 
 ### Field Usage by Operation
 
@@ -1060,6 +1078,7 @@ fmt.Println(user.GetName()) // "user"
 | `created_at` | - | - | - |
 | `email` | - | Yes | - |
 | `email_id` | - | - | - |
+| `emails` | - | - | - |
 | `family_name` | - | - | - |
 | `given_name` | - | - | - |
 | `has_webauthn_credential` | - | - | - |
@@ -1067,14 +1086,14 @@ fmt.Println(user.GetName()) // "user"
 | `metadata` | - | - | - |
 | `mfa_config` | - | - | - |
 | `name` | - | - | - |
-| `passkey` | - | - | - |
+| `passkeys` | - | - | - |
 | `picture` | - | - | - |
-| `security_key` | - | - | - |
+| `security_keys` | - | - | - |
 | `updated_at` | - | - | - |
 | `user_id` | - | - | - |
 | `username` | - | - | - |
 | `verified` | - | - | - |
-| `webauthn_credential` | - | - | - |
+| `webauthn_credentials` | - | - | - |
 
 ### Operations
 
@@ -1151,16 +1170,16 @@ fmt.Println(userManagement.GetName()) // "user_management"
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
 | `created_at` | `string` | No |  |
-| `email` | `[]any` | No |  |
+| `emails` | `[]any` | No |  |
 | `family_name` | `string` | No |  |
 | `given_name` | `string` | No |  |
 | `id` | `string` | No |  |
 | `metadata` | `map[string]any` | No |  |
 | `mfa_config` | `map[string]any` | No |  |
 | `name` | `string` | No |  |
-| `passkey` | `[]any` | No |  |
+| `passkeys` | `[]any` | No |  |
 | `picture` | `string` | No |  |
-| `security_key` | `[]any` | No |  |
+| `security_keys` | `[]any` | No |  |
 | `updated_at` | `string` | No |  |
 | `user_id` | `string` | No |  |
 | `username` | `map[string]any` | No |  |
@@ -1227,13 +1246,11 @@ fmt.Println(webAuthn.GetName()) // "web_authn"
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `credential_id` | `string` | No |  |
 | `id` | `string` | No |  |
 | `name` | `string` | No |  |
-| `raw_id` | `string` | No |  |
+| `rawId` | `string` | No |  |
 | `response` | `map[string]any` | No |  |
 | `type` | `string` | No |  |
-| `user_id` | `string` | No |  |
 
 ### Operations
 
@@ -1314,7 +1331,7 @@ fmt.Println(webauthnLogin.GetName()) // "webauthn_login"
 | --- | --- | --- | --- |
 | `credential_id` | `string` | No |  |
 | `id` | `string` | No |  |
-| `raw_id` | `string` | No |  |
+| `rawId` | `string` | No |  |
 | `response` | `map[string]any` | No |  |
 | `type` | `string` | No |  |
 | `user_id` | `string` | No |  |

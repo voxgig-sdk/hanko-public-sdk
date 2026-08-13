@@ -24,6 +24,7 @@ require_relative 'prepare_method'
 require_relative 'prepare_params'
 require_relative 'prepare_path'
 require_relative 'prepare_query'
+require_relative 'graphql'
 require_relative 'result_basic'
 require_relative 'result_body'
 require_relative 'result_headers'
@@ -55,6 +56,8 @@ HankoPublicUtility.registrar = ->(u) {
   u.prepare_params = HankoPublicUtilities::PrepareParams
   u.prepare_path = HankoPublicUtilities::PreparePath
   u.prepare_query = HankoPublicUtilities::PrepareQuery
+  u.graphql_body = HankoPublicUtilities::GraphqlBody
+  u.graphql_errors = HankoPublicUtilities::GraphqlErrors
   u.result_basic = HankoPublicUtilities::ResultBasic
   u.result_body = HankoPublicUtilities::ResultBody
   u.result_headers = HankoPublicUtilities::ResultHeaders

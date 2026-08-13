@@ -26,8 +26,8 @@ import {
 describe('UserEntity', async () => {
 
   // Per-test live pacing. Delay is read from sdk-test-control.json's
-  // `test.live.delayMs`; only sleeps when HANKOPUBLIC_TEST_LIVE=TRUE.
-  afterEach(liveDelay('HANKOPUBLIC_TEST_LIVE'))
+  // `test.live.delayMs`; only sleeps when HANKO_PUBLIC_TEST_LIVE=TRUE.
+  afterEach(liveDelay('HANKO_PUBLIC_TEST_LIVE'))
 
   test('instance', async () => {
     const testsdk = HankoPublicSDK.test()
@@ -62,14 +62,14 @@ describe('UserEntity', async () => {
     const user_ref01_ent = client.User()
     let user_ref01_data = setup.data.new.user['user_ref01']
 
-    user_ref01_data = await user_ref01_ent.create(user_ref01_data)
+    user_ref01_data = (await user_ref01_ent.create(user_ref01_data)).data()
     assert(null != user_ref01_data.id)
 
 
     // LOAD
     const user_ref01_match_dt0: any = {}
     user_ref01_match_dt0.id = user_ref01_data.id
-    const user_ref01_data_dt0 = await user_ref01_ent.load(user_ref01_match_dt0)
+    const user_ref01_data_dt0 = (await user_ref01_ent.load(user_ref01_match_dt0)).data()
     assert(user_ref01_data_dt0.id === user_ref01_data.id)
 
 

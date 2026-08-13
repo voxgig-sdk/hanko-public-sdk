@@ -204,8 +204,8 @@ credential = client.Credential()
 | `last_used_at` | `str` | No |  |
 | `mfa_only` | `bool` | No |  |
 | `name` | `str` | No |  |
-| `public_key` | `str` | No |  |
-| `transport` | `list` | No |  |
+| `publickey` | `str` | No |  |
+| `transports` | `list` | No |  |
 
 ### Operations
 
@@ -259,9 +259,9 @@ credential_creation_option = client.CredentialCreationOption()
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
 | `attestation` | `str` | No |  |
-| `authenticator_selection` | `dict` | No |  |
+| `authenticatorSelection` | `dict` | No |  |
 | `challenge` | `str` | No |  |
-| `pub_key_cred_param` | `list` | No |  |
+| `pubKeyCredParams` | `list` | No |  |
 | `rp` | `dict` | No |  |
 | `timeout` | `int` | No |  |
 | `user` | `dict` | No |  |
@@ -316,12 +316,12 @@ credential_request_option = client.CredentialRequestOption()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `allow_credential` | `list` | No |  |
+| `allowCredentials` | `list` | No |  |
 | `challenge` | `str` | No |  |
-| `rp_id` | `str` | No |  |
+| `rpId` | `str` | No |  |
 | `timeout` | `int` | No |  |
+| `userVerification` | `str` | No |  |
 | `user_id` | `str` | No |  |
-| `user_verification` | `str` | No |  |
 
 ### Operations
 
@@ -375,6 +375,7 @@ email = client.Email()
 | --- | --- | --- | --- |
 | `address` | `str` | Yes |  |
 | `id` | `str` | No |  |
+| `identities` | `Any` | No |  |
 | `identity` | `Any` | No |  |
 | `is_primary` | `bool` | No |  |
 | `is_verified` | `bool` | No |  |
@@ -385,6 +386,7 @@ email = client.Email()
 | --- | --- | --- | --- |
 | `address` | Yes | - | - |
 | `id` | - | - | - |
+| `identities` | - | - | - |
 | `identity` | - | - | - |
 | `is_primary` | - | - | - |
 | `is_verified` | - | - | - |
@@ -506,7 +508,7 @@ hanko_configuration = client.HankoConfiguration()
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
 | `account` | `dict` | No |  |
-| `email` | `dict` | No |  |
+| `emails` | `dict` | No |  |
 | `password` | `dict` | No |  |
 
 ### Operations
@@ -617,10 +619,8 @@ passcode = client.Passcode()
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
 | `code` | `str` | No |  |
-| `created_at` | `str` | No |  |
 | `email_id` | `str` | No |  |
 | `id` | `str` | No |  |
-| `ttl` | `int` | No |  |
 | `user_id` | `str` | Yes |  |
 
 ### Operations
@@ -739,12 +739,24 @@ saml = client.Saml()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `attribute_map` | `dict` | No |  |
-| `domain` | `str` | No |  |
-| `enabled` | `bool` | No |  |
-| `metadata_url` | `str` | No |  |
+| `birthdate` | `str` | No |  |
+| `email` | `str` | No |  |
+| `email_verified` | `str` | No |  |
+| `family_name` | `str` | No |  |
+| `gender` | `str` | No |  |
+| `given_name` | `str` | No |  |
+| `locale` | `str` | No |  |
+| `middle_name` | `str` | No |  |
 | `name` | `str` | No |  |
-| `skip_email_verification` | `bool` | No |  |
+| `nickname` | `str` | No |  |
+| `phone` | `str` | No |  |
+| `phone_verified` | `str` | No |  |
+| `picture` | `str` | No |  |
+| `preferred_username` | `str` | No |  |
+| `profile` | `str` | No |  |
+| `updated_at` | `str` | No |  |
+| `website` | `str` | No |  |
+| `zone_info` | `str` | No |  |
 
 ### Operations
 
@@ -804,12 +816,15 @@ session_management = client.SessionManagement()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `claim` | `dict` | Yes |  |
-| `expiration_time` | `str` | No |  |
-| `idle_expires_at` | `str` | No |  |
-| `is_valid` | `bool` | No |  |
+| `amr` | `list` | No |  |
+| `audience` | `list` | No |  |
+| `email` | `dict` | No |  |
+| `expiration` | `str` | Yes |  |
+| `issued_at` | `str` | No |  |
+| `issuer` | `str` | No |  |
+| `session_id` | `str` | Yes |  |
 | `session_token` | `str` | Yes |  |
-| `user_id` | `str` | No |  |
+| `subject` | `Any` | Yes |  |
 
 ### Operations
 
@@ -819,8 +834,10 @@ Create a new entity with the given data. Returns the created entity data and rai
 
 ```python
 result = client.SessionManagement().create({
-    "claim": {},  # dict
+    "expiration": "example_expiration",  # str
+    "session_id": "example_session_id",  # str
     "session_token": "example_session_token",  # str
+    "subject": "example_subject",  # Any
 })
 ```
 
@@ -1014,8 +1031,9 @@ user = client.User()
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
 | `created_at` | `str` | No |  |
-| `email` | `list` | No |  |
+| `email` | `str` | No |  |
 | `email_id` | `str` | No |  |
+| `emails` | `list` | No |  |
 | `family_name` | `str` | No |  |
 | `given_name` | `str` | No |  |
 | `has_webauthn_credential` | `bool` | No |  |
@@ -1023,14 +1041,14 @@ user = client.User()
 | `metadata` | `dict` | No |  |
 | `mfa_config` | `dict` | No |  |
 | `name` | `str` | No |  |
-| `passkey` | `list` | No |  |
+| `passkeys` | `list` | No |  |
 | `picture` | `str` | No |  |
-| `security_key` | `list` | No |  |
+| `security_keys` | `list` | No |  |
 | `updated_at` | `str` | No |  |
 | `user_id` | `str` | No |  |
 | `username` | `str` | No |  |
 | `verified` | `bool` | No |  |
-| `webauthn_credential` | `list` | No |  |
+| `webauthn_credentials` | `list` | No |  |
 
 ### Field Usage by Operation
 
@@ -1039,6 +1057,7 @@ user = client.User()
 | `created_at` | - | - | - |
 | `email` | - | Yes | - |
 | `email_id` | - | - | - |
+| `emails` | - | - | - |
 | `family_name` | - | - | - |
 | `given_name` | - | - | - |
 | `has_webauthn_credential` | - | - | - |
@@ -1046,14 +1065,14 @@ user = client.User()
 | `metadata` | - | - | - |
 | `mfa_config` | - | - | - |
 | `name` | - | - | - |
-| `passkey` | - | - | - |
+| `passkeys` | - | - | - |
 | `picture` | - | - | - |
-| `security_key` | - | - | - |
+| `security_keys` | - | - | - |
 | `updated_at` | - | - | - |
 | `user_id` | - | - | - |
 | `username` | - | - | - |
 | `verified` | - | - | - |
-| `webauthn_credential` | - | - | - |
+| `webauthn_credentials` | - | - | - |
 
 ### Operations
 
@@ -1122,16 +1141,16 @@ user_management = client.UserManagement()
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
 | `created_at` | `str` | No |  |
-| `email` | `list` | No |  |
+| `emails` | `list` | No |  |
 | `family_name` | `str` | No |  |
 | `given_name` | `str` | No |  |
 | `id` | `str` | No |  |
 | `metadata` | `dict` | No |  |
 | `mfa_config` | `dict` | No |  |
 | `name` | `str` | No |  |
-| `passkey` | `list` | No |  |
+| `passkeys` | `list` | No |  |
 | `picture` | `str` | No |  |
-| `security_key` | `list` | No |  |
+| `security_keys` | `list` | No |  |
 | `updated_at` | `str` | No |  |
 | `user_id` | `str` | No |  |
 | `username` | `dict` | No |  |
@@ -1196,13 +1215,11 @@ web_authn = client.WebAuthn()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `credential_id` | `str` | No |  |
 | `id` | `str` | No |  |
 | `name` | `str` | No |  |
-| `raw_id` | `str` | No |  |
+| `rawId` | `str` | No |  |
 | `response` | `dict` | No |  |
 | `type` | `str` | No |  |
-| `user_id` | `str` | No |  |
 
 ### Operations
 
@@ -1275,7 +1292,7 @@ webauthn_login = client.WebauthnLogin()
 | --- | --- | --- | --- |
 | `credential_id` | `str` | No |  |
 | `id` | `str` | No |  |
-| `raw_id` | `str` | No |  |
+| `rawId` | `str` | No |  |
 | `response` | `dict` | No |  |
 | `type` | `str` | No |  |
 | `user_id` | `str` | No |  |

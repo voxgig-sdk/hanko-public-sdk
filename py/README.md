@@ -46,8 +46,8 @@ Entity operations raise on failure, so wrap them in `try` / `except`:
 
 ```python
 try:
-    jsonwebkeysets = client.JsonWebKeySet().list()
-    print(jsonwebkeysets)
+    credentials = client.Credential().list()
+    print(credentials)
 except Exception as err:
     print(f"list failed: {err}")
 ```
@@ -113,9 +113,10 @@ Create a mock client for unit testing — no server required:
 ```python
 client = HankoPublicSDK.test()
 
-# Entity ops return the bare record and raise on error.
-jsonwebkeyset = client.JsonWebKeySet().list()
-# jsonwebkeyset contains the mock response record
+# Entity ops return the ENTITY and raises on error;
+# call data_get() for the record.
+credential = client.Credential().list()
+# credential contains the mock response record
 ```
 
 ### Use a custom fetch function
@@ -233,7 +234,7 @@ All entities share the same interface.
 
 ### Result shape
 
-Entity operations return the bare result data (a `dict` for single-entity
+Entity operations return the ENTITY (call data_get() for the record) (a `dict` for single-entity
 ops, a `list` for `list`) and raise on error. Wrap calls in
 `try`/`except` to handle failures.
 
@@ -273,8 +274,8 @@ API path: ``
 | `last_used_at` |  |
 | `mfa_only` |  |
 | `name` |  |
-| `public_key` |  |
-| `transport` |  |
+| `publickey` |  |
+| `transports` |  |
 
 Operations: List.
 
@@ -285,9 +286,9 @@ API path: `/webauthn/credentials`
 | Field | Description |
 | --- | --- |
 | `attestation` |  |
-| `authenticator_selection` |  |
+| `authenticatorSelection` |  |
 | `challenge` |  |
-| `pub_key_cred_param` |  |
+| `pubKeyCredParams` |  |
 | `rp` |  |
 | `timeout` |  |
 | `user` |  |
@@ -300,12 +301,12 @@ API path: `/webauthn/registration/initialize`
 
 | Field | Description |
 | --- | --- |
-| `allow_credential` |  |
+| `allowCredentials` |  |
 | `challenge` |  |
-| `rp_id` |  |
+| `rpId` |  |
 | `timeout` |  |
+| `userVerification` |  |
 | `user_id` |  |
-| `user_verification` |  |
 
 Operations: Create.
 
@@ -317,6 +318,7 @@ API path: `/webauthn/login/initialize`
 | --- | --- |
 | `address` |  |
 | `id` |  |
+| `identities` |  |
 | `identity` |  |
 | `is_primary` |  |
 | `is_verified` |  |
@@ -339,7 +341,7 @@ API path: `/emails/{id}/set_primary`
 | Field | Description |
 | --- | --- |
 | `account` |  |
-| `email` |  |
+| `emails` |  |
 | `password` |  |
 
 Operations: Load.
@@ -366,10 +368,8 @@ API path: `/.well-known/jwks.json`
 | Field | Description |
 | --- | --- |
 | `code` |  |
-| `created_at` |  |
 | `email_id` |  |
 | `id` |  |
-| `ttl` |  |
 | `user_id` |  |
 
 Operations: Create.
@@ -391,12 +391,24 @@ API path: `/password/login`
 
 | Field | Description |
 | --- | --- |
-| `attribute_map` |  |
-| `domain` |  |
-| `enabled` |  |
-| `metadata_url` |  |
+| `birthdate` |  |
+| `email` |  |
+| `email_verified` |  |
+| `family_name` |  |
+| `gender` |  |
+| `given_name` |  |
+| `locale` |  |
+| `middle_name` |  |
 | `name` |  |
-| `skip_email_verification` |  |
+| `nickname` |  |
+| `phone` |  |
+| `phone_verified` |  |
+| `picture` |  |
+| `preferred_username` |  |
+| `profile` |  |
+| `updated_at` |  |
+| `website` |  |
+| `zone_info` |  |
 
 Operations: Create, Load.
 
@@ -406,12 +418,15 @@ API path: `/saml/callback`
 
 | Field | Description |
 | --- | --- |
-| `claim` |  |
-| `expiration_time` |  |
-| `idle_expires_at` |  |
-| `is_valid` |  |
+| `amr` |  |
+| `audience` |  |
+| `email` |  |
+| `expiration` |  |
+| `issued_at` |  |
+| `issuer` |  |
+| `session_id` |  |
 | `session_token` |  |
-| `user_id` |  |
+| `subject` |  |
 
 Operations: Create, Load.
 
@@ -452,6 +467,7 @@ API path: `/token`
 | `created_at` |  |
 | `email` |  |
 | `email_id` |  |
+| `emails` |  |
 | `family_name` |  |
 | `given_name` |  |
 | `has_webauthn_credential` |  |
@@ -459,14 +475,14 @@ API path: `/token`
 | `metadata` |  |
 | `mfa_config` |  |
 | `name` |  |
-| `passkey` |  |
+| `passkeys` |  |
 | `picture` |  |
-| `security_key` |  |
+| `security_keys` |  |
 | `updated_at` |  |
 | `user_id` |  |
 | `username` |  |
 | `verified` |  |
-| `webauthn_credential` |  |
+| `webauthn_credentials` |  |
 
 Operations: Create, Load, Remove.
 
@@ -477,16 +493,16 @@ API path: `/user`
 | Field | Description |
 | --- | --- |
 | `created_at` |  |
-| `email` |  |
+| `emails` |  |
 | `family_name` |  |
 | `given_name` |  |
 | `id` |  |
 | `metadata` |  |
 | `mfa_config` |  |
 | `name` |  |
-| `passkey` |  |
+| `passkeys` |  |
 | `picture` |  |
-| `security_key` |  |
+| `security_keys` |  |
 | `updated_at` |  |
 | `user_id` |  |
 | `username` |  |
@@ -499,13 +515,11 @@ API path: `/logout`
 
 | Field | Description |
 | --- | --- |
-| `credential_id` |  |
 | `id` |  |
 | `name` |  |
-| `raw_id` |  |
+| `rawId` |  |
 | `response` |  |
 | `type` |  |
-| `user_id` |  |
 
 Operations: Create, Remove, Update.
 
@@ -517,7 +531,7 @@ API path: `/webauthn/registration/finalize`
 | --- | --- |
 | `credential_id` |  |
 | `id` |  |
-| `raw_id` |  |
+| `rawId` |  |
 | `response` |  |
 | `type` |  |
 | `user_id` |  |
@@ -559,8 +573,8 @@ Create an instance: `credential = client.Credential()`
 | `last_used_at` | `str` |  |
 | `mfa_only` | `bool` |  |
 | `name` | `str` |  |
-| `public_key` | `str` |  |
-| `transport` | `list` |  |
+| `publickey` | `str` |  |
+| `transports` | `list` |  |
 
 #### Example: List
 
@@ -584,9 +598,9 @@ Create an instance: `credential_creation_option = client.CredentialCreationOptio
 | Field | Type | Description |
 | --- | --- | --- |
 | `attestation` | `str` |  |
-| `authenticator_selection` | `dict` |  |
+| `authenticatorSelection` | `dict` |  |
 | `challenge` | `str` |  |
-| `pub_key_cred_param` | `list` |  |
+| `pubKeyCredParams` | `list` |  |
 | `rp` | `dict` |  |
 | `timeout` | `int` |  |
 | `user` | `dict` |  |
@@ -613,12 +627,12 @@ Create an instance: `credential_request_option = client.CredentialRequestOption(
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `allow_credential` | `list` |  |
+| `allowCredentials` | `list` |  |
 | `challenge` | `str` |  |
-| `rp_id` | `str` |  |
+| `rpId` | `str` |  |
 | `timeout` | `int` |  |
+| `userVerification` | `str` |  |
 | `user_id` | `str` |  |
-| `user_verification` | `str` |  |
 
 #### Example: Create
 
@@ -646,6 +660,7 @@ Create an instance: `email = client.Email()`
 | --- | --- | --- |
 | `address` | `str` |  |
 | `id` | `str` |  |
+| `identities` | `Any` |  |
 | `identity` | `Any` |  |
 | `is_primary` | `bool` |  |
 | `is_verified` | `bool` |  |
@@ -699,7 +714,7 @@ Create an instance: `hanko_configuration = client.HankoConfiguration()`
 | Field | Type | Description |
 | --- | --- | --- |
 | `account` | `dict` |  |
-| `email` | `dict` |  |
+| `emails` | `dict` |  |
 | `password` | `dict` |  |
 
 #### Example: Load
@@ -752,10 +767,8 @@ Create an instance: `passcode = client.Passcode()`
 | Field | Type | Description |
 | --- | --- | --- |
 | `code` | `str` |  |
-| `created_at` | `str` |  |
 | `email_id` | `str` |  |
 | `id` | `str` |  |
-| `ttl` | `int` |  |
 | `user_id` | `str` |  |
 
 #### Example: Create
@@ -810,12 +823,24 @@ Create an instance: `saml = client.Saml()`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `attribute_map` | `dict` |  |
-| `domain` | `str` |  |
-| `enabled` | `bool` |  |
-| `metadata_url` | `str` |  |
+| `birthdate` | `str` |  |
+| `email` | `str` |  |
+| `email_verified` | `str` |  |
+| `family_name` | `str` |  |
+| `gender` | `str` |  |
+| `given_name` | `str` |  |
+| `locale` | `str` |  |
+| `middle_name` | `str` |  |
 | `name` | `str` |  |
-| `skip_email_verification` | `bool` |  |
+| `nickname` | `str` |  |
+| `phone` | `str` |  |
+| `phone_verified` | `str` |  |
+| `picture` | `str` |  |
+| `preferred_username` | `str` |  |
+| `profile` | `str` |  |
+| `updated_at` | `str` |  |
+| `website` | `str` |  |
+| `zone_info` | `str` |  |
 
 #### Example: Load
 
@@ -846,12 +871,15 @@ Create an instance: `session_management = client.SessionManagement()`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `claim` | `dict` |  |
-| `expiration_time` | `str` |  |
-| `idle_expires_at` | `str` |  |
-| `is_valid` | `bool` |  |
+| `amr` | `list` |  |
+| `audience` | `list` |  |
+| `email` | `dict` |  |
+| `expiration` | `str` |  |
+| `issued_at` | `str` |  |
+| `issuer` | `str` |  |
+| `session_id` | `str` |  |
 | `session_token` | `str` |  |
-| `user_id` | `str` |  |
+| `subject` | `Any` |  |
 
 #### Example: Load
 
@@ -863,8 +891,10 @@ session_management = client.SessionManagement().load()
 
 ```python
 session_management = client.SessionManagement().create({
-    "claim": {},  # dict
+    "expiration": "example_expiration",  # str
+    "session_id": "example_session_id",  # str
     "session_token": "example_session_token",  # str
+    "subject": "example_subject",  # Any
 })
 ```
 
@@ -944,8 +974,9 @@ Create an instance: `user = client.User()`
 | Field | Type | Description |
 | --- | --- | --- |
 | `created_at` | `str` |  |
-| `email` | `list` |  |
+| `email` | `str` |  |
 | `email_id` | `str` |  |
+| `emails` | `list` |  |
 | `family_name` | `str` |  |
 | `given_name` | `str` |  |
 | `has_webauthn_credential` | `bool` |  |
@@ -953,14 +984,14 @@ Create an instance: `user = client.User()`
 | `metadata` | `dict` |  |
 | `mfa_config` | `dict` |  |
 | `name` | `str` |  |
-| `passkey` | `list` |  |
+| `passkeys` | `list` |  |
 | `picture` | `str` |  |
-| `security_key` | `list` |  |
+| `security_keys` | `list` |  |
 | `updated_at` | `str` |  |
 | `user_id` | `str` |  |
 | `username` | `str` |  |
 | `verified` | `bool` |  |
-| `webauthn_credential` | `list` |  |
+| `webauthn_credentials` | `list` |  |
 
 #### Example: Load
 
@@ -992,16 +1023,16 @@ Create an instance: `user_management = client.UserManagement()`
 | Field | Type | Description |
 | --- | --- | --- |
 | `created_at` | `str` |  |
-| `email` | `list` |  |
+| `emails` | `list` |  |
 | `family_name` | `str` |  |
 | `given_name` | `str` |  |
 | `id` | `str` |  |
 | `metadata` | `dict` |  |
 | `mfa_config` | `dict` |  |
 | `name` | `str` |  |
-| `passkey` | `list` |  |
+| `passkeys` | `list` |  |
 | `picture` | `str` |  |
-| `security_key` | `list` |  |
+| `security_keys` | `list` |  |
 | `updated_at` | `str` |  |
 | `user_id` | `str` |  |
 | `username` | `dict` |  |
@@ -1036,13 +1067,11 @@ Create an instance: `web_authn = client.WebAuthn()`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `credential_id` | `str` |  |
 | `id` | `str` |  |
 | `name` | `str` |  |
-| `raw_id` | `str` |  |
+| `rawId` | `str` |  |
 | `response` | `dict` |  |
 | `type` | `str` |  |
-| `user_id` | `str` |  |
 
 #### Example: Create
 
@@ -1068,7 +1097,7 @@ Create an instance: `webauthn_login = client.WebauthnLogin()`
 | --- | --- | --- |
 | `credential_id` | `str` |  |
 | `id` | `str` |  |
-| `raw_id` | `str` |  |
+| `rawId` | `str` |  |
 | `response` | `dict` |  |
 | `type` | `str` |  |
 | `user_id` | `str` |  |
@@ -1156,11 +1185,11 @@ Entity instances are stateful. After a successful `list`, the entity
 stores the returned data and match criteria internally.
 
 ```python
-jsonwebkeyset = client.JsonWebKeySet()
-jsonwebkeyset.list()
+credential = client.Credential()
+credential.list()
 
-# jsonwebkeyset.data_get() now returns the jsonwebkeyset data from the last list
-# jsonwebkeyset.match_get() returns the last match criteria
+# credential.data_get() now returns the credential data from the last list
+# credential.match_get() returns the last match criteria
 ```
 
 Call `make()` to create a fresh instance with the same configuration

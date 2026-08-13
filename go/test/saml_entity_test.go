@@ -44,7 +44,7 @@ func TestSamlEntity(t *testing.T) {
 		// The basic flow consumes synthetic IDs from the fixture. In live mode
 		// without an *_ENTID env override, those IDs hit the live API and 4xx.
 		if setup.syntheticOnly {
-			t.Skip("live entity test uses synthetic IDs from fixture — set HANKOPUBLIC_TEST_SAML_ENTID JSON to run live")
+			t.Skip("live entity test uses synthetic IDs from fixture — set HANKO_PUBLIC_TEST_SAML_ENTID JSON to run live")
 			return
 		}
 		client := setup.client
@@ -58,7 +58,7 @@ func TestSamlEntity(t *testing.T) {
 		if err != nil {
 			t.Fatalf("create failed: %v", err)
 		}
-		samlRef01Data = core.ToMapAny(samlRef01DataResult)
+		samlRef01Data = core.ToMapAny(entityData(samlRef01DataResult))
 		if samlRef01Data == nil {
 			t.Fatal("expected create result to be a map")
 		}
@@ -113,38 +113,38 @@ func samlBasicSetup(extra map[string]any) *entityTestSetup {
 	// Detect ENTID env override before envOverride consumes it. When live
 	// mode is on without a real override, the basic test runs against synthetic
 	// IDs from the fixture and 4xx's. Surface this so the test can skip.
-	entidEnvRaw := os.Getenv("HANKOPUBLIC_TEST_SAML_ENTID")
+	entidEnvRaw := os.Getenv("HANKO_PUBLIC_TEST_SAML_ENTID")
 	idmapOverridden := entidEnvRaw != "" && strings.HasPrefix(strings.TrimSpace(entidEnvRaw), "{")
 
 	env := envOverride(map[string]any{
-		"HANKOPUBLIC_TEST_SAML_ENTID": idmap,
-		"HANKOPUBLIC_TEST_LIVE":      "FALSE",
-		"HANKOPUBLIC_TEST_EXPLAIN":   "FALSE",
-		"HANKOPUBLIC_APIKEY":         "NONE",
+		"HANKO_PUBLIC_TEST_SAML_ENTID": idmap,
+		"HANKO_PUBLIC_TEST_LIVE":      "FALSE",
+		"HANKO_PUBLIC_TEST_EXPLAIN":   "FALSE",
+		"HANKO_PUBLIC_APIKEY":         "NONE",
 	})
 
-	idmapResolved := core.ToMapAny(env["HANKOPUBLIC_TEST_SAML_ENTID"])
+	idmapResolved := core.ToMapAny(env["HANKO_PUBLIC_TEST_SAML_ENTID"])
 	if idmapResolved == nil {
 		idmapResolved = core.ToMapAny(idmap)
 	}
 
-	if env["HANKOPUBLIC_TEST_LIVE"] == "TRUE" {
+	if env["HANKO_PUBLIC_TEST_LIVE"] == "TRUE" {
 		mergedOpts := vs.Merge([]any{
 			map[string]any{
-				"apikey": env["HANKOPUBLIC_APIKEY"],
+				"apikey": env["HANKO_PUBLIC_APIKEY"],
 			},
 			extra,
 		})
 		client = sdk.NewHankoPublicSDK(core.ToMapAny(mergedOpts))
 	}
 
-	live := env["HANKOPUBLIC_TEST_LIVE"] == "TRUE"
+	live := env["HANKO_PUBLIC_TEST_LIVE"] == "TRUE"
 	return &entityTestSetup{
 		client:        client,
 		data:          entityData,
 		idmap:         idmapResolved,
 		env:           env,
-		explain:       env["HANKOPUBLIC_TEST_EXPLAIN"] == "TRUE",
+		explain:       env["HANKO_PUBLIC_TEST_EXPLAIN"] == "TRUE",
 		live:          live,
 		syntheticOnly: live && !idmapOverridden,
 		now:           time.Now().UnixMilli(),

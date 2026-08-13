@@ -5,6 +5,10 @@
       "desc": ""
     },
     "kit": {
+      "author": {
+        "name": "",
+        "url": ""
+      },
       "config": {
         "docs_order": [
           "ts",
@@ -18,6 +22,7 @@
           "content-type": "application/json"
         }
       },
+      "contributor": {},
       "entity": {
         "create_user_response_object": {
           "active": true,
@@ -93,13 +98,13 @@
             },
             {
               "active": true,
-              "name": "public_key",
+              "name": "publickey",
               "req": false,
               "type": "`$STRING`"
             },
             {
               "active": true,
-              "name": "transport",
+              "name": "transports",
               "req": false,
               "type": "`$ARRAY`"
             }
@@ -117,6 +122,7 @@
                 {
                   "active": true,
                   "args": {},
+                  "kind": "http",
                   "method": "GET",
                   "orig": "/webauthn/credentials",
                   "parts": [
@@ -150,7 +156,7 @@
             },
             {
               "active": true,
-              "name": "authenticator_selection",
+              "name": "authenticatorSelection",
               "req": false,
               "type": "`$OBJECT`"
             },
@@ -162,7 +168,7 @@
             },
             {
               "active": true,
-              "name": "pub_key_cred_param",
+              "name": "pubKeyCredParams",
               "req": false,
               "type": "`$ARRAY`"
             },
@@ -194,6 +200,7 @@
                 {
                   "active": true,
                   "args": {},
+                  "kind": "http",
                   "method": "POST",
                   "orig": "/webauthn/registration/initialize",
                   "parts": [
@@ -222,7 +229,7 @@
           "fields": [
             {
               "active": true,
-              "name": "allow_credential",
+              "name": "allowCredentials",
               "req": false,
               "type": "`$ARRAY`"
             },
@@ -234,7 +241,7 @@
             },
             {
               "active": true,
-              "name": "rp_id",
+              "name": "rpId",
               "req": false,
               "type": "`$STRING`"
             },
@@ -246,13 +253,13 @@
             },
             {
               "active": true,
-              "name": "user_id",
+              "name": "userVerification",
               "req": false,
               "type": "`$STRING`"
             },
             {
               "active": true,
-              "name": "user_verification",
+              "name": "user_id",
               "req": false,
               "type": "`$STRING`"
             }
@@ -266,6 +273,7 @@
                 {
                   "active": true,
                   "args": {},
+                  "kind": "http",
                   "method": "POST",
                   "orig": "/webauthn/login/initialize",
                   "parts": [
@@ -312,6 +320,12 @@
             },
             {
               "active": true,
+              "name": "identities",
+              "req": false,
+              "type": "`$ANY`"
+            },
+            {
+              "active": true,
               "name": "identity",
               "req": false,
               "type": "`$ANY`"
@@ -342,6 +356,7 @@
                 {
                   "active": true,
                   "args": {},
+                  "kind": "http",
                   "method": "POST",
                   "orig": "/emails",
                   "parts": [
@@ -362,6 +377,7 @@
                 {
                   "active": true,
                   "args": {},
+                  "kind": "http",
                   "method": "GET",
                   "orig": "/emails",
                   "parts": [
@@ -394,6 +410,7 @@
                       }
                     ]
                   },
+                  "kind": "http",
                   "method": "DELETE",
                   "orig": "/emails/{id}",
                   "parts": [
@@ -444,6 +461,7 @@
                       }
                     ]
                   },
+                  "kind": "http",
                   "method": "POST",
                   "orig": "/emails/{id}/set_primary",
                   "parts": [
@@ -483,7 +501,7 @@
             },
             {
               "active": true,
-              "name": "email",
+              "name": "emails",
               "req": false,
               "type": "`$OBJECT`"
             },
@@ -503,6 +521,7 @@
                 {
                   "active": true,
                   "args": {},
+                  "kind": "http",
                   "method": "GET",
                   "orig": "/.well-known/config",
                   "parts": [
@@ -574,6 +593,7 @@
                 {
                   "active": true,
                   "args": {},
+                  "kind": "http",
                   "method": "GET",
                   "orig": "/.well-known/jwks.json",
                   "parts": [
@@ -607,12 +627,6 @@
             },
             {
               "active": true,
-              "name": "created_at",
-              "req": false,
-              "type": "`$STRING`"
-            },
-            {
-              "active": true,
               "name": "email_id",
               "req": false,
               "type": "`$STRING`"
@@ -622,12 +636,6 @@
               "name": "id",
               "req": false,
               "type": "`$STRING`"
-            },
-            {
-              "active": true,
-              "name": "ttl",
-              "req": false,
-              "type": "`$INTEGER`"
             },
             {
               "active": true,
@@ -649,6 +657,7 @@
                 {
                   "active": true,
                   "args": {},
+                  "kind": "http",
                   "method": "POST",
                   "orig": "/passcode/login/finalize",
                   "parts": [
@@ -659,12 +668,13 @@
                   "select": {},
                   "transform": {
                     "req": "`reqdata`",
-                    "res": "`body`"
+                    "res": "`body.id`"
                   }
                 },
                 {
                   "active": true,
                   "args": {},
+                  "kind": "http",
                   "method": "POST",
                   "orig": "/passcode/login/initialize",
                   "parts": [
@@ -675,7 +685,7 @@
                   "select": {},
                   "transform": {
                     "req": "`reqdata`",
-                    "res": "`body`"
+                    "res": "`body.id`"
                   }
                 }
               ]
@@ -713,6 +723,7 @@
                 {
                   "active": true,
                   "args": {},
+                  "kind": "http",
                   "method": "POST",
                   "orig": "/password/login",
                   "parts": [
@@ -738,6 +749,7 @@
                 {
                   "active": true,
                   "args": {},
+                  "kind": "http",
                   "method": "PUT",
                   "orig": "/password",
                   "parts": [
@@ -766,25 +778,49 @@
           "fields": [
             {
               "active": true,
-              "name": "attribute_map",
-              "req": false,
-              "type": "`$OBJECT`"
-            },
-            {
-              "active": true,
-              "name": "domain",
+              "name": "birthdate",
               "req": false,
               "type": "`$STRING`"
             },
             {
               "active": true,
-              "name": "enabled",
+              "name": "email",
               "req": false,
-              "type": "`$BOOLEAN`"
+              "type": "`$STRING`"
             },
             {
               "active": true,
-              "name": "metadata_url",
+              "name": "email_verified",
+              "req": false,
+              "type": "`$STRING`"
+            },
+            {
+              "active": true,
+              "name": "family_name",
+              "req": false,
+              "type": "`$STRING`"
+            },
+            {
+              "active": true,
+              "name": "gender",
+              "req": false,
+              "type": "`$STRING`"
+            },
+            {
+              "active": true,
+              "name": "given_name",
+              "req": false,
+              "type": "`$STRING`"
+            },
+            {
+              "active": true,
+              "name": "locale",
+              "req": false,
+              "type": "`$STRING`"
+            },
+            {
+              "active": true,
+              "name": "middle_name",
               "req": false,
               "type": "`$STRING`"
             },
@@ -796,9 +832,57 @@
             },
             {
               "active": true,
-              "name": "skip_email_verification",
+              "name": "nickname",
               "req": false,
-              "type": "`$BOOLEAN`"
+              "type": "`$STRING`"
+            },
+            {
+              "active": true,
+              "name": "phone",
+              "req": false,
+              "type": "`$STRING`"
+            },
+            {
+              "active": true,
+              "name": "phone_verified",
+              "req": false,
+              "type": "`$STRING`"
+            },
+            {
+              "active": true,
+              "name": "picture",
+              "req": false,
+              "type": "`$STRING`"
+            },
+            {
+              "active": true,
+              "name": "preferred_username",
+              "req": false,
+              "type": "`$STRING`"
+            },
+            {
+              "active": true,
+              "name": "profile",
+              "req": false,
+              "type": "`$STRING`"
+            },
+            {
+              "active": true,
+              "name": "updated_at",
+              "req": false,
+              "type": "`$STRING`"
+            },
+            {
+              "active": true,
+              "name": "website",
+              "req": false,
+              "type": "`$STRING`"
+            },
+            {
+              "active": true,
+              "name": "zone_info",
+              "req": false,
+              "type": "`$STRING`"
             }
           ],
           "name": "saml",
@@ -810,6 +894,7 @@
                 {
                   "active": true,
                   "args": {},
+                  "kind": "http",
                   "method": "POST",
                   "orig": "/saml/callback",
                   "parts": [
@@ -852,6 +937,7 @@
                       }
                     ]
                   },
+                  "kind": "http",
                   "method": "GET",
                   "orig": "/saml/metadata",
                   "parts": [
@@ -884,6 +970,7 @@
                       }
                     ]
                   },
+                  "kind": "http",
                   "method": "GET",
                   "orig": "/saml/provider",
                   "parts": [
@@ -898,7 +985,7 @@
                   },
                   "transform": {
                     "req": "`reqdata`",
-                    "res": "`body`"
+                    "res": "`body.attribute_map`"
                   }
                 }
               ]
@@ -916,27 +1003,45 @@
           "fields": [
             {
               "active": true,
-              "name": "claim",
-              "req": true,
+              "name": "amr",
+              "req": false,
+              "type": "`$ARRAY`"
+            },
+            {
+              "active": true,
+              "name": "audience",
+              "req": false,
+              "type": "`$ARRAY`"
+            },
+            {
+              "active": true,
+              "name": "email",
+              "req": false,
               "type": "`$OBJECT`"
             },
             {
               "active": true,
-              "name": "expiration_time",
+              "name": "expiration",
+              "req": true,
+              "type": "`$STRING`"
+            },
+            {
+              "active": true,
+              "name": "issued_at",
               "req": false,
               "type": "`$STRING`"
             },
             {
               "active": true,
-              "name": "idle_expires_at",
+              "name": "issuer",
               "req": false,
               "type": "`$STRING`"
             },
             {
               "active": true,
-              "name": "is_valid",
-              "req": false,
-              "type": "`$BOOLEAN`"
+              "name": "session_id",
+              "req": true,
+              "type": "`$STRING`"
             },
             {
               "active": true,
@@ -946,9 +1051,9 @@
             },
             {
               "active": true,
-              "name": "user_id",
-              "req": false,
-              "type": "`$STRING`"
+              "name": "subject",
+              "req": true,
+              "type": "`$ANY`"
             }
           ],
           "name": "session_management",
@@ -960,6 +1065,7 @@
                 {
                   "active": true,
                   "args": {},
+                  "kind": "http",
                   "method": "POST",
                   "orig": "/sessions/validate",
                   "parts": [
@@ -969,7 +1075,7 @@
                   "select": {},
                   "transform": {
                     "req": "`reqdata`",
-                    "res": "`body`"
+                    "res": "`body.claims`"
                   }
                 }
               ]
@@ -981,6 +1087,7 @@
                 {
                   "active": true,
                   "args": {},
+                  "kind": "http",
                   "method": "GET",
                   "orig": "/sessions/validate",
                   "parts": [
@@ -990,7 +1097,7 @@
                   "select": {},
                   "transform": {
                     "req": "`reqdata`",
-                    "res": "`body`"
+                    "res": "`body.claims`"
                   }
                 }
               ]
@@ -1015,6 +1122,7 @@
                 {
                   "active": true,
                   "args": {},
+                  "kind": "http",
                   "method": "GET",
                   "orig": "/",
                   "parts": [],
@@ -1081,6 +1189,7 @@
                       }
                     ]
                   },
+                  "kind": "http",
                   "method": "GET",
                   "orig": "/thirdparty/callback",
                   "parts": [
@@ -1122,6 +1231,7 @@
                       }
                     ]
                   },
+                  "kind": "http",
                   "method": "GET",
                   "orig": "/thirdparty/auth",
                   "parts": [
@@ -1168,6 +1278,7 @@
                 {
                   "active": true,
                   "args": {},
+                  "kind": "http",
                   "method": "POST",
                   "orig": "/token",
                   "parts": [
@@ -1208,13 +1319,19 @@
                 }
               },
               "req": false,
-              "type": "`$ARRAY`"
+              "type": "`$STRING`"
             },
             {
               "active": true,
               "name": "email_id",
               "req": false,
               "type": "`$STRING`"
+            },
+            {
+              "active": true,
+              "name": "emails",
+              "req": false,
+              "type": "`$ARRAY`"
             },
             {
               "active": true,
@@ -1260,7 +1377,7 @@
             },
             {
               "active": true,
-              "name": "passkey",
+              "name": "passkeys",
               "req": false,
               "type": "`$ARRAY`"
             },
@@ -1272,7 +1389,7 @@
             },
             {
               "active": true,
-              "name": "security_key",
+              "name": "security_keys",
               "req": false,
               "type": "`$ARRAY`"
             },
@@ -1302,7 +1419,7 @@
             },
             {
               "active": true,
-              "name": "webauthn_credential",
+              "name": "webauthn_credentials",
               "req": false,
               "type": "`$ARRAY`"
             }
@@ -1320,6 +1437,7 @@
                 {
                   "active": true,
                   "args": {},
+                  "kind": "http",
                   "method": "POST",
                   "orig": "/user",
                   "parts": [
@@ -1334,6 +1452,7 @@
                 {
                   "active": true,
                   "args": {},
+                  "kind": "http",
                   "method": "POST",
                   "orig": "/users",
                   "parts": [
@@ -1366,6 +1485,7 @@
                       }
                     ]
                   },
+                  "kind": "http",
                   "method": "GET",
                   "orig": "/users/{id}",
                   "parts": [
@@ -1391,6 +1511,7 @@
                 {
                   "active": true,
                   "args": {},
+                  "kind": "http",
                   "method": "DELETE",
                   "orig": "/user",
                   "parts": [
@@ -1423,7 +1544,7 @@
             },
             {
               "active": true,
-              "name": "email",
+              "name": "emails",
               "req": false,
               "type": "`$ARRAY`"
             },
@@ -1465,7 +1586,7 @@
             },
             {
               "active": true,
-              "name": "passkey",
+              "name": "passkeys",
               "req": false,
               "type": "`$ARRAY`"
             },
@@ -1477,7 +1598,7 @@
             },
             {
               "active": true,
-              "name": "security_key",
+              "name": "security_keys",
               "req": false,
               "type": "`$ARRAY`"
             },
@@ -1513,6 +1634,7 @@
                 {
                   "active": true,
                   "args": {},
+                  "kind": "http",
                   "method": "POST",
                   "orig": "/logout",
                   "parts": [
@@ -1533,6 +1655,7 @@
                 {
                   "active": true,
                   "args": {},
+                  "kind": "http",
                   "method": "GET",
                   "orig": "/me",
                   "parts": [
@@ -1559,12 +1682,6 @@
           "fields": [
             {
               "active": true,
-              "name": "credential_id",
-              "req": false,
-              "type": "`$STRING`"
-            },
-            {
-              "active": true,
               "name": "id",
               "req": false,
               "type": "`$STRING`"
@@ -1577,7 +1694,7 @@
             },
             {
               "active": true,
-              "name": "raw_id",
+              "name": "rawId",
               "req": false,
               "type": "`$STRING`"
             },
@@ -1590,12 +1707,6 @@
             {
               "active": true,
               "name": "type",
-              "req": false,
-              "type": "`$STRING`"
-            },
-            {
-              "active": true,
-              "name": "user_id",
               "req": false,
               "type": "`$STRING`"
             }
@@ -1613,6 +1724,7 @@
                 {
                   "active": true,
                   "args": {},
+                  "kind": "http",
                   "method": "POST",
                   "orig": "/webauthn/registration/finalize",
                   "parts": [
@@ -1623,7 +1735,7 @@
                   "select": {},
                   "transform": {
                     "req": "`reqdata`",
-                    "res": "`body`"
+                    "res": "`body.user_id`"
                   }
                 }
               ]
@@ -1647,6 +1759,7 @@
                       }
                     ]
                   },
+                  "kind": "http",
                   "method": "DELETE",
                   "orig": "/webauthn/credentials/{id}",
                   "parts": [
@@ -1685,6 +1798,7 @@
                       }
                     ]
                   },
+                  "kind": "http",
                   "method": "PATCH",
                   "orig": "/webauthn/credentials/{id}",
                   "parts": [
@@ -1729,7 +1843,7 @@
             },
             {
               "active": true,
-              "name": "raw_id",
+              "name": "rawId",
               "req": false,
               "type": "`$STRING`"
             },
@@ -1765,6 +1879,7 @@
                 {
                   "active": true,
                   "args": {},
+                  "kind": "http",
                   "method": "POST",
                   "orig": "/webauthn/login/finalize",
                   "parts": [
@@ -2447,7 +2562,7 @@
                 "ref": "web_authn_ref01",
                 "srcdatavar": "web_authn_ref01_data",
                 "suffix": "_up0",
-                "textfield": "credential_id"
+                "textfield": "name"
               },
               "match": {},
               "op": "update",
@@ -2532,18 +2647,41 @@
         "website": "https://github.com/teamhanko/hanko"
       },
       "option": {},
+      "repo": {
+        "host": "github.com",
+        "path": ""
+      },
       "target": {
         "go": {
           "active": true,
+          "author": {
+            "name": "",
+            "url": ""
+          },
           "comment": {
             "line": "//"
           },
           "deps": {},
           "ext": "go",
+          "feature": {
+            "fullset": [
+              "test/feature_test.go"
+            ],
+            "trim": true
+          },
           "module": {
-            "name": "hanko-public"
+            "goversion": "",
+            "name": "hanko-public",
+            "package": "",
+            "path": ""
           },
           "name": "go",
+          "output": {
+            "adopt": false,
+            "path": "",
+            "repo": "",
+            "sdkrel": ""
+          },
           "publish": {
             "registry": {
               "active": false,
@@ -2565,22 +2703,40 @@
                 "recipe": "github"
               },
               "via": "port"
-            }
+            },
+            "version": "0.0.1"
           },
           "srcfeature": false,
           "title": "Golang"
         },
         "go-cli": {
           "active": true,
+          "author": {
+            "name": "",
+            "url": ""
+          },
           "comment": {
             "line": "//"
           },
           "deps": {},
           "ext": "go",
+          "feature": {
+            "fullset": [],
+            "trim": true
+          },
           "module": {
-            "name": "hanko-public"
+            "goversion": "",
+            "name": "hanko-public",
+            "package": "",
+            "path": ""
           },
           "name": "go-cli",
+          "output": {
+            "adopt": false,
+            "path": "",
+            "repo": "",
+            "sdkrel": ""
+          },
           "phase": {
             "agentguide": {
               "active": false
@@ -2619,21 +2775,39 @@
                 "recipe": "github"
               },
               "via": "root"
-            }
+            },
+            "version": "0.0.1"
           },
           "title": "Go CLI"
         },
         "go-mcp": {
           "active": true,
+          "author": {
+            "name": "",
+            "url": ""
+          },
           "comment": {
             "line": "//"
           },
           "deps": {},
           "ext": "go",
+          "feature": {
+            "fullset": [],
+            "trim": true
+          },
           "module": {
-            "name": "hanko-public"
+            "goversion": "",
+            "name": "hanko-public",
+            "package": "",
+            "path": ""
           },
           "name": "go-mcp",
+          "output": {
+            "adopt": false,
+            "path": "",
+            "repo": "",
+            "sdkrel": ""
+          },
           "phase": {
             "agentguide": {
               "active": false
@@ -2672,12 +2846,17 @@
                 "recipe": "github"
               },
               "via": "root"
-            }
+            },
+            "version": "0.0.1"
           },
           "title": "Go MCP server"
         },
         "lua": {
           "active": true,
+          "author": {
+            "name": "",
+            "url": ""
+          },
           "comment": {
             "line": "--"
           },
@@ -2689,10 +2868,23 @@
             }
           },
           "ext": "lua",
+          "feature": {
+            "fullset": [],
+            "trim": true
+          },
           "module": {
-            "name": "hanko-public"
+            "goversion": "",
+            "name": "hanko-public",
+            "package": "",
+            "path": ""
           },
           "name": "lua",
+          "output": {
+            "adopt": false,
+            "path": "",
+            "repo": "",
+            "sdkrel": ""
+          },
           "publish": {
             "registry": {
               "active": false,
@@ -2714,22 +2906,40 @@
                 "recipe": "github"
               },
               "via": "port"
-            }
+            },
+            "version": "0.0.1"
           },
           "srcfeature": false,
           "title": "Lua"
         },
         "php": {
           "active": true,
+          "author": {
+            "name": "",
+            "url": ""
+          },
           "comment": {
             "line": "//"
           },
           "deps": {},
           "ext": "php",
+          "feature": {
+            "fullset": [],
+            "trim": true
+          },
           "module": {
-            "name": "hanko-public"
+            "goversion": "",
+            "name": "hanko-public",
+            "package": "",
+            "path": ""
           },
           "name": "php",
+          "output": {
+            "adopt": false,
+            "path": "",
+            "repo": "",
+            "sdkrel": ""
+          },
           "publish": {
             "registry": {
               "active": false,
@@ -2751,13 +2961,18 @@
                 "recipe": "github"
               },
               "via": "port"
-            }
+            },
+            "version": "0.0.1"
           },
           "srcfeature": false,
           "title": "PHP"
         },
         "py": {
           "active": true,
+          "author": {
+            "name": "",
+            "url": ""
+          },
           "comment": {
             "line": "#"
           },
@@ -2769,10 +2984,23 @@
             }
           },
           "ext": "py",
+          "feature": {
+            "fullset": [],
+            "trim": true
+          },
           "module": {
-            "name": "hanko-public"
+            "goversion": "",
+            "name": "hanko-public",
+            "package": "",
+            "path": ""
           },
           "name": "py",
+          "output": {
+            "adopt": false,
+            "path": "",
+            "repo": "",
+            "sdkrel": ""
+          },
           "publish": {
             "registry": {
               "active": false,
@@ -2794,13 +3022,18 @@
                 "recipe": "github"
               },
               "via": "port"
-            }
+            },
+            "version": "0.0.1"
           },
           "srcfeature": false,
           "title": "Python"
         },
         "rb": {
           "active": true,
+          "author": {
+            "name": "",
+            "url": ""
+          },
           "comment": {
             "line": "#"
           },
@@ -2817,10 +3050,23 @@
             }
           },
           "ext": "rb",
+          "feature": {
+            "fullset": [],
+            "trim": true
+          },
           "module": {
-            "name": "hanko-public"
+            "goversion": "",
+            "name": "hanko-public",
+            "package": "",
+            "path": ""
           },
           "name": "rb",
+          "output": {
+            "adopt": false,
+            "path": "",
+            "repo": "",
+            "sdkrel": ""
+          },
           "publish": {
             "registry": {
               "active": false,
@@ -2842,13 +3088,18 @@
                 "recipe": "github"
               },
               "via": "port"
-            }
+            },
+            "version": "0.0.1"
           },
           "srcfeature": false,
           "title": "Ruby"
         },
         "ts": {
           "active": true,
+          "author": {
+            "name": "",
+            "url": ""
+          },
           "base": "node_modules/@voxgig/sdkgen/project/.sdk",
           "comment": {
             "line": "//"
@@ -2871,10 +3122,23 @@
             }
           },
           "ext": "ts",
+          "feature": {
+            "fullset": [],
+            "trim": true
+          },
           "module": {
-            "name": "hanko-public"
+            "goversion": "",
+            "name": "hanko-public",
+            "package": "",
+            "path": ""
           },
           "name": "ts",
+          "output": {
+            "adopt": false,
+            "path": "",
+            "repo": "",
+            "sdkrel": ""
+          },
           "publish": {
             "registry": {
               "active": false,
@@ -2896,9 +3160,17 @@
                 "recipe": "github"
               },
               "via": "port"
-            }
+            },
+            "version": "0.0.1"
           },
           "title": "TypeScript"
+        }
+      },
+      "test": {
+        "live": {
+          "app": false,
+          "base": "",
+          "strict": false
         }
       }
     }

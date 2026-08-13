@@ -70,7 +70,7 @@ describe("CredentialEntity", function()
     -- The basic flow consumes synthetic IDs from the fixture. In live mode
     -- without an *_ENTID env override, those IDs hit the live API and 4xx.
     if setup.synthetic_only then
-      pending("live entity test uses synthetic IDs from fixture — set HANKOPUBLIC_TEST_CREDENTIAL_ENTID JSON to run live")
+      pending("live entity test uses synthetic IDs from fixture — set HANKO_PUBLIC_TEST_CREDENTIAL_ENTID JSON to run live")
       return
     end
     local client = setup.client
@@ -126,39 +126,39 @@ function credential_basic_setup(extra)
   -- Detect ENTID env override before envOverride consumes it. When live
   -- mode is on without a real override, the basic test runs against synthetic
   -- IDs from the fixture and 4xx's. Surface this so the test can skip.
-  local entid_env_raw = os.getenv("HANKOPUBLIC_TEST_CREDENTIAL_ENTID")
+  local entid_env_raw = os.getenv("HANKO_PUBLIC_TEST_CREDENTIAL_ENTID")
   local idmap_overridden = entid_env_raw ~= nil and entid_env_raw:match("^%s*{") ~= nil
 
   local env = runner.env_override({
-    ["HANKOPUBLIC_TEST_CREDENTIAL_ENTID"] = idmap,
-    ["HANKOPUBLIC_TEST_LIVE"] = "FALSE",
-    ["HANKOPUBLIC_TEST_EXPLAIN"] = "FALSE",
-    ["HANKOPUBLIC_APIKEY"] = "NONE",
+    ["HANKO_PUBLIC_TEST_CREDENTIAL_ENTID"] = idmap,
+    ["HANKO_PUBLIC_TEST_LIVE"] = "FALSE",
+    ["HANKO_PUBLIC_TEST_EXPLAIN"] = "FALSE",
+    ["HANKO_PUBLIC_APIKEY"] = "NONE",
   })
 
   local idmap_resolved = helpers.to_map(
-    env["HANKOPUBLIC_TEST_CREDENTIAL_ENTID"])
+    env["HANKO_PUBLIC_TEST_CREDENTIAL_ENTID"])
   if idmap_resolved == nil then
     idmap_resolved = helpers.to_map(idmap)
   end
 
-  if env["HANKOPUBLIC_TEST_LIVE"] == "TRUE" then
+  if env["HANKO_PUBLIC_TEST_LIVE"] == "TRUE" then
     local merged_opts = vs.merge({
       {
-        apikey = env["HANKOPUBLIC_APIKEY"],
+        apikey = env["HANKO_PUBLIC_APIKEY"],
       },
       extra or {},
     })
     client = sdk.new(helpers.to_map(merged_opts))
   end
 
-  local live = env["HANKOPUBLIC_TEST_LIVE"] == "TRUE"
+  local live = env["HANKO_PUBLIC_TEST_LIVE"] == "TRUE"
   return {
     client = client,
     data = entity_data,
     idmap = idmap_resolved,
     env = env,
-    explain = env["HANKOPUBLIC_TEST_EXPLAIN"] == "TRUE",
+    explain = env["HANKO_PUBLIC_TEST_EXPLAIN"] == "TRUE",
     live = live,
     synthetic_only = live and not idmap_overridden,
     now = os.time() * 1000,

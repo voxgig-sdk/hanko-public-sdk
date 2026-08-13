@@ -211,8 +211,8 @@ credential = client.Credential
 | `last_used_at` | `String` | No |  |
 | `mfa_only` | `Boolean` | No |  |
 | `name` | `String` | No |  |
-| `public_key` | `String` | No |  |
-| `transport` | `Array` | No |  |
+| `publickey` | `String` | No |  |
+| `transports` | `Array` | No |  |
 
 ### Operations
 
@@ -265,9 +265,9 @@ credential_creation_option = client.CredentialCreationOption
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
 | `attestation` | `String` | No |  |
-| `authenticator_selection` | `Hash` | No |  |
+| `authenticatorSelection` | `Hash` | No |  |
 | `challenge` | `String` | No |  |
-| `pub_key_cred_param` | `Array` | No |  |
+| `pubKeyCredParams` | `Array` | No |  |
 | `rp` | `Hash` | No |  |
 | `timeout` | `Integer` | No |  |
 | `user` | `Hash` | No |  |
@@ -323,12 +323,12 @@ credential_request_option = client.CredentialRequestOption
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `allow_credential` | `Array` | No |  |
+| `allowCredentials` | `Array` | No |  |
 | `challenge` | `String` | No |  |
-| `rp_id` | `String` | No |  |
+| `rpId` | `String` | No |  |
 | `timeout` | `Integer` | No |  |
+| `userVerification` | `String` | No |  |
 | `user_id` | `String` | No |  |
-| `user_verification` | `String` | No |  |
 
 ### Operations
 
@@ -383,6 +383,7 @@ email = client.Email
 | --- | --- | --- | --- |
 | `address` | `String` | Yes |  |
 | `id` | `String` | No |  |
+| `identities` | `Object` | No |  |
 | `identity` | `Object` | No |  |
 | `is_primary` | `Boolean` | No |  |
 | `is_verified` | `Boolean` | No |  |
@@ -393,6 +394,7 @@ email = client.Email
 | --- | --- | --- | --- |
 | `address` | Yes | - | - |
 | `id` | - | - | - |
+| `identities` | - | - | - |
 | `identity` | - | - | - |
 | `is_primary` | - | - | - |
 | `is_verified` | - | - | - |
@@ -514,7 +516,7 @@ hanko_configuration = client.HankoConfiguration
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
 | `account` | `Hash` | No |  |
-| `email` | `Hash` | No |  |
+| `emails` | `Hash` | No |  |
 | `password` | `Hash` | No |  |
 
 ### Operations
@@ -625,10 +627,8 @@ passcode = client.Passcode
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
 | `code` | `String` | No |  |
-| `created_at` | `String` | No |  |
 | `email_id` | `String` | No |  |
 | `id` | `String` | No |  |
-| `ttl` | `Integer` | No |  |
 | `user_id` | `String` | Yes |  |
 
 ### Operations
@@ -749,12 +749,24 @@ saml = client.Saml
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `attribute_map` | `Hash` | No |  |
-| `domain` | `String` | No |  |
-| `enabled` | `Boolean` | No |  |
-| `metadata_url` | `String` | No |  |
+| `birthdate` | `String` | No |  |
+| `email` | `String` | No |  |
+| `email_verified` | `String` | No |  |
+| `family_name` | `String` | No |  |
+| `gender` | `String` | No |  |
+| `given_name` | `String` | No |  |
+| `locale` | `String` | No |  |
+| `middle_name` | `String` | No |  |
 | `name` | `String` | No |  |
-| `skip_email_verification` | `Boolean` | No |  |
+| `nickname` | `String` | No |  |
+| `phone` | `String` | No |  |
+| `phone_verified` | `String` | No |  |
+| `picture` | `String` | No |  |
+| `preferred_username` | `String` | No |  |
+| `profile` | `String` | No |  |
+| `updated_at` | `String` | No |  |
+| `website` | `String` | No |  |
+| `zone_info` | `String` | No |  |
 
 ### Operations
 
@@ -815,12 +827,15 @@ session_management = client.SessionManagement
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `claim` | `Hash` | Yes |  |
-| `expiration_time` | `String` | No |  |
-| `idle_expires_at` | `String` | No |  |
-| `is_valid` | `Boolean` | No |  |
+| `amr` | `Array` | No |  |
+| `audience` | `Array` | No |  |
+| `email` | `Hash` | No |  |
+| `expiration` | `String` | Yes |  |
+| `issued_at` | `String` | No |  |
+| `issuer` | `String` | No |  |
+| `session_id` | `String` | Yes |  |
 | `session_token` | `String` | Yes |  |
-| `user_id` | `String` | No |  |
+| `subject` | `Object` | Yes |  |
 
 ### Operations
 
@@ -830,8 +845,10 @@ Create a new entity with the given data. Raises on error.
 
 ```ruby
 result = client.SessionManagement.create({
-  "claim" => {}, # Hash
+  "expiration" => "example_expiration", # String
+  "session_id" => "example_session_id", # String
   "session_token" => "example_session_token", # String
+  "subject" => "example_subject", # Object
 })
 ```
 
@@ -1029,8 +1046,9 @@ user = client.User
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
 | `created_at` | `String` | No |  |
-| `email` | `Array` | No |  |
+| `email` | `String` | No |  |
 | `email_id` | `String` | No |  |
+| `emails` | `Array` | No |  |
 | `family_name` | `String` | No |  |
 | `given_name` | `String` | No |  |
 | `has_webauthn_credential` | `Boolean` | No |  |
@@ -1038,14 +1056,14 @@ user = client.User
 | `metadata` | `Hash` | No |  |
 | `mfa_config` | `Hash` | No |  |
 | `name` | `String` | No |  |
-| `passkey` | `Array` | No |  |
+| `passkeys` | `Array` | No |  |
 | `picture` | `String` | No |  |
-| `security_key` | `Array` | No |  |
+| `security_keys` | `Array` | No |  |
 | `updated_at` | `String` | No |  |
 | `user_id` | `String` | No |  |
 | `username` | `String` | No |  |
 | `verified` | `Boolean` | No |  |
-| `webauthn_credential` | `Array` | No |  |
+| `webauthn_credentials` | `Array` | No |  |
 
 ### Field Usage by Operation
 
@@ -1054,6 +1072,7 @@ user = client.User
 | `created_at` | - | - | - |
 | `email` | - | Yes | - |
 | `email_id` | - | - | - |
+| `emails` | - | - | - |
 | `family_name` | - | - | - |
 | `given_name` | - | - | - |
 | `has_webauthn_credential` | - | - | - |
@@ -1061,14 +1080,14 @@ user = client.User
 | `metadata` | - | - | - |
 | `mfa_config` | - | - | - |
 | `name` | - | - | - |
-| `passkey` | - | - | - |
+| `passkeys` | - | - | - |
 | `picture` | - | - | - |
-| `security_key` | - | - | - |
+| `security_keys` | - | - | - |
 | `updated_at` | - | - | - |
 | `user_id` | - | - | - |
 | `username` | - | - | - |
 | `verified` | - | - | - |
-| `webauthn_credential` | - | - | - |
+| `webauthn_credentials` | - | - | - |
 
 ### Operations
 
@@ -1138,16 +1157,16 @@ user_management = client.UserManagement
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
 | `created_at` | `String` | No |  |
-| `email` | `Array` | No |  |
+| `emails` | `Array` | No |  |
 | `family_name` | `String` | No |  |
 | `given_name` | `String` | No |  |
 | `id` | `String` | No |  |
 | `metadata` | `Hash` | No |  |
 | `mfa_config` | `Hash` | No |  |
 | `name` | `String` | No |  |
-| `passkey` | `Array` | No |  |
+| `passkeys` | `Array` | No |  |
 | `picture` | `String` | No |  |
-| `security_key` | `Array` | No |  |
+| `security_keys` | `Array` | No |  |
 | `updated_at` | `String` | No |  |
 | `user_id` | `String` | No |  |
 | `username` | `Hash` | No |  |
@@ -1211,13 +1230,11 @@ web_authn = client.WebAuthn
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `credential_id` | `String` | No |  |
 | `id` | `String` | No |  |
 | `name` | `String` | No |  |
-| `raw_id` | `String` | No |  |
+| `rawId` | `String` | No |  |
 | `response` | `Hash` | No |  |
 | `type` | `String` | No |  |
-| `user_id` | `String` | No |  |
 
 ### Operations
 
@@ -1291,7 +1308,7 @@ webauthn_login = client.WebauthnLogin
 | --- | --- | --- | --- |
 | `credential_id` | `String` | No |  |
 | `id` | `String` | No |  |
-| `raw_id` | `String` | No |  |
+| `rawId` | `String` | No |  |
 | `response` | `Hash` | No |  |
 | `type` | `String` | No |  |
 | `user_id` | `String` | No |  |

@@ -19,8 +19,8 @@ import {
 describe('EmailDirect', async () => {
 
   // Per-test live pacing. Delay is read from sdk-test-control.json's
-  // `test.live.delayMs`; only sleeps when HANKOPUBLIC_TEST_LIVE=TRUE.
-  afterEach(liveDelay('HANKOPUBLIC_TEST_LIVE'))
+  // `test.live.delayMs`; only sleeps when HANKO_PUBLIC_TEST_LIVE=TRUE.
+  afterEach(liveDelay('HANKO_PUBLIC_TEST_LIVE'))
 
   test('direct-exists', async () => {
     const sdk = new HankoPublicSDK({
@@ -81,19 +81,19 @@ function directSetup(mockres?: any) {
   const calls: any[] = []
 
   const env = envOverride({
-    'HANKOPUBLIC_TEST_EMAIL_ENTID': {},
-    'HANKOPUBLIC_TEST_LIVE': 'FALSE',
-    'HANKOPUBLIC_APIKEY': 'NONE',
+    'HANKO_PUBLIC_TEST_EMAIL_ENTID': {},
+    'HANKO_PUBLIC_TEST_LIVE': 'FALSE',
+    'HANKO_PUBLIC_APIKEY': 'NONE',
   })
 
-  const live = 'TRUE' === env.HANKOPUBLIC_TEST_LIVE
+  const live = 'TRUE' === env.HANKO_PUBLIC_TEST_LIVE
 
   if (live) {
     const client = new HankoPublicSDK({
-      apikey: env.HANKOPUBLIC_APIKEY,
+      apikey: env.HANKO_PUBLIC_APIKEY,
     })
 
-    let idmap: any = env['HANKOPUBLIC_TEST_EMAIL_ENTID']
+    let idmap: any = env['HANKO_PUBLIC_TEST_EMAIL_ENTID']
     if ('string' === typeof idmap && idmap.startsWith('{')) {
       idmap = JSON.parse(idmap)
     }

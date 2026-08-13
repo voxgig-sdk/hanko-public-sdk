@@ -6,15 +6,15 @@ import re
 
 import pytest
 
-from utility.voxgig_struct import voxgig_struct as vs
+from hankopublic_sdk.utility.voxgig_struct import voxgig_struct as vs
 from hankopublic_sdk import HankoPublicSDK
-from core.spec import HankoPublicSpec
-from core.result import HankoPublicResult
-from core.response import HankoPublicResponse
-from core.operation import HankoPublicOperation
-from core.error import HankoPublicError
-from core import helpers
-from feature.base_feature import HankoPublicBaseFeature
+from hankopublic_sdk.core.spec import HankoPublicSpec
+from hankopublic_sdk.core.result import HankoPublicResult
+from hankopublic_sdk.core.response import HankoPublicResponse
+from hankopublic_sdk.core.operation import HankoPublicOperation
+from hankopublic_sdk.core.error import HankoPublicError
+from hankopublic_sdk.core import helpers
+from hankopublic_sdk.feature.base_feature import HankoPublicBaseFeature
 
 _TEST_DIR = os.path.dirname(os.path.abspath(__file__))
 

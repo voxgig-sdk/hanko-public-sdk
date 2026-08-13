@@ -3,19 +3,19 @@
     "hanko_configuration": {
       "HANKO_CONFIGURATION00": {
         "account": {},
-        "email": {},
+        "emails": {},
         "password": {},
         "id": "HANKO_CONFIGURATION00"
       },
       "HANKO_CONFIGURATION01": {
         "account": {},
-        "email": {},
+        "emails": {},
         "password": {},
         "id": "HANKO_CONFIGURATION01"
       },
       "HANKO_CONFIGURATION02": {
         "account": {},
-        "email": {},
+        "emails": {},
         "password": {},
         "id": "HANKO_CONFIGURATION02"
       }
@@ -25,7 +25,7 @@
     "hanko_configuration": {
       "hanko_configuration_ref01": {
         "account": {},
-        "email": {},
+        "emails": {},
         "password": {}
       }
     }

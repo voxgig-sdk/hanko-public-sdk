@@ -43,8 +43,8 @@ class HankoPublicTestRunner
 
     public static function env_override(array $m): array
     {
-        $live = self::getenv('HANKOPUBLIC_TEST_LIVE');
-        $override = self::getenv('HANKOPUBLIC_TEST_OVERRIDE');
+        $live = self::getenv('HANKO_PUBLIC_TEST_LIVE');
+        $override = self::getenv('HANKO_PUBLIC_TEST_OVERRIDE');
 
         if ($live === 'TRUE' || $override === 'TRUE') {
             foreach (array_keys($m) as $key) {
@@ -63,9 +63,9 @@ class HankoPublicTestRunner
             }
         }
 
-        $explain = self::getenv('HANKOPUBLIC_TEST_EXPLAIN');
+        $explain = self::getenv('HANKO_PUBLIC_TEST_EXPLAIN');
         if ($explain !== null && $explain !== '') {
-            $m['HANKOPUBLIC_TEST_EXPLAIN'] = $explain;
+            $m['HANKO_PUBLIC_TEST_EXPLAIN'] = $explain;
         }
 
         return $m;
