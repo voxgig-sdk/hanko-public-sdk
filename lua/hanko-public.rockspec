@@ -23,6 +23,7 @@ build = {
   modules = {
     ["hanko-public_sdk"] = "hanko-public_sdk.lua",
     ["config"] = "config.lua",
+    ["config_shared"] = "config_shared.lua",
     ["features"] = "features.lua",
   }
 }

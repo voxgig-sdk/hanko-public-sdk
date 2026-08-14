@@ -40,7 +40,7 @@ class HankoPublicSDK
         $utility = new HankoPublicUtility();
         $this->_utility = $utility;
 
-        $config = HankoPublicConfig::make_config();
+        $config = HankoPublicConfig::shared_config();
 
         $this->_rootctx = ($utility->make_context)([
             "client" => $this,

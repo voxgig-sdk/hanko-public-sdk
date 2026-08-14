@@ -28,7 +28,7 @@ class HankoPublicSDK
     utility = HankoPublicUtility.new
     @_utility = utility
 
-    config = HankoPublicConfig.make_config
+    config = HankoPublicConfig.shared_config
 
     @_rootctx = utility.make_context.call({
       "client" => self,

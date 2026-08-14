@@ -14,7 +14,7 @@ from __future__ import annotations
 
 from urllib.parse import quote
 
-from hankopublic_sdk.config import make_config
+from hankopublic_sdk.config import shared_config
 from hankopublic_sdk.features import _make_feature
 from hankopublic_sdk.core.control import HankoPublicControl
 from hankopublic_sdk.core.error import HankoPublicError
@@ -24,7 +24,7 @@ from hankopublic_sdk.core.spec import HankoPublicSpec
 
 # True when this SDK was generated with the named feature.
 def has_feature(name):
-    feature = make_config().get("feature")
+    feature = shared_config().get("feature")
     return isinstance(feature, dict) and feature.get(name) is not None
 
 
