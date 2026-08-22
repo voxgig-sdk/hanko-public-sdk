@@ -34,7 +34,7 @@ class HankoPublicConfig
             "main" => [
                 "name" => "HankoPublic",
                 "slug" => "hanko-public",
-                "version" => "0.0.1",
+                "version" => "0.1.1",
                 "target" => "php",
             ],
             "feature" => [

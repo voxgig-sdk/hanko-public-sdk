@@ -8,7 +8,7 @@ local function make_config()
     main = {
       name = "HankoPublic",
       slug = "hanko-public",
-      version = "0.0.1",
+      version = "0.1.1",
       target = "lua",
     },
     feature = {
