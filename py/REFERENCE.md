@@ -321,7 +321,7 @@ credential_request_option = client.CredentialRequestOption()
 | `rpId` | `str` | No |  |
 | `timeout` | `int` | No |  |
 | `userVerification` | `str` | No |  |
-| `user_id` | `str` | No |  |
+| `user_id` | `str` | No | The ID of the user on whose behalf WebAuthn login should be performed |
 
 ### Operations
 
@@ -373,12 +373,12 @@ email = client.Email()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `address` | `str` | Yes |  |
-| `id` | `str` | No |  |
+| `address` | `str` | Yes | The email address |
+| `id` | `str` | No | The ID of the email address |
 | `identities` | `Any` | No |  |
 | `identity` | `Any` | No |  |
-| `is_primary` | `bool` | No |  |
-| `is_verified` | `bool` | No |  |
+| `is_primary` | `bool` | No | Indicates it's the primary email address. |
+| `is_verified` | `bool` | No | Indicated the email has been verified. |
 
 ### Field Usage by Operation
 
@@ -507,9 +507,9 @@ hanko_configuration = client.HankoConfiguration()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `account` | `dict` | No |  |
-| `emails` | `dict` | No |  |
-| `password` | `dict` | No |  |
+| `account` | `dict` | No | Controls the behavior regarding user account. |
+| `emails` | `dict` | No | Controls the behavior regarding email addresses. |
+| `password` | `dict` | No | Configuration options concerning passwords |
 
 ### Operations
 
@@ -618,10 +618,10 @@ passcode = client.Passcode()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `code` | `str` | No |  |
-| `email_id` | `str` | No |  |
-| `id` | `str` | No |  |
-| `user_id` | `str` | Yes |  |
+| `code` | `str` | No | The actual passcode from the email sent to the user during initialization, a string of 6 decimal digits |
+| `email_id` | `str` | No | The ID of the email address |
+| `id` | `str` | No | The ID of the passcode |
+| `user_id` | `str` | Yes | The ID of the user |
 
 ### Operations
 
@@ -674,8 +674,8 @@ password = client.Password()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `password` | `str` | Yes |  |
-| `user_id` | `str` | Yes |  |
+| `password` | `str` | Yes | The actual password, its `minLength` defaults to 8 but can be [configured](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config) through the `password.min_password_length` option. |
+| `user_id` | `str` | Yes | The ID of the user to perform a password login for |
 
 ### Operations
 
@@ -816,15 +816,15 @@ session_management = client.SessionManagement()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `amr` | `list` | No |  |
-| `audience` | `list` | No |  |
-| `email` | `dict` | No |  |
-| `expiration` | `str` | Yes |  |
-| `issued_at` | `str` | No |  |
-| `issuer` | `str` | No |  |
-| `session_id` | `str` | Yes |  |
-| `session_token` | `str` | Yes |  |
-| `subject` | `Any` | Yes |  |
+| `amr` | `list` | No | Authentication Method References, JSON array of strings that are identifiers for authentication methods used in the authentication. |
+| `audience` | `list` | No | The intended audience of the token. |
+| `email` | `dict` | No | Data about the email address associated with the token's subject, if available. |
+| `expiration` | `str` | Yes | The timestamp indicating when the token will expire. |
+| `issued_at` | `str` | No | The timestamp indicating when the token was issued. |
+| `issuer` | `str` | No | The entity that issued the token. |
+| `session_id` | `str` | Yes | The unique identifier for the session associated with this token. |
+| `session_token` | `str` | Yes | The session token (JWT) to validate |
+| `subject` | `Any` | Yes | The unique identifier of the token's subject. |
 
 ### Operations
 
@@ -1030,25 +1030,25 @@ user = client.User()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `created_at` | `str` | No |  |
-| `email` | `str` | No |  |
-| `email_id` | `str` | No |  |
+| `created_at` | `str` | No | Time of creation of the the user |
+| `email` | `str` | No | The email address of the user |
+| `email_id` | `str` | No | The ID of the newly created email address |
 | `emails` | `list` | No |  |
 | `family_name` | `str` | No |  |
 | `given_name` | `str` | No |  |
 | `has_webauthn_credential` | `bool` | No |  |
-| `id` | `str` | No |  |
-| `metadata` | `dict` | No |  |
+| `id` | `str` | No | The ID of the user. |
+| `metadata` | `dict` | No | The public and unsafe metadata of a user |
 | `mfa_config` | `dict` | No |  |
 | `name` | `str` | No |  |
 | `passkeys` | `list` | No |  |
 | `picture` | `str` | No |  |
 | `security_keys` | `list` | No |  |
-| `updated_at` | `str` | No |  |
-| `user_id` | `str` | No |  |
-| `username` | `str` | No |  |
+| `updated_at` | `str` | No | Time of last update of the user |
+| `user_id` | `str` | No | The ID of the user |
+| `username` | `str` | No | The username of the user |
 | `verified` | `bool` | No |  |
-| `webauthn_credentials` | `list` | No |  |
+| `webauthn_credentials` | `list` | No | A list of WebAuthn credentials |
 
 ### Field Usage by Operation
 
@@ -1140,20 +1140,20 @@ user_management = client.UserManagement()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `created_at` | `str` | No |  |
+| `created_at` | `str` | No | Time of creation of the the user |
 | `emails` | `list` | No |  |
 | `family_name` | `str` | No |  |
 | `given_name` | `str` | No |  |
-| `id` | `str` | No |  |
-| `metadata` | `dict` | No |  |
+| `id` | `str` | No | The ID of the user. |
+| `metadata` | `dict` | No | The public and unsafe metadata of a user |
 | `mfa_config` | `dict` | No |  |
 | `name` | `str` | No |  |
 | `passkeys` | `list` | No |  |
 | `picture` | `str` | No |  |
 | `security_keys` | `list` | No |  |
-| `updated_at` | `str` | No |  |
-| `user_id` | `str` | No |  |
-| `username` | `dict` | No |  |
+| `updated_at` | `str` | No | Time of last update of the user |
+| `user_id` | `str` | No | The ID of the user |
+| `username` | `dict` | No | The representation of a username of the user |
 
 ### Operations
 
@@ -1216,7 +1216,7 @@ web_authn = client.WebAuthn()
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
 | `id` | `str` | No |  |
-| `name` | `str` | No |  |
+| `name` | `str` | No | A new credential name. |
 | `rawId` | `str` | No |  |
 | `response` | `dict` | No |  |
 | `type` | `str` | No |  |

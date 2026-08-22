@@ -8,6 +8,7 @@ main: kit: entity: user: {
     {
       name: "created_at"
       req: false
+      short: "Time of creation of the the user"
       type: "`$STRING`"
     }
     {
@@ -19,11 +20,13 @@ main: kit: entity: user: {
         }
       }
       req: false
+      short: "The email address of the user"
       type: "`$STRING`"
     }
     {
       name: "email_id"
       req: false
+      short: "The ID of the newly created email address"
       type: "`$STRING`"
     }
     {
@@ -49,11 +52,13 @@ main: kit: entity: user: {
     {
       name: "id"
       req: false
+      short: "The ID of the user."
       type: "`$STRING`"
     }
     {
       name: "metadata"
       req: false
+      short: "The public and unsafe metadata of a user"
       type: "`$OBJECT`"
     }
     {
@@ -84,16 +89,19 @@ main: kit: entity: user: {
     {
       name: "updated_at"
       req: false
+      short: "Time of last update of the user"
       type: "`$STRING`"
     }
     {
       name: "user_id"
       req: false
+      short: "The ID of the user"
       type: "`$STRING`"
     }
     {
       name: "username"
       req: false
+      short: "The username of the user"
       type: "`$STRING`"
     }
     {
@@ -104,6 +112,7 @@ main: kit: entity: user: {
     {
       name: "webauthn_credentials"
       req: false
+      short: "A list of WebAuthn credentials"
       type: "`$ARRAY`"
     }
   ]

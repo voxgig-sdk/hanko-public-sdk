@@ -13,6 +13,7 @@ main: kit: entity: web_authn: {
     {
       name: "name"
       req: false
+      short: "A new credential name."
       type: "`$STRING`"
     }
     {

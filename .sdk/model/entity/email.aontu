@@ -14,11 +14,13 @@ main: kit: entity: email: {
         }
       }
       req: true
+      short: "The email address"
       type: "`$STRING`"
     }
     {
       name: "id"
       req: false
+      short: "The ID of the email address"
       type: "`$STRING`"
     }
     {
@@ -34,11 +36,13 @@ main: kit: entity: email: {
     {
       name: "is_primary"
       req: false
+      short: "Indicates it's the primary email address."
       type: "`$BOOLEAN`"
     }
     {
       name: "is_verified"
       req: false
+      short: "Indicated the email has been verified."
       type: "`$BOOLEAN`"
     }
   ]

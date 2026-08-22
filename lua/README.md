@@ -294,7 +294,7 @@ API path: `/webauthn/registration/initialize`
 | `rpId` |  |
 | `timeout` |  |
 | `userVerification` |  |
-| `user_id` |  |
+| `user_id` | The ID of the user on whose behalf WebAuthn login should be performed |
 
 Operations: Create.
 
@@ -304,12 +304,12 @@ API path: `/webauthn/login/initialize`
 
 | Field | Description |
 | --- | --- |
-| `address` |  |
-| `id` |  |
+| `address` | The email address |
+| `id` | The ID of the email address |
 | `identities` |  |
 | `identity` |  |
-| `is_primary` |  |
-| `is_verified` |  |
+| `is_primary` | Indicates it's the primary email address. |
+| `is_verified` | Indicated the email has been verified. |
 
 Operations: Create, List, Remove.
 
@@ -328,9 +328,9 @@ API path: `/emails/{id}/set_primary`
 
 | Field | Description |
 | --- | --- |
-| `account` |  |
-| `emails` |  |
-| `password` |  |
+| `account` | Controls the behavior regarding user account. |
+| `emails` | Controls the behavior regarding email addresses. |
+| `password` | Configuration options concerning passwords |
 
 Operations: Load.
 
@@ -355,10 +355,10 @@ API path: `/.well-known/jwks.json`
 
 | Field | Description |
 | --- | --- |
-| `code` |  |
-| `email_id` |  |
-| `id` |  |
-| `user_id` |  |
+| `code` | The actual passcode from the email sent to the user during initialization, a string of 6 decimal digits |
+| `email_id` | The ID of the email address |
+| `id` | The ID of the passcode |
+| `user_id` | The ID of the user |
 
 Operations: Create.
 
@@ -368,8 +368,8 @@ API path: `/passcode/login/finalize`
 
 | Field | Description |
 | --- | --- |
-| `password` |  |
-| `user_id` |  |
+| `password` | The actual password, its `minLength` defaults to 8 but can be [configured](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config) through the `password.min_password_length` option. |
+| `user_id` | The ID of the user to perform a password login for |
 
 Operations: Create, Update.
 
@@ -406,15 +406,15 @@ API path: `/saml/callback`
 
 | Field | Description |
 | --- | --- |
-| `amr` |  |
-| `audience` |  |
-| `email` |  |
-| `expiration` |  |
-| `issued_at` |  |
-| `issuer` |  |
-| `session_id` |  |
-| `session_token` |  |
-| `subject` |  |
+| `amr` | Authentication Method References, JSON array of strings that are identifiers for authentication methods used in the authentication. |
+| `audience` | The intended audience of the token. |
+| `email` | Data about the email address associated with the token's subject, if available. |
+| `expiration` | The timestamp indicating when the token will expire. |
+| `issued_at` | The timestamp indicating when the token was issued. |
+| `issuer` | The entity that issued the token. |
+| `session_id` | The unique identifier for the session associated with this token. |
+| `session_token` | The session token (JWT) to validate |
+| `subject` | The unique identifier of the token's subject. |
 
 Operations: Create, Load.
 
@@ -452,25 +452,25 @@ API path: `/token`
 
 | Field | Description |
 | --- | --- |
-| `created_at` |  |
-| `email` |  |
-| `email_id` |  |
+| `created_at` | Time of creation of the the user |
+| `email` | The email address of the user |
+| `email_id` | The ID of the newly created email address |
 | `emails` |  |
 | `family_name` |  |
 | `given_name` |  |
 | `has_webauthn_credential` |  |
-| `id` |  |
-| `metadata` |  |
+| `id` | The ID of the user. |
+| `metadata` | The public and unsafe metadata of a user |
 | `mfa_config` |  |
 | `name` |  |
 | `passkeys` |  |
 | `picture` |  |
 | `security_keys` |  |
-| `updated_at` |  |
-| `user_id` |  |
-| `username` |  |
+| `updated_at` | Time of last update of the user |
+| `user_id` | The ID of the user |
+| `username` | The username of the user |
 | `verified` |  |
-| `webauthn_credentials` |  |
+| `webauthn_credentials` | A list of WebAuthn credentials |
 
 Operations: Create, Load, Remove.
 
@@ -480,20 +480,20 @@ API path: `/user`
 
 | Field | Description |
 | --- | --- |
-| `created_at` |  |
+| `created_at` | Time of creation of the the user |
 | `emails` |  |
 | `family_name` |  |
 | `given_name` |  |
-| `id` |  |
-| `metadata` |  |
+| `id` | The ID of the user. |
+| `metadata` | The public and unsafe metadata of a user |
 | `mfa_config` |  |
 | `name` |  |
 | `passkeys` |  |
 | `picture` |  |
 | `security_keys` |  |
-| `updated_at` |  |
-| `user_id` |  |
-| `username` |  |
+| `updated_at` | Time of last update of the user |
+| `user_id` | The ID of the user |
+| `username` | The representation of a username of the user |
 
 Operations: Create, List.
 
@@ -504,7 +504,7 @@ API path: `/logout`
 | Field | Description |
 | --- | --- |
 | `id` |  |
-| `name` |  |
+| `name` | A new credential name. |
 | `rawId` |  |
 | `response` |  |
 | `type` |  |
@@ -620,7 +620,7 @@ Create an instance: `local credential_request_option = client:CredentialRequestO
 | `rpId` | `string` |  |
 | `timeout` | `number` |  |
 | `userVerification` | `string` |  |
-| `user_id` | `string` |  |
+| `user_id` | `string` | The ID of the user on whose behalf WebAuthn login should be performed |
 
 #### Example: Create
 
@@ -646,12 +646,12 @@ Create an instance: `local email = client:Email(nil)`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `address` | `string` |  |
-| `id` | `string` |  |
+| `address` | `string` | The email address |
+| `id` | `string` | The ID of the email address |
 | `identities` | `any` |  |
 | `identity` | `any` |  |
-| `is_primary` | `boolean` |  |
-| `is_verified` | `boolean` |  |
+| `is_primary` | `boolean` | Indicates it's the primary email address. |
+| `is_verified` | `boolean` | Indicated the email has been verified. |
 
 #### Example: List
 
@@ -701,9 +701,9 @@ Create an instance: `local hanko_configuration = client:HankoConfiguration(nil)`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `account` | `table` |  |
-| `emails` | `table` |  |
-| `password` | `table` |  |
+| `account` | `table` | Controls the behavior regarding user account. |
+| `emails` | `table` | Controls the behavior regarding email addresses. |
+| `password` | `table` | Configuration options concerning passwords |
 
 #### Example: Load
 
@@ -754,10 +754,10 @@ Create an instance: `local passcode = client:Passcode(nil)`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `code` | `string` |  |
-| `email_id` | `string` |  |
-| `id` | `string` |  |
-| `user_id` | `string` |  |
+| `code` | `string` | The actual passcode from the email sent to the user during initialization, a string of 6 decimal digits |
+| `email_id` | `string` | The ID of the email address |
+| `id` | `string` | The ID of the passcode |
+| `user_id` | `string` | The ID of the user |
 
 #### Example: Create
 
@@ -783,8 +783,8 @@ Create an instance: `local password = client:Password(nil)`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `password` | `string` |  |
-| `user_id` | `string` |  |
+| `password` | `string` | The actual password, its `minLength` defaults to 8 but can be [configured](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config) through the `password.min_password_length` option. |
+| `user_id` | `string` | The ID of the user to perform a password login for |
 
 #### Example: Create
 
@@ -859,15 +859,15 @@ Create an instance: `local session_management = client:SessionManagement(nil)`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `amr` | `table` |  |
-| `audience` | `table` |  |
-| `email` | `table` |  |
-| `expiration` | `string` |  |
-| `issued_at` | `string` |  |
-| `issuer` | `string` |  |
-| `session_id` | `string` |  |
-| `session_token` | `string` |  |
-| `subject` | `any` |  |
+| `amr` | `table` | Authentication Method References, JSON array of strings that are identifiers for authentication methods used in the authentication. |
+| `audience` | `table` | The intended audience of the token. |
+| `email` | `table` | Data about the email address associated with the token's subject, if available. |
+| `expiration` | `string` | The timestamp indicating when the token will expire. |
+| `issued_at` | `string` | The timestamp indicating when the token was issued. |
+| `issuer` | `string` | The entity that issued the token. |
+| `session_id` | `string` | The unique identifier for the session associated with this token. |
+| `session_token` | `string` | The session token (JWT) to validate |
+| `subject` | `any` | The unique identifier of the token's subject. |
 
 #### Example: Load
 
@@ -961,25 +961,25 @@ Create an instance: `local user = client:User(nil)`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `created_at` | `string` |  |
-| `email` | `string` |  |
-| `email_id` | `string` |  |
+| `created_at` | `string` | Time of creation of the the user |
+| `email` | `string` | The email address of the user |
+| `email_id` | `string` | The ID of the newly created email address |
 | `emails` | `table` |  |
 | `family_name` | `string` |  |
 | `given_name` | `string` |  |
 | `has_webauthn_credential` | `boolean` |  |
-| `id` | `string` |  |
-| `metadata` | `table` |  |
+| `id` | `string` | The ID of the user. |
+| `metadata` | `table` | The public and unsafe metadata of a user |
 | `mfa_config` | `table` |  |
 | `name` | `string` |  |
 | `passkeys` | `table` |  |
 | `picture` | `string` |  |
 | `security_keys` | `table` |  |
-| `updated_at` | `string` |  |
-| `user_id` | `string` |  |
-| `username` | `string` |  |
+| `updated_at` | `string` | Time of last update of the user |
+| `user_id` | `string` | The ID of the user |
+| `username` | `string` | The username of the user |
 | `verified` | `boolean` |  |
-| `webauthn_credentials` | `table` |  |
+| `webauthn_credentials` | `table` | A list of WebAuthn credentials |
 
 #### Example: Load
 
@@ -1010,20 +1010,20 @@ Create an instance: `local user_management = client:UserManagement(nil)`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `created_at` | `string` |  |
+| `created_at` | `string` | Time of creation of the the user |
 | `emails` | `table` |  |
 | `family_name` | `string` |  |
 | `given_name` | `string` |  |
-| `id` | `string` |  |
-| `metadata` | `table` |  |
+| `id` | `string` | The ID of the user. |
+| `metadata` | `table` | The public and unsafe metadata of a user |
 | `mfa_config` | `table` |  |
 | `name` | `string` |  |
 | `passkeys` | `table` |  |
 | `picture` | `string` |  |
 | `security_keys` | `table` |  |
-| `updated_at` | `string` |  |
-| `user_id` | `string` |  |
-| `username` | `table` |  |
+| `updated_at` | `string` | Time of last update of the user |
+| `user_id` | `string` | The ID of the user |
+| `username` | `table` | The representation of a username of the user |
 
 #### Example: List
 
@@ -1056,7 +1056,7 @@ Create an instance: `local web_authn = client:WebAuthn(nil)`
 | Field | Type | Description |
 | --- | --- | --- |
 | `id` | `string` |  |
-| `name` | `string` |  |
+| `name` | `string` | A new credential name. |
 | `rawId` | `string` |  |
 | `response` | `table` |  |
 | `type` | `string` |  |

@@ -9,7 +9,7 @@ The API is exposed as capitalised, semantic **Entities** — e.g.
 instead of raw URL paths and query parameters. This keeps the surface
 predictable and low-friction for both humans and AI agents.
 
-> Other languages, the CLI, and MCP server live alongside this one — see
+> Also generated from this model: `go`, `go-cli`, `go-mcp`, `lua`, `php`, `py`, `rb` — see
 > the [top-level README](../README.md).
 
 
@@ -353,7 +353,7 @@ API path: `/webauthn/registration/initialize`
 | `rpId` |  |
 | `timeout` |  |
 | `userVerification` |  |
-| `user_id` |  |
+| `user_id` | The ID of the user on whose behalf WebAuthn login should be performed |
 
 Operations: create.
 
@@ -363,12 +363,12 @@ API path: `/webauthn/login/initialize`
 
 | Field | Description |
 | --- | --- |
-| `address` |  |
-| `id` |  |
+| `address` | The email address |
+| `id` | The ID of the email address |
 | `identities` |  |
 | `identity` |  |
-| `is_primary` |  |
-| `is_verified` |  |
+| `is_primary` | Indicates it's the primary email address. |
+| `is_verified` | Indicated the email has been verified. |
 
 Operations: create, list, remove.
 
@@ -387,9 +387,9 @@ API path: `/emails/{id}/set_primary`
 
 | Field | Description |
 | --- | --- |
-| `account` |  |
-| `emails` |  |
-| `password` |  |
+| `account` | Controls the behavior regarding user account. |
+| `emails` | Controls the behavior regarding email addresses. |
+| `password` | Configuration options concerning passwords |
 
 Operations: load.
 
@@ -414,10 +414,10 @@ API path: `/.well-known/jwks.json`
 
 | Field | Description |
 | --- | --- |
-| `code` |  |
-| `email_id` |  |
-| `id` |  |
-| `user_id` |  |
+| `code` | The actual passcode from the email sent to the user during initialization, a string of 6 decimal digits |
+| `email_id` | The ID of the email address |
+| `id` | The ID of the passcode |
+| `user_id` | The ID of the user |
 
 Operations: create.
 
@@ -427,8 +427,8 @@ API path: `/passcode/login/finalize`
 
 | Field | Description |
 | --- | --- |
-| `password` |  |
-| `user_id` |  |
+| `password` | The actual password, its `minLength` defaults to 8 but can be [configured](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config) through the `password.min_password_length` option. |
+| `user_id` | The ID of the user to perform a password login for |
 
 Operations: create, update.
 
@@ -465,15 +465,15 @@ API path: `/saml/callback`
 
 | Field | Description |
 | --- | --- |
-| `amr` |  |
-| `audience` |  |
-| `email` |  |
-| `expiration` |  |
-| `issued_at` |  |
-| `issuer` |  |
-| `session_id` |  |
-| `session_token` |  |
-| `subject` |  |
+| `amr` | Authentication Method References, JSON array of strings that are identifiers for authentication methods used in the authentication. |
+| `audience` | The intended audience of the token. |
+| `email` | Data about the email address associated with the token's subject, if available. |
+| `expiration` | The timestamp indicating when the token will expire. |
+| `issued_at` | The timestamp indicating when the token was issued. |
+| `issuer` | The entity that issued the token. |
+| `session_id` | The unique identifier for the session associated with this token. |
+| `session_token` | The session token (JWT) to validate |
+| `subject` | The unique identifier of the token's subject. |
 
 Operations: create, load.
 
@@ -511,25 +511,25 @@ API path: `/token`
 
 | Field | Description |
 | --- | --- |
-| `created_at` |  |
-| `email` |  |
-| `email_id` |  |
+| `created_at` | Time of creation of the the user |
+| `email` | The email address of the user |
+| `email_id` | The ID of the newly created email address |
 | `emails` |  |
 | `family_name` |  |
 | `given_name` |  |
 | `has_webauthn_credential` |  |
-| `id` |  |
-| `metadata` |  |
+| `id` | The ID of the user. |
+| `metadata` | The public and unsafe metadata of a user |
 | `mfa_config` |  |
 | `name` |  |
 | `passkeys` |  |
 | `picture` |  |
 | `security_keys` |  |
-| `updated_at` |  |
-| `user_id` |  |
-| `username` |  |
+| `updated_at` | Time of last update of the user |
+| `user_id` | The ID of the user |
+| `username` | The username of the user |
 | `verified` |  |
-| `webauthn_credentials` |  |
+| `webauthn_credentials` | A list of WebAuthn credentials |
 
 Operations: create, load, remove.
 
@@ -539,20 +539,20 @@ API path: `/user`
 
 | Field | Description |
 | --- | --- |
-| `created_at` |  |
+| `created_at` | Time of creation of the the user |
 | `emails` |  |
 | `family_name` |  |
 | `given_name` |  |
-| `id` |  |
-| `metadata` |  |
+| `id` | The ID of the user. |
+| `metadata` | The public and unsafe metadata of a user |
 | `mfa_config` |  |
 | `name` |  |
 | `passkeys` |  |
 | `picture` |  |
 | `security_keys` |  |
-| `updated_at` |  |
-| `user_id` |  |
-| `username` |  |
+| `updated_at` | Time of last update of the user |
+| `user_id` | The ID of the user |
+| `username` | The representation of a username of the user |
 
 Operations: create, list.
 
@@ -563,7 +563,7 @@ API path: `/logout`
 | Field | Description |
 | --- | --- |
 | `id` |  |
-| `name` |  |
+| `name` | A new credential name. |
 | `rawId` |  |
 | `response` |  |
 | `type` |  |
@@ -679,7 +679,7 @@ Create an instance: `const credential_request_option = client.CredentialRequestO
 | `rpId` | `string` |  |
 | `timeout` | `number` |  |
 | `userVerification` | `string` |  |
-| `user_id` | `string` |  |
+| `user_id` | `string` | The ID of the user on whose behalf WebAuthn login should be performed |
 
 #### Example: Create
 
@@ -705,12 +705,12 @@ Create an instance: `const email = client.Email()`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `address` | `string` |  |
-| `id` | `string` |  |
+| `address` | `string` | The email address |
+| `id` | `string` | The ID of the email address |
 | `identities` | `any` |  |
 | `identity` | `any` |  |
-| `is_primary` | `boolean` |  |
-| `is_verified` | `boolean` |  |
+| `is_primary` | `boolean` | Indicates it's the primary email address. |
+| `is_verified` | `boolean` | Indicated the email has been verified. |
 
 #### Example: List
 
@@ -760,9 +760,9 @@ Create an instance: `const hanko_configuration = client.HankoConfiguration()`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `account` | `Record<string, any>` |  |
-| `emails` | `Record<string, any>` |  |
-| `password` | `Record<string, any>` |  |
+| `account` | `Record<string, any>` | Controls the behavior regarding user account. |
+| `emails` | `Record<string, any>` | Controls the behavior regarding email addresses. |
+| `password` | `Record<string, any>` | Configuration options concerning passwords |
 
 #### Example: Load
 
@@ -813,10 +813,10 @@ Create an instance: `const passcode = client.Passcode()`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `code` | `string` |  |
-| `email_id` | `string` |  |
-| `id` | `string` |  |
-| `user_id` | `string` |  |
+| `code` | `string` | The actual passcode from the email sent to the user during initialization, a string of 6 decimal digits |
+| `email_id` | `string` | The ID of the email address |
+| `id` | `string` | The ID of the passcode |
+| `user_id` | `string` | The ID of the user |
 
 #### Example: Create
 
@@ -842,8 +842,8 @@ Create an instance: `const password = client.Password()`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `password` | `string` |  |
-| `user_id` | `string` |  |
+| `password` | `string` | The actual password, its `minLength` defaults to 8 but can be [configured](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config) through the `password.min_password_length` option. |
+| `user_id` | `string` | The ID of the user to perform a password login for |
 
 #### Example: Create
 
@@ -918,15 +918,15 @@ Create an instance: `const session_management = client.SessionManagement()`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `amr` | `any[]` |  |
-| `audience` | `any[]` |  |
-| `email` | `Record<string, any>` |  |
-| `expiration` | `string` |  |
-| `issued_at` | `string` |  |
-| `issuer` | `string` |  |
-| `session_id` | `string` |  |
-| `session_token` | `string` |  |
-| `subject` | `any` |  |
+| `amr` | `any[]` | Authentication Method References, JSON array of strings that are identifiers for authentication methods used in the authentication. |
+| `audience` | `any[]` | The intended audience of the token. |
+| `email` | `Record<string, any>` | Data about the email address associated with the token's subject, if available. |
+| `expiration` | `string` | The timestamp indicating when the token will expire. |
+| `issued_at` | `string` | The timestamp indicating when the token was issued. |
+| `issuer` | `string` | The entity that issued the token. |
+| `session_id` | `string` | The unique identifier for the session associated with this token. |
+| `session_token` | `string` | The session token (JWT) to validate |
+| `subject` | `any` | The unique identifier of the token's subject. |
 
 #### Example: Load
 
@@ -1020,25 +1020,25 @@ Create an instance: `const user = client.User()`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `created_at` | `string` |  |
-| `email` | `string` |  |
-| `email_id` | `string` |  |
+| `created_at` | `string` | Time of creation of the the user |
+| `email` | `string` | The email address of the user |
+| `email_id` | `string` | The ID of the newly created email address |
 | `emails` | `any[]` |  |
 | `family_name` | `string` |  |
 | `given_name` | `string` |  |
 | `has_webauthn_credential` | `boolean` |  |
-| `id` | `string` |  |
-| `metadata` | `Record<string, any>` |  |
+| `id` | `string` | The ID of the user. |
+| `metadata` | `Record<string, any>` | The public and unsafe metadata of a user |
 | `mfa_config` | `Record<string, any>` |  |
 | `name` | `string` |  |
 | `passkeys` | `any[]` |  |
 | `picture` | `string` |  |
 | `security_keys` | `any[]` |  |
-| `updated_at` | `string` |  |
-| `user_id` | `string` |  |
-| `username` | `string` |  |
+| `updated_at` | `string` | Time of last update of the user |
+| `user_id` | `string` | The ID of the user |
+| `username` | `string` | The username of the user |
 | `verified` | `boolean` |  |
-| `webauthn_credentials` | `any[]` |  |
+| `webauthn_credentials` | `any[]` | A list of WebAuthn credentials |
 
 #### Example: Load
 
@@ -1069,20 +1069,20 @@ Create an instance: `const user_management = client.UserManagement()`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `created_at` | `string` |  |
+| `created_at` | `string` | Time of creation of the the user |
 | `emails` | `any[]` |  |
 | `family_name` | `string` |  |
 | `given_name` | `string` |  |
-| `id` | `string` |  |
-| `metadata` | `Record<string, any>` |  |
+| `id` | `string` | The ID of the user. |
+| `metadata` | `Record<string, any>` | The public and unsafe metadata of a user |
 | `mfa_config` | `Record<string, any>` |  |
 | `name` | `string` |  |
 | `passkeys` | `any[]` |  |
 | `picture` | `string` |  |
 | `security_keys` | `any[]` |  |
-| `updated_at` | `string` |  |
-| `user_id` | `string` |  |
-| `username` | `Record<string, any>` |  |
+| `updated_at` | `string` | Time of last update of the user |
+| `user_id` | `string` | The ID of the user |
+| `username` | `Record<string, any>` | The representation of a username of the user |
 
 #### Example: List
 
@@ -1115,7 +1115,7 @@ Create an instance: `const web_authn = client.WebAuthn()`
 | Field | Type | Description |
 | --- | --- | --- |
 | `id` | `string` |  |
-| `name` | `string` |  |
+| `name` | `string` | A new credential name. |
 | `rawId` | `string` |  |
 | `response` | `Record<string, any>` |  |
 | `type` | `string` |  |

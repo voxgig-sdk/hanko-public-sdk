@@ -489,7 +489,7 @@ const credential_request_option = client.CredentialRequestOption()
 | `rpId` | `string` | No |  |
 | `timeout` | `number` | No |  |
 | `userVerification` | `string` | No |  |
-| `user_id` | `string` | No |  |
+| `user_id` | `string` | No | The ID of the user on whose behalf WebAuthn login should be performed |
 
 ### Operations
 
@@ -540,12 +540,12 @@ const email = client.Email()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `address` | `string` | Yes |  |
-| `id` | `string` | No |  |
+| `address` | `string` | Yes | The email address |
+| `id` | `string` | No | The ID of the email address |
 | `identities` | `any` | No |  |
 | `identity` | `any` | No |  |
-| `is_primary` | `boolean` | No |  |
-| `is_verified` | `boolean` | No |  |
+| `is_primary` | `boolean` | No | Indicates it's the primary email address. |
+| `is_verified` | `boolean` | No | Indicated the email has been verified. |
 
 ### Field Usage by Operation
 
@@ -690,9 +690,9 @@ const hanko_configuration = client.HankoConfiguration()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `account` | `Record<string, any>` | No |  |
-| `emails` | `Record<string, any>` | No |  |
-| `password` | `Record<string, any>` | No |  |
+| `account` | `Record<string, any>` | No | Controls the behavior regarding user account. |
+| `emails` | `Record<string, any>` | No | Controls the behavior regarding email addresses. |
+| `password` | `Record<string, any>` | No | Configuration options concerning passwords |
 
 ### Operations
 
@@ -797,10 +797,10 @@ const passcode = client.Passcode()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `code` | `string` | No |  |
-| `email_id` | `string` | No |  |
-| `id` | `string` | No |  |
-| `user_id` | `string` | Yes |  |
+| `code` | `string` | No | The actual passcode from the email sent to the user during initialization, a string of 6 decimal digits |
+| `email_id` | `string` | No | The ID of the email address |
+| `id` | `string` | No | The ID of the passcode |
+| `user_id` | `string` | Yes | The ID of the user |
 
 ### Operations
 
@@ -852,8 +852,8 @@ const password = client.Password()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `password` | `string` | Yes |  |
-| `user_id` | `string` | Yes |  |
+| `password` | `string` | Yes | The actual password, its `minLength` defaults to 8 but can be [configured](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config) through the `password.min_password_length` option. |
+| `user_id` | `string` | Yes | The ID of the user to perform a password login for |
 
 ### Actions
 
@@ -1034,15 +1034,15 @@ const session_management = client.SessionManagement()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `amr` | `any[]` | No |  |
-| `audience` | `any[]` | No |  |
-| `email` | `Record<string, any>` | No |  |
-| `expiration` | `string` | Yes |  |
-| `issued_at` | `string` | No |  |
-| `issuer` | `string` | No |  |
-| `session_id` | `string` | Yes |  |
-| `session_token` | `string` | Yes |  |
-| `subject` | `any` | Yes |  |
+| `amr` | `any[]` | No | Authentication Method References, JSON array of strings that are identifiers for authentication methods used in the authentication. |
+| `audience` | `any[]` | No | The intended audience of the token. |
+| `email` | `Record<string, any>` | No | Data about the email address associated with the token's subject, if available. |
+| `expiration` | `string` | Yes | The timestamp indicating when the token will expire. |
+| `issued_at` | `string` | No | The timestamp indicating when the token was issued. |
+| `issuer` | `string` | No | The entity that issued the token. |
+| `session_id` | `string` | Yes | The unique identifier for the session associated with this token. |
+| `session_token` | `string` | Yes | The session token (JWT) to validate |
+| `subject` | `any` | Yes | The unique identifier of the token's subject. |
 
 ### Operations
 
@@ -1244,25 +1244,25 @@ const user = client.User()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `created_at` | `string` | No |  |
-| `email` | `string` | No |  |
-| `email_id` | `string` | No |  |
+| `created_at` | `string` | No | Time of creation of the the user |
+| `email` | `string` | No | The email address of the user |
+| `email_id` | `string` | No | The ID of the newly created email address |
 | `emails` | `any[]` | No |  |
 | `family_name` | `string` | No |  |
 | `given_name` | `string` | No |  |
 | `has_webauthn_credential` | `boolean` | No |  |
-| `id` | `string` | No |  |
-| `metadata` | `Record<string, any>` | No |  |
+| `id` | `string` | No | The ID of the user. |
+| `metadata` | `Record<string, any>` | No | The public and unsafe metadata of a user |
 | `mfa_config` | `Record<string, any>` | No |  |
 | `name` | `string` | No |  |
 | `passkeys` | `any[]` | No |  |
 | `picture` | `string` | No |  |
 | `security_keys` | `any[]` | No |  |
-| `updated_at` | `string` | No |  |
-| `user_id` | `string` | No |  |
-| `username` | `string` | No |  |
+| `updated_at` | `string` | No | Time of last update of the user |
+| `user_id` | `string` | No | The ID of the user |
+| `username` | `string` | No | The username of the user |
 | `verified` | `boolean` | No |  |
-| `webauthn_credentials` | `any[]` | No |  |
+| `webauthn_credentials` | `any[]` | No | A list of WebAuthn credentials |
 
 ### Field Usage by Operation
 
@@ -1353,20 +1353,20 @@ const user_management = client.UserManagement()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `created_at` | `string` | No |  |
+| `created_at` | `string` | No | Time of creation of the the user |
 | `emails` | `any[]` | No |  |
 | `family_name` | `string` | No |  |
 | `given_name` | `string` | No |  |
-| `id` | `string` | No |  |
-| `metadata` | `Record<string, any>` | No |  |
+| `id` | `string` | No | The ID of the user. |
+| `metadata` | `Record<string, any>` | No | The public and unsafe metadata of a user |
 | `mfa_config` | `Record<string, any>` | No |  |
 | `name` | `string` | No |  |
 | `passkeys` | `any[]` | No |  |
 | `picture` | `string` | No |  |
 | `security_keys` | `any[]` | No |  |
-| `updated_at` | `string` | No |  |
-| `user_id` | `string` | No |  |
-| `username` | `Record<string, any>` | No |  |
+| `updated_at` | `string` | No | Time of last update of the user |
+| `user_id` | `string` | No | The ID of the user |
+| `username` | `Record<string, any>` | No | The representation of a username of the user |
 
 ### Operations
 
@@ -1426,7 +1426,7 @@ const web_authn = client.WebAuthn()
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
 | `id` | `string` | No |  |
-| `name` | `string` | No |  |
+| `name` | `string` | No | A new credential name. |
 | `rawId` | `string` | No |  |
 | `response` | `Record<string, any>` | No |  |
 | `type` | `string` | No |  |

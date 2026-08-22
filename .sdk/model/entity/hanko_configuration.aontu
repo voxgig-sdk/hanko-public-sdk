@@ -8,16 +8,19 @@ main: kit: entity: hanko_configuration: {
     {
       name: "account"
       req: false
+      short: "Controls the behavior regarding user account."
       type: "`$OBJECT`"
     }
     {
       name: "emails"
       req: false
+      short: "Controls the behavior regarding email addresses."
       type: "`$OBJECT`"
     }
     {
       name: "password"
       req: false
+      short: "Configuration options concerning passwords"
       type: "`$OBJECT`"
     }
   ]

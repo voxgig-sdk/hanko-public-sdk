@@ -325,7 +325,7 @@ local credential_request_option = client:CredentialRequestOption(nil)
 | `rpId` | `string` | No |  |
 | `timeout` | `number` | No |  |
 | `userVerification` | `string` | No |  |
-| `user_id` | `string` | No |  |
+| `user_id` | `string` | No | The ID of the user on whose behalf WebAuthn login should be performed |
 
 ### Operations
 
@@ -378,12 +378,12 @@ local email = client:Email(nil)
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `address` | `string` | Yes |  |
-| `id` | `string` | No |  |
+| `address` | `string` | Yes | The email address |
+| `id` | `string` | No | The ID of the email address |
 | `identities` | `any` | No |  |
 | `identity` | `any` | No |  |
-| `is_primary` | `boolean` | No |  |
-| `is_verified` | `boolean` | No |  |
+| `is_primary` | `boolean` | No | Indicates it's the primary email address. |
+| `is_verified` | `boolean` | No | Indicated the email has been verified. |
 
 ### Field Usage by Operation
 
@@ -512,9 +512,9 @@ local hanko_configuration = client:HankoConfiguration(nil)
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `account` | `table` | No |  |
-| `emails` | `table` | No |  |
-| `password` | `table` | No |  |
+| `account` | `table` | No | Controls the behavior regarding user account. |
+| `emails` | `table` | No | Controls the behavior regarding email addresses. |
+| `password` | `table` | No | Configuration options concerning passwords |
 
 ### Operations
 
@@ -623,10 +623,10 @@ local passcode = client:Passcode(nil)
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `code` | `string` | No |  |
-| `email_id` | `string` | No |  |
-| `id` | `string` | No |  |
-| `user_id` | `string` | Yes |  |
+| `code` | `string` | No | The actual passcode from the email sent to the user during initialization, a string of 6 decimal digits |
+| `email_id` | `string` | No | The ID of the email address |
+| `id` | `string` | No | The ID of the passcode |
+| `user_id` | `string` | Yes | The ID of the user |
 
 ### Operations
 
@@ -680,8 +680,8 @@ local password = client:Password(nil)
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `password` | `string` | Yes |  |
-| `user_id` | `string` | Yes |  |
+| `password` | `string` | Yes | The actual password, its `minLength` defaults to 8 but can be [configured](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config) through the `password.min_password_length` option. |
+| `user_id` | `string` | Yes | The ID of the user to perform a password login for |
 
 ### Operations
 
@@ -824,15 +824,15 @@ local session_management = client:SessionManagement(nil)
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `amr` | `table` | No |  |
-| `audience` | `table` | No |  |
-| `email` | `table` | No |  |
-| `expiration` | `string` | Yes |  |
-| `issued_at` | `string` | No |  |
-| `issuer` | `string` | No |  |
-| `session_id` | `string` | Yes |  |
-| `session_token` | `string` | Yes |  |
-| `subject` | `any` | Yes |  |
+| `amr` | `table` | No | Authentication Method References, JSON array of strings that are identifiers for authentication methods used in the authentication. |
+| `audience` | `table` | No | The intended audience of the token. |
+| `email` | `table` | No | Data about the email address associated with the token's subject, if available. |
+| `expiration` | `string` | Yes | The timestamp indicating when the token will expire. |
+| `issued_at` | `string` | No | The timestamp indicating when the token was issued. |
+| `issuer` | `string` | No | The entity that issued the token. |
+| `session_id` | `string` | Yes | The unique identifier for the session associated with this token. |
+| `session_token` | `string` | Yes | The session token (JWT) to validate |
+| `subject` | `any` | Yes | The unique identifier of the token's subject. |
 
 ### Operations
 
@@ -1042,25 +1042,25 @@ local user = client:User(nil)
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `created_at` | `string` | No |  |
-| `email` | `string` | No |  |
-| `email_id` | `string` | No |  |
+| `created_at` | `string` | No | Time of creation of the the user |
+| `email` | `string` | No | The email address of the user |
+| `email_id` | `string` | No | The ID of the newly created email address |
 | `emails` | `table` | No |  |
 | `family_name` | `string` | No |  |
 | `given_name` | `string` | No |  |
 | `has_webauthn_credential` | `boolean` | No |  |
-| `id` | `string` | No |  |
-| `metadata` | `table` | No |  |
+| `id` | `string` | No | The ID of the user. |
+| `metadata` | `table` | No | The public and unsafe metadata of a user |
 | `mfa_config` | `table` | No |  |
 | `name` | `string` | No |  |
 | `passkeys` | `table` | No |  |
 | `picture` | `string` | No |  |
 | `security_keys` | `table` | No |  |
-| `updated_at` | `string` | No |  |
-| `user_id` | `string` | No |  |
-| `username` | `string` | No |  |
+| `updated_at` | `string` | No | Time of last update of the user |
+| `user_id` | `string` | No | The ID of the user |
+| `username` | `string` | No | The username of the user |
 | `verified` | `boolean` | No |  |
-| `webauthn_credentials` | `table` | No |  |
+| `webauthn_credentials` | `table` | No | A list of WebAuthn credentials |
 
 ### Field Usage by Operation
 
@@ -1153,20 +1153,20 @@ local user_management = client:UserManagement(nil)
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `created_at` | `string` | No |  |
+| `created_at` | `string` | No | Time of creation of the the user |
 | `emails` | `table` | No |  |
 | `family_name` | `string` | No |  |
 | `given_name` | `string` | No |  |
-| `id` | `string` | No |  |
-| `metadata` | `table` | No |  |
+| `id` | `string` | No | The ID of the user. |
+| `metadata` | `table` | No | The public and unsafe metadata of a user |
 | `mfa_config` | `table` | No |  |
 | `name` | `string` | No |  |
 | `passkeys` | `table` | No |  |
 | `picture` | `string` | No |  |
 | `security_keys` | `table` | No |  |
-| `updated_at` | `string` | No |  |
-| `user_id` | `string` | No |  |
-| `username` | `table` | No |  |
+| `updated_at` | `string` | No | Time of last update of the user |
+| `user_id` | `string` | No | The ID of the user |
+| `username` | `table` | No | The representation of a username of the user |
 
 ### Operations
 
@@ -1228,7 +1228,7 @@ local web_authn = client:WebAuthn(nil)
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
 | `id` | `string` | No |  |
-| `name` | `string` | No |  |
+| `name` | `string` | No | A new credential name. |
 | `rawId` | `string` | No |  |
 | `response` | `table` | No |  |
 | `type` | `string` | No |  |

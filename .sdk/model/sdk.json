@@ -20,9 +20,11 @@
         ],
         "headers": {
           "content-type": "application/json"
-        }
+        },
+        "repr": "auto"
       },
       "contributor": {},
+      "docs": {},
       "entity": {
         "create_user_response_object": {
           "active": true,
@@ -261,6 +263,7 @@
               "active": true,
               "name": "user_id",
               "req": false,
+              "short": "The ID of the user on whose behalf WebAuthn login should be performed",
               "type": "`$STRING`"
             }
           ],
@@ -310,12 +313,14 @@
                 }
               },
               "req": true,
+              "short": "The email address",
               "type": "`$STRING`"
             },
             {
               "active": true,
               "name": "id",
               "req": false,
+              "short": "The ID of the email address",
               "type": "`$STRING`"
             },
             {
@@ -334,12 +339,14 @@
               "active": true,
               "name": "is_primary",
               "req": false,
+              "short": "Indicates it's the primary email address.",
               "type": "`$BOOLEAN`"
             },
             {
               "active": true,
               "name": "is_verified",
               "req": false,
+              "short": "Indicated the email has been verified.",
               "type": "`$BOOLEAN`"
             }
           ],
@@ -497,18 +504,21 @@
               "active": true,
               "name": "account",
               "req": false,
+              "short": "Controls the behavior regarding user account.",
               "type": "`$OBJECT`"
             },
             {
               "active": true,
               "name": "emails",
               "req": false,
+              "short": "Controls the behavior regarding email addresses.",
               "type": "`$OBJECT`"
             },
             {
               "active": true,
               "name": "password",
               "req": false,
+              "short": "Configuration options concerning passwords",
               "type": "`$OBJECT`"
             }
           ],
@@ -623,24 +633,28 @@
               "active": true,
               "name": "code",
               "req": false,
+              "short": "The actual passcode from the email sent to the user during initialization, a string of 6 decimal digits",
               "type": "`$STRING`"
             },
             {
               "active": true,
               "name": "email_id",
               "req": false,
+              "short": "The ID of the email address",
               "type": "`$STRING`"
             },
             {
               "active": true,
               "name": "id",
               "req": false,
+              "short": "The ID of the passcode",
               "type": "`$STRING`"
             },
             {
               "active": true,
               "name": "user_id",
               "req": true,
+              "short": "The ID of the user",
               "type": "`$STRING`"
             }
           ],
@@ -705,12 +719,14 @@
               "active": true,
               "name": "password",
               "req": true,
+              "short": "The actual password, its `minLength` defaults to 8 but can be [configured](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config) through the `password.min_password_length` option.",
               "type": "`$STRING`"
             },
             {
               "active": true,
               "name": "user_id",
               "req": true,
+              "short": "The ID of the user to perform a password login for",
               "type": "`$STRING`"
             }
           ],
@@ -1005,54 +1021,63 @@
               "active": true,
               "name": "amr",
               "req": false,
+              "short": "Authentication Method References, JSON array of strings that are identifiers for authentication methods used in the authentication.",
               "type": "`$ARRAY`"
             },
             {
               "active": true,
               "name": "audience",
               "req": false,
+              "short": "The intended audience of the token.",
               "type": "`$ARRAY`"
             },
             {
               "active": true,
               "name": "email",
               "req": false,
+              "short": "Data about the email address associated with the token's subject, if available.",
               "type": "`$OBJECT`"
             },
             {
               "active": true,
               "name": "expiration",
               "req": true,
+              "short": "The timestamp indicating when the token will expire.",
               "type": "`$STRING`"
             },
             {
               "active": true,
               "name": "issued_at",
               "req": false,
+              "short": "The timestamp indicating when the token was issued.",
               "type": "`$STRING`"
             },
             {
               "active": true,
               "name": "issuer",
               "req": false,
+              "short": "The entity that issued the token.",
               "type": "`$STRING`"
             },
             {
               "active": true,
               "name": "session_id",
               "req": true,
+              "short": "The unique identifier for the session associated with this token.",
               "type": "`$STRING`"
             },
             {
               "active": true,
               "name": "session_token",
               "req": true,
+              "short": "The session token (JWT) to validate",
               "type": "`$STRING`"
             },
             {
               "active": true,
               "name": "subject",
               "req": true,
+              "short": "The unique identifier of the token's subject.",
               "type": "`$ANY`"
             }
           ],
@@ -1307,6 +1332,7 @@
               "active": true,
               "name": "created_at",
               "req": false,
+              "short": "Time of creation of the the user",
               "type": "`$STRING`"
             },
             {
@@ -1319,12 +1345,14 @@
                 }
               },
               "req": false,
+              "short": "The email address of the user",
               "type": "`$STRING`"
             },
             {
               "active": true,
               "name": "email_id",
               "req": false,
+              "short": "The ID of the newly created email address",
               "type": "`$STRING`"
             },
             {
@@ -1355,12 +1383,14 @@
               "active": true,
               "name": "id",
               "req": false,
+              "short": "The ID of the user.",
               "type": "`$STRING`"
             },
             {
               "active": true,
               "name": "metadata",
               "req": false,
+              "short": "The public and unsafe metadata of a user",
               "type": "`$OBJECT`"
             },
             {
@@ -1397,18 +1427,21 @@
               "active": true,
               "name": "updated_at",
               "req": false,
+              "short": "Time of last update of the user",
               "type": "`$STRING`"
             },
             {
               "active": true,
               "name": "user_id",
               "req": false,
+              "short": "The ID of the user",
               "type": "`$STRING`"
             },
             {
               "active": true,
               "name": "username",
               "req": false,
+              "short": "The username of the user",
               "type": "`$STRING`"
             },
             {
@@ -1421,6 +1454,7 @@
               "active": true,
               "name": "webauthn_credentials",
               "req": false,
+              "short": "A list of WebAuthn credentials",
               "type": "`$ARRAY`"
             }
           ],
@@ -1540,6 +1574,7 @@
               "active": true,
               "name": "created_at",
               "req": false,
+              "short": "Time of creation of the the user",
               "type": "`$STRING`"
             },
             {
@@ -1564,12 +1599,14 @@
               "active": true,
               "name": "id",
               "req": false,
+              "short": "The ID of the user.",
               "type": "`$STRING`"
             },
             {
               "active": true,
               "name": "metadata",
               "req": false,
+              "short": "The public and unsafe metadata of a user",
               "type": "`$OBJECT`"
             },
             {
@@ -1606,18 +1643,21 @@
               "active": true,
               "name": "updated_at",
               "req": false,
+              "short": "Time of last update of the user",
               "type": "`$STRING`"
             },
             {
               "active": true,
               "name": "user_id",
               "req": false,
+              "short": "The ID of the user",
               "type": "`$STRING`"
             },
             {
               "active": true,
               "name": "username",
               "req": false,
+              "short": "The representation of a username of the user",
               "type": "`$OBJECT`"
             }
           ],
@@ -1690,6 +1730,7 @@
               "active": true,
               "name": "name",
               "req": false,
+              "short": "A new credential name.",
               "type": "`$STRING`"
             },
             {
@@ -1904,6 +1945,7 @@
       "feature": {
         "test": {
           "active": true,
+          "base": "node_modules/@voxgig/sdkgen/project/.sdk",
           "config": {
             "options": {
               "active": false
@@ -1964,6 +2006,8 @@
             }
           },
           "name": "test",
+          "origname": "",
+          "package": "@voxgig/sdkgen",
           "target": {
             "go": {
               "deps": {}
@@ -2658,6 +2702,7 @@
             "name": "",
             "url": ""
           },
+          "base": "node_modules/@voxgig/sdkgen/project/.sdk",
           "comment": {
             "line": "//"
           },
@@ -2676,12 +2721,14 @@
             "path": ""
           },
           "name": "go",
+          "origname": "",
           "output": {
             "adopt": false,
             "path": "",
             "repo": "",
             "sdkrel": ""
           },
+          "package": "@voxgig/sdkgen",
           "publish": {
             "registry": {
               "active": false,
@@ -2715,6 +2762,7 @@
             "name": "",
             "url": ""
           },
+          "base": "node_modules/@voxgig/sdkgen/project/.sdk",
           "comment": {
             "line": "//"
           },
@@ -2731,12 +2779,14 @@
             "path": ""
           },
           "name": "go-cli",
+          "origname": "",
           "output": {
             "adopt": false,
             "path": "",
             "repo": "",
             "sdkrel": ""
           },
+          "package": "@voxgig/sdkgen",
           "phase": {
             "agentguide": {
               "active": false
@@ -2786,6 +2836,7 @@
             "name": "",
             "url": ""
           },
+          "base": "node_modules/@voxgig/sdkgen/project/.sdk",
           "comment": {
             "line": "//"
           },
@@ -2802,12 +2853,14 @@
             "path": ""
           },
           "name": "go-mcp",
+          "origname": "",
           "output": {
             "adopt": false,
             "path": "",
             "repo": "",
             "sdkrel": ""
           },
+          "package": "@voxgig/sdkgen",
           "phase": {
             "agentguide": {
               "active": false
@@ -2857,6 +2910,7 @@
             "name": "",
             "url": ""
           },
+          "base": "node_modules/@voxgig/sdkgen/project/.sdk",
           "comment": {
             "line": "--"
           },
@@ -2879,12 +2933,14 @@
             "path": ""
           },
           "name": "lua",
+          "origname": "",
           "output": {
             "adopt": false,
             "path": "",
             "repo": "",
             "sdkrel": ""
           },
+          "package": "@voxgig/sdkgen",
           "publish": {
             "registry": {
               "active": false,
@@ -2918,6 +2974,7 @@
             "name": "",
             "url": ""
           },
+          "base": "node_modules/@voxgig/sdkgen/project/.sdk",
           "comment": {
             "line": "//"
           },
@@ -2934,12 +2991,14 @@
             "path": ""
           },
           "name": "php",
+          "origname": "",
           "output": {
             "adopt": false,
             "path": "",
             "repo": "",
             "sdkrel": ""
           },
+          "package": "@voxgig/sdkgen",
           "publish": {
             "registry": {
               "active": false,
@@ -2973,6 +3032,7 @@
             "name": "",
             "url": ""
           },
+          "base": "node_modules/@voxgig/sdkgen/project/.sdk",
           "comment": {
             "line": "#"
           },
@@ -2995,12 +3055,14 @@
             "path": ""
           },
           "name": "py",
+          "origname": "",
           "output": {
             "adopt": false,
             "path": "",
             "repo": "",
             "sdkrel": ""
           },
+          "package": "@voxgig/sdkgen",
           "publish": {
             "registry": {
               "active": false,
@@ -3034,6 +3096,7 @@
             "name": "",
             "url": ""
           },
+          "base": "node_modules/@voxgig/sdkgen/project/.sdk",
           "comment": {
             "line": "#"
           },
@@ -3061,12 +3124,14 @@
             "path": ""
           },
           "name": "rb",
+          "origname": "",
           "output": {
             "adopt": false,
             "path": "",
             "repo": "",
             "sdkrel": ""
           },
+          "package": "@voxgig/sdkgen",
           "publish": {
             "registry": {
               "active": false,
@@ -3133,12 +3198,14 @@
             "path": ""
           },
           "name": "ts",
+          "origname": "",
           "output": {
             "adopt": false,
             "path": "",
             "repo": "",
             "sdkrel": ""
           },
+          "package": "@voxgig/sdkgen",
           "publish": {
             "registry": {
               "active": false,

@@ -8,46 +8,55 @@ main: kit: entity: session_management: {
     {
       name: "amr"
       req: false
+      short: "Authentication Method References, JSON array of strings that are identifiers for authentication methods used in the authentication."
       type: "`$ARRAY`"
     }
     {
       name: "audience"
       req: false
+      short: "The intended audience of the token."
       type: "`$ARRAY`"
     }
     {
       name: "email"
       req: false
+      short: "Data about the email address associated with the token's subject, if available."
       type: "`$OBJECT`"
     }
     {
       name: "expiration"
       req: true
+      short: "The timestamp indicating when the token will expire."
       type: "`$STRING`"
     }
     {
       name: "issued_at"
       req: false
+      short: "The timestamp indicating when the token was issued."
       type: "`$STRING`"
     }
     {
       name: "issuer"
       req: false
+      short: "The entity that issued the token."
       type: "`$STRING`"
     }
     {
       name: "session_id"
       req: true
+      short: "The unique identifier for the session associated with this token."
       type: "`$STRING`"
     }
     {
       name: "session_token"
       req: true
+      short: "The session token (JWT) to validate"
       type: "`$STRING`"
     }
     {
       name: "subject"
       req: true
+      short: "The unique identifier of the token's subject."
       type: "`$ANY`"
     }
   ]

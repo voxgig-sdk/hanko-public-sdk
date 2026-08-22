@@ -327,7 +327,7 @@ $credential_request_option = $client->CredentialRequestOption();
 | `rpId` | `string` | No |  |
 | `timeout` | `int` | No |  |
 | `userVerification` | `string` | No |  |
-| `user_id` | `string` | No |  |
+| `user_id` | `string` | No | The ID of the user on whose behalf WebAuthn login should be performed |
 
 ### Operations
 
@@ -380,12 +380,12 @@ $email = $client->Email();
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `address` | `string` | Yes |  |
-| `id` | `string` | No |  |
+| `address` | `string` | Yes | The email address |
+| `id` | `string` | No | The ID of the email address |
 | `identities` | `mixed` | No |  |
 | `identity` | `mixed` | No |  |
-| `is_primary` | `bool` | No |  |
-| `is_verified` | `bool` | No |  |
+| `is_primary` | `bool` | No | Indicates it's the primary email address. |
+| `is_verified` | `bool` | No | Indicated the email has been verified. |
 
 ### Field Usage by Operation
 
@@ -514,9 +514,9 @@ $hanko_configuration = $client->HankoConfiguration();
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `account` | `array` | No |  |
-| `emails` | `array` | No |  |
-| `password` | `array` | No |  |
+| `account` | `array` | No | Controls the behavior regarding user account. |
+| `emails` | `array` | No | Controls the behavior regarding email addresses. |
+| `password` | `array` | No | Configuration options concerning passwords |
 
 ### Operations
 
@@ -625,10 +625,10 @@ $passcode = $client->Passcode();
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `code` | `string` | No |  |
-| `email_id` | `string` | No |  |
-| `id` | `string` | No |  |
-| `user_id` | `string` | Yes |  |
+| `code` | `string` | No | The actual passcode from the email sent to the user during initialization, a string of 6 decimal digits |
+| `email_id` | `string` | No | The ID of the email address |
+| `id` | `string` | No | The ID of the passcode |
+| `user_id` | `string` | Yes | The ID of the user |
 
 ### Operations
 
@@ -682,8 +682,8 @@ $password = $client->Password();
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `password` | `string` | Yes |  |
-| `user_id` | `string` | Yes |  |
+| `password` | `string` | Yes | The actual password, its `minLength` defaults to 8 but can be [configured](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config) through the `password.min_password_length` option. |
+| `user_id` | `string` | Yes | The ID of the user to perform a password login for |
 
 ### Operations
 
@@ -826,15 +826,15 @@ $session_management = $client->SessionManagement();
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `amr` | `array` | No |  |
-| `audience` | `array` | No |  |
-| `email` | `array` | No |  |
-| `expiration` | `string` | Yes |  |
-| `issued_at` | `string` | No |  |
-| `issuer` | `string` | No |  |
-| `session_id` | `string` | Yes |  |
-| `session_token` | `string` | Yes |  |
-| `subject` | `mixed` | Yes |  |
+| `amr` | `array` | No | Authentication Method References, JSON array of strings that are identifiers for authentication methods used in the authentication. |
+| `audience` | `array` | No | The intended audience of the token. |
+| `email` | `array` | No | Data about the email address associated with the token's subject, if available. |
+| `expiration` | `string` | Yes | The timestamp indicating when the token will expire. |
+| `issued_at` | `string` | No | The timestamp indicating when the token was issued. |
+| `issuer` | `string` | No | The entity that issued the token. |
+| `session_id` | `string` | Yes | The unique identifier for the session associated with this token. |
+| `session_token` | `string` | Yes | The session token (JWT) to validate |
+| `subject` | `mixed` | Yes | The unique identifier of the token's subject. |
 
 ### Operations
 
@@ -1044,25 +1044,25 @@ $user = $client->User();
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `created_at` | `string` | No |  |
-| `email` | `string` | No |  |
-| `email_id` | `string` | No |  |
+| `created_at` | `string` | No | Time of creation of the the user |
+| `email` | `string` | No | The email address of the user |
+| `email_id` | `string` | No | The ID of the newly created email address |
 | `emails` | `array` | No |  |
 | `family_name` | `string` | No |  |
 | `given_name` | `string` | No |  |
 | `has_webauthn_credential` | `bool` | No |  |
-| `id` | `string` | No |  |
-| `metadata` | `array` | No |  |
+| `id` | `string` | No | The ID of the user. |
+| `metadata` | `array` | No | The public and unsafe metadata of a user |
 | `mfa_config` | `array` | No |  |
 | `name` | `string` | No |  |
 | `passkeys` | `array` | No |  |
 | `picture` | `string` | No |  |
 | `security_keys` | `array` | No |  |
-| `updated_at` | `string` | No |  |
-| `user_id` | `string` | No |  |
-| `username` | `string` | No |  |
+| `updated_at` | `string` | No | Time of last update of the user |
+| `user_id` | `string` | No | The ID of the user |
+| `username` | `string` | No | The username of the user |
 | `verified` | `bool` | No |  |
-| `webauthn_credentials` | `array` | No |  |
+| `webauthn_credentials` | `array` | No | A list of WebAuthn credentials |
 
 ### Field Usage by Operation
 
@@ -1155,20 +1155,20 @@ $user_management = $client->UserManagement();
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `created_at` | `string` | No |  |
+| `created_at` | `string` | No | Time of creation of the the user |
 | `emails` | `array` | No |  |
 | `family_name` | `string` | No |  |
 | `given_name` | `string` | No |  |
-| `id` | `string` | No |  |
-| `metadata` | `array` | No |  |
+| `id` | `string` | No | The ID of the user. |
+| `metadata` | `array` | No | The public and unsafe metadata of a user |
 | `mfa_config` | `array` | No |  |
 | `name` | `string` | No |  |
 | `passkeys` | `array` | No |  |
 | `picture` | `string` | No |  |
 | `security_keys` | `array` | No |  |
-| `updated_at` | `string` | No |  |
-| `user_id` | `string` | No |  |
-| `username` | `array` | No |  |
+| `updated_at` | `string` | No | Time of last update of the user |
+| `user_id` | `string` | No | The ID of the user |
+| `username` | `array` | No | The representation of a username of the user |
 
 ### Operations
 
@@ -1230,7 +1230,7 @@ $web_authn = $client->WebAuthn();
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
 | `id` | `string` | No |  |
-| `name` | `string` | No |  |
+| `name` | `string` | No | A new credential name. |
 | `rawId` | `string` | No |  |
 | `response` | `array` | No |  |
 | `type` | `string` | No |  |

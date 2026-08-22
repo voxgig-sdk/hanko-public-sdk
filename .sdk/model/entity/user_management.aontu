@@ -8,6 +8,7 @@ main: kit: entity: user_management: {
     {
       name: "created_at"
       req: false
+      short: "Time of creation of the the user"
       type: "`$STRING`"
     }
     {
@@ -28,11 +29,13 @@ main: kit: entity: user_management: {
     {
       name: "id"
       req: false
+      short: "The ID of the user."
       type: "`$STRING`"
     }
     {
       name: "metadata"
       req: false
+      short: "The public and unsafe metadata of a user"
       type: "`$OBJECT`"
     }
     {
@@ -63,16 +66,19 @@ main: kit: entity: user_management: {
     {
       name: "updated_at"
       req: false
+      short: "Time of last update of the user"
       type: "`$STRING`"
     }
     {
       name: "user_id"
       req: false
+      short: "The ID of the user"
       type: "`$STRING`"
     }
     {
       name: "username"
       req: false
+      short: "The representation of a username of the user"
       type: "`$OBJECT`"
     }
   ]

@@ -8,21 +8,25 @@ main: kit: entity: passcode: {
     {
       name: "code"
       req: false
+      short: "The actual passcode from the email sent to the user during initialization, a string of 6 decimal digits"
       type: "`$STRING`"
     }
     {
       name: "email_id"
       req: false
+      short: "The ID of the email address"
       type: "`$STRING`"
     }
     {
       name: "id"
       req: false
+      short: "The ID of the passcode"
       type: "`$STRING`"
     }
     {
       name: "user_id"
       req: true
+      short: "The ID of the user"
       type: "`$STRING`"
     }
   ]

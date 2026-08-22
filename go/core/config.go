@@ -11,6 +11,9 @@ func MakeConfig() map[string]any {
 	return map[string]any{
 		"main": map[string]any{
 			"name": "HankoPublic",
+			"slug": "hanko-public",
+			"version": "0.0.1",
+			"target": "go",
 		},
 		"feature": map[string]any{
 			"test": map[string]any{
@@ -220,6 +223,7 @@ func MakeConfig() map[string]any {
 					},
 					map[string]any{
 						"name": "user_id",
+						"short": "The ID of the user on whose behalf WebAuthn login should be performed",
 						"type": "`$STRING`",
 					},
 				},
@@ -262,10 +266,12 @@ func MakeConfig() map[string]any {
 							},
 						},
 						"req": true,
+						"short": "The email address",
 						"type": "`$STRING`",
 					},
 					map[string]any{
 						"name": "id",
+						"short": "The ID of the email address",
 						"type": "`$STRING`",
 					},
 					map[string]any{
@@ -278,10 +284,12 @@ func MakeConfig() map[string]any {
 					},
 					map[string]any{
 						"name": "is_primary",
+						"short": "Indicates it's the primary email address.",
 						"type": "`$BOOLEAN`",
 					},
 					map[string]any{
 						"name": "is_verified",
+						"short": "Indicated the email has been verified.",
 						"type": "`$BOOLEAN`",
 					},
 				},
@@ -419,14 +427,17 @@ func MakeConfig() map[string]any {
 				"fields": []any{
 					map[string]any{
 						"name": "account",
+						"short": "Controls the behavior regarding user account.",
 						"type": "`$OBJECT`",
 					},
 					map[string]any{
 						"name": "emails",
+						"short": "Controls the behavior regarding email addresses.",
 						"type": "`$OBJECT`",
 					},
 					map[string]any{
 						"name": "password",
+						"short": "Configuration options concerning passwords",
 						"type": "`$OBJECT`",
 					},
 				},
@@ -517,19 +528,23 @@ func MakeConfig() map[string]any {
 				"fields": []any{
 					map[string]any{
 						"name": "code",
+						"short": "The actual passcode from the email sent to the user during initialization, a string of 6 decimal digits",
 						"type": "`$STRING`",
 					},
 					map[string]any{
 						"name": "email_id",
+						"short": "The ID of the email address",
 						"type": "`$STRING`",
 					},
 					map[string]any{
 						"name": "id",
+						"short": "The ID of the passcode",
 						"type": "`$STRING`",
 					},
 					map[string]any{
 						"name": "user_id",
 						"req": true,
+						"short": "The ID of the user",
 						"type": "`$STRING`",
 					},
 				},
@@ -583,11 +598,13 @@ func MakeConfig() map[string]any {
 					map[string]any{
 						"name": "password",
 						"req": true,
+						"short": "The actual password, its `minLength` defaults to 8 but can be [configured](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config) through the `password.min_password_length` option.",
 						"type": "`$STRING`",
 					},
 					map[string]any{
 						"name": "user_id",
 						"req": true,
+						"short": "The ID of the user to perform a password login for",
 						"type": "`$STRING`",
 					},
 				},
@@ -827,42 +844,51 @@ func MakeConfig() map[string]any {
 				"fields": []any{
 					map[string]any{
 						"name": "amr",
+						"short": "Authentication Method References, JSON array of strings that are identifiers for authentication methods used in the authentication.",
 						"type": "`$ARRAY`",
 					},
 					map[string]any{
 						"name": "audience",
+						"short": "The intended audience of the token.",
 						"type": "`$ARRAY`",
 					},
 					map[string]any{
 						"name": "email",
+						"short": "Data about the email address associated with the token's subject, if available.",
 						"type": "`$OBJECT`",
 					},
 					map[string]any{
 						"name": "expiration",
 						"req": true,
+						"short": "The timestamp indicating when the token will expire.",
 						"type": "`$STRING`",
 					},
 					map[string]any{
 						"name": "issued_at",
+						"short": "The timestamp indicating when the token was issued.",
 						"type": "`$STRING`",
 					},
 					map[string]any{
 						"name": "issuer",
+						"short": "The entity that issued the token.",
 						"type": "`$STRING`",
 					},
 					map[string]any{
 						"name": "session_id",
 						"req": true,
+						"short": "The unique identifier for the session associated with this token.",
 						"type": "`$STRING`",
 					},
 					map[string]any{
 						"name": "session_token",
 						"req": true,
+						"short": "The session token (JWT) to validate",
 						"type": "`$STRING`",
 					},
 					map[string]any{
 						"name": "subject",
 						"req": true,
+						"short": "The unique identifier of the token's subject.",
 						"type": "`$ANY`",
 					},
 				},
@@ -1082,6 +1108,7 @@ func MakeConfig() map[string]any {
 				"fields": []any{
 					map[string]any{
 						"name": "created_at",
+						"short": "Time of creation of the the user",
 						"type": "`$STRING`",
 					},
 					map[string]any{
@@ -1092,10 +1119,12 @@ func MakeConfig() map[string]any {
 								"type": "`$STRING`",
 							},
 						},
+						"short": "The email address of the user",
 						"type": "`$STRING`",
 					},
 					map[string]any{
 						"name": "email_id",
+						"short": "The ID of the newly created email address",
 						"type": "`$STRING`",
 					},
 					map[string]any{
@@ -1116,10 +1145,12 @@ func MakeConfig() map[string]any {
 					},
 					map[string]any{
 						"name": "id",
+						"short": "The ID of the user.",
 						"type": "`$STRING`",
 					},
 					map[string]any{
 						"name": "metadata",
+						"short": "The public and unsafe metadata of a user",
 						"type": "`$OBJECT`",
 					},
 					map[string]any{
@@ -1144,14 +1175,17 @@ func MakeConfig() map[string]any {
 					},
 					map[string]any{
 						"name": "updated_at",
+						"short": "Time of last update of the user",
 						"type": "`$STRING`",
 					},
 					map[string]any{
 						"name": "user_id",
+						"short": "The ID of the user",
 						"type": "`$STRING`",
 					},
 					map[string]any{
 						"name": "username",
+						"short": "The username of the user",
 						"type": "`$STRING`",
 					},
 					map[string]any{
@@ -1160,6 +1194,7 @@ func MakeConfig() map[string]any {
 					},
 					map[string]any{
 						"name": "webauthn_credentials",
+						"short": "A list of WebAuthn credentials",
 						"type": "`$ARRAY`",
 					},
 				},
@@ -1264,6 +1299,7 @@ func MakeConfig() map[string]any {
 				"fields": []any{
 					map[string]any{
 						"name": "created_at",
+						"short": "Time of creation of the the user",
 						"type": "`$STRING`",
 					},
 					map[string]any{
@@ -1280,10 +1316,12 @@ func MakeConfig() map[string]any {
 					},
 					map[string]any{
 						"name": "id",
+						"short": "The ID of the user.",
 						"type": "`$STRING`",
 					},
 					map[string]any{
 						"name": "metadata",
+						"short": "The public and unsafe metadata of a user",
 						"type": "`$OBJECT`",
 					},
 					map[string]any{
@@ -1308,14 +1346,17 @@ func MakeConfig() map[string]any {
 					},
 					map[string]any{
 						"name": "updated_at",
+						"short": "Time of last update of the user",
 						"type": "`$STRING`",
 					},
 					map[string]any{
 						"name": "user_id",
+						"short": "The ID of the user",
 						"type": "`$STRING`",
 					},
 					map[string]any{
 						"name": "username",
+						"short": "The representation of a username of the user",
 						"type": "`$OBJECT`",
 					},
 				},
@@ -1374,6 +1415,7 @@ func MakeConfig() map[string]any {
 					},
 					map[string]any{
 						"name": "name",
+						"short": "A new credential name.",
 						"type": "`$STRING`",
 					},
 					map[string]any{

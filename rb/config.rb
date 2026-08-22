@@ -19,6 +19,9 @@ module HankoPublicConfig
     {
       "main" => {
         "name" => "HankoPublic",
+        "slug" => "hanko-public",
+        "version" => "0.0.1",
+        "target" => "rb",
       },
       "feature" => {
         "test" => {
@@ -228,6 +231,7 @@ module HankoPublicConfig
             },
             {
               "name" => "user_id",
+              "short" => "The ID of the user on whose behalf WebAuthn login should be performed",
               "type" => "`$STRING`",
             },
           ],
@@ -270,10 +274,12 @@ module HankoPublicConfig
                 },
               },
               "req" => true,
+              "short" => "The email address",
               "type" => "`$STRING`",
             },
             {
               "name" => "id",
+              "short" => "The ID of the email address",
               "type" => "`$STRING`",
             },
             {
@@ -286,10 +292,12 @@ module HankoPublicConfig
             },
             {
               "name" => "is_primary",
+              "short" => "Indicates it's the primary email address.",
               "type" => "`$BOOLEAN`",
             },
             {
               "name" => "is_verified",
+              "short" => "Indicated the email has been verified.",
               "type" => "`$BOOLEAN`",
             },
           ],
@@ -427,14 +435,17 @@ module HankoPublicConfig
           "fields" => [
             {
               "name" => "account",
+              "short" => "Controls the behavior regarding user account.",
               "type" => "`$OBJECT`",
             },
             {
               "name" => "emails",
+              "short" => "Controls the behavior regarding email addresses.",
               "type" => "`$OBJECT`",
             },
             {
               "name" => "password",
+              "short" => "Configuration options concerning passwords",
               "type" => "`$OBJECT`",
             },
           ],
@@ -525,19 +536,23 @@ module HankoPublicConfig
           "fields" => [
             {
               "name" => "code",
+              "short" => "The actual passcode from the email sent to the user during initialization, a string of 6 decimal digits",
               "type" => "`$STRING`",
             },
             {
               "name" => "email_id",
+              "short" => "The ID of the email address",
               "type" => "`$STRING`",
             },
             {
               "name" => "id",
+              "short" => "The ID of the passcode",
               "type" => "`$STRING`",
             },
             {
               "name" => "user_id",
               "req" => true,
+              "short" => "The ID of the user",
               "type" => "`$STRING`",
             },
           ],
@@ -591,11 +606,13 @@ module HankoPublicConfig
             {
               "name" => "password",
               "req" => true,
+              "short" => "The actual password, its `minLength` defaults to 8 but can be [configured](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config) through the `password.min_password_length` option.",
               "type" => "`$STRING`",
             },
             {
               "name" => "user_id",
               "req" => true,
+              "short" => "The ID of the user to perform a password login for",
               "type" => "`$STRING`",
             },
           ],
@@ -835,42 +852,51 @@ module HankoPublicConfig
           "fields" => [
             {
               "name" => "amr",
+              "short" => "Authentication Method References, JSON array of strings that are identifiers for authentication methods used in the authentication.",
               "type" => "`$ARRAY`",
             },
             {
               "name" => "audience",
+              "short" => "The intended audience of the token.",
               "type" => "`$ARRAY`",
             },
             {
               "name" => "email",
+              "short" => "Data about the email address associated with the token's subject, if available.",
               "type" => "`$OBJECT`",
             },
             {
               "name" => "expiration",
               "req" => true,
+              "short" => "The timestamp indicating when the token will expire.",
               "type" => "`$STRING`",
             },
             {
               "name" => "issued_at",
+              "short" => "The timestamp indicating when the token was issued.",
               "type" => "`$STRING`",
             },
             {
               "name" => "issuer",
+              "short" => "The entity that issued the token.",
               "type" => "`$STRING`",
             },
             {
               "name" => "session_id",
               "req" => true,
+              "short" => "The unique identifier for the session associated with this token.",
               "type" => "`$STRING`",
             },
             {
               "name" => "session_token",
               "req" => true,
+              "short" => "The session token (JWT) to validate",
               "type" => "`$STRING`",
             },
             {
               "name" => "subject",
               "req" => true,
+              "short" => "The unique identifier of the token's subject.",
               "type" => "`$ANY`",
             },
           ],
@@ -1090,6 +1116,7 @@ module HankoPublicConfig
           "fields" => [
             {
               "name" => "created_at",
+              "short" => "Time of creation of the the user",
               "type" => "`$STRING`",
             },
             {
@@ -1100,10 +1127,12 @@ module HankoPublicConfig
                   "type" => "`$STRING`",
                 },
               },
+              "short" => "The email address of the user",
               "type" => "`$STRING`",
             },
             {
               "name" => "email_id",
+              "short" => "The ID of the newly created email address",
               "type" => "`$STRING`",
             },
             {
@@ -1124,10 +1153,12 @@ module HankoPublicConfig
             },
             {
               "name" => "id",
+              "short" => "The ID of the user.",
               "type" => "`$STRING`",
             },
             {
               "name" => "metadata",
+              "short" => "The public and unsafe metadata of a user",
               "type" => "`$OBJECT`",
             },
             {
@@ -1152,14 +1183,17 @@ module HankoPublicConfig
             },
             {
               "name" => "updated_at",
+              "short" => "Time of last update of the user",
               "type" => "`$STRING`",
             },
             {
               "name" => "user_id",
+              "short" => "The ID of the user",
               "type" => "`$STRING`",
             },
             {
               "name" => "username",
+              "short" => "The username of the user",
               "type" => "`$STRING`",
             },
             {
@@ -1168,6 +1202,7 @@ module HankoPublicConfig
             },
             {
               "name" => "webauthn_credentials",
+              "short" => "A list of WebAuthn credentials",
               "type" => "`$ARRAY`",
             },
           ],
@@ -1272,6 +1307,7 @@ module HankoPublicConfig
           "fields" => [
             {
               "name" => "created_at",
+              "short" => "Time of creation of the the user",
               "type" => "`$STRING`",
             },
             {
@@ -1288,10 +1324,12 @@ module HankoPublicConfig
             },
             {
               "name" => "id",
+              "short" => "The ID of the user.",
               "type" => "`$STRING`",
             },
             {
               "name" => "metadata",
+              "short" => "The public and unsafe metadata of a user",
               "type" => "`$OBJECT`",
             },
             {
@@ -1316,14 +1354,17 @@ module HankoPublicConfig
             },
             {
               "name" => "updated_at",
+              "short" => "Time of last update of the user",
               "type" => "`$STRING`",
             },
             {
               "name" => "user_id",
+              "short" => "The ID of the user",
               "type" => "`$STRING`",
             },
             {
               "name" => "username",
+              "short" => "The representation of a username of the user",
               "type" => "`$OBJECT`",
             },
           ],
@@ -1382,6 +1423,7 @@ module HankoPublicConfig
             },
             {
               "name" => "name",
+              "short" => "A new credential name.",
               "type" => "`$STRING`",
             },
             {
