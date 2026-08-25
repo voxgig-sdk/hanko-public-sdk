@@ -355,6 +355,7 @@ API path: `/emails`
 
 | Field | Description |
 | --- | --- |
+| `"id"` |  |
 
 Operations: Create.
 
@@ -733,6 +734,12 @@ Create an instance: `emailManagement := client.EmailManagement(nil)`
 | Method | Description |
 | --- | --- |
 | `Create(data, ctrl)` | Create a new entity with the given data. |
+
+#### Fields
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `id` | `string` |  |
 
 #### Example: Create
 

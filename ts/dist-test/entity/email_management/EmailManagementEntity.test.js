@@ -75,7 +75,7 @@ const utility_1 = require("../../utility");
         const email_management_ref01_ent = client.EmailManagement();
         let email_management_ref01_data = setup.data.new.email_management['email_management_ref01'];
         email_management_ref01_data = (await email_management_ref01_ent.create(email_management_ref01_data)).data();
-        (0, node_assert_1.default)(null != email_management_ref01_data);
+        (0, node_assert_1.default)(null != email_management_ref01_data.id);
     });
 });
 function basicSetup(extra) {

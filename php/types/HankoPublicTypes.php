@@ -137,6 +137,7 @@ class EmailRemoveMatch
 /** EmailManagement entity data model. */
 class EmailManagement
 {
+    public ?string $id = null;
 }
 
 /** Request payload for EmailManagement#create. */

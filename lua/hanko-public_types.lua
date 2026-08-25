@@ -96,6 +96,7 @@
 ---@field id string
 
 ---@class EmailManagement
+---@field id? string
 
 ---@class EmailManagementCreateData
 ---@field id string

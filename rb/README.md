@@ -324,6 +324,7 @@ API path: `/emails`
 
 | Field | Description |
 | --- | --- |
+| `id` |  |
 
 Operations: Create.
 
@@ -684,6 +685,12 @@ Create an instance: `email_management = client.EmailManagement`
 | Method | Description |
 | --- | --- |
 | `create(data)` | Create a new entity with the given data. |
+
+#### Fields
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `id` | `String` |  |
 
 #### Example: Create
 

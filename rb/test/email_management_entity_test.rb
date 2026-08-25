@@ -39,6 +39,7 @@ class EmailManagementEntityTest < Minitest::Test
     email_management_ref01_data_result = email_management_ref01_ent.create(email_management_ref01_data, nil)
     email_management_ref01_data = Helpers.to_map(email_management_ref01_data_result.respond_to?(:data_get) ? email_management_ref01_data_result.data_get : email_management_ref01_data_result)
     assert !email_management_ref01_data.nil?
+    assert !email_management_ref01_data["id"].nil?
 
   end
 end

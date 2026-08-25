@@ -63,7 +63,7 @@ describe('EmailManagementEntity', async () => {
     let email_management_ref01_data = setup.data.new.email_management['email_management_ref01']
 
     email_management_ref01_data = (await email_management_ref01_ent.create(email_management_ref01_data)).data()
-    assert(null != email_management_ref01_data)
+    assert(null != email_management_ref01_data.id)
 
 
   })

@@ -46,6 +46,7 @@ class EmailManagementEntityTest extends TestCase
         $email_management_ref01_data_result = $email_management_ref01_ent->create($email_management_ref01_data, null);
         $email_management_ref01_data = Helpers::to_map(is_object($email_management_ref01_data_result) && method_exists($email_management_ref01_data_result, 'data_get') ? $email_management_ref01_data_result->data_get() : $email_management_ref01_data_result);
         $this->assertNotNull($email_management_ref01_data);
+        $this->assertNotNull($email_management_ref01_data["id"]);
 
     }
 }

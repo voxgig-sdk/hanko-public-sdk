@@ -467,6 +467,12 @@ emailManagement := client.EmailManagement(nil)
 fmt.Println(emailManagement.GetName()) // "email_management"
 ```
 
+### Fields
+
+| Field | Type | Required | Description |
+| --- | --- | --- | --- |
+| `id` | `string` | No |  |
+
 ### Operations
 
 #### `Create(reqdata, ctrl map[string]any) (any, error)`

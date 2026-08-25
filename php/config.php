@@ -400,7 +400,12 @@ class HankoPublicConfig
           ],
         ],
         'email_management' => [
-          'fields' => [],
+          'fields' => [
+            [
+              'name' => 'id',
+              'type' => '`$STRING`',
+            ],
+          ],
           'name' => 'email_management',
           'op' => [
             'create' => [

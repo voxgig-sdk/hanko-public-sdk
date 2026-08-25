@@ -62,6 +62,9 @@ func TestEmailManagementEntity(t *testing.T) {
 		if emailManagementRef01Data == nil {
 			t.Fatal("expected create result to be a map")
 		}
+		if emailManagementRef01Data["id"] == nil {
+			t.Fatal("expected created entity to have an id")
+		}
 
 	})
 }

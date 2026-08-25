@@ -4,6 +4,19 @@ main: kit: entity: email_management: {
 
   alias: field: {}
 
+  fields: [
+    {
+      name: "id"
+      req: false
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
   name: "email_management"
   op: {
     create: {

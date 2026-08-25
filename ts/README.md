@@ -378,6 +378,7 @@ API path: `/emails`
 
 | Field | Description |
 | --- | --- |
+| `id` |  |
 
 Operations: create.
 
@@ -736,6 +737,12 @@ Create an instance: `const email_management = client.EmailManagement()`
 | Method | Description |
 | --- | --- |
 | `create(data)` | Create a new entity with the given data. |
+
+#### Fields
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `id` | `string` |  |
 
 #### Example: Create
 

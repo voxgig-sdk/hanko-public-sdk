@@ -43,6 +43,7 @@ describe("EmailManagementEntity", function()
     assert.is_nil(err)
     email_management_ref01_data = helpers.to_map(type(email_management_ref01_data_result) == 'table' and email_management_ref01_data_result.data_get and email_management_ref01_data_result:data_get() or email_management_ref01_data_result)
     assert.is_not_nil(email_management_ref01_data)
+    assert.is_not_nil(email_management_ref01_data["id"])
 
   end)
 end)

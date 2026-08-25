@@ -123,8 +123,8 @@ class EmailRemoveMatch(TypedDict):
     id: str
 
 
-class EmailManagement(TypedDict):
-    pass
+class EmailManagement(TypedDict, total=False):
+    id: str
 
 
 class EmailManagementCreateData(TypedDict):

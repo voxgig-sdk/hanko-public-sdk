@@ -238,7 +238,10 @@ declare class Config {
             };
         };
         email_management: {
-            fields: never[];
+            fields: {
+                name: string;
+                type: string;
+            }[];
             name: string;
             op: {
                 create: {

@@ -331,8 +331,13 @@ EmailRemoveMatch = Struct.new(
 )
 
 # EmailManagement entity data model.
-class EmailManagement
-end
+#
+# @!attribute [rw] id
+#   @return [String, nil]
+EmailManagement = Struct.new(
+  :id,
+  keyword_init: true
+)
 
 # Request payload for EmailManagement#create.
 #

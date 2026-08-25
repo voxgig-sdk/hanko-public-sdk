@@ -106,6 +106,7 @@ export interface EmailRemoveMatch {
 }
 
 export interface EmailManagement {
+  id?: string
 }
 
 export interface EmailManagementCreateData {

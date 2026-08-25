@@ -378,7 +378,12 @@ func MakeConfig() map[string]any {
 				},
 			},
 			"email_management": map[string]any{
-				"fields": []any{},
+				"fields": []any{
+					map[string]any{
+						"name": "id",
+						"type": "`$STRING`",
+					},
+				},
 				"name": "email_management",
 				"op": map[string]any{
 					"create": map[string]any{

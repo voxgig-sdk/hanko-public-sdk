@@ -125,6 +125,7 @@ type EmailRemoveMatch struct {
 
 // EmailManagement is the typed data model for the email_management entity.
 type EmailManagement struct {
+	Id *string `json:"id,omitempty"`
 }
 
 // EmailManagementCreateData is the typed request payload for EmailManagement.CreateTyped.

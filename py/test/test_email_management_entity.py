@@ -46,6 +46,7 @@ class TestEmailManagementEntity:
 
         email_management_ref01_data = helpers.to_map(runner.entity_data(email_management_ref01_ent.create(email_management_ref01_data, None)))
         assert email_management_ref01_data is not None
+        assert email_management_ref01_data["id"] is not None
 
 
 

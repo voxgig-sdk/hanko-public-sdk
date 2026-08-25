@@ -88,6 +88,7 @@ export interface EmailRemoveMatch {
     id: string;
 }
 export interface EmailManagement {
+    id?: string;
 }
 export interface EmailManagementCreateData {
     id: string;

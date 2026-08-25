@@ -620,6 +620,12 @@ Return a copy of the entity options.
 const email_management = client.EmailManagement()
 ```
 
+### Fields
+
+| Field | Type | Required | Description |
+| --- | --- | --- | --- |
+| `id` | `string` | No |  |
+
 ### Actions
 
 This entity exposes custom API actions in addition to the standard
