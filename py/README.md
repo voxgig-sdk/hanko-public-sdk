@@ -36,6 +36,9 @@ from hankopublic_sdk import HankoPublicSDK
 
 client = HankoPublicSDK({
     "apikey": os.environ.get("HANKO_PUBLIC_APIKEY"),
+    "server": {
+        "tenant_id": "<tenant_id>",
+    },
 })
 ```
 
@@ -852,7 +855,7 @@ Create an instance: `saml = client.Saml()`
 #### Example: Load
 
 ```python
-saml = client.Saml().load()
+saml = client.Saml().load({"domain": "domain"})
 ```
 
 #### Example: Create
@@ -936,7 +939,7 @@ Create an instance: `third_party = client.ThirdParty()`
 #### Example: Load
 
 ```python
-third_party = client.ThirdParty().load()
+third_party = client.ThirdParty().load({"state": "state"})
 ```
 
 
@@ -1115,6 +1118,29 @@ Create an instance: `webauthn_login = client.WebauthnLogin()`
 webauthn_login = client.WebauthnLogin().create({
 })
 ```
+
+## Features
+
+This SDK ships 1 optional features. Each is **inactive until you
+switch it on**, so an SDK you have not configured behaves exactly as if none of
+them existed — no retries, no cache, no logging, no measurable overhead.
+
+Activate a feature by name in the client options, alongside the options shown
+above:
+
+| Feature | What it does |
+|---|---|
+| [`test`](#test) | In-memory mock transport for testing without a live server |
+
+### test
+
+In-memory mock transport for testing without a live server.
+
+| Option | Default |
+|---|---|
+| `active` | `false` |
+
+Set `feature.test.active` to enable it, then override any of the options above.
 
 
 ## Advanced

@@ -172,24 +172,8 @@
 ---@field zone_info? string
 
 ---@class SamlLoadMatch
----@field birthdate? string
----@field email? string
----@field email_verified? string
----@field family_name? string
----@field gender? string
----@field given_name? string
----@field locale? string
----@field middle_name? string
----@field name? string
----@field nickname? string
----@field phone? string
----@field phone_verified? string
----@field picture? string
----@field preferred_username? string
----@field profile? string
----@field updated_at? string
----@field website? string
----@field zone_info? string
+---@field cert_only? boolean
+---@field domain string
 
 ---@class SamlCreateData
 ---@field birthdate? string
@@ -251,6 +235,10 @@
 ---@class ThirdParty
 
 ---@class ThirdPartyLoadMatch
+---@field code? string
+---@field error? string
+---@field error_description? string
+---@field state string
 
 ---@class Token
 ---@field value? string

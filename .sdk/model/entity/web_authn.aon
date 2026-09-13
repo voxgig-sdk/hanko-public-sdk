@@ -46,10 +46,16 @@ main: kit: entity: web_authn: {
         {
           method: "POST"
           orig: "/webauthn/registration/finalize"
-          parts: [
-            "webauthn"
-            "registration"
-            "finalize"
+          segments: [
+            {
+              lit: "webauthn"
+            }
+            {
+              lit: "registration"
+            }
+            {
+              lit: "finalize"
+            }
           ]
           transform: {
             req: "`reqdata`"
@@ -76,10 +82,16 @@ main: kit: entity: web_authn: {
           }
           method: "DELETE"
           orig: "/webauthn/credentials/{id}"
-          parts: [
-            "webauthn"
-            "credentials"
-            "{id}"
+          segments: [
+            {
+              lit: "webauthn"
+            }
+            {
+              lit: "credentials"
+            }
+            {
+              var: "id"
+            }
           ]
           select: {
             exist: [
@@ -111,10 +123,16 @@ main: kit: entity: web_authn: {
           }
           method: "PATCH"
           orig: "/webauthn/credentials/{id}"
-          parts: [
-            "webauthn"
-            "credentials"
-            "{id}"
+          segments: [
+            {
+              lit: "webauthn"
+            }
+            {
+              lit: "credentials"
+            }
+            {
+              var: "id"
+            }
           ]
           select: {
             exist: [

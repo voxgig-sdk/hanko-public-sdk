@@ -100,7 +100,7 @@ func TestEmailEntity(t *testing.T) {
 		// CREATE
 		emailRef01Ent := client.Email(nil)
 		emailRef01Data := core.ToMapAny(vs.GetProp(
-			vs.GetPath([]any{"new", "email"}, setup.data), "email_ref01"))
+			vs.GetPath(setup.data, []any{"new", "email"}), "email_ref01"))
 
 		emailRef01DataResult, err := emailRef01Ent.Create(emailRef01Data, nil)
 		if err != nil {
@@ -184,7 +184,7 @@ func emailBasicSetup(extra map[string]any) *entityTestSetup {
 	client := sdk.TestSDK(options, extra)
 
 	// Generate idmap via transform, matching TS pattern.
-	idmap := vs.Transform(
+	idmap, _ := vs.Transform(
 		[]any{"email01", "email02", "email03"},
 		map[string]any{
 			"`$PACK`": []any{"", map[string]any{
@@ -204,7 +204,8 @@ func emailBasicSetup(extra map[string]any) *entityTestSetup {
 		"HANKO_PUBLIC_TEST_EMAIL_ENTID": idmap,
 		"HANKO_PUBLIC_TEST_LIVE":      "FALSE",
 		"HANKO_PUBLIC_TEST_EXPLAIN":   "FALSE",
-		"HANKO_PUBLIC_APIKEY":         "NONE",
+		"HANKO_PUBLIC_APIKEY":         "",
+		"HANKO_PUBLIC_SERVER_TENANT_ID": "",
 	})
 
 	idmapResolved := core.ToMapAny(env["HANKO_PUBLIC_TEST_EMAIL_ENTID"])
@@ -213,11 +214,26 @@ func emailBasicSetup(extra map[string]any) *entityTestSetup {
 	}
 
 	if env["HANKO_PUBLIC_TEST_LIVE"] == "TRUE" {
+		// An empty map, not a nil one: Merge returns nil when its last entry
+		// is nil, and BasicSetup is normally called with no extras - so a
+		// bare nil silently discarded the apikey and server values below.
+		extraOpts := extra
+		if extraOpts == nil {
+			extraOpts = map[string]any{}
+		}
+
 		mergedOpts := vs.Merge([]any{
+			// liveClientOptions() FIRST, so the generated fields below win:
+			// sdk-test-control.json's test.client.options adds to the live
+			// client, it does not redirect it.
+			liveClientOptions(),
 			map[string]any{
 				"apikey": env["HANKO_PUBLIC_APIKEY"],
+				"server": map[string]any{
+					"tenant_id": env["HANKO_PUBLIC_SERVER_TENANT_ID"],
+				},
 			},
-			extra,
+			extraOpts,
 		})
 		client = sdk.NewHankoPublicSDK(core.ToMapAny(mergedOpts))
 	}

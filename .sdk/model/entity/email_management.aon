@@ -37,10 +37,16 @@ main: kit: entity: email_management: {
           }
           method: "POST"
           orig: "/emails/{id}/set_primary"
-          parts: [
-            "emails"
-            "{id}"
-            "set_primary"
+          segments: [
+            {
+              lit: "emails"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "set_primary"
+            }
           ]
           select: {
             "$action": "set_primary"

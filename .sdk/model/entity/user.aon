@@ -6,12 +6,14 @@ main: kit: entity: user: {
 
   fields: [
     {
+      format: "date-time"
       name: "created_at"
       req: false
       short: "Time of creation of the the user"
       type: "`$STRING`"
     }
     {
+      format: "email"
       name: "email"
       op: {
         create: {
@@ -24,6 +26,7 @@ main: kit: entity: user: {
       type: "`$STRING`"
     }
     {
+      format: "uuid4"
       name: "email_id"
       req: false
       short: "The ID of the newly created email address"
@@ -50,6 +53,8 @@ main: kit: entity: user: {
       type: "`$BOOLEAN`"
     }
     {
+      deprecated: true
+      format: "uuid4"
       name: "id"
       req: false
       short: "The ID of the user."
@@ -77,6 +82,7 @@ main: kit: entity: user: {
       type: "`$ARRAY`"
     }
     {
+      format: "uri"
       name: "picture"
       req: false
       type: "`$STRING`"
@@ -87,6 +93,7 @@ main: kit: entity: user: {
       type: "`$ARRAY`"
     }
     {
+      format: "date-time"
       name: "updated_at"
       req: false
       short: "Time of last update of the user"
@@ -130,8 +137,10 @@ main: kit: entity: user: {
         {
           method: "POST"
           orig: "/user"
-          parts: [
-            "user"
+          segments: [
+            {
+              lit: "user"
+            }
           ]
           transform: {
             req: "`reqdata`"
@@ -141,8 +150,10 @@ main: kit: entity: user: {
         {
           method: "POST"
           orig: "/users"
-          parts: [
-            "users"
+          segments: [
+            {
+              lit: "users"
+            }
           ]
           transform: {
             req: "`reqdata`"
@@ -169,9 +180,13 @@ main: kit: entity: user: {
           }
           method: "GET"
           orig: "/users/{id}"
-          parts: [
-            "users"
-            "{id}"
+          segments: [
+            {
+              lit: "users"
+            }
+            {
+              var: "id"
+            }
           ]
           select: {
             exist: [
@@ -191,8 +206,10 @@ main: kit: entity: user: {
         {
           method: "DELETE"
           orig: "/user"
-          parts: [
-            "user"
+          segments: [
+            {
+              lit: "user"
+            }
           ]
           transform: {
             req: "`reqdata`"

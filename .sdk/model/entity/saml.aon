@@ -105,9 +105,13 @@ main: kit: entity: saml: {
         {
           method: "POST"
           orig: "/saml/callback"
-          parts: [
-            "saml"
-            "callback"
+          segments: [
+            {
+              lit: "saml"
+            }
+            {
+              lit: "callback"
+            }
           ]
           select: {
             "$action": "callback"
@@ -143,9 +147,13 @@ main: kit: entity: saml: {
           }
           method: "GET"
           orig: "/saml/metadata"
-          parts: [
-            "saml"
-            "metadata"
+          segments: [
+            {
+              lit: "saml"
+            }
+            {
+              lit: "metadata"
+            }
           ]
           select: {
             "$action": "metadata"
@@ -173,9 +181,13 @@ main: kit: entity: saml: {
           }
           method: "GET"
           orig: "/saml/provider"
-          parts: [
-            "saml"
-            "provider"
+          segments: [
+            {
+              lit: "saml"
+            }
+            {
+              lit: "provider"
+            }
           ]
           select: {
             "$action": "provider"

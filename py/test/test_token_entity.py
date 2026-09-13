@@ -85,7 +85,8 @@ def _token_basic_setup(extra):
         "HANKO_PUBLIC_TEST_TOKEN_ENTID": idmap,
         "HANKO_PUBLIC_TEST_LIVE": "FALSE",
         "HANKO_PUBLIC_TEST_EXPLAIN": "FALSE",
-        "HANKO_PUBLIC_APIKEY": "NONE",
+        "HANKO_PUBLIC_APIKEY": "",
+        "HANKO_PUBLIC_SERVER_TENANT_ID": "",
     })
 
     idmap_resolved = helpers.to_map(
@@ -95,8 +96,15 @@ def _token_basic_setup(extra):
 
     if env.get("HANKO_PUBLIC_TEST_LIVE") == "TRUE":
         merged_opts = vs.merge([
+            # FIRST, so the generated fields below win: sdk-test-control.json's
+            # test.client.options adds to the live client, it does not
+            # redirect it.
+            runner.live_client_options(),
             {
                 "apikey": env.get("HANKO_PUBLIC_APIKEY"),
+                "server": {
+                    "tenant_id": env.get("HANKO_PUBLIC_SERVER_TENANT_ID"),
+                },
             },
             extra or {},
         ])

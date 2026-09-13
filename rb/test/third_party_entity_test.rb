@@ -81,7 +81,8 @@ def third_party_basic_setup(extra)
     "HANKO_PUBLIC_TEST_THIRD_PARTY_ENTID" => idmap,
     "HANKO_PUBLIC_TEST_LIVE" => "FALSE",
     "HANKO_PUBLIC_TEST_EXPLAIN" => "FALSE",
-    "HANKO_PUBLIC_APIKEY" => "NONE",
+    "HANKO_PUBLIC_APIKEY" => "",
+    "HANKO_PUBLIC_SERVER_TENANT_ID" => "",
   })
 
   idmap_resolved = Helpers.to_map(
@@ -92,8 +93,14 @@ def third_party_basic_setup(extra)
 
   if env["HANKO_PUBLIC_TEST_LIVE"] == "TRUE"
     merged_opts = Vs.merge([
+      # FIRST, so the generated fields below win: sdk-test-control.json's
+      # test.client.options adds to the live client, it does not redirect it.
+      Runner.live_client_options,
       {
         "apikey" => env["HANKO_PUBLIC_APIKEY"],
+        "server" => {
+          "tenant_id" => env["HANKO_PUBLIC_SERVER_TENANT_ID"],
+        },
       },
       extra || {},
     ])

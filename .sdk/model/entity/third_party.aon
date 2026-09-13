@@ -44,9 +44,13 @@ main: kit: entity: third_party: {
           }
           method: "GET"
           orig: "/thirdparty/callback"
-          parts: [
-            "thirdparty"
-            "callback"
+          segments: [
+            {
+              lit: "thirdparty"
+            }
+            {
+              lit: "callback"
+            }
           ]
           select: {
             exist: [
@@ -82,9 +86,13 @@ main: kit: entity: third_party: {
           }
           method: "GET"
           orig: "/thirdparty/auth"
-          parts: [
-            "thirdparty"
-            "auth"
+          segments: [
+            {
+              lit: "thirdparty"
+            }
+            {
+              lit: "auth"
+            }
           ]
           select: {
             exist: [

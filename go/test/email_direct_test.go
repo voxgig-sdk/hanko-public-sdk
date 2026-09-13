@@ -94,14 +94,26 @@ func emailDirectSetup(mockres any) *emailDirectSetupResult {
 	env := envOverride(map[string]any{
 		"HANKO_PUBLIC_TEST_EMAIL_ENTID": map[string]any{},
 		"HANKO_PUBLIC_TEST_LIVE":    "FALSE",
-		"HANKO_PUBLIC_APIKEY":       "NONE",
+		"HANKO_PUBLIC_APIKEY":       "",
+		"HANKO_PUBLIC_SERVER_TENANT_ID": "",
 	})
 
 	live := env["HANKO_PUBLIC_TEST_LIVE"] == "TRUE"
 
 	if live {
-		mergedOpts := map[string]any{
+		// sdk-test-control.json's test.client.options seeds the live
+		// client; the generated fields below overwrite anything they name.
+		mergedOpts := map[string]any{}
+		for k, v := range liveClientOptions() {
+			mergedOpts[k] = v
+		}
+		for k, v := range map[string]any{
 			"apikey": env["HANKO_PUBLIC_APIKEY"],
+		"server": map[string]any{
+			"tenant_id": env["HANKO_PUBLIC_SERVER_TENANT_ID"],
+		},
+		} {
+			mergedOpts[k] = v
 		}
 		client := sdk.NewHankoPublicSDK(mergedOpts)
 

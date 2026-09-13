@@ -48,7 +48,7 @@ func TestCreateUserResponseObjectEntity(t *testing.T) {
 			return
 		}
 		// Bootstrap entity data from existing test data (no create step in flow).
-		createUserResponseObjectRef01DataRaw := vs.Items(core.ToMapAny(vs.GetPath("existing.create_user_response_object", setup.data)))
+		createUserResponseObjectRef01DataRaw := vs.Items(core.ToMapAny(vs.GetPath(setup.data, "existing.create_user_response_object")))
 		var createUserResponseObjectRef01Data map[string]any
 		if len(createUserResponseObjectRef01DataRaw) > 0 {
 			createUserResponseObjectRef01Data = core.ToMapAny(createUserResponseObjectRef01DataRaw[0][1])
@@ -84,7 +84,7 @@ func create_user_response_objectBasicSetup(extra map[string]any) *entityTestSetu
 	client := sdk.TestSDK(options, extra)
 
 	// Generate idmap via transform, matching TS pattern.
-	idmap := vs.Transform(
+	idmap, _ := vs.Transform(
 		[]any{"create_user_response_object01", "create_user_response_object02", "create_user_response_object03"},
 		map[string]any{
 			"`$PACK`": []any{"", map[string]any{
@@ -104,7 +104,8 @@ func create_user_response_objectBasicSetup(extra map[string]any) *entityTestSetu
 		"HANKO_PUBLIC_TEST_CREATE_USER_RESPONSE_OBJECT_ENTID": idmap,
 		"HANKO_PUBLIC_TEST_LIVE":      "FALSE",
 		"HANKO_PUBLIC_TEST_EXPLAIN":   "FALSE",
-		"HANKO_PUBLIC_APIKEY":         "NONE",
+		"HANKO_PUBLIC_APIKEY":         "",
+		"HANKO_PUBLIC_SERVER_TENANT_ID": "",
 	})
 
 	idmapResolved := core.ToMapAny(env["HANKO_PUBLIC_TEST_CREATE_USER_RESPONSE_OBJECT_ENTID"])
@@ -113,11 +114,26 @@ func create_user_response_objectBasicSetup(extra map[string]any) *entityTestSetu
 	}
 
 	if env["HANKO_PUBLIC_TEST_LIVE"] == "TRUE" {
+		// An empty map, not a nil one: Merge returns nil when its last entry
+		// is nil, and BasicSetup is normally called with no extras - so a
+		// bare nil silently discarded the apikey and server values below.
+		extraOpts := extra
+		if extraOpts == nil {
+			extraOpts = map[string]any{}
+		}
+
 		mergedOpts := vs.Merge([]any{
+			// liveClientOptions() FIRST, so the generated fields below win:
+			// sdk-test-control.json's test.client.options adds to the live
+			// client, it does not redirect it.
+			liveClientOptions(),
 			map[string]any{
 				"apikey": env["HANKO_PUBLIC_APIKEY"],
+				"server": map[string]any{
+					"tenant_id": env["HANKO_PUBLIC_SERVER_TENANT_ID"],
+				},
 			},
-			extra,
+			extraOpts,
 		})
 		client = sdk.NewHankoPublicSDK(core.ToMapAny(mergedOpts))
 	}

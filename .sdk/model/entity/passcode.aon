@@ -44,10 +44,16 @@ main: kit: entity: passcode: {
         {
           method: "POST"
           orig: "/passcode/login/finalize"
-          parts: [
-            "passcode"
-            "login"
-            "finalize"
+          segments: [
+            {
+              lit: "passcode"
+            }
+            {
+              lit: "login"
+            }
+            {
+              lit: "finalize"
+            }
           ]
           transform: {
             req: "`reqdata`"
@@ -57,10 +63,16 @@ main: kit: entity: passcode: {
         {
           method: "POST"
           orig: "/passcode/login/initialize"
-          parts: [
-            "passcode"
-            "login"
-            "initialize"
+          segments: [
+            {
+              lit: "passcode"
+            }
+            {
+              lit: "login"
+            }
+            {
+              lit: "initialize"
+            }
           ]
           transform: {
             req: "`reqdata`"

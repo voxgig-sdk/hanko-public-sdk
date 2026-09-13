@@ -6,6 +6,7 @@ main: kit: entity: email: {
 
   fields: [
     {
+      format: "email"
       name: "address"
       op: {
         list: {
@@ -60,8 +61,10 @@ main: kit: entity: email: {
         {
           method: "POST"
           orig: "/emails"
-          parts: [
-            "emails"
+          segments: [
+            {
+              lit: "emails"
+            }
           ]
           transform: {
             req: "`reqdata`"
@@ -76,8 +79,10 @@ main: kit: entity: email: {
         {
           method: "GET"
           orig: "/emails"
-          parts: [
-            "emails"
+          segments: [
+            {
+              lit: "emails"
+            }
           ]
           transform: {
             req: "`reqdata`"
@@ -104,9 +109,13 @@ main: kit: entity: email: {
           }
           method: "DELETE"
           orig: "/emails/{id}"
-          parts: [
-            "emails"
-            "{id}"
+          segments: [
+            {
+              lit: "emails"
+            }
+            {
+              var: "id"
+            }
           ]
           select: {
             exist: [

@@ -33,9 +33,13 @@ main: kit: entity: hanko_configuration: {
         {
           method: "GET"
           orig: "/.well-known/config"
-          parts: [
-            ".well-known"
-            "config"
+          segments: [
+            {
+              lit: ".well-known"
+            }
+            {
+              lit: "config"
+            }
           ]
           transform: {
             req: "`reqdata`"

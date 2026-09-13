@@ -11,6 +11,7 @@ main: kit: entity: json_web_key_set: {
       type: "`$STRING`"
     }
     {
+      format: "base64url"
       name: "e"
       req: false
       type: "`$STRING`"
@@ -26,6 +27,7 @@ main: kit: entity: json_web_key_set: {
       type: "`$STRING`"
     }
     {
+      format: "base64url"
       name: "n"
       req: false
       type: "`$STRING`"
@@ -45,9 +47,13 @@ main: kit: entity: json_web_key_set: {
         {
           method: "GET"
           orig: "/.well-known/jwks.json"
-          parts: [
-            ".well-known"
-            "jwks.json"
+          segments: [
+            {
+              lit: ".well-known"
+            }
+            {
+              lit: "jwks.json"
+            }
           ]
           transform: {
             req: "`reqdata`"

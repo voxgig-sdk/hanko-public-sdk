@@ -50,7 +50,7 @@ func TestHankoConfigurationEntity(t *testing.T) {
 		client := setup.client
 
 		// Bootstrap entity data from existing test data (no create step in flow).
-		hankoConfigurationRef01DataRaw := vs.Items(core.ToMapAny(vs.GetPath("existing.hanko_configuration", setup.data)))
+		hankoConfigurationRef01DataRaw := vs.Items(core.ToMapAny(vs.GetPath(setup.data, "existing.hanko_configuration")))
 		var hankoConfigurationRef01Data map[string]any
 		if len(hankoConfigurationRef01DataRaw) > 0 {
 			hankoConfigurationRef01Data = core.ToMapAny(hankoConfigurationRef01DataRaw[0][1])
@@ -97,7 +97,7 @@ func hanko_configurationBasicSetup(extra map[string]any) *entityTestSetup {
 	client := sdk.TestSDK(options, extra)
 
 	// Generate idmap via transform, matching TS pattern.
-	idmap := vs.Transform(
+	idmap, _ := vs.Transform(
 		[]any{"hanko_configuration01", "hanko_configuration02", "hanko_configuration03"},
 		map[string]any{
 			"`$PACK`": []any{"", map[string]any{
@@ -117,7 +117,8 @@ func hanko_configurationBasicSetup(extra map[string]any) *entityTestSetup {
 		"HANKO_PUBLIC_TEST_HANKO_CONFIGURATION_ENTID": idmap,
 		"HANKO_PUBLIC_TEST_LIVE":      "FALSE",
 		"HANKO_PUBLIC_TEST_EXPLAIN":   "FALSE",
-		"HANKO_PUBLIC_APIKEY":         "NONE",
+		"HANKO_PUBLIC_APIKEY":         "",
+		"HANKO_PUBLIC_SERVER_TENANT_ID": "",
 	})
 
 	idmapResolved := core.ToMapAny(env["HANKO_PUBLIC_TEST_HANKO_CONFIGURATION_ENTID"])
@@ -126,11 +127,26 @@ func hanko_configurationBasicSetup(extra map[string]any) *entityTestSetup {
 	}
 
 	if env["HANKO_PUBLIC_TEST_LIVE"] == "TRUE" {
+		// An empty map, not a nil one: Merge returns nil when its last entry
+		// is nil, and BasicSetup is normally called with no extras - so a
+		// bare nil silently discarded the apikey and server values below.
+		extraOpts := extra
+		if extraOpts == nil {
+			extraOpts = map[string]any{}
+		}
+
 		mergedOpts := vs.Merge([]any{
+			// liveClientOptions() FIRST, so the generated fields below win:
+			// sdk-test-control.json's test.client.options adds to the live
+			// client, it does not redirect it.
+			liveClientOptions(),
 			map[string]any{
 				"apikey": env["HANKO_PUBLIC_APIKEY"],
+				"server": map[string]any{
+					"tenant_id": env["HANKO_PUBLIC_SERVER_TENANT_ID"],
+				},
 			},
-			extra,
+			extraOpts,
 		})
 		client = sdk.NewHankoPublicSDK(core.ToMapAny(mergedOpts))
 	}

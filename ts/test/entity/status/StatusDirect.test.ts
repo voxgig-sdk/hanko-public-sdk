@@ -1,6 +1,4 @@
 
-const envlocal = __dirname + '/../../../.env.local'
-require('dotenv').config({ quiet: true, path: [envlocal] })
 
 import { test, describe, afterEach } from 'node:test'
 import assert from 'node:assert'
@@ -10,10 +8,19 @@ import { HankoPublicSDK } from '../../..'
 
 import {
   envOverride,
+  liveClientOptions,
   liveDelay,
+  loadEnvLocal,
   maybeSkipControl,
   skipIfMissingIds,
 } from '../../utility'
+
+
+// AFTER the imports on purpose: TypeScript hoists `import` above any
+// statement in the emitted CommonJS, so a loader placed above them would
+// run only after every imported module had already been evaluated - and
+// anything reading process.env at module scope would miss these values.
+loadEnvLocal(__dirname + '/../../../.env.local')
 
 
 describe('StatusDirect', async () => {
@@ -78,15 +85,22 @@ function directSetup(mockres?: any) {
   const env = envOverride({
     'HANKO_PUBLIC_TEST_STATUS_ENTID': {},
     'HANKO_PUBLIC_TEST_LIVE': 'FALSE',
-    'HANKO_PUBLIC_APIKEY': 'NONE',
+    'HANKO_PUBLIC_APIKEY': '',
+    'HANKO_PUBLIC_SERVER_TENANT_ID': "",
   })
 
   const live = 'TRUE' === env.HANKO_PUBLIC_TEST_LIVE
 
   if (live) {
-    const client = new HankoPublicSDK({
+    // Merged so the generated fields win: sdk-test-control.json's
+    // test.client.options adds to the live client, it does not redirect it.
+    const client = new HankoPublicSDK(
+      Object.assign({}, liveClientOptions(), {
       apikey: env.HANKO_PUBLIC_APIKEY,
-    })
+      server: {
+        tenant_id: env.HANKO_PUBLIC_SERVER_TENANT_ID,
+      },
+      }))
 
     let idmap: any = env['HANKO_PUBLIC_TEST_STATUS_ENTID']
     if ('string' === typeof idmap && idmap.startsWith('{')) {

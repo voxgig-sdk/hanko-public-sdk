@@ -24,12 +24,14 @@ main: kit: entity: session_management: {
       type: "`$OBJECT`"
     }
     {
+      format: "date-time"
       name: "expiration"
       req: true
       short: "The timestamp indicating when the token will expire."
       type: "`$STRING`"
     }
     {
+      format: "date-time"
       name: "issued_at"
       req: false
       short: "The timestamp indicating when the token was issued."
@@ -48,6 +50,7 @@ main: kit: entity: session_management: {
       type: "`$STRING`"
     }
     {
+      format: "JWT"
       name: "session_token"
       req: true
       short: "The session token (JWT) to validate"
@@ -69,9 +72,13 @@ main: kit: entity: session_management: {
         {
           method: "POST"
           orig: "/sessions/validate"
-          parts: [
-            "sessions"
-            "validate"
+          segments: [
+            {
+              lit: "sessions"
+            }
+            {
+              lit: "validate"
+            }
           ]
           transform: {
             req: "`reqdata`"
@@ -86,9 +93,13 @@ main: kit: entity: session_management: {
         {
           method: "GET"
           orig: "/sessions/validate"
-          parts: [
-            "sessions"
-            "validate"
+          segments: [
+            {
+              lit: "sessions"
+            }
+            {
+              lit: "validate"
+            }
           ]
           transform: {
             req: "`reqdata`"

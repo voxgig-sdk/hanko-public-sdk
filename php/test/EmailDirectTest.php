@@ -68,15 +68,21 @@ function email_direct_setup($mockres)
     $env = Runner::env_override([
         "HANKO_PUBLIC_TEST_EMAIL_ENTID" => [],
         "HANKO_PUBLIC_TEST_LIVE" => "FALSE",
-        "HANKO_PUBLIC_APIKEY" => "NONE",
+        "HANKO_PUBLIC_APIKEY" => "",
+        "HANKO_PUBLIC_SERVER_TENANT_ID" => '',
     ]);
 
     $live = $env["HANKO_PUBLIC_TEST_LIVE"] === "TRUE";
 
     if ($live) {
-        $merged_opts = [
+        // Merged so the generated fields win: sdk-test-control.json's
+        // test.client.options adds to the live client, it does not redirect it.
+        $merged_opts = array_merge(Runner::live_client_options(), [
             "apikey" => $env["HANKO_PUBLIC_APIKEY"],
-        ];
+            "server" => [
+                "tenant_id" => $env["HANKO_PUBLIC_SERVER_TENANT_ID"],
+            ],
+        ]);
         $client = new HankoPublicSDK($merged_opts);
         return [
             "client" => $client,

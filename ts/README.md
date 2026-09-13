@@ -32,6 +32,10 @@ import { HankoPublicSDK } from '@voxgig-sdk/hanko-public'
 
 const client = new HankoPublicSDK({
   apikey: process.env.HANKO_PUBLIC_APIKEY,
+  // Required: this API's server URL is templated on these.
+  server: {
+    tenant_id: '<tenant_id>',
+  },
 })
 ```
 
@@ -184,6 +188,7 @@ cd ts && npm test
 ```ts
 new HankoPublicSDK(options?: {
   apikey?: string
+  server?: { tenant_id: string }
   base?: string
   prefix?: string
   suffix?: string
@@ -194,6 +199,7 @@ new HankoPublicSDK(options?: {
 
 | Option | Type | Description |
 | --- | --- | --- |
+| `server` | `object` | **Required.** Values for the server-URL variables: `tenant_id`. The API base URL is a template over them. |
 | `apikey` | `string` | API key for authentication. |
 | `base` | `string` | Base URL of the API server. |
 | `prefix` | `string` | URL path prefix prepended to all requests. |
@@ -899,7 +905,7 @@ Create an instance: `const saml = client.Saml()`
 #### Example: Load
 
 ```ts
-const saml = await client.Saml().load()
+const saml = await client.Saml().load({ domain: 'domain' })
 ```
 
 #### Example: Create
@@ -983,7 +989,7 @@ Create an instance: `const third_party = client.ThirdParty()`
 #### Example: Load
 
 ```ts
-const third_party = await client.ThirdParty().load()
+const third_party = await client.ThirdParty().load({ state: 'state' })
 ```
 
 
@@ -1162,6 +1168,29 @@ Create an instance: `const webauthn_login = client.WebauthnLogin()`
 const webauthn_login = await client.WebauthnLogin().create({
 })
 ```
+
+## Features
+
+This SDK ships 1 optional features. Each is **inactive until you
+switch it on**, so an SDK you have not configured behaves exactly as if none of
+them existed — no retries, no cache, no logging, no measurable overhead.
+
+Activate a feature by name in the client options, alongside the options shown
+above:
+
+| Feature | What it does |
+|---|---|
+| [`test`](#test) | In-memory mock transport for testing without a live server |
+
+### test
+
+In-memory mock transport for testing without a live server.
+
+| Option | Default |
+|---|---|
+| `active` | `false` |
+
+Set `feature.test.active` to enable it, then override any of the options above.
 
 
 ## Advanced

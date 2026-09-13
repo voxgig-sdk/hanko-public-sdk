@@ -249,24 +249,8 @@ class Saml
 /** Request payload for Saml#load. */
 class SamlLoadMatch
 {
-    public ?string $birthdate = null;
-    public ?string $email = null;
-    public ?string $email_verified = null;
-    public ?string $family_name = null;
-    public ?string $gender = null;
-    public ?string $given_name = null;
-    public ?string $locale = null;
-    public ?string $middle_name = null;
-    public ?string $name = null;
-    public ?string $nickname = null;
-    public ?string $phone = null;
-    public ?string $phone_verified = null;
-    public ?string $picture = null;
-    public ?string $preferred_username = null;
-    public ?string $profile = null;
-    public ?string $updated_at = null;
-    public ?string $website = null;
-    public ?string $zone_info = null;
+    public ?bool $cert_only = null;
+    public string $domain;
 }
 
 /** Request payload for Saml#create. */
@@ -352,6 +336,10 @@ class ThirdParty
 /** Request payload for ThirdParty#load. */
 class ThirdPartyLoadMatch
 {
+    public ?string $code = null;
+    public ?string $error = null;
+    public ?string $error_description = null;
+    public string $state;
 }
 
 /** Token entity data model. */

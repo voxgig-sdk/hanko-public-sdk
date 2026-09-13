@@ -217,25 +217,12 @@ class Saml(TypedDict, total=False):
     zone_info: str
 
 
-class SamlLoadMatch(TypedDict, total=False):
-    birthdate: str
-    email: str
-    email_verified: str
-    family_name: str
-    gender: str
-    given_name: str
-    locale: str
-    middle_name: str
-    name: str
-    nickname: str
-    phone: str
-    phone_verified: str
-    picture: str
-    preferred_username: str
-    profile: str
-    updated_at: str
-    website: str
-    zone_info: str
+class SamlLoadMatchRequired(TypedDict):
+    domain: str
+
+
+class SamlLoadMatch(SamlLoadMatchRequired, total=False):
+    cert_only: bool
 
 
 class SamlCreateData(TypedDict, total=False):
@@ -313,8 +300,14 @@ class ThirdParty(TypedDict):
     pass
 
 
-class ThirdPartyLoadMatch(TypedDict):
-    pass
+class ThirdPartyLoadMatchRequired(TypedDict):
+    state: str
+
+
+class ThirdPartyLoadMatch(ThirdPartyLoadMatchRequired, total=False):
+    code: str
+    error: str
+    error_description: str
 
 
 class Token(TypedDict, total=False):

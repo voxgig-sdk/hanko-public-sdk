@@ -6,6 +6,7 @@ main: kit: entity: webauthn_login: {
 
   fields: [
     {
+      format: "base64url"
       name: "credential_id"
       req: false
       type: "`$STRING`"
@@ -31,6 +32,7 @@ main: kit: entity: webauthn_login: {
       type: "`$STRING`"
     }
     {
+      format: "uuid4"
       name: "user_id"
       req: false
       type: "`$STRING`"
@@ -50,10 +52,16 @@ main: kit: entity: webauthn_login: {
         {
           method: "POST"
           orig: "/webauthn/login/finalize"
-          parts: [
-            "webauthn"
-            "login"
-            "finalize"
+          segments: [
+            {
+              lit: "webauthn"
+            }
+            {
+              lit: "login"
+            }
+            {
+              lit: "finalize"
+            }
           ]
           transform: {
             req: "`reqdata`"

@@ -6,6 +6,7 @@ main: kit: entity: user_management: {
 
   fields: [
     {
+      format: "date-time"
       name: "created_at"
       req: false
       short: "Time of creation of the the user"
@@ -27,6 +28,7 @@ main: kit: entity: user_management: {
       type: "`$STRING`"
     }
     {
+      deprecated: true
       name: "id"
       req: false
       short: "The ID of the user."
@@ -54,6 +56,7 @@ main: kit: entity: user_management: {
       type: "`$ARRAY`"
     }
     {
+      format: "uri"
       name: "picture"
       req: false
       type: "`$STRING`"
@@ -64,6 +67,7 @@ main: kit: entity: user_management: {
       type: "`$ARRAY`"
     }
     {
+      format: "date-time"
       name: "updated_at"
       req: false
       short: "Time of last update of the user"
@@ -96,8 +100,10 @@ main: kit: entity: user_management: {
         {
           method: "POST"
           orig: "/logout"
-          parts: [
-            "logout"
+          segments: [
+            {
+              lit: "logout"
+            }
           ]
           transform: {
             req: "`reqdata`"
@@ -112,8 +118,10 @@ main: kit: entity: user_management: {
         {
           method: "GET"
           orig: "/me"
-          parts: [
-            "me"
+          segments: [
+            {
+              lit: "me"
+            }
           ]
           transform: {
             req: "`reqdata`"

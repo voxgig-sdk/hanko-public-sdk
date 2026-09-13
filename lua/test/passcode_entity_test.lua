@@ -87,7 +87,8 @@ function passcode_basic_setup(extra)
     ["HANKO_PUBLIC_TEST_PASSCODE_ENTID"] = idmap,
     ["HANKO_PUBLIC_TEST_LIVE"] = "FALSE",
     ["HANKO_PUBLIC_TEST_EXPLAIN"] = "FALSE",
-    ["HANKO_PUBLIC_APIKEY"] = "NONE",
+    ["HANKO_PUBLIC_APIKEY"] = "",
+    ["HANKO_PUBLIC_SERVER_TENANT_ID"] = "",
   })
 
   local idmap_resolved = helpers.to_map(
@@ -98,8 +99,14 @@ function passcode_basic_setup(extra)
 
   if env["HANKO_PUBLIC_TEST_LIVE"] == "TRUE" then
     local merged_opts = vs.merge({
+      -- FIRST, so the generated fields below win: sdk-test-control.json's
+      -- test.client.options adds to the live client, it does not redirect it.
+      runner.live_client_options(),
       {
         apikey = env["HANKO_PUBLIC_APIKEY"],
+        server = {
+          ["tenant_id"] = env["HANKO_PUBLIC_SERVER_TENANT_ID"],
+        },
       },
       extra or {},
     })

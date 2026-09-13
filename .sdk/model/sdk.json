@@ -46,6 +46,7 @@
           "fields": [
             {
               "active": true,
+              "format": "uuid",
               "name": "aaguid",
               "req": false,
               "type": "`$STRING`"
@@ -70,18 +71,21 @@
             },
             {
               "active": true,
+              "format": "date-time",
               "name": "created_at",
               "req": false,
               "type": "`$STRING`"
             },
             {
               "active": true,
+              "format": "uuid",
               "name": "id",
               "req": false,
               "type": "`$STRING`"
             },
             {
               "active": true,
+              "format": "date-time",
               "name": "last_used_at",
               "req": false,
               "type": "`$STRING`"
@@ -127,9 +131,13 @@
                   "kind": "http",
                   "method": "GET",
                   "orig": "/webauthn/credentials",
-                  "parts": [
-                    "webauthn",
-                    "credentials"
+                  "segments": [
+                    {
+                      "lit": "webauthn"
+                    },
+                    {
+                      "lit": "credentials"
+                    }
                   ],
                   "select": {},
                   "transform": {
@@ -164,6 +172,7 @@
             },
             {
               "active": true,
+              "format": "base64url",
               "name": "challenge",
               "req": false,
               "type": "`$STRING`"
@@ -182,6 +191,7 @@
             },
             {
               "active": true,
+              "format": "int64",
               "name": "timeout",
               "req": false,
               "type": "`$INTEGER`"
@@ -205,10 +215,16 @@
                   "kind": "http",
                   "method": "POST",
                   "orig": "/webauthn/registration/initialize",
-                  "parts": [
-                    "webauthn",
-                    "registration",
-                    "initialize"
+                  "segments": [
+                    {
+                      "lit": "webauthn"
+                    },
+                    {
+                      "lit": "registration"
+                    },
+                    {
+                      "lit": "initialize"
+                    }
                   ],
                   "select": {},
                   "transform": {
@@ -237,6 +253,7 @@
             },
             {
               "active": true,
+              "format": "base64url",
               "name": "challenge",
               "req": false,
               "type": "`$STRING`"
@@ -249,6 +266,7 @@
             },
             {
               "active": true,
+              "format": "int64",
               "name": "timeout",
               "req": false,
               "type": "`$INTEGER`"
@@ -279,10 +297,16 @@
                   "kind": "http",
                   "method": "POST",
                   "orig": "/webauthn/login/initialize",
-                  "parts": [
-                    "webauthn",
-                    "login",
-                    "initialize"
+                  "segments": [
+                    {
+                      "lit": "webauthn"
+                    },
+                    {
+                      "lit": "login"
+                    },
+                    {
+                      "lit": "initialize"
+                    }
                   ],
                   "select": {},
                   "transform": {
@@ -305,6 +329,7 @@
           "fields": [
             {
               "active": true,
+              "format": "email",
               "name": "address",
               "op": {
                 "list": {
@@ -366,8 +391,10 @@
                   "kind": "http",
                   "method": "POST",
                   "orig": "/emails",
-                  "parts": [
-                    "emails"
+                  "segments": [
+                    {
+                      "lit": "emails"
+                    }
                   ],
                   "select": {},
                   "transform": {
@@ -387,8 +414,10 @@
                   "kind": "http",
                   "method": "GET",
                   "orig": "/emails",
-                  "parts": [
-                    "emails"
+                  "segments": [
+                    {
+                      "lit": "emails"
+                    }
                   ],
                   "select": {},
                   "transform": {
@@ -420,9 +449,13 @@
                   "kind": "http",
                   "method": "DELETE",
                   "orig": "/emails/{id}",
-                  "parts": [
-                    "emails",
-                    "{id}"
+                  "segments": [
+                    {
+                      "lit": "emails"
+                    },
+                    {
+                      "var": "id"
+                    }
                   ],
                   "select": {
                     "exist": [
@@ -482,10 +515,16 @@
                   "kind": "http",
                   "method": "POST",
                   "orig": "/emails/{id}/set_primary",
-                  "parts": [
-                    "emails",
-                    "{id}",
-                    "set_primary"
+                  "segments": [
+                    {
+                      "lit": "emails"
+                    },
+                    {
+                      "var": "id"
+                    },
+                    {
+                      "lit": "set_primary"
+                    }
                   ],
                   "select": {
                     "$action": "set_primary",
@@ -545,9 +584,13 @@
                   "kind": "http",
                   "method": "GET",
                   "orig": "/.well-known/config",
-                  "parts": [
-                    ".well-known",
-                    "config"
+                  "segments": [
+                    {
+                      "lit": ".well-known"
+                    },
+                    {
+                      "lit": "config"
+                    }
                   ],
                   "select": {},
                   "transform": {
@@ -576,6 +619,7 @@
             },
             {
               "active": true,
+              "format": "base64url",
               "name": "e",
               "req": false,
               "type": "`$STRING`"
@@ -594,6 +638,7 @@
             },
             {
               "active": true,
+              "format": "base64url",
               "name": "n",
               "req": false,
               "type": "`$STRING`"
@@ -617,9 +662,13 @@
                   "kind": "http",
                   "method": "GET",
                   "orig": "/.well-known/jwks.json",
-                  "parts": [
-                    ".well-known",
-                    "jwks.json"
+                  "segments": [
+                    {
+                      "lit": ".well-known"
+                    },
+                    {
+                      "lit": "jwks.json"
+                    }
                   ],
                   "select": {},
                   "transform": {
@@ -685,10 +734,16 @@
                   "kind": "http",
                   "method": "POST",
                   "orig": "/passcode/login/finalize",
-                  "parts": [
-                    "passcode",
-                    "login",
-                    "finalize"
+                  "segments": [
+                    {
+                      "lit": "passcode"
+                    },
+                    {
+                      "lit": "login"
+                    },
+                    {
+                      "lit": "finalize"
+                    }
                   ],
                   "select": {},
                   "transform": {
@@ -702,10 +757,16 @@
                   "kind": "http",
                   "method": "POST",
                   "orig": "/passcode/login/initialize",
-                  "parts": [
-                    "passcode",
-                    "login",
-                    "initialize"
+                  "segments": [
+                    {
+                      "lit": "passcode"
+                    },
+                    {
+                      "lit": "login"
+                    },
+                    {
+                      "lit": "initialize"
+                    }
                   ],
                   "select": {},
                   "transform": {
@@ -753,9 +814,13 @@
                   "kind": "http",
                   "method": "POST",
                   "orig": "/password/login",
-                  "parts": [
-                    "password",
-                    "login"
+                  "segments": [
+                    {
+                      "lit": "password"
+                    },
+                    {
+                      "lit": "login"
+                    }
                   ],
                   "select": {
                     "$action": "login"
@@ -779,8 +844,10 @@
                   "kind": "http",
                   "method": "PUT",
                   "orig": "/password",
-                  "parts": [
-                    "password"
+                  "segments": [
+                    {
+                      "lit": "password"
+                    }
                   ],
                   "select": {},
                   "transform": {
@@ -924,9 +991,13 @@
                   "kind": "http",
                   "method": "POST",
                   "orig": "/saml/callback",
-                  "parts": [
-                    "saml",
-                    "callback"
+                  "segments": [
+                    {
+                      "lit": "saml"
+                    },
+                    {
+                      "lit": "callback"
+                    }
                   ],
                   "select": {
                     "$action": "callback"
@@ -967,9 +1038,13 @@
                   "kind": "http",
                   "method": "GET",
                   "orig": "/saml/metadata",
-                  "parts": [
-                    "saml",
-                    "metadata"
+                  "segments": [
+                    {
+                      "lit": "saml"
+                    },
+                    {
+                      "lit": "metadata"
+                    }
                   ],
                   "select": {
                     "$action": "metadata",
@@ -1000,9 +1075,13 @@
                   "kind": "http",
                   "method": "GET",
                   "orig": "/saml/provider",
-                  "parts": [
-                    "saml",
-                    "provider"
+                  "segments": [
+                    {
+                      "lit": "saml"
+                    },
+                    {
+                      "lit": "provider"
+                    }
                   ],
                   "select": {
                     "$action": "provider",
@@ -1051,6 +1130,7 @@
             },
             {
               "active": true,
+              "format": "date-time",
               "name": "expiration",
               "req": true,
               "short": "The timestamp indicating when the token will expire.",
@@ -1058,6 +1138,7 @@
             },
             {
               "active": true,
+              "format": "date-time",
               "name": "issued_at",
               "req": false,
               "short": "The timestamp indicating when the token was issued.",
@@ -1079,6 +1160,7 @@
             },
             {
               "active": true,
+              "format": "JWT",
               "name": "session_token",
               "req": true,
               "short": "The session token (JWT) to validate",
@@ -1104,9 +1186,13 @@
                   "kind": "http",
                   "method": "POST",
                   "orig": "/sessions/validate",
-                  "parts": [
-                    "sessions",
-                    "validate"
+                  "segments": [
+                    {
+                      "lit": "sessions"
+                    },
+                    {
+                      "lit": "validate"
+                    }
                   ],
                   "select": {},
                   "transform": {
@@ -1126,9 +1212,13 @@
                   "kind": "http",
                   "method": "GET",
                   "orig": "/sessions/validate",
-                  "parts": [
-                    "sessions",
-                    "validate"
+                  "segments": [
+                    {
+                      "lit": "sessions"
+                    },
+                    {
+                      "lit": "validate"
+                    }
                   ],
                   "select": {},
                   "transform": {
@@ -1161,7 +1251,7 @@
                   "kind": "http",
                   "method": "GET",
                   "orig": "/",
-                  "parts": [],
+                  "segments": [],
                   "select": {},
                   "transform": {
                     "req": "`reqdata`",
@@ -1228,9 +1318,13 @@
                   "kind": "http",
                   "method": "GET",
                   "orig": "/thirdparty/callback",
-                  "parts": [
-                    "thirdparty",
-                    "callback"
+                  "segments": [
+                    {
+                      "lit": "thirdparty"
+                    },
+                    {
+                      "lit": "callback"
+                    }
                   ],
                   "select": {
                     "exist": [
@@ -1270,9 +1364,13 @@
                   "kind": "http",
                   "method": "GET",
                   "orig": "/thirdparty/auth",
-                  "parts": [
-                    "thirdparty",
-                    "auth"
+                  "segments": [
+                    {
+                      "lit": "thirdparty"
+                    },
+                    {
+                      "lit": "auth"
+                    }
                   ],
                   "select": {
                     "exist": [
@@ -1300,6 +1398,7 @@
           "fields": [
             {
               "active": true,
+              "format": "base64url",
               "name": "value",
               "req": false,
               "type": "`$STRING`"
@@ -1317,8 +1416,10 @@
                   "kind": "http",
                   "method": "POST",
                   "orig": "/token",
-                  "parts": [
-                    "token"
+                  "segments": [
+                    {
+                      "lit": "token"
+                    }
                   ],
                   "select": {},
                   "transform": {
@@ -1341,6 +1442,7 @@
           "fields": [
             {
               "active": true,
+              "format": "date-time",
               "name": "created_at",
               "req": false,
               "short": "Time of creation of the the user",
@@ -1348,6 +1450,7 @@
             },
             {
               "active": true,
+              "format": "email",
               "name": "email",
               "op": {
                 "create": {
@@ -1361,6 +1464,7 @@
             },
             {
               "active": true,
+              "format": "uuid4",
               "name": "email_id",
               "req": false,
               "short": "The ID of the newly created email address",
@@ -1392,6 +1496,8 @@
             },
             {
               "active": true,
+              "deprecated": true,
+              "format": "uuid4",
               "name": "id",
               "req": false,
               "short": "The ID of the user.",
@@ -1424,6 +1530,7 @@
             },
             {
               "active": true,
+              "format": "uri",
               "name": "picture",
               "req": false,
               "type": "`$STRING`"
@@ -1436,6 +1543,7 @@
             },
             {
               "active": true,
+              "format": "date-time",
               "name": "updated_at",
               "req": false,
               "short": "Time of last update of the user",
@@ -1485,8 +1593,10 @@
                   "kind": "http",
                   "method": "POST",
                   "orig": "/user",
-                  "parts": [
-                    "user"
+                  "segments": [
+                    {
+                      "lit": "user"
+                    }
                   ],
                   "select": {},
                   "transform": {
@@ -1500,8 +1610,10 @@
                   "kind": "http",
                   "method": "POST",
                   "orig": "/users",
-                  "parts": [
-                    "users"
+                  "segments": [
+                    {
+                      "lit": "users"
+                    }
                   ],
                   "select": {},
                   "transform": {
@@ -1533,9 +1645,13 @@
                   "kind": "http",
                   "method": "GET",
                   "orig": "/users/{id}",
-                  "parts": [
-                    "users",
-                    "{id}"
+                  "segments": [
+                    {
+                      "lit": "users"
+                    },
+                    {
+                      "var": "id"
+                    }
                   ],
                   "select": {
                     "exist": [
@@ -1559,8 +1675,10 @@
                   "kind": "http",
                   "method": "DELETE",
                   "orig": "/user",
-                  "parts": [
-                    "user"
+                  "segments": [
+                    {
+                      "lit": "user"
+                    }
                   ],
                   "select": {},
                   "transform": {
@@ -1583,6 +1701,7 @@
           "fields": [
             {
               "active": true,
+              "format": "date-time",
               "name": "created_at",
               "req": false,
               "short": "Time of creation of the the user",
@@ -1608,6 +1727,7 @@
             },
             {
               "active": true,
+              "deprecated": true,
               "name": "id",
               "req": false,
               "short": "The ID of the user.",
@@ -1640,6 +1760,7 @@
             },
             {
               "active": true,
+              "format": "uri",
               "name": "picture",
               "req": false,
               "type": "`$STRING`"
@@ -1652,6 +1773,7 @@
             },
             {
               "active": true,
+              "format": "date-time",
               "name": "updated_at",
               "req": false,
               "short": "Time of last update of the user",
@@ -1688,8 +1810,10 @@
                   "kind": "http",
                   "method": "POST",
                   "orig": "/logout",
-                  "parts": [
-                    "logout"
+                  "segments": [
+                    {
+                      "lit": "logout"
+                    }
                   ],
                   "select": {},
                   "transform": {
@@ -1709,8 +1833,10 @@
                   "kind": "http",
                   "method": "GET",
                   "orig": "/me",
-                  "parts": [
-                    "me"
+                  "segments": [
+                    {
+                      "lit": "me"
+                    }
                   ],
                   "select": {},
                   "transform": {
@@ -1779,10 +1905,16 @@
                   "kind": "http",
                   "method": "POST",
                   "orig": "/webauthn/registration/finalize",
-                  "parts": [
-                    "webauthn",
-                    "registration",
-                    "finalize"
+                  "segments": [
+                    {
+                      "lit": "webauthn"
+                    },
+                    {
+                      "lit": "registration"
+                    },
+                    {
+                      "lit": "finalize"
+                    }
                   ],
                   "select": {},
                   "transform": {
@@ -1814,10 +1946,16 @@
                   "kind": "http",
                   "method": "DELETE",
                   "orig": "/webauthn/credentials/{id}",
-                  "parts": [
-                    "webauthn",
-                    "credentials",
-                    "{id}"
+                  "segments": [
+                    {
+                      "lit": "webauthn"
+                    },
+                    {
+                      "lit": "credentials"
+                    },
+                    {
+                      "var": "id"
+                    }
                   ],
                   "select": {
                     "exist": [
@@ -1853,10 +1991,16 @@
                   "kind": "http",
                   "method": "PATCH",
                   "orig": "/webauthn/credentials/{id}",
-                  "parts": [
-                    "webauthn",
-                    "credentials",
-                    "{id}"
+                  "segments": [
+                    {
+                      "lit": "webauthn"
+                    },
+                    {
+                      "lit": "credentials"
+                    },
+                    {
+                      "var": "id"
+                    }
                   ],
                   "select": {
                     "exist": [
@@ -1883,6 +2027,7 @@
           "fields": [
             {
               "active": true,
+              "format": "base64url",
               "name": "credential_id",
               "req": false,
               "type": "`$STRING`"
@@ -1913,6 +2058,7 @@
             },
             {
               "active": true,
+              "format": "uuid4",
               "name": "user_id",
               "req": false,
               "type": "`$STRING`"
@@ -1934,10 +2080,16 @@
                   "kind": "http",
                   "method": "POST",
                   "orig": "/webauthn/login/finalize",
-                  "parts": [
-                    "webauthn",
-                    "login",
-                    "finalize"
+                  "segments": [
+                    {
+                      "lit": "webauthn"
+                    },
+                    {
+                      "lit": "login"
+                    },
+                    {
+                      "lit": "finalize"
+                    }
                   ],
                   "select": {},
                   "transform": {
@@ -2017,8 +2169,11 @@
             }
           },
           "name": "test",
+          "needs": {},
           "origname": "",
           "package": "@voxgig/sdkgen",
+          "plugin": {},
+          "spec": {},
           "target": {
             "go": {
               "deps": {}
@@ -2742,6 +2897,9 @@
             "sdkrel": ""
           },
           "package": "@voxgig/sdkgen",
+          "provides": {
+            "sekreto": true
+          },
           "publish": {
             "registry": {
               "active": false,
@@ -2767,6 +2925,10 @@
             "version": "0.1.1"
           },
           "srcfeature": false,
+          "superseded": [
+            "test/runner_test.go",
+            "test/struct_runner_test.go"
+          ],
           "title": "Golang"
         },
         "go-cli": {
@@ -2818,6 +2980,7 @@
               "active": false
             }
           },
+          "provides": {},
           "publish": {
             "registry": {
               "active": false,
@@ -2842,6 +3005,7 @@
             },
             "version": "0.1.1"
           },
+          "superseded": [],
           "title": "Go CLI"
         },
         "go-mcp": {
@@ -2893,6 +3057,7 @@
               "active": false
             }
           },
+          "provides": {},
           "publish": {
             "registry": {
               "active": false,
@@ -2917,6 +3082,7 @@
             },
             "version": "0.1.1"
           },
+          "superseded": [],
           "title": "Go MCP server"
         },
         "lua": {
@@ -2957,6 +3123,9 @@
             "sdkrel": ""
           },
           "package": "@voxgig/sdkgen",
+          "provides": {
+            "sekreto": true
+          },
           "publish": {
             "registry": {
               "active": false,
@@ -2982,6 +3151,9 @@
             "version": "0.1.1"
           },
           "srcfeature": false,
+          "superseded": [
+            "test/struct_runner.lua"
+          ],
           "title": "Lua"
         },
         "php": {
@@ -3016,6 +3188,9 @@
             "sdkrel": ""
           },
           "package": "@voxgig/sdkgen",
+          "provides": {
+            "sekreto": true
+          },
           "publish": {
             "registry": {
               "active": false,
@@ -3041,6 +3216,9 @@
             "version": "0.1.1"
           },
           "srcfeature": false,
+          "superseded": [
+            "test/StructRunner.php"
+          ],
           "title": "PHP"
         },
         "py": {
@@ -3081,6 +3259,9 @@
             "sdkrel": ""
           },
           "package": "@voxgig/sdkgen",
+          "provides": {
+            "sekreto": true
+          },
           "publish": {
             "registry": {
               "active": false,
@@ -3106,6 +3287,9 @@
             "version": "0.1.1"
           },
           "srcfeature": false,
+          "superseded": [
+            "test/struct_runner.py"
+          ],
           "title": "Python"
         },
         "rb": {
@@ -3151,6 +3335,9 @@
             "sdkrel": ""
           },
           "package": "@voxgig/sdkgen",
+          "provides": {
+            "sekreto": true
+          },
           "publish": {
             "registry": {
               "active": false,
@@ -3176,6 +3363,9 @@
             "version": "0.1.1"
           },
           "srcfeature": false,
+          "superseded": [
+            "test/struct_runner.rb"
+          ],
           "title": "Ruby"
         },
         "ts": {
@@ -3193,11 +3383,6 @@
               "active": true,
               "kind": "dev",
               "version": "^25.6.0"
-            },
-            "dotenv": {
-              "active": true,
-              "kind": "dev",
-              "version": "^17.4.2"
             },
             "typescript": {
               "active": true,
@@ -3226,6 +3411,9 @@
             "sdkrel": ""
           },
           "package": "@voxgig/sdkgen",
+          "provides": {
+            "sekreto": true
+          },
           "publish": {
             "registry": {
               "active": false,
@@ -3250,6 +3438,14 @@
             },
             "version": "0.1.1"
           },
+          "superseded": [
+            "test/runner.ts",
+            "test/vendor/omni/compat.ts",
+            "src/feature/secrets/sekreto/Providers.ts",
+            "src/feature/secrets/sekreto/Sigv4.ts",
+            "src/feature/secrets/sekreto/provider/Registry.ts",
+            "src/feature/secrets/sekreto/provider/http.ts"
+          ],
           "title": "TypeScript"
         }
       },

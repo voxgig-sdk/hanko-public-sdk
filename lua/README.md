@@ -840,7 +840,7 @@ Create an instance: `local saml = client:Saml(nil)`
 #### Example: Load
 
 ```lua
-local saml, err = client:Saml():load()
+local saml, err = client:Saml():load({ domain = "domain" })
 ```
 
 #### Example: Create
@@ -924,7 +924,7 @@ Create an instance: `local third_party = client:ThirdParty(nil)`
 #### Example: Load
 
 ```lua
-local third_party, err = client:ThirdParty():load()
+local third_party, err = client:ThirdParty():load({ state = "state" })
 ```
 
 
@@ -1103,6 +1103,29 @@ Create an instance: `local webauthn_login = client:WebauthnLogin(nil)`
 local webauthn_login, err = client:WebauthnLogin():create({
 })
 ```
+
+## Features
+
+This SDK ships 1 optional features. Each is **inactive until you
+switch it on**, so an SDK you have not configured behaves exactly as if none of
+them existed — no retries, no cache, no logging, no measurable overhead.
+
+Activate a feature by name in the client options, alongside the options shown
+above:
+
+| Feature | What it does |
+|---|---|
+| [`test`](#test) | In-memory mock transport for testing without a live server |
+
+### test
+
+In-memory mock transport for testing without a live server.
+
+| Option | Default |
+|---|---|
+| `active` | `false` |
+
+Set `feature.test.active` to enable it, then override any of the options above.
 
 
 ## Advanced

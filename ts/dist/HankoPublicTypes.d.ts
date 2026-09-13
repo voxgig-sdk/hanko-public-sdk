@@ -168,24 +168,8 @@ export interface Saml {
     zone_info?: string;
 }
 export interface SamlLoadMatch {
-    birthdate?: string;
-    email?: string;
-    email_verified?: string;
-    family_name?: string;
-    gender?: string;
-    given_name?: string;
-    locale?: string;
-    middle_name?: string;
-    name?: string;
-    nickname?: string;
-    phone?: string;
-    phone_verified?: string;
-    picture?: string;
-    preferred_username?: string;
-    profile?: string;
-    updated_at?: string;
-    website?: string;
-    zone_info?: string;
+    cert_only?: boolean;
+    domain: string;
     $action?: string;
     [action: string]: any;
 }
@@ -251,6 +235,10 @@ export interface StatusLoadMatch {
 export interface ThirdParty {
 }
 export interface ThirdPartyLoadMatch {
+    code?: string;
+    error?: string;
+    error_description?: string;
+    state: string;
 }
 export interface Token {
     value?: string;

@@ -6,6 +6,7 @@ main: kit: entity: token: {
 
   fields: [
     {
+      format: "base64url"
       name: "value"
       req: false
       type: "`$STRING`"
@@ -20,8 +21,10 @@ main: kit: entity: token: {
         {
           method: "POST"
           orig: "/token"
-          parts: [
-            "token"
+          segments: [
+            {
+              lit: "token"
+            }
           ]
           transform: {
             req: "`reqdata`"

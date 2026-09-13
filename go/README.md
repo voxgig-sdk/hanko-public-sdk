@@ -50,6 +50,9 @@ import (
 func main() {
     client := sdk.NewHankoPublicSDK(map[string]any{
         "apikey": os.Getenv("HANKO_PUBLIC_APIKEY"),
+    "server": map[string]any{
+        "tenant_id": "<tenant_id>",
+    },
     })
 
     _ = client
@@ -916,7 +919,7 @@ Create an instance: `saml := client.Saml(nil)`
 #### Example: Load
 
 ```go
-saml, err := client.Saml(nil).Load(nil, nil)
+saml, err := client.Saml(nil).Load(map[string]any{"domain": "domain"}, nil)
 if err != nil {
     panic(err)
 }
@@ -1020,7 +1023,7 @@ Create an instance: `thirdParty := client.ThirdParty(nil)`
 #### Example: Load
 
 ```go
-thirdParty, err := client.ThirdParty(nil).Load(nil, nil)
+thirdParty, err := client.ThirdParty(nil).Load(map[string]any{"state": "state"}, nil)
 if err != nil {
     panic(err)
 }
@@ -1231,6 +1234,29 @@ if err != nil {
 }
 fmt.Println(result)
 ```
+
+## Features
+
+This SDK ships 1 optional features. Each is **inactive until you
+switch it on**, so an SDK you have not configured behaves exactly as if none of
+them existed — no retries, no cache, no logging, no measurable overhead.
+
+Activate a feature by name in the client options, alongside the options shown
+above:
+
+| Feature | What it does |
+|---|---|
+| [`test`](#test) | In-memory mock transport for testing without a live server |
+
+### test
+
+In-memory mock transport for testing without a live server.
+
+| Option | Default |
+|---|---|
+| `active` | `false` |
+
+Set `feature.test.active` to enable it, then override any of the options above.
 
 
 ## Advanced

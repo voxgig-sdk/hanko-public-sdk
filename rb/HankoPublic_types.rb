@@ -600,78 +600,14 @@ Saml = Struct.new(
 
 # Request payload for Saml#load.
 #
-# @!attribute [rw] birthdate
-#   @return [String, nil]
+# @!attribute [rw] cert_only
+#   @return [Boolean, nil]
 #
-# @!attribute [rw] email
-#   @return [String, nil]
-#
-# @!attribute [rw] email_verified
-#   @return [String, nil]
-#
-# @!attribute [rw] family_name
-#   @return [String, nil]
-#
-# @!attribute [rw] gender
-#   @return [String, nil]
-#
-# @!attribute [rw] given_name
-#   @return [String, nil]
-#
-# @!attribute [rw] locale
-#   @return [String, nil]
-#
-# @!attribute [rw] middle_name
-#   @return [String, nil]
-#
-# @!attribute [rw] name
-#   @return [String, nil]
-#
-# @!attribute [rw] nickname
-#   @return [String, nil]
-#
-# @!attribute [rw] phone
-#   @return [String, nil]
-#
-# @!attribute [rw] phone_verified
-#   @return [String, nil]
-#
-# @!attribute [rw] picture
-#   @return [String, nil]
-#
-# @!attribute [rw] preferred_username
-#   @return [String, nil]
-#
-# @!attribute [rw] profile
-#   @return [String, nil]
-#
-# @!attribute [rw] updated_at
-#   @return [String, nil]
-#
-# @!attribute [rw] website
-#   @return [String, nil]
-#
-# @!attribute [rw] zone_info
-#   @return [String, nil]
+# @!attribute [rw] domain
+#   @return [String]
 SamlLoadMatch = Struct.new(
-  :birthdate,
-  :email,
-  :email_verified,
-  :family_name,
-  :gender,
-  :given_name,
-  :locale,
-  :middle_name,
-  :name,
-  :nickname,
-  :phone,
-  :phone_verified,
-  :picture,
-  :preferred_username,
-  :profile,
-  :updated_at,
-  :website,
-  :zone_info,
+  :cert_only,
+  :domain,
   keyword_init: true
 )
 
@@ -888,8 +824,25 @@ class ThirdParty
 end
 
 # Request payload for ThirdParty#load.
-class ThirdPartyLoadMatch
-end
+#
+# @!attribute [rw] code
+#   @return [String, nil]
+#
+# @!attribute [rw] error
+#   @return [String, nil]
+#
+# @!attribute [rw] error_description
+#   @return [String, nil]
+#
+# @!attribute [rw] state
+#   @return [String]
+ThirdPartyLoadMatch = Struct.new(
+  :code,
+  :error,
+  :error_description,
+  :state,
+  keyword_init: true
+)
 
 # Token entity data model.
 #
