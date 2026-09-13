@@ -1,6 +1,15 @@
 {
+  "NAME": "HANKO-PUBLIC",
+  "Name": "HankoPublic",
   "def": "hanko-public-openapi.yaml",
   "main": {
+    "api": {
+      "entity": {},
+      "guide": {}
+    },
+    "custom": {
+      "plurals": {}
+    },
     "def": {
       "desc": ""
     },
@@ -3459,5 +3468,8 @@
     }
   },
   "name": "hanko-public",
+  "name-": "hanko-public",
+  "name_": "hanko_public",
+  "name__orig": "hanko-public",
   "origin": "voxgig-sdk"
 }
