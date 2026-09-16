@@ -66,12 +66,12 @@ Every entity operation returns `(value, error)`. Check `err` before
 using the value — there is no exception to catch:
 
 ```go
-credentials, err := client.Credential(nil).List(nil, nil)
+emails, err := client.Email(nil).List(nil, nil)
 if err != nil {
     // handle err
     return
 }
-_ = credentials
+_ = emails
 ```
 
 `Direct` follows the same `(value, error)` convention:
@@ -135,13 +135,13 @@ Create a mock client for unit testing — no server required:
 ```go
 client := sdk.Test()
 
-credential, err := client.Credential(nil).List(
+email, err := client.Email(nil).List(
     nil, nil,
 )
 if err != nil {
     panic(err)
 }
-fmt.Println(credential) // the returned mock data
+fmt.Println(email) // the returned mock data
 ```
 
 ### Use a custom fetch function
@@ -409,7 +409,7 @@ API path: `/passcode/login/finalize`
 | Field | Description |
 | --- | --- |
 | `"password"` | The actual password, its `minLength` defaults to 8 but can be [configured](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config) through the `password.min_password_length` option. |
-| `"user_id"` | The ID of the user to perform a password login for |
+| `"user_id"` | The ID of the user to create/set a password for |
 
 Operations: Create, Update.
 
@@ -419,24 +419,6 @@ API path: `/password/login`
 
 | Field | Description |
 | --- | --- |
-| `"birthdate"` |  |
-| `"email"` |  |
-| `"email_verified"` |  |
-| `"family_name"` |  |
-| `"gender"` |  |
-| `"given_name"` |  |
-| `"locale"` |  |
-| `"middle_name"` |  |
-| `"name"` |  |
-| `"nickname"` |  |
-| `"phone"` |  |
-| `"phone_verified"` |  |
-| `"picture"` |  |
-| `"preferred_username"` |  |
-| `"profile"` |  |
-| `"updated_at"` |  |
-| `"website"` |  |
-| `"zone_info"` |  |
 
 Operations: Create, Load.
 
@@ -866,7 +848,7 @@ Create an instance: `password := client.Password(nil)`
 | Field | Type | Description |
 | --- | --- | --- |
 | `password` | `string` | The actual password, its `minLength` defaults to 8 but can be [configured](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config) through the `password.min_password_length` option. |
-| `user_id` | `string` | The ID of the user to perform a password login for |
+| `user_id` | `string` | The ID of the user to create/set a password for |
 
 #### Example: Create
 
@@ -892,29 +874,6 @@ Create an instance: `saml := client.Saml(nil)`
 | --- | --- |
 | `Load(match, ctrl)` | Load a single entity by match criteria. |
 | `Create(data, ctrl)` | Create a new entity with the given data. |
-
-#### Fields
-
-| Field | Type | Description |
-| --- | --- | --- |
-| `birthdate` | `string` |  |
-| `email` | `string` |  |
-| `email_verified` | `string` |  |
-| `family_name` | `string` |  |
-| `gender` | `string` |  |
-| `given_name` | `string` |  |
-| `locale` | `string` |  |
-| `middle_name` | `string` |  |
-| `name` | `string` |  |
-| `nickname` | `string` |  |
-| `phone` | `string` |  |
-| `phone_verified` | `string` |  |
-| `picture` | `string` |  |
-| `preferred_username` | `string` |  |
-| `profile` | `string` |  |
-| `updated_at` | `string` |  |
-| `website` | `string` |  |
-| `zone_info` | `string` |  |
 
 #### Example: Load
 
@@ -1237,7 +1196,7 @@ fmt.Println(result)
 
 ## Features
 
-This SDK ships 1 optional features. Each is **inactive until you
+This SDK ships 8 optional features. Each is **inactive until you
 switch it on**, so an SDK you have not configured behaves exactly as if none of
 them existed — no retries, no cache, no logging, no measurable overhead.
 
@@ -1246,7 +1205,105 @@ above:
 
 | Feature | What it does |
 |---|---|
+| [`debug`](#debug) | Request/response capture ring buffer for debugging |
+| [`idempotency`](#idempotency) | Idempotency keys for safe retries of mutating operations |
+| [`metrics`](#metrics) | Statistics capture: per-operation counters and latency |
+| [`paging`](#paging) | Pagination signals for list operations |
+| [`ratelimit`](#ratelimit) | Client-side rate limiting via a token bucket |
+| [`retry`](#retry) | Automatic retry of transient failures with exponential backoff |
 | [`test`](#test) | In-memory mock transport for testing without a live server |
+| [`timeout`](#timeout) | Per-request timeout with transport abort |
+
+> **Order matters for `ratelimit`, `retry`, `timeout`.** These wrap the
+> transport, so each one wraps whatever is already installed: the order you
+> activate them in IS the nesting order. Activating them as an ordered list
+> rather than a map is what fixes that order.
+
+### debug
+
+Request/response capture ring buffer for debugging.
+
+| Option | Default |
+|---|---|
+| `active` | `false` |
+| `max` | `100` |
+| `redact` | `['authorization', 'cookie', 'set-cookie', 'api-key', 'apikey', 'x-api-key', 'idempotency-key']` |
+
+Set `feature.debug.active` to enable it, then override any of the options above.
+
+### idempotency
+
+Idempotency keys for safe retries of mutating operations.
+
+| Option | Default |
+|---|---|
+| `active` | `false` |
+| `header` | `'Idempotency-Key'` |
+| `methods` | `['POST', 'PUT', 'PATCH', 'DELETE']` |
+| `ops` | `['create', 'update', 'remove']` |
+
+Set `feature.idempotency.active` to enable it, then override any of the options above.
+
+### metrics
+
+Statistics capture: per-operation counters and latency.
+
+| Option | Default |
+|---|---|
+| `active` | `false` |
+
+Set `feature.metrics.active` to enable it, then override any of the options above.
+
+### paging
+
+Pagination signals for list operations.
+
+| Option | Default |
+|---|---|
+| `active` | `false` |
+| `afterVar` | `'after'` |
+| `cursorParam` | `'cursor'` |
+| `firstVar` | `'first'` |
+| `limitParam` | `'limit'` |
+| `pageParam` | `'page'` |
+| `startPage` | `1` |
+
+Set `feature.paging.active` to enable it, then override any of the options above.
+
+### ratelimit
+
+Client-side rate limiting via a token bucket.
+
+| Option | Default |
+|---|---|
+| `active` | `false` |
+| `burst` | `5` |
+| `rate` | `5` |
+
+Set `feature.ratelimit.active` to enable it, then override any of the options above.
+
+`ratelimit` wraps the transport, so its position among the other
+transport features decides what it sees. A feature activated later wraps one
+activated earlier.
+
+### retry
+
+Automatic retry of transient failures with exponential backoff.
+
+| Option | Default |
+|---|---|
+| `active` | `false` |
+| `factor` | `2` |
+| `maxDelay` | `2000` |
+| `minDelay` | `50` |
+| `retries` | `2` |
+| `statuses` | `[408, 425, 429, 500, 502, 503, 504]` |
+
+Set `feature.retry.active` to enable it, then override any of the options above.
+
+`retry` wraps the transport, so its position among the other
+transport features decides what it sees. A feature activated later wraps one
+activated earlier.
 
 ### test
 
@@ -1257,6 +1314,21 @@ In-memory mock transport for testing without a live server.
 | `active` | `false` |
 
 Set `feature.test.active` to enable it, then override any of the options above.
+
+### timeout
+
+Per-request timeout with transport abort.
+
+| Option | Default |
+|---|---|
+| `active` | `false` |
+| `ms` | `30000` |
+
+Set `feature.timeout.active` to enable it, then override any of the options above.
+
+`timeout` wraps the transport, so its position among the other
+transport features decides what it sees. A feature activated later wraps one
+activated earlier.
 
 
 ## Advanced
@@ -1297,7 +1369,14 @@ stage names.
 
 The SDK ships with built-in features:
 
+- **DebugFeature**: Request/response capture ring buffer for debugging
+- **IdempotencyFeature**: Idempotency keys for safe retries of mutating operations
+- **MetricsFeature**: Statistics capture: per-operation counters and latency
+- **PagingFeature**: Pagination signals for list operations
+- **RatelimitFeature**: Client-side rate limiting via a token bucket
+- **RetryFeature**: Automatic retry of transient failures with exponential backoff
 - **TestFeature**: In-memory mock transport for testing without a live server
+- **TimeoutFeature**: Per-request timeout with transport abort
 
 Features are initialized in order. Hooks fire in the order features
 were added, so later features can override earlier ones.
@@ -1332,11 +1411,11 @@ Entity instances are stateful. After a successful `List`, the entity
 stores the returned data and match criteria internally.
 
 ```go
-credential := client.Credential(nil)
-credential.List(nil, nil)
+email := client.Email(nil)
+email.List(nil, nil)
 
-// credential.Data() now returns the credential data from the last list
-// credential.Match() returns the last match criteria
+// email.Data() now returns the email data from the last list
+// email.Match() returns the last match criteria
 ```
 
 Call `Make()` to create a fresh instance with the same configuration

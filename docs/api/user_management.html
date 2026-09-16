@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>UserManagement | Hanko Public API</title><link rel="stylesheet" href="../assets/style.css"></head>
+<body><a class="skip" href="#content">Skip to content</a>
+<header class="site-header"><a class="site-title" href="../index.html">Hanko Public API<span>SDK documentation</span></a><div class="site-links"><a class="repo-link" href="https://github.com/voxgig-sdk/hanko-public-sdk">voxgig-sdk/hanko-public-sdk</a></div></header>
+<div class="site-notice" role="note"></div>
+<div class="shell"><nav class="site-nav" aria-label="Documentation"><div class="search"><label for="search">Search documentation</label><input id="search" type="search" data-base="../" placeholder="Find a guide or reference"><div id="results" aria-live="polite"></div></div><details><summary>Overview</summary><a href="../index.html">Hanko Public API</a></details>
+<details open><summary>API</summary><a href="../api/index.html">API overview</a>
+<a href="../api/create_user_response_object.html">CreateUserResponseObject</a>
+<a href="../api/credential.html">Credential</a>
+<a href="../api/credential_creation_option.html">CredentialCreationOption</a>
+<a href="../api/credential_request_option.html">CredentialRequestOption</a>
+<a href="../api/email.html">Email</a>
+<a href="../api/email_management.html">EmailManagement</a>
+<a href="../api/hanko_configuration.html">HankoConfiguration</a>
+<a href="../api/json_web_key_set.html">JsonWebKeySet</a>
+<a href="../api/passcode.html">Passcode</a>
+<a href="../api/password.html">Password</a>
+<a href="../api/saml.html">Saml</a>
+<a href="../api/session_management.html">SessionManagement</a>
+<a href="../api/status.html">Status</a>
+<a href="../api/third_party.html">ThirdParty</a>
+<a href="../api/token.html">Token</a>
+<a href="../api/user.html">User</a>
+<a aria-current="page" href="../api/user_management.html">UserManagement</a><div class="nav-sections"><a class="nav-section" href="#post-logout">POST /logout</a>
+<a class="nav-section" href="#get-me">GET /me</a></div>
+<a href="../api/web_authn.html">WebAuthn</a>
+<a href="../api/webauthn_login.html">WebauthnLogin</a></details>
+<details><summary>Guides</summary><a href="../guides/authentication.html">Authentication</a>
+<a href="../guides/first-call.html">Make your first API call</a>
+<a href="../guides/errors.html">Handle errors</a>
+<a href="../guides/concepts.html">Entities, SDKs, and tools</a></details>
+<details><summary>SDKs</summary><a href="../sdks/go.html">Golang</a>
+<a href="../sdks/lua.html">Lua</a>
+<a href="../sdks/php.html">PHP</a>
+<a href="../sdks/py.html">Python</a>
+<a href="../sdks/rb.html">Ruby</a>
+<a href="../sdks/ts.html">TypeScript</a></details>
+<details><summary>Tools</summary><a href="../tools/go-cli.html">Go CLI</a>
+<a href="../tools/go-mcp.html">Go MCP server</a></details>
+<details><summary>Features</summary><a href="../features/debug.html">Request/response capture ring buffer for debugging</a>
+<a href="../features/idempotency.html">Idempotency keys for safe retries of mutating operations</a>
+<a href="../features/metrics.html">Statistics capture: per-operation counters and latency</a>
+<a href="../features/paging.html">Pagination signals for list operations</a>
+<a href="../features/ratelimit.html">Client-side rate limiting via a token bucket</a>
+<a href="../features/retry.html">Automatic retry of transient failures with exponential backoff</a>
+<a href="../features/test.html">In-memory mock transport for testing without a live server</a>
+<a href="../features/timeout.html">Per-request timeout with transport abort</a></details></nav><main id="content"><div class="page-context"><span class="section-dot" aria-hidden="true"></span>API</div><h1 id="usermanagement">UserManagement</h1>
+<h2 id="operations">Operations</h2>
+<p>Every route this entity exposes. Each route links to its own reference on this page.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Route</th>
+<th>SDK operation</th>
+<th>Returns</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>POST</code></td>
+<td><a href="#post-logout"><code>/logout</code></a></td>
+<td><code>create</code></td>
+<td>The user has been logged out</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><a href="#get-me"><code>/me</code></a></td>
+<td><code>list</code></td>
+<td>Details for the current user</td>
+</tr>
+</tbody>
+</table>
+<h2 id="fields">Fields</h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>created_at</code></td>
+<td><code>string</code></td>
+<td>No</td>
+<td>Time of creation of the user</td>
+</tr>
+<tr>
+<td><code>emails</code></td>
+<td><code>array</code></td>
+<td>No</td>
+<td></td>
+</tr>
+<tr>
+<td><code>family_name</code></td>
+<td><code>string</code></td>
+<td>No</td>
+<td></td>
+</tr>
+<tr>
+<td><code>given_name</code></td>
+<td><code>string</code></td>
+<td>No</td>
+<td></td>
+</tr>
+<tr>
+<td><code>id</code></td>
+<td><code>string</code></td>
+<td>No</td>
+<td>The ID of the user.</td>
+</tr>
+<tr>
+<td><code>metadata</code></td>
+<td><code>object</code></td>
+<td>No</td>
+<td>The public and unsafe metadata of a user</td>
+</tr>
+<tr>
+<td><code>mfa_config</code></td>
+<td><code>object</code></td>
+<td>No</td>
+<td></td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td><code>string</code></td>
+<td>No</td>
+<td></td>
+</tr>
+<tr>
+<td><code>passkeys</code></td>
+<td><code>array</code></td>
+<td>No</td>
+<td></td>
+</tr>
+<tr>
+<td><code>picture</code></td>
+<td><code>string</code></td>
+<td>No</td>
+<td></td>
+</tr>
+<tr>
+<td><code>security_keys</code></td>
+<td><code>array</code></td>
+<td>No</td>
+<td></td>
+</tr>
+<tr>
+<td><code>updated_at</code></td>
+<td><code>string</code></td>
+<td>No</td>
+<td>Time of last update of the user</td>
+</tr>
+<tr>
+<td><code>user_id</code></td>
+<td><code>string</code></td>
+<td>No</td>
+<td>The ID of the user</td>
+</tr>
+<tr>
+<td><code>username</code></td>
+<td><code>object</code></td>
+<td>No</td>
+<td>The representation of a username of the user</td>
+</tr>
+</tbody>
+</table>
+<h2 id="create">create</h2>
+<h3 id="post-logout" class="operation" data-method="post"><code>POST</code> /logout</h3>
+<p>Operation ID: <code>logout</code>.</p>
+<p>Authentication: API key in the cookie (<code>CookieAuth</code>) or bearer token (<code>BearerTokenAuth</code>).</p>
+<h4 id="responses">Responses</h4>
+<h5 id="204-the-user-has-been-logged-out" class="status" data-status="2xx">204: The user has been logged out</h5>
+<h5 id="401-unauthorized" class="status" data-status="4xx">401: Unauthorized</h5>
+<p><code>application/json</code></p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>code</code></td>
+<td><code>integer (int32)</code></td>
+<td>Yes</td>
+<td></td>
+</tr>
+<tr>
+<td><code>message</code></td>
+<td><code>string</code></td>
+<td>Yes</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Example response:</p>
+<pre><code class="language-json">{
+  &quot;code&quot;: 401,
+  &quot;message&quot;: &quot;Unauthorized&quot;
+}
+</code></pre>
+<h5 id="500-internal-server-error" class="status" data-status="5xx">500: Internal server error</h5>
+<p><code>application/json</code></p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>code</code></td>
+<td><code>integer (int32)</code></td>
+<td>Yes</td>
+<td></td>
+</tr>
+<tr>
+<td><code>message</code></td>
+<td><code>string</code></td>
+<td>Yes</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Example response:</p>
+<pre><code class="language-json">{
+  &quot;code&quot;: 500,
+  &quot;message&quot;: &quot;Internal Server Error&quot;
+}
+</code></pre>
+<h2 id="list">list</h2>
+<h3 id="get-me" class="operation" data-method="get"><code>GET</code> /me</h3>
+<p>Operation ID: <code>IsUserAuthorized</code>.</p>
+<p>Authentication: API key in the cookie (<code>CookieAuth</code>) or bearer token (<code>BearerTokenAuth</code>).</p>
+<h4 id="responses-1">Responses</h4>
+<h5 id="200-details-for-the-current-user" class="status" data-status="2xx">200: Details for the current user</h5>
+<p><code>application/json</code></p>
+<p>The response is <code>object and object</code>.</p>
+<h5 id="400-bad-request" class="status" data-status="4xx">400: Bad Request</h5>
+<p><code>application/json</code></p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>code</code></td>
+<td><code>integer (int32)</code></td>
+<td>Yes</td>
+<td></td>
+</tr>
+<tr>
+<td><code>message</code></td>
+<td><code>string</code></td>
+<td>Yes</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Example response:</p>
+<pre><code class="language-json">{
+  &quot;code&quot;: 400,
+  &quot;message&quot;: &quot;Bad Request&quot;
+}
+</code></pre>
+<h5 id="401-unauthorized-1" class="status" data-status="4xx">401: Unauthorized</h5>
+<p><code>application/json</code></p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>code</code></td>
+<td><code>integer (int32)</code></td>
+<td>Yes</td>
+<td></td>
+</tr>
+<tr>
+<td><code>message</code></td>
+<td><code>string</code></td>
+<td>Yes</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Example response:</p>
+<pre><code class="language-json">{
+  &quot;code&quot;: 401,
+  &quot;message&quot;: &quot;Unauthorized&quot;
+}
+</code></pre>
+<h5 id="500-internal-server-error-1" class="status" data-status="5xx">500: Internal server error</h5>
+<p><code>application/json</code></p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>code</code></td>
+<td><code>integer (int32)</code></td>
+<td>Yes</td>
+<td></td>
+</tr>
+<tr>
+<td><code>message</code></td>
+<td><code>string</code></td>
+<td>Yes</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Example response:</p>
+<pre><code class="language-json">{
+  &quot;code&quot;: 500,
+  &quot;message&quot;: &quot;Internal Server Error&quot;
+}
+</code></pre>
+</main></div>
+<script src="../assets/search.js" defer></script></body></html>

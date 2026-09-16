@@ -31,6 +31,12 @@ main: kit: entity: hanko_configuration: {
       name: "load"
       points: [
         {
+          contract: {
+            id: "GET /.well-known/config"
+            json: "{\"operationId\":\"getConfig\",\"parameters\":[],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Public backend configuration options\",\"externalDocs\":{\"description\":\"Hanko Configuration\",\"url\":\"https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md\"},\"properties\":{\"account\":{\"description\":\"Controls the behavior regarding user account.\",\"properties\":{\"allow_deletion\":{\"description\":\"Indicates the user account can be deleted by the current user.\",\"type\":\"boolean\"},\"allow_signup\":{\"description\":\"Indicates users are able to create new accounts.\",\"type\":\"boolean\"}},\"type\":\"object\"},\"emails\":{\"description\":\"Controls the behavior regarding email addresses.\",\"properties\":{\"require_verification\":{\"description\":\"Require email verification after account registration and prevent signing in with unverified email addresses. Also, email addresses can only be marked as primary when they have been verified before.\",\"type\":\"boolean\"}},\"type\":\"object\"},\"password\":{\"description\":\"Configuration options concerning passwords\",\"properties\":{\"enabled\":{\"description\":\"Indicates whether passwords are enabled or not\",\"type\":\"boolean\"},\"min_password_length\":{\"description\":\"Describes the minimum password length\",\"example\":8,\"type\":\"number\"}},\"type\":\"object\"}},\"type\":\"object\"}}},\"description\":\"Hanko configuration\"}},\"securitySchemes\":{\"BearerTokenAuth\":{\"bearerFormat\":\"JWT\",\"scheme\":\"bearer\",\"type\":\"http\"},\"CookieAuth\":{\"in\":\"cookie\",\"name\":\"hanko\",\"type\":\"apiKey\"}},\"securitySource\":\"unspecified\"}"
+            source: "openapi3"
+            version: 1
+          }
           method: "GET"
           orig: "/.well-known/config"
           segments: [

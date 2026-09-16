@@ -33,7 +33,93 @@
         "repr": "auto"
       },
       "contributor": {},
-      "docs": {},
+      "doc": {
+        "active": true,
+        "assets": {
+          "path": ".sdk/doc/assets"
+        },
+        "brand": {
+          "label": "",
+          "notice": "",
+          "shortNotice": "",
+          "url": ""
+        },
+        "ci": {
+          "active": true,
+          "branch": "main"
+        },
+        "content": {
+          "path": ".sdk/doc/content"
+        },
+        "edition": {
+          "github-pages": {
+            "active": true,
+            "base": "node_modules/@voxgig/docgen/project/.sdk",
+            "brand": {},
+            "filter": {
+              "entities": [],
+              "features": [],
+              "targets": []
+            },
+            "kind": "github-pages",
+            "name": "github-pages",
+            "origname": "",
+            "output": {
+              "path": "docs"
+            },
+            "package": "@voxgig/docgen",
+            "site": {
+              "active": true
+            },
+            "style": {},
+            "title": ""
+          },
+          "summary": {
+            "active": true,
+            "base": "node_modules/@voxgig/docgen/project/.sdk",
+            "brand": {},
+            "filter": {
+              "entities": [],
+              "features": [],
+              "targets": []
+            },
+            "kind": "summary",
+            "name": "summary",
+            "origname": "",
+            "output": {
+              "path": "SUMMARY.md"
+            },
+            "package": "@voxgig/docgen",
+            "site": {
+              "active": true
+            },
+            "style": {},
+            "title": ""
+          }
+        },
+        "qa": {
+          "vocabulary": []
+        },
+        "style": {
+          "color": {
+            "accent": "#00c6d8",
+            "background": "#f5f5f9",
+            "darkBackground": "#0f1117",
+            "darkText": "#e6edf3",
+            "primary": "#e70042",
+            "text": "#0a0a0a"
+          },
+          "font": "Nunito, system-ui, sans-serif",
+          "fontFile": "",
+          "headingFont": "Nunito, system-ui, sans-serif",
+          "headingFontFile": "",
+          "logo": "",
+          "mode": "light",
+          "mono": "ui-monospace, monospace",
+          "monoFile": ""
+        },
+        "target": {}
+      },
       "entity": {
         "create_user_response_object": {
           "active": true,
@@ -137,6 +223,12 @@
                 {
                   "active": true,
                   "args": {},
+                  "contract": {
+                    "id": "GET /webauthn/credentials",
+                    "json": "{\"operationId\":\"listCredentials\",\"parameters\":[],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"A list of WebAuthn credentials\",\"example\":[{\"aaguid\":\"01020304-0506-0708-0102-030405060708\",\"attestation_type\":\"packed\",\"backup_eligible\":true,\"backup_state\":true,\"created_at\":\"2026-02-24T21:40:36.26936Z\",\"id\":\"5333cc5b-c7c4-48cf-8248-9c184ac72b65\",\"last_used_at\":\"2026-02-24T21:40:36.26936Z\",\"mfa_only\":false,\"name\":\"iCloud\",\"public_key\":\"pQECYyagASFYIBblARCP_at3cmprjzQN1lJ...\",\"transports\":[\"internal\"]},{\"aaguid\":\"90636e1f-ef82-43bf-bdcf-5255f139d12f\",\"attestation_type\":\"packed\",\"backup_eligible\":true,\"backup_state\":false,\"created_at\":\"2026-02-24T21:40:36.26936Z\",\"id\":\"f826013e-e7e3-4366-a6d8-9359effc8cdd\",\"last_used_at\":\"2026-02-24T21:40:36.26936Z\",\"mfa_only\":true,\"name\":\"Yubikey Bio\",\"public_key\":\"aNMEEyadASFYIBblARCP_at3cmp4gg3zQN1lJ...\",\"transports\":[\"usb\"]}],\"items\":{\"properties\":{\"aaguid\":{\"format\":\"uuid\",\"type\":\"string\"},\"attestation_type\":{\"enum\":[\"none\",\"packed\",\"tpm\",\"android-key\",\"android-safetynet\",\"fido-u2f\",\"apple\"],\"type\":\"string\"},\"backup_eligible\":{\"type\":\"boolean\"},\"backup_state\":{\"type\":\"boolean\"},\"created_at\":{\"format\":\"date-time\",\"type\":\"string\"},\"id\":{\"format\":\"uuid\",\"type\":\"string\"},\"last_used_at\":{\"format\":\"date-time\",\"type\":\"string\"},\"mfa_only\":{\"type\":\"boolean\"},\"name\":{\"type\":\"string\"},\"public-key\":{\"type\":\"string\"},\"transports\":{\"items\":{\"enum\":[\"ble\",\"internal\",\"nfc\",\"usb\"],\"type\":\"string\"},\"type\":\"array\"}},\"type\":\"object\"},\"type\":\"array\"}}},\"description\":\"A list of WebAuthn credentials assigned to the current user\"},\"401\":{\"content\":{\"application/json\":{\"example\":{\"code\":401,\"message\":\"Unauthorized\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Unauthorized\"},\"500\":{\"content\":{\"application/json\":{\"example\":{\"code\":500,\"message\":\"Internal Server Error\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Internal server error\"}},\"security\":[{\"CookieAuth\":[]},{\"BearerTokenAuth\":[]}],\"securitySchemes\":{\"BearerTokenAuth\":{\"bearerFormat\":\"JWT\",\"scheme\":\"bearer\",\"type\":\"http\"},\"CookieAuth\":{\"in\":\"cookie\",\"name\":\"hanko\",\"type\":\"apiKey\"}},\"securitySource\":\"operation\"}",
+                    "source": "openapi3",
+                    "version": 1
+                  },
                   "kind": "http",
                   "method": "GET",
                   "orig": "/webauthn/credentials",
@@ -221,6 +313,12 @@
                 {
                   "active": true,
                   "args": {},
+                  "contract": {
+                    "id": "POST /webauthn/registration/initialize",
+                    "json": "{\"operationId\":\"webauthnRegInit\",\"parameters\":[],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Options for credential creation with the WebAuthn API\",\"externalDocs\":{\"url\":\"https://www.w3.org/TR/webauthn-2/#dictionary-makecredentialoptions\"},\"properties\":{\"publicKey\":{\"properties\":{\"attestation\":{\"enum\":[\"none\",\"indirect\",\"direct\",\"enterprise\"],\"example\":\"none\",\"type\":\"string\"},\"authenticatorSelection\":{\"properties\":{\"authenticatorAttachment\":{\"enum\":[\"platform\",\"cross-platform\"],\"example\":\"platform\",\"type\":\"string\"},\"requireResidentKey\":{\"example\":true,\"type\":\"boolean\"},\"residentKey\":{\"enum\":[\"discouraged\",\"preferred\",\"required\"],\"example\":\"preferred\",\"type\":\"string\"},\"userVerification\":{\"enum\":[\"discouraged\",\"preferred\",\"required\"],\"example\":\"required\",\"type\":\"string\"}},\"type\":\"object\"},\"challenge\":{\"example\":\"7qmkJUXR0dOFnsW48evX3qKdCzlGjvvqAAvMDN+KTN0=\",\"format\":\"base64url\",\"type\":\"string\"},\"pubKeyCredParams\":{\"example\":[{\"alg\":-7,\"type\":\"public-key\"}],\"items\":{\"properties\":{\"alg\":{\"type\":\"number\"},\"type\":{\"enum\":[\"public-key\"],\"type\":\"string\"}},\"type\":\"object\"},\"type\":\"array\"},\"rp\":{\"properties\":{\"id\":{\"example\":\"localhost\",\"type\":\"string\"},\"name\":{\"example\":\"Hanko Authentication Service\",\"type\":\"string\"}},\"type\":\"object\"},\"timeout\":{\"example\":60000,\"format\":\"int64\",\"type\":\"integer\"},\"user\":{\"properties\":{\"displayName\":{\"example\":\"user@example.com\",\"type\":\"string\"},\"id\":{\"example\":\"pPQT9rwJRD7gVncsnCDNyN\",\"type\":\"string\"},\"name\":{\"example\":\"user@example.com\",\"type\":\"string\"}},\"type\":\"object\"}},\"type\":\"object\"}},\"type\":\"object\"}}},\"description\":\"Challenge\"},\"400\":{\"content\":{\"application/json\":{\"example\":{\"code\":400,\"message\":\"Bad Request\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Bad Request\"},\"422\":{\"content\":{\"application/json\":{\"example\":{\"code\":422,\"message\":\"Unprocessable Entity\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Unprocessable Entity\"},\"500\":{\"content\":{\"application/json\":{\"example\":{\"code\":500,\"message\":\"Internal Server Error\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Internal server error\"}},\"security\":[{\"CookieAuth\":[]},{\"BearerTokenAuth\":[]}],\"securitySchemes\":{\"BearerTokenAuth\":{\"bearerFormat\":\"JWT\",\"scheme\":\"bearer\",\"type\":\"http\"},\"CookieAuth\":{\"in\":\"cookie\",\"name\":\"hanko\",\"type\":\"apiKey\"}},\"securitySource\":\"operation\"}",
+                    "source": "openapi3",
+                    "version": 1
+                  },
                   "kind": "http",
                   "method": "POST",
                   "orig": "/webauthn/registration/initialize",
@@ -303,6 +401,12 @@
                 {
                   "active": true,
                   "args": {},
+                  "contract": {
+                    "id": "POST /webauthn/login/initialize",
+                    "json": "{\"operationId\":\"webauthnLoginInit\",\"parameters\":[],\"protocol\":\"http\",\"requestBody\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"user_id\":{\"allOf\":[{\"example\":\"c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c\",\"format\":\"uuid4\",\"type\":\"string\"}],\"description\":\"The ID of the user on whose behalf WebAuthn login should be performed\"}},\"type\":\"object\"}}}},\"responses\":{\"200\":{\"content\":{\"application/json\":{\"examples\":{\"disco\":{\"summary\":\"Discoverable credentials\",\"value\":{\"challenge\":\"qgOI+0KpGnl9NOqaT6dfsYvi96R87LgpErnvePeOgSU=\",\"rpId\":\"localhost\",\"timeout\":60000,\"userVerification\":\"required\"}},\"non-disco\":{\"summary\":\"Non-Discoverable credentials\",\"value\":{\"publicKey\":{\"allowCredentials\":[{\"id\":\"Mepptysj5ZZrTlg0qiLbsZ068OtQMeGVAikVy2n1hvvG...\",\"type\":\"public-key\"}],\"challenge\":\"qgOI+0KpGnl9NOqaT6dfsYvi96R87LgpErnvePeOgSU=\",\"rpId\":\"localhost\",\"timeout\":60000,\"userVerification\":\"required\"}}}},\"schema\":{\"description\":\"Options for assertion generation with the WebAuthn API\",\"externalDocs\":{\"url\":\"https://www.w3.org/TR/webauthn-2/#dictionary-assertion-options\"},\"properties\":{\"publicKey\":{\"properties\":{\"allowCredentials\":{\"items\":{\"properties\":{\"id\":{\"example\":\"Mepptysj5ZZrTlg0qiLbsZ068OtQMeGVAikVy2n1hvvG...\",\"format\":\"base64url\",\"type\":\"string\"},\"type\":{\"enum\":[\"public-key\"],\"example\":\"public-key\",\"type\":\"string\"}},\"type\":\"object\"},\"type\":\"array\"},\"challenge\":{\"example\":\"qgOI+0KpGnl9NOqaT6dfsYvi96R87LgpErnvePeOgSU=\",\"format\":\"base64url\",\"type\":\"string\"},\"rpId\":{\"example\":\"localhost\",\"type\":\"string\"},\"timeout\":{\"example\":60000,\"format\":\"int64\",\"type\":\"integer\"},\"userVerification\":{\"enum\":[\"required\",\"preferred\",\"discouraged\"],\"example\":\"required\",\"type\":\"string\"}},\"type\":\"object\"}},\"type\":\"object\"}}},\"description\":\"Successful initialization\"},\"400\":{\"content\":{\"application/json\":{\"example\":{\"code\":400,\"message\":\"Bad Request\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Bad Request\"},\"500\":{\"content\":{\"application/json\":{\"example\":{\"code\":500,\"message\":\"Internal Server Error\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Internal server error\"}},\"securitySchemes\":{\"BearerTokenAuth\":{\"bearerFormat\":\"JWT\",\"scheme\":\"bearer\",\"type\":\"http\"},\"CookieAuth\":{\"in\":\"cookie\",\"name\":\"hanko\",\"type\":\"apiKey\"}},\"securitySource\":\"unspecified\"}",
+                    "source": "openapi3",
+                    "version": 1
+                  },
                   "kind": "http",
                   "method": "POST",
                   "orig": "/webauthn/login/initialize",
@@ -397,6 +501,12 @@
                 {
                   "active": true,
                   "args": {},
+                  "contract": {
+                    "id": "POST /emails",
+                    "json": "{\"operationId\":\"createEmail\",\"parameters\":[],\"protocol\":\"http\",\"requestBody\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"address\":{\"format\":\"email\",\"type\":\"string\"}},\"required\":[\"address\"],\"type\":\"object\"}}}},\"responses\":{\"201\":{\"description\":\"Email successfully added\"},\"400\":{\"content\":{\"application/json\":{\"example\":{\"code\":400,\"message\":\"Bad Request\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Bad Request\"},\"409\":{\"content\":{\"application/json\":{\"example\":{\"code\":409,\"message\":\"Conflict\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Conflict\"},\"500\":{\"content\":{\"application/json\":{\"example\":{\"code\":500,\"message\":\"Internal Server Error\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Internal server error\"}},\"security\":[{\"CookieAuth\":[]},{\"BearerTokenAuth\":[]}],\"securitySchemes\":{\"BearerTokenAuth\":{\"bearerFormat\":\"JWT\",\"scheme\":\"bearer\",\"type\":\"http\"},\"CookieAuth\":{\"in\":\"cookie\",\"name\":\"hanko\",\"type\":\"apiKey\"}},\"securitySource\":\"operation\"}",
+                    "source": "openapi3",
+                    "version": 1
+                  },
                   "kind": "http",
                   "method": "POST",
                   "orig": "/emails",
@@ -420,6 +530,12 @@
                 {
                   "active": true,
                   "args": {},
+                  "contract": {
+                    "id": "GET /emails",
+                    "json": "{\"operationId\":\"listEmails\",\"parameters\":[],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"schema\":{\"example\":[{\"address\":\"john.doe@example.com\",\"id\":\"5333cc5b-c7c4-48cf-8248-9c184ac72b65\",\"is_primary\":false,\"is_verified\":true}],\"items\":{\"properties\":{\"address\":{\"description\":\"The email address\",\"format\":\"email\",\"type\":\"string\"},\"id\":{\"allOf\":[{\"example\":\"c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c\",\"format\":\"uuid4\",\"type\":\"string\"}],\"description\":\"The ID of the email address\"},\"identities\":{\"allOf\":[{\"description\":\"The user's third party connections/identities.\",\"items\":{\"description\":\"Representation of a user's third party connection/identity.\",\"properties\":{\"id\":{\"description\":\"The ID of the user at the provider\",\"type\":\"string\"},\"identity_id\":{\"description\":\"The identity's ID\",\"format\":\"uuid4\",\"type\":\"string\"},\"provider\":{\"description\":\"Contains the display name of the provider, if available. Otherwise contains the provider ID.\\n\",\"type\":\"string\"}},\"type\":\"object\"},\"type\":\"array\"},{\"deprecated\":true},{\"description\":\"Deprecated, use `user.identities` instead.\"}]},\"identity\":{\"allOf\":[{\"description\":\"Representation of a user's third party connection/identity.\",\"properties\":{\"id\":{\"description\":\"The ID of the user at the provider\",\"type\":\"string\"},\"identity_id\":{\"description\":\"The identity's ID\",\"format\":\"uuid4\",\"type\":\"string\"},\"provider\":{\"description\":\"Contains the display name of the provider, if available. Otherwise contains the provider ID.\\n\",\"type\":\"string\"}},\"type\":\"object\"},{\"deprecated\":true},{\"description\":\"Deprecated, use `user.identities` instead.\"}]},\"is_primary\":{\"description\":\"Indicates it's the primary email address.\",\"type\":\"boolean\"},\"is_verified\":{\"description\":\"Indicated the email has been verified.\",\"type\":\"boolean\"}},\"type\":\"object\"},\"type\":\"array\"}}},\"description\":\"A list of emails assigned to the current user\"},\"401\":{\"content\":{\"application/json\":{\"example\":{\"code\":401,\"message\":\"Unauthorized\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Unauthorized\"},\"500\":{\"content\":{\"application/json\":{\"example\":{\"code\":500,\"message\":\"Internal Server Error\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Internal server error\"}},\"security\":[{\"CookieAuth\":[]},{\"BearerTokenAuth\":[]}],\"securitySchemes\":{\"BearerTokenAuth\":{\"bearerFormat\":\"JWT\",\"scheme\":\"bearer\",\"type\":\"http\"},\"CookieAuth\":{\"in\":\"cookie\",\"name\":\"hanko\",\"type\":\"apiKey\"}},\"securitySource\":\"operation\"}",
+                    "source": "openapi3",
+                    "version": 1
+                  },
                   "kind": "http",
                   "method": "GET",
                   "orig": "/emails",
@@ -454,6 +570,12 @@
                         "type": "`$STRING`"
                       }
                     ]
+                  },
+                  "contract": {
+                    "id": "DELETE /emails/{id}",
+                    "json": "{\"operationId\":\"deleteEmail\",\"parameters\":[{\"description\":\"ID of the email address\",\"in\":\"path\",\"name\":\"id\",\"required\":true,\"schema\":{\"example\":\"c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c\",\"format\":\"uuid4\",\"type\":\"string\"}}],\"protocol\":\"http\",\"responses\":{\"201\":{\"description\":\"Email has been deleted\"},\"401\":{\"content\":{\"application/json\":{\"example\":{\"code\":401,\"message\":\"Unauthorized\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Unauthorized\"},\"409\":{\"content\":{\"application/json\":{\"example\":{\"code\":409,\"message\":\"Conflict\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Conflict\"},\"500\":{\"content\":{\"application/json\":{\"example\":{\"code\":500,\"message\":\"Internal Server Error\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Internal server error\"}},\"security\":[{\"CookieAuth\":[]},{\"BearerTokenAuth\":[]}],\"securitySchemes\":{\"BearerTokenAuth\":{\"bearerFormat\":\"JWT\",\"scheme\":\"bearer\",\"type\":\"http\"},\"CookieAuth\":{\"in\":\"cookie\",\"name\":\"hanko\",\"type\":\"apiKey\"}},\"securitySource\":\"operation\"}",
+                    "source": "openapi3",
+                    "version": 1
                   },
                   "kind": "http",
                   "method": "DELETE",
@@ -520,6 +642,12 @@
                         "type": "`$STRING`"
                       }
                     ]
+                  },
+                  "contract": {
+                    "id": "POST /emails/{id}/set_primary",
+                    "json": "{\"operationId\":\"setPrimaryEmail\",\"parameters\":[{\"description\":\"ID of the email address\",\"in\":\"path\",\"name\":\"id\",\"required\":true,\"schema\":{\"example\":\"c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c\",\"format\":\"uuid4\",\"type\":\"string\"}}],\"protocol\":\"http\",\"responses\":{\"201\":{\"description\":\"Email has been set as primary\"},\"400\":{\"content\":{\"application/json\":{\"example\":{\"code\":400,\"message\":\"Bad Request\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Bad Request\"},\"401\":{\"content\":{\"application/json\":{\"example\":{\"code\":401,\"message\":\"Unauthorized\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Unauthorized\"},\"500\":{\"content\":{\"application/json\":{\"example\":{\"code\":500,\"message\":\"Internal Server Error\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Internal server error\"}},\"security\":[{\"CookieAuth\":[]},{\"BearerTokenAuth\":[]}],\"securitySchemes\":{\"BearerTokenAuth\":{\"bearerFormat\":\"JWT\",\"scheme\":\"bearer\",\"type\":\"http\"},\"CookieAuth\":{\"in\":\"cookie\",\"name\":\"hanko\",\"type\":\"apiKey\"}},\"securitySource\":\"operation\"}",
+                    "source": "openapi3",
+                    "version": 1
                   },
                   "kind": "http",
                   "method": "POST",
@@ -590,6 +718,12 @@
                 {
                   "active": true,
                   "args": {},
+                  "contract": {
+                    "id": "GET /.well-known/config",
+                    "json": "{\"operationId\":\"getConfig\",\"parameters\":[],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Public backend configuration options\",\"externalDocs\":{\"description\":\"Hanko Configuration\",\"url\":\"https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md\"},\"properties\":{\"account\":{\"description\":\"Controls the behavior regarding user account.\",\"properties\":{\"allow_deletion\":{\"description\":\"Indicates the user account can be deleted by the current user.\",\"type\":\"boolean\"},\"allow_signup\":{\"description\":\"Indicates users are able to create new accounts.\",\"type\":\"boolean\"}},\"type\":\"object\"},\"emails\":{\"description\":\"Controls the behavior regarding email addresses.\",\"properties\":{\"require_verification\":{\"description\":\"Require email verification after account registration and prevent signing in with unverified email addresses. Also, email addresses can only be marked as primary when they have been verified before.\",\"type\":\"boolean\"}},\"type\":\"object\"},\"password\":{\"description\":\"Configuration options concerning passwords\",\"properties\":{\"enabled\":{\"description\":\"Indicates whether passwords are enabled or not\",\"type\":\"boolean\"},\"min_password_length\":{\"description\":\"Describes the minimum password length\",\"example\":8,\"type\":\"number\"}},\"type\":\"object\"}},\"type\":\"object\"}}},\"description\":\"Hanko configuration\"}},\"securitySchemes\":{\"BearerTokenAuth\":{\"bearerFormat\":\"JWT\",\"scheme\":\"bearer\",\"type\":\"http\"},\"CookieAuth\":{\"in\":\"cookie\",\"name\":\"hanko\",\"type\":\"apiKey\"}},\"securitySource\":\"unspecified\"}",
+                    "source": "openapi3",
+                    "version": 1
+                  },
                   "kind": "http",
                   "method": "GET",
                   "orig": "/.well-known/config",
@@ -668,6 +802,12 @@
                 {
                   "active": true,
                   "args": {},
+                  "contract": {
+                    "id": "GET /.well-known/jwks.json",
+                    "json": "{\"operationId\":\"getJwks\",\"parameters\":[],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"schema\":{\"externalDocs\":{\"description\":\"RFC7517 - JSON Web Key (JWK) - Section 5\",\"url\":\"https://www.rfc-editor.org/rfc/rfc7517#section-5\"},\"properties\":{\"keys\":{\"externalDocs\":{\"description\":\"RFC7517 - JSON Web Key (JWK) - Section 5.1\",\"url\":\"https://www.rfc-editor.org/rfc/rfc7517#section-5.1\"},\"items\":{\"externalDocs\":{\"description\":\"RFC7517 - JSON Web Key (JWK)\",\"url\":\"https://datatracker.ietf.org/doc/html/rfc7517\"},\"properties\":{\"alg\":{\"example\":\"RS256\",\"externalDocs\":{\"description\":\"RFC7517 - JSON Web Key (JWK) - Section 4.4\",\"url\":\"https://www.rfc-editor.org/rfc/rfc7517#section-4.4\"},\"type\":\"string\"},\"e\":{\"example\":\"AQAB\",\"externalDocs\":{\"description\":\"RFC7518 - JSON Web Algorithms (JWA) - Section 6.3.1.2\",\"url\":\"https://www.rfc-editor.org/rfc/rfc7518#section-6.3.1.2\"},\"format\":\"base64url\",\"type\":\"string\"},\"kid\":{\"example\":\"d6ff37d7-e3d1-4432-ab80-b64faf55ae36\",\"externalDocs\":{\"description\":\"RFC7517 - JSON Web Key (JWK) - Section 4.5\",\"url\":\"https://www.rfc-editor.org/rfc/rfc7517#section-4.5\"},\"type\":\"string\"},\"kty\":{\"example\":\"RSA\",\"externalDocs\":{\"description\":\"RFC7517 - JSON Web Key (JWK) - Section 4.1\",\"url\":\"https://www.rfc-editor.org/rfc/rfc7517#section-4.1\"},\"type\":\"string\"},\"n\":{\"example\":\"vPFRUCRoxN3RygdJHR3S5BV-DDLw6n-7oUXtX0nr7Twl...\",\"externalDocs\":{\"description\":\"RFC7518 - JSON Web Algorithms (JWA) - Section 6.3.1.1\",\"url\":\"https://www.rfc-editor.org/rfc/rfc7518#section-6.3.1.1\"},\"format\":\"base64url\",\"type\":\"string\"},\"use\":{\"example\":\"sig\",\"externalDocs\":{\"description\":\"RFC7517 - JSON Web Key (JWK) - Section 4.2\",\"url\":\"https://www.rfc-editor.org/rfc/rfc7517#section-4.2\"},\"type\":\"string\"}},\"type\":\"object\"},\"type\":\"array\"}},\"type\":\"object\"}}},\"description\":\"JSON Web Key Set\"},\"500\":{\"content\":{\"application/json\":{\"example\":{\"code\":500,\"message\":\"Internal Server Error\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Internal server error\"}},\"securitySchemes\":{\"BearerTokenAuth\":{\"bearerFormat\":\"JWT\",\"scheme\":\"bearer\",\"type\":\"http\"},\"CookieAuth\":{\"in\":\"cookie\",\"name\":\"hanko\",\"type\":\"apiKey\"}},\"securitySource\":\"unspecified\"}",
+                    "source": "openapi3",
+                    "version": 1
+                  },
                   "kind": "http",
                   "method": "GET",
                   "orig": "/.well-known/jwks.json",
@@ -740,6 +880,12 @@
                 {
                   "active": true,
                   "args": {},
+                  "contract": {
+                    "id": "POST /passcode/login/finalize",
+                    "json": "{\"operationId\":\"passcodeFinal\",\"parameters\":[],\"protocol\":\"http\",\"requestBody\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"code\":{\"description\":\"The actual passcode from the email sent to the user during initialization,\\na string of 6 decimal digits\\n\",\"example\":\"897481\",\"maxLength\":6,\"minLength\":6,\"type\":\"string\"},\"id\":{\"allOf\":[{\"example\":\"c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c\",\"format\":\"uuid4\",\"type\":\"string\"}],\"description\":\"The ID of the passcode\"}},\"type\":\"object\"}}}},\"responses\":{\"200\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Representation of a passcode\",\"properties\":{\"created_at\":{\"description\":\"Time of creation of the passcode\",\"format\":\"date-time\",\"type\":\"string\"},\"id\":{\"allOf\":[{\"example\":\"c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c\",\"format\":\"uuid4\",\"type\":\"string\"}],\"description\":\"The ID of the passcode\"},\"ttl\":{\"description\":\"Lifespan of a passcode in seconds\",\"example\":300,\"type\":\"integer\"}},\"type\":\"object\"}}},\"description\":\"Successful passcode login finalization\",\"headers\":{\"Set-Cookie\":{\"description\":\"Contains the JSON Web Token (JWT) that must be provided to protected endpoints.\\nCookie attributes (e.g. domain) can be set via [configuration](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config) option `session.cookie`.\\n\",\"schema\":{\"description\":\"Value `<JWT>` is a [JSON Web Token](https://www.rfc-editor.org/rfc/rfc7519.html)\",\"example\":\"hanko=<JWT>; Path=/; HttpOnly\",\"type\":\"string\"}},\"X-Auth-Token\":{\"description\":\"Present only when enabled via [configuration](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config) option `session.enable_auth_token_header`\\nfor purposes of cross-domain communication between client and Hanko API.\\n\",\"schema\":{\"description\":\"Enable via [configuration](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config) option `session.enable_auth_token_header`\\nfor purposes of cross-domain communication between client and Hanko API.\\n\",\"externalDocs\":{\"url\":\"https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config\"},\"format\":\"JWT\",\"type\":\"string\"}},\"X-Session-Lifetime\":{\"description\":\"Contains the seconds until the session expires.\\n\",\"schema\":{\"description\":\"Contains the seconds until the session expires.\\n\",\"type\":\"number\"}}}},\"400\":{\"content\":{\"application/json\":{\"example\":{\"code\":400,\"message\":\"Bad Request\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Bad Request\"},\"401\":{\"content\":{\"application/json\":{\"example\":{\"code\":401,\"message\":\"Unauthorized\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Unauthorized\"},\"403\":{\"content\":{\"application/json\":{\"example\":{\"code\":403,\"message\":\"Forbidden\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Forbidden\"},\"408\":{\"content\":{\"application/json\":{\"example\":{\"code\":408,\"message\":\"Request Timeout\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Request Timeout\"},\"410\":{\"content\":{\"application/json\":{\"example\":{\"code\":410,\"message\":\"Gone\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Gone\"},\"500\":{\"content\":{\"application/json\":{\"example\":{\"code\":500,\"message\":\"Internal Server Error\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Internal server error\"}},\"securitySchemes\":{\"BearerTokenAuth\":{\"bearerFormat\":\"JWT\",\"scheme\":\"bearer\",\"type\":\"http\"},\"CookieAuth\":{\"in\":\"cookie\",\"name\":\"hanko\",\"type\":\"apiKey\"}},\"securitySource\":\"unspecified\"}",
+                    "source": "openapi3",
+                    "version": 1
+                  },
                   "kind": "http",
                   "method": "POST",
                   "orig": "/passcode/login/finalize",
@@ -763,6 +909,12 @@
                 {
                   "active": true,
                   "args": {},
+                  "contract": {
+                    "id": "POST /passcode/login/initialize",
+                    "json": "{\"operationId\":\"passcodeInit\",\"parameters\":[],\"protocol\":\"http\",\"requestBody\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"email_id\":{\"allOf\":[{\"example\":\"c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c\",\"format\":\"uuid4\",\"type\":\"string\"}],\"description\":\"The ID of the email address\"},\"user_id\":{\"allOf\":[{\"example\":\"c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c\",\"format\":\"uuid4\",\"type\":\"string\"}],\"description\":\"The ID of the user\"}},\"required\":[\"user_id\"],\"type\":\"object\"}}}},\"responses\":{\"200\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Representation of a passcode\",\"properties\":{\"created_at\":{\"description\":\"Time of creation of the passcode\",\"format\":\"date-time\",\"type\":\"string\"},\"id\":{\"allOf\":[{\"example\":\"c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c\",\"format\":\"uuid4\",\"type\":\"string\"}],\"description\":\"The ID of the passcode\"},\"ttl\":{\"description\":\"Lifespan of a passcode in seconds\",\"example\":300,\"type\":\"integer\"}},\"type\":\"object\"}}},\"description\":\"Successful passcode login initialization\"},\"400\":{\"content\":{\"application/json\":{\"example\":{\"code\":400,\"message\":\"Bad Request\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Bad Request\"},\"500\":{\"content\":{\"application/json\":{\"example\":{\"code\":500,\"message\":\"Internal Server Error\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Internal server error\"}},\"securitySchemes\":{\"BearerTokenAuth\":{\"bearerFormat\":\"JWT\",\"scheme\":\"bearer\",\"type\":\"http\"},\"CookieAuth\":{\"in\":\"cookie\",\"name\":\"hanko\",\"type\":\"apiKey\"}},\"securitySource\":\"unspecified\"}",
+                    "source": "openapi3",
+                    "version": 1
+                  },
                   "kind": "http",
                   "method": "POST",
                   "orig": "/passcode/login/initialize",
@@ -807,7 +959,7 @@
               "active": true,
               "name": "user_id",
               "req": true,
-              "short": "The ID of the user to perform a password login for",
+              "short": "The ID of the user to create/set a password for",
               "type": "`$STRING`"
             }
           ],
@@ -820,6 +972,12 @@
                 {
                   "active": true,
                   "args": {},
+                  "contract": {
+                    "id": "POST /password/login",
+                    "json": "{\"operationId\":\"passwordLogin\",\"parameters\":[],\"protocol\":\"http\",\"requestBody\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"password\":{\"description\":\"The actual password, its `minLength` defaults to 8 but\\ncan be [configured](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config)\\nthrough the `password.min_password_length` option.\\n\",\"example\":\"9UnCBEx924a45P7p\",\"maxLength\":72,\"minLength\":8,\"type\":\"string\"},\"user_id\":{\"allOf\":[{\"example\":\"c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c\",\"format\":\"uuid4\",\"type\":\"string\"}],\"description\":\"The ID of the user to perform a password login for\"}},\"required\":[\"user_id\",\"password\"],\"type\":\"object\"}}}},\"responses\":{\"200\":{\"description\":\"Successful password login\",\"headers\":{\"Set-Cookie\":{\"description\":\"Contains the JSON Web Token (JWT) that must be provided to protected endpoints.\\nCookie attributes (e.g. domain) can be set via [configuration](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config) option `session.cookie`.\\n\",\"schema\":{\"description\":\"Value `<JWT>` is a [JSON Web Token](https://www.rfc-editor.org/rfc/rfc7519.html)\",\"example\":\"hanko=<JWT>; Path=/; HttpOnly\",\"type\":\"string\"}},\"X-Auth-Token\":{\"description\":\"Present only when enabled via [configuration](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config) option `session.enable_auth_token_header`\\nfor purposes of cross-domain communication between client and Hanko API.\\n\",\"schema\":{\"description\":\"Enable via [configuration](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config) option `session.enable_auth_token_header`\\nfor purposes of cross-domain communication between client and Hanko API.\\n\",\"externalDocs\":{\"url\":\"https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config\"},\"format\":\"JWT\",\"type\":\"string\"}},\"X-Session-Lifetime\":{\"description\":\"Contains the seconds until the session expires.\\n\",\"schema\":{\"description\":\"Contains the seconds until the session expires.\\n\",\"type\":\"number\"}}}},\"400\":{\"content\":{\"application/json\":{\"example\":{\"code\":400,\"message\":\"Bad Request\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Bad Request\"},\"401\":{\"content\":{\"application/json\":{\"example\":{\"code\":401,\"message\":\"Unauthorized\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Unauthorized\"},\"404\":{\"content\":{\"application/json\":{\"example\":{\"code\":404,\"message\":\"Not found\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Not Found\"},\"500\":{\"content\":{\"application/json\":{\"example\":{\"code\":500,\"message\":\"Internal Server Error\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Internal server error\"}},\"securitySchemes\":{\"BearerTokenAuth\":{\"bearerFormat\":\"JWT\",\"scheme\":\"bearer\",\"type\":\"http\"},\"CookieAuth\":{\"in\":\"cookie\",\"name\":\"hanko\",\"type\":\"apiKey\"}},\"securitySource\":\"unspecified\"}",
+                    "source": "openapi3",
+                    "version": 1
+                  },
                   "kind": "http",
                   "method": "POST",
                   "orig": "/password/login",
@@ -850,6 +1008,12 @@
                 {
                   "active": true,
                   "args": {},
+                  "contract": {
+                    "id": "PUT /password",
+                    "json": "{\"operationId\":\"password\",\"parameters\":[],\"protocol\":\"http\",\"requestBody\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"password\":{\"description\":\"The actual password, its `minLength` defaults to 8 but\\ncan be [configured](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config)\\nthrough the `password.min_password_length` option.\\n\",\"example\":\"9UnCBEx924a45P7p\",\"maxLength\":72,\"minLength\":8,\"type\":\"string\"},\"user_id\":{\"allOf\":[{\"example\":\"c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c\",\"format\":\"uuid4\",\"type\":\"string\"}],\"description\":\"The ID of the user to create/set a password for\"}},\"required\":[\"user_id\",\"password\"],\"type\":\"object\"}}}},\"responses\":{\"200\":{\"description\":\"Successful password update\"},\"201\":{\"description\":\"Successful password creation\"},\"400\":{\"content\":{\"application/json\":{\"example\":{\"code\":400,\"message\":\"Bad Request\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Bad Request\"},\"403\":{\"content\":{\"application/json\":{\"example\":{\"code\":403,\"message\":\"Forbidden\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Forbidden\"},\"404\":{\"content\":{\"application/json\":{\"example\":{\"code\":404,\"message\":\"Not found\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Not Found\"},\"500\":{\"content\":{\"application/json\":{\"example\":{\"code\":500,\"message\":\"Internal Server Error\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Internal server error\"}},\"security\":[{\"CookieAuth\":[]},{\"BearerTokenAuth\":[]}],\"securitySchemes\":{\"BearerTokenAuth\":{\"bearerFormat\":\"JWT\",\"scheme\":\"bearer\",\"type\":\"http\"},\"CookieAuth\":{\"in\":\"cookie\",\"name\":\"hanko\",\"type\":\"apiKey\"}},\"securitySource\":\"operation\"}",
+                    "source": "openapi3",
+                    "version": 1
+                  },
                   "kind": "http",
                   "method": "PUT",
                   "orig": "/password",
@@ -878,116 +1042,7 @@
           "alias": {
             "field": {}
           },
-          "fields": [
-            {
-              "active": true,
-              "name": "birthdate",
-              "req": false,
-              "type": "`$STRING`"
-            },
-            {
-              "active": true,
-              "name": "email",
-              "req": false,
-              "type": "`$STRING`"
-            },
-            {
-              "active": true,
-              "name": "email_verified",
-              "req": false,
-              "type": "`$STRING`"
-            },
-            {
-              "active": true,
-              "name": "family_name",
-              "req": false,
-              "type": "`$STRING`"
-            },
-            {
-              "active": true,
-              "name": "gender",
-              "req": false,
-              "type": "`$STRING`"
-            },
-            {
-              "active": true,
-              "name": "given_name",
-              "req": false,
-              "type": "`$STRING`"
-            },
-            {
-              "active": true,
-              "name": "locale",
-              "req": false,
-              "type": "`$STRING`"
-            },
-            {
-              "active": true,
-              "name": "middle_name",
-              "req": false,
-              "type": "`$STRING`"
-            },
-            {
-              "active": true,
-              "name": "name",
-              "req": false,
-              "type": "`$STRING`"
-            },
-            {
-              "active": true,
-              "name": "nickname",
-              "req": false,
-              "type": "`$STRING`"
-            },
-            {
-              "active": true,
-              "name": "phone",
-              "req": false,
-              "type": "`$STRING`"
-            },
-            {
-              "active": true,
-              "name": "phone_verified",
-              "req": false,
-              "type": "`$STRING`"
-            },
-            {
-              "active": true,
-              "name": "picture",
-              "req": false,
-              "type": "`$STRING`"
-            },
-            {
-              "active": true,
-              "name": "preferred_username",
-              "req": false,
-              "type": "`$STRING`"
-            },
-            {
-              "active": true,
-              "name": "profile",
-              "req": false,
-              "type": "`$STRING`"
-            },
-            {
-              "active": true,
-              "name": "updated_at",
-              "req": false,
-              "type": "`$STRING`"
-            },
-            {
-              "active": true,
-              "name": "website",
-              "req": false,
-              "type": "`$STRING`"
-            },
-            {
-              "active": true,
-              "name": "zone_info",
-              "req": false,
-              "type": "`$STRING`"
-            }
-          ],
+          "fields": [],
           "name": "saml",
           "op": {
             "create": {
@@ -997,6 +1052,12 @@
                 {
                   "active": true,
                   "args": {},
+                  "contract": {
+                    "id": "POST /saml/callback",
+                    "json": "{\"operationId\":\"post-saml-callback\",\"parameters\":[],\"protocol\":\"http\",\"requestBody\":{\"content\":{\"application/x-www-form-urlencoded\":{\"schema\":{\"properties\":{\"RelayState\":{\"type\":\"string\"},\"SAMLResponse\":{\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"SAML Identity Provider Response\"},\"responses\":{\"302\":{\"description\":\"Found\",\"headers\":{\"Set-Cookie\":{\"description\":\"Contains the JSON Web Token (JWT) that must be provided to protected endpoints.Cookie attributes (e.g. domain) can be set via [configuration](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config) option `session.cookie`.\",\"schema\":{\"type\":\"string\"}},\"X-Auth-Token\":{\"description\":\"Present only when enabled via [configuration](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config) option `session.enable_auth_token_header`for purposes of cross-domain communication between client and Hanko API.\",\"schema\":{\"type\":\"string\"}}}},\"307\":{\"description\":\"Temporary Redirect\",\"headers\":{\"Location\":{\"description\":\"On error, redirect to the `saml.default_redirect_url` set in the backend-configuration. Error details are provided in the location URL in the form of `error` and `error_description`query params.\",\"schema\":{\"type\":\"string\"}}}}},\"securitySchemes\":{\"BearerTokenAuth\":{\"bearerFormat\":\"JWT\",\"scheme\":\"bearer\",\"type\":\"http\"},\"CookieAuth\":{\"in\":\"cookie\",\"name\":\"hanko\",\"type\":\"apiKey\"}},\"securitySource\":\"unspecified\"}",
+                    "source": "openapi3",
+                    "version": 1
+                  },
                   "kind": "http",
                   "method": "POST",
                   "orig": "/saml/callback",
@@ -1044,6 +1105,12 @@
                       }
                     ]
                   },
+                  "contract": {
+                    "id": "GET /saml/metadata",
+                    "json": "{\"operationId\":\"get-saml-metadata\",\"parameters\":[{\"description\":\"Fully qualified domain name to which a SAML service provider is registered\",\"in\":\"query\",\"name\":\"domain\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"Toggle to download the SAML service provider public certificate\",\"in\":\"query\",\"name\":\"cert_only\",\"schema\":{\"type\":\"boolean\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/octet-stream\":{\"schema\":{\"format\":\"binary\",\"type\":\"string\"}}},\"description\":\"OK\"},\"400\":{\"content\":{\"application/json\":{\"example\":{\"code\":400,\"message\":\"Bad Request\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Bad Request\"},\"404\":{\"description\":\"Not found\"}},\"securitySchemes\":{\"BearerTokenAuth\":{\"bearerFormat\":\"JWT\",\"scheme\":\"bearer\",\"type\":\"http\"},\"CookieAuth\":{\"in\":\"cookie\",\"name\":\"hanko\",\"type\":\"apiKey\"}},\"securitySource\":\"unspecified\"}",
+                    "source": "openapi3",
+                    "version": 1
+                  },
                   "kind": "http",
                   "method": "GET",
                   "orig": "/saml/metadata",
@@ -1080,6 +1147,12 @@
                         "type": "`$STRING`"
                       }
                     ]
+                  },
+                  "contract": {
+                    "id": "GET /saml/provider",
+                    "json": "{\"operationId\":\"get-saml-provider\",\"parameters\":[{\"description\":\"Fully qualified domain name for which a SAML service provider is registered\",\"in\":\"query\",\"name\":\"domain\",\"required\":true,\"schema\":{\"format\":\"hostname\",\"type\":\"string\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"schema\":{\"additionalProperties\":false,\"properties\":{\"attribute_map\":{\"additionalProperties\":false,\"properties\":{\"birthdate\":{\"type\":\"string\"},\"email\":{\"type\":\"string\"},\"email_verified\":{\"type\":\"string\"},\"family_name\":{\"type\":\"string\"},\"gender\":{\"type\":\"string\"},\"given_name\":{\"type\":\"string\"},\"locale\":{\"type\":\"string\"},\"middle_name\":{\"type\":\"string\"},\"name\":{\"type\":\"string\"},\"nickname\":{\"type\":\"string\"},\"phone\":{\"type\":\"string\"},\"phone_verified\":{\"type\":\"string\"},\"picture\":{\"type\":\"string\"},\"preferred_username\":{\"type\":\"string\"},\"profile\":{\"type\":\"string\"},\"updated_at\":{\"type\":\"string\"},\"website\":{\"type\":\"string\"},\"zone_info\":{\"type\":\"string\"}},\"type\":\"object\"},\"domain\":{\"example\":\"text.example\",\"format\":\"hostname\",\"readOnly\":true,\"type\":\"string\"},\"enabled\":{\"default\":true,\"readOnly\":true,\"type\":\"boolean\"},\"metadata_url\":{\"example\":\"http://idp-metadata.url\",\"format\":\"uri\",\"readOnly\":true,\"type\":\"string\"},\"name\":{\"example\":\"MySamlProvier\",\"readOnly\":true,\"type\":\"string\"},\"skip_email_verification\":{\"default\":false,\"readOnly\":true,\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"OK\"},\"400\":{\"content\":{\"application/json\":{\"example\":{\"code\":400,\"message\":\"Bad Request\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Bad Request\"},\"404\":{\"description\":\"Not Found\"}},\"securitySchemes\":{\"BearerTokenAuth\":{\"bearerFormat\":\"JWT\",\"scheme\":\"bearer\",\"type\":\"http\"},\"CookieAuth\":{\"in\":\"cookie\",\"name\":\"hanko\",\"type\":\"apiKey\"}},\"securitySource\":\"unspecified\"}",
+                    "source": "openapi3",
+                    "version": 1
                   },
                   "kind": "http",
                   "method": "GET",
@@ -1192,6 +1265,12 @@
                 {
                   "active": true,
                   "args": {},
+                  "contract": {
+                    "id": "POST /sessions/validate",
+                    "json": "{\"parameters\":[],\"protocol\":\"http\",\"requestBody\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"session_token\":{\"description\":\"The session token (JWT) to validate\",\"format\":\"JWT\",\"type\":\"string\"}},\"required\":[\"session_token\"]}}}},\"responses\":{\"200\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"claims\":{\"description\":\"The claims extracted from a JWT.\",\"properties\":{\"amr\":{\"description\":\"Authentication Method References, JSON array of strings that are identifiers for authentication methods used in the authentication.\",\"items\":{\"description\":\"- `pwd` => password\\n- `passkey` => passkey\\n- `otp` => email passcode\\n- `ext:<provider>` => thirdparty provider, where <provider> is the internal provider ID, e.g. `ext:microsoft`\\n- `totp` => 2FA authenticator app\\n- `security_key` => 2FA security key\\n\",\"enum\":[\"pwd\",\"passkey\",\"otp\",\"ext:<provider>\",\"totp\",\"security_key\"],\"type\":\"string\"},\"type\":\"array\"},\"audience\":{\"description\":\"The intended audience of the token.\",\"items\":{\"type\":\"string\"},\"type\":\"array\"},\"email\":{\"description\":\"Data about the email address associated with the token's subject, if available.\",\"properties\":{\"address\":{\"description\":\"The actual email address.\",\"format\":\"email\",\"type\":\"string\"},\"is_primary\":{\"description\":\"Indicates whether the email address is the primary address.\",\"type\":\"boolean\"},\"is_verified\":{\"description\":\"Indicates whether the email address is verified.\",\"type\":\"boolean\"}},\"type\":\"object\"},\"expiration\":{\"description\":\"The timestamp indicating when the token will expire.\",\"format\":\"date-time\",\"type\":\"string\"},\"issued_at\":{\"description\":\"The timestamp indicating when the token was issued.\",\"format\":\"date-time\",\"type\":\"string\"},\"issuer\":{\"description\":\"The entity that issued the token.\",\"type\":\"string\"},\"session_id\":{\"allOf\":[{\"example\":\"c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c\",\"format\":\"uuid4\",\"type\":\"string\"}],\"description\":\"The unique identifier for the session associated with this token.\"},\"subject\":{\"allOf\":[{\"example\":\"c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c\",\"format\":\"uuid4\",\"type\":\"string\"}],\"description\":\"The unique identifier of the token's subject.\"}},\"required\":[\"subject\",\"expiration\",\"session_id\"],\"type\":\"object\"},\"expiration_time\":{\"deprecated\":true,\"description\":\"Date-time indicating the expiration of the session. Deprecated, please use `claims.expiration` instead.\",\"format\":\"date-time\",\"type\":\"string\"},\"idle_expires_at\":{\"description\":\"Timestamp (in UTC) indicating when the session will expire due to inactivity, assuming no further activity occurs before this time.\\nOnly present when idle timeout is configured. The value is capped to the JWT expiration time.\\n\",\"format\":\"date-time\",\"type\":\"string\"},\"is_valid\":{\"description\":\"Indicates whether the session is valid or not\",\"type\":\"boolean\"},\"user_id\":{\"deprecated\":true,\"description\":\"The ID of the user the session is associated with. Deprecated, please use `claims.subject` instead.\",\"format\":\"uuid4\",\"type\":\"string\"}},\"required\":[\"isValid\"]}}},\"description\":\"Session validation response\"},\"400\":{\"content\":{\"application/json\":{\"example\":{\"code\":400,\"message\":\"Bad Request\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Bad Request\"},\"500\":{\"content\":{\"application/json\":{\"example\":{\"code\":500,\"message\":\"Internal Server Error\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Internal server error\"}},\"securitySchemes\":{\"BearerTokenAuth\":{\"bearerFormat\":\"JWT\",\"scheme\":\"bearer\",\"type\":\"http\"},\"CookieAuth\":{\"in\":\"cookie\",\"name\":\"hanko\",\"type\":\"apiKey\"}},\"securitySource\":\"unspecified\"}",
+                    "source": "openapi3",
+                    "version": 1
+                  },
                   "kind": "http",
                   "method": "POST",
                   "orig": "/sessions/validate",
@@ -1218,6 +1297,12 @@
                 {
                   "active": true,
                   "args": {},
+                  "contract": {
+                    "id": "GET /sessions/validate",
+                    "json": "{\"parameters\":[],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"claims\":{\"description\":\"The claims extracted from a JWT.\",\"properties\":{\"amr\":{\"description\":\"Authentication Method References, JSON array of strings that are identifiers for authentication methods used in the authentication.\",\"items\":{\"description\":\"- `pwd` => password\\n- `passkey` => passkey\\n- `otp` => email passcode\\n- `ext:<provider>` => thirdparty provider, where <provider> is the internal provider ID, e.g. `ext:microsoft`\\n- `totp` => 2FA authenticator app\\n- `security_key` => 2FA security key\\n\",\"enum\":[\"pwd\",\"passkey\",\"otp\",\"ext:<provider>\",\"totp\",\"security_key\"],\"type\":\"string\"},\"type\":\"array\"},\"audience\":{\"description\":\"The intended audience of the token.\",\"items\":{\"type\":\"string\"},\"type\":\"array\"},\"email\":{\"description\":\"Data about the email address associated with the token's subject, if available.\",\"properties\":{\"address\":{\"description\":\"The actual email address.\",\"format\":\"email\",\"type\":\"string\"},\"is_primary\":{\"description\":\"Indicates whether the email address is the primary address.\",\"type\":\"boolean\"},\"is_verified\":{\"description\":\"Indicates whether the email address is verified.\",\"type\":\"boolean\"}},\"type\":\"object\"},\"expiration\":{\"description\":\"The timestamp indicating when the token will expire.\",\"format\":\"date-time\",\"type\":\"string\"},\"issued_at\":{\"description\":\"The timestamp indicating when the token was issued.\",\"format\":\"date-time\",\"type\":\"string\"},\"issuer\":{\"description\":\"The entity that issued the token.\",\"type\":\"string\"},\"session_id\":{\"allOf\":[{\"example\":\"c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c\",\"format\":\"uuid4\",\"type\":\"string\"}],\"description\":\"The unique identifier for the session associated with this token.\"},\"subject\":{\"allOf\":[{\"example\":\"c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c\",\"format\":\"uuid4\",\"type\":\"string\"}],\"description\":\"The unique identifier of the token's subject.\"}},\"required\":[\"subject\",\"expiration\",\"session_id\"],\"type\":\"object\"},\"expiration_time\":{\"deprecated\":true,\"description\":\"Date-time indicating the expiration of the session. Deprecated, please use `claims.expiration` instead.\",\"format\":\"date-time\",\"type\":\"string\"},\"idle_expires_at\":{\"description\":\"Timestamp (in UTC) indicating when the session will expire due to inactivity, assuming no further activity occurs before this time.\\nOnly present when idle timeout is configured. The value is capped to the JWT expiration time.\\n\",\"format\":\"date-time\",\"type\":\"string\"},\"is_valid\":{\"description\":\"Indicates whether the session is valid or not\",\"type\":\"boolean\"},\"user_id\":{\"deprecated\":true,\"description\":\"The ID of the user the session is associated with. Deprecated, please use `claims.subject` instead.\",\"format\":\"uuid4\",\"type\":\"string\"}},\"required\":[\"isValid\"]}}},\"description\":\"Session validation response\"},\"400\":{\"content\":{\"application/json\":{\"example\":{\"code\":400,\"message\":\"Bad Request\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Bad Request\"},\"500\":{\"content\":{\"application/json\":{\"example\":{\"code\":500,\"message\":\"Internal Server Error\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Internal server error\"}},\"security\":[{\"CookieAuth\":[]},{\"BearerTokenAuth\":[]}],\"securitySchemes\":{\"BearerTokenAuth\":{\"bearerFormat\":\"JWT\",\"scheme\":\"bearer\",\"type\":\"http\"},\"CookieAuth\":{\"in\":\"cookie\",\"name\":\"hanko\",\"type\":\"apiKey\"}},\"securitySource\":\"operation\"}",
+                    "source": "openapi3",
+                    "version": 1
+                  },
                   "kind": "http",
                   "method": "GET",
                   "orig": "/sessions/validate",
@@ -1257,6 +1342,12 @@
                 {
                   "active": true,
                   "args": {},
+                  "contract": {
+                    "id": "GET /",
+                    "json": "{\"operationId\":\"status\",\"parameters\":[],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"text/html\":{\"schema\":{\"type\":\"string\"}}},\"description\":\"API is running\"},\"500\":{\"content\":{\"text/html\":{\"schema\":{\"type\":\"string\"}}},\"description\":\"API is not functioning properly\"}},\"securitySchemes\":{\"BearerTokenAuth\":{\"bearerFormat\":\"JWT\",\"scheme\":\"bearer\",\"type\":\"http\"},\"CookieAuth\":{\"in\":\"cookie\",\"name\":\"hanko\",\"type\":\"apiKey\"}},\"securitySource\":\"unspecified\"}",
+                    "source": "openapi3",
+                    "version": 1
+                  },
                   "kind": "http",
                   "method": "GET",
                   "orig": "/",
@@ -1324,6 +1415,12 @@
                       }
                     ]
                   },
+                  "contract": {
+                    "id": "GET /thirdparty/callback",
+                    "json": "{\"operationId\":\"thirdPartyCallback\",\"parameters\":[{\"description\":\"The authorization code that can be exchanged for an access token and to retrieve user provider data\\n\",\"in\":\"query\",\"name\":\"code\",\"schema\":{\"type\":\"string\"}},{\"description\":\"The state\",\"in\":\"query\",\"name\":\"state\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"An error returned from the third party provider\\n\",\"in\":\"query\",\"name\":\"error\",\"schema\":{\"type\":\"string\"}},{\"description\":\"The description of the error that occurred (if any)\",\"in\":\"query\",\"name\":\"error_description\",\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"responses\":{\"307\":{\"description\":\"Redirect to requested redirect URL or to configured site redirect URL\",\"headers\":{\"Location\":{\"description\":\"Redirect to the URL requested via `redirect_to` query parameter during third party\\nprovider login via [`/auth`](#tag/Third-Party/operation/thirdPartyAuth) endpoint on success. On error,\\nredirect to the `third_party.error_redirect_url` set in the backend\\n[configuration](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config).\\nError details are provided in the location URL in the form of `error` and `error_description`\\nquery params.\\n\",\"schema\":{\"type\":\"string\"}},\"Set-Cookie\":{\"description\":\"Present only on successful callback. Contains the JSON Web Token (JWT) that must be provided to protected endpoints.\\nCookie attributes (e.g. domain) can be set via [configuration](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config) option `session.cookie`.\\n\",\"schema\":{\"description\":\"Value `<JWT>` is a [JSON Web Token](https://www.rfc-editor.org/rfc/rfc7519.html)\",\"example\":\"hanko=<JWT>; Path=/; HttpOnly\",\"type\":\"string\"}},\"X-Auth-Token\":{\"description\":\"Present only on successful callback and when enabled via [configuration](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config) option `session.enable_auth_token_header`\\nfor purposes of cross-domain communication between client and Hanko API.\\n\",\"schema\":{\"description\":\"Enable via [configuration](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config) option `session.enable_auth_token_header`\\nfor purposes of cross-domain communication between client and Hanko API.\\n\",\"externalDocs\":{\"url\":\"https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config\"},\"format\":\"JWT\",\"type\":\"string\"}}}}},\"securitySchemes\":{\"BearerTokenAuth\":{\"bearerFormat\":\"JWT\",\"scheme\":\"bearer\",\"type\":\"http\"},\"CookieAuth\":{\"in\":\"cookie\",\"name\":\"hanko\",\"type\":\"apiKey\"}},\"securitySource\":\"unspecified\"}",
+                    "source": "openapi3",
+                    "version": 1
+                  },
                   "kind": "http",
                   "method": "GET",
                   "orig": "/thirdparty/callback",
@@ -1369,6 +1466,12 @@
                         "type": "`$STRING`"
                       }
                     ]
+                  },
+                  "contract": {
+                    "id": "GET /thirdparty/auth",
+                    "json": "{\"operationId\":\"thirdPartyAuth\",\"parameters\":[{\"description\":\"The name of the third party provider to log in with. Only providers enabled in the\\n[configuration](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config)\\nvia the `thirdparty.providers` option can be used. Requesting an unsupported provider results in a\\nredirect with error details in the location query.\\n\",\"in\":\"query\",\"name\":\"provider\",\"required\":true,\"schema\":{\"enum\":[\"google\",\"github\"],\"type\":\"string\"}},{\"description\":\"Base64url encoded string representing the URL the\\n[`/callback`](#tag/Third-Party/operation/thirdPartyCallback) eventually redirects to after successful login\\nwith the third party provider. It must match one of the allowed redirect URLs set in the backend\\n[configuration](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config)\\nthrough the `third_party.allowed_redirect_urls`.\\n\",\"in\":\"query\",\"name\":\"redirect_to\",\"required\":true,\"schema\":{\"format\":\"base64url\",\"type\":\"string\"}}],\"protocol\":\"http\",\"responses\":{\"307\":{\"description\":\"Redirect to third party provider\",\"headers\":{\"Location\":{\"description\":\"Redirect to the third party provider on success. On error, redirects to the `Referer`. If `Referer` is\\nnot present, redirects to the `third_party.error_redirect_url` set in the backend\\n[configuration](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config).\\nError details are provided in the location URL in the form of `error` and `error_description`\\nquery params.\\n\",\"schema\":{\"type\":\"string\"}}}}},\"securitySchemes\":{\"BearerTokenAuth\":{\"bearerFormat\":\"JWT\",\"scheme\":\"bearer\",\"type\":\"http\"},\"CookieAuth\":{\"in\":\"cookie\",\"name\":\"hanko\",\"type\":\"apiKey\"}},\"securitySource\":\"unspecified\"}",
+                    "source": "openapi3",
+                    "version": 1
                   },
                   "kind": "http",
                   "method": "GET",
@@ -1422,6 +1525,12 @@
                 {
                   "active": true,
                   "args": {},
+                  "contract": {
+                    "id": "POST /token",
+                    "json": "{\"operationId\":\"token\",\"parameters\":[],\"protocol\":\"http\",\"requestBody\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"value\":{\"format\":\"base64url\",\"type\":\"string\"}},\"type\":\"object\"}}}},\"responses\":{\"200\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"user_id\":{\"allOf\":[{\"example\":\"c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c\",\"format\":\"uuid4\",\"type\":\"string\"}],\"description\":\"The ID of the user on whose behalf the token was exchanged.\"}},\"type\":\"object\"}}},\"description\":\"Successful token exchange\",\"headers\":{\"Set-Cookie\":{\"description\":\"Present only on successful exchange. Contains the JSON Web Token (JWT) that must be provided to protected endpoints.\\nCookie attributes (e.g. domain) can be set via [configuration](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config) option `session.cookie`.\\n\",\"schema\":{\"description\":\"Value `<JWT>` is a [JSON Web Token](https://www.rfc-editor.org/rfc/rfc7519.html)\",\"example\":\"hanko=<JWT>; Path=/; HttpOnly\",\"type\":\"string\"}},\"X-Auth-Token\":{\"description\":\"Present only on successful exchange and when enabled via [configuration](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config) option `session.enable_auth_token_header`\\nfor purposes of cross-domain communication between client and Hanko API.\\n\",\"schema\":{\"description\":\"Enable via [configuration](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config) option `session.enable_auth_token_header`\\nfor purposes of cross-domain communication between client and Hanko API.\\n\",\"externalDocs\":{\"url\":\"https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config\"},\"format\":\"JWT\",\"type\":\"string\"}},\"X-Session-Lifetime\":{\"description\":\"Contains the seconds until the session expires.\\n\",\"schema\":{\"description\":\"Contains the seconds until the session expires.\\n\",\"type\":\"number\"}}}},\"400\":{\"content\":{\"application/json\":{\"example\":{\"code\":400,\"message\":\"Bad Request\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Bad Request\"},\"404\":{\"content\":{\"application/json\":{\"example\":{\"code\":404,\"message\":\"Not found\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Not Found\"},\"422\":{\"content\":{\"application/json\":{\"example\":{\"code\":422,\"message\":\"Unprocessable Entity\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Unprocessable Entity\"},\"429\":{\"content\":{\"application/json\":{\"example\":{\"code\":429,\"message\":\"Too Many Requests\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Too Many Requests\"}},\"securitySchemes\":{\"BearerTokenAuth\":{\"bearerFormat\":\"JWT\",\"scheme\":\"bearer\",\"type\":\"http\"},\"CookieAuth\":{\"in\":\"cookie\",\"name\":\"hanko\",\"type\":\"apiKey\"}},\"securitySource\":\"unspecified\"}",
+                    "source": "openapi3",
+                    "version": 1
+                  },
                   "kind": "http",
                   "method": "POST",
                   "orig": "/token",
@@ -1599,6 +1708,12 @@
                 {
                   "active": true,
                   "args": {},
+                  "contract": {
+                    "id": "POST /user",
+                    "json": "{\"operationId\":\"getUserId\",\"parameters\":[],\"protocol\":\"http\",\"requestBody\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"email\":{\"format\":\"email\",\"type\":\"string\"}},\"type\":\"object\"}}}},\"responses\":{\"200\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"email_id\":{\"example\":\"c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c\",\"format\":\"uuid4\",\"type\":\"string\"},\"has_webauthn_credential\":{\"type\":\"boolean\"},\"id\":{\"example\":\"c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c\",\"format\":\"uuid4\",\"type\":\"string\"},\"verified\":{\"type\":\"boolean\"}},\"type\":\"object\"}}},\"description\":\"User\"},\"400\":{\"content\":{\"application/json\":{\"example\":{\"code\":400,\"message\":\"Bad Request\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Bad Request\"},\"404\":{\"content\":{\"application/json\":{\"example\":{\"code\":404,\"message\":\"Not found\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Not Found\"},\"500\":{\"content\":{\"application/json\":{\"example\":{\"code\":500,\"message\":\"Internal Server Error\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Internal server error\"}},\"securitySchemes\":{\"BearerTokenAuth\":{\"bearerFormat\":\"JWT\",\"scheme\":\"bearer\",\"type\":\"http\"},\"CookieAuth\":{\"in\":\"cookie\",\"name\":\"hanko\",\"type\":\"apiKey\"}},\"securitySource\":\"unspecified\"}",
+                    "source": "openapi3",
+                    "version": 1
+                  },
                   "kind": "http",
                   "method": "POST",
                   "orig": "/user",
@@ -1616,6 +1731,12 @@
                 {
                   "active": true,
                   "args": {},
+                  "contract": {
+                    "id": "POST /users",
+                    "json": "{\"operationId\":\"createUser\",\"parameters\":[],\"protocol\":\"http\",\"requestBody\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"email\":{\"format\":\"email\",\"type\":\"string\"}},\"required\":[\"email\"],\"type\":\"object\"}}}},\"responses\":{\"200\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"email_id\":{\"allOf\":[{\"example\":\"c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c\",\"format\":\"uuid4\",\"type\":\"string\"}],\"description\":\"The ID of the newly created email address\"},\"user_id\":{\"allOf\":[{\"example\":\"c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c\",\"format\":\"uuid4\",\"type\":\"string\"}],\"description\":\"The ID of the newly created user\"}},\"type\":\"object\"}}},\"description\":\"Details about the created user\"},\"400\":{\"content\":{\"application/json\":{\"example\":{\"code\":400,\"message\":\"Bad Request\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Bad Request\"},\"403\":{\"content\":{\"application/json\":{\"example\":{\"code\":403,\"message\":\"Forbidden\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Forbidden\"},\"409\":{\"content\":{\"application/json\":{\"example\":{\"code\":409,\"message\":\"Conflict\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Conflict\"},\"500\":{\"content\":{\"application/json\":{\"example\":{\"code\":500,\"message\":\"Internal Server Error\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Internal server error\"}},\"securitySchemes\":{\"BearerTokenAuth\":{\"bearerFormat\":\"JWT\",\"scheme\":\"bearer\",\"type\":\"http\"},\"CookieAuth\":{\"in\":\"cookie\",\"name\":\"hanko\",\"type\":\"apiKey\"}},\"securitySource\":\"unspecified\"}",
+                    "source": "openapi3",
+                    "version": 1
+                  },
                   "kind": "http",
                   "method": "POST",
                   "orig": "/users",
@@ -1651,6 +1772,12 @@
                       }
                     ]
                   },
+                  "contract": {
+                    "id": "GET /users/{id}",
+                    "json": "{\"operationId\":\"listUser\",\"parameters\":[{\"description\":\"ID of the user\",\"in\":\"path\",\"name\":\"id\",\"required\":true,\"schema\":{\"example\":\"c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c\",\"format\":\"uuid4\",\"type\":\"string\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"schema\":{\"allOf\":[{\"properties\":{\"created_at\":{\"description\":\"Time of creation of the the user\",\"format\":\"date-time\",\"type\":\"string\"},\"emails\":{\"example\":[{\"address\":\"john.doe@example.com\",\"id\":\"5333cc5b-c7c4-48cf-8248-9c184ac72b65\",\"is_primary\":false,\"is_verified\":true}],\"items\":{\"properties\":{\"address\":{\"description\":\"The email address\",\"format\":\"email\",\"type\":\"string\"},\"id\":{\"allOf\":[{\"example\":\"c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c\",\"format\":\"uuid4\",\"type\":\"string\"}],\"description\":\"The ID of the email address\"},\"identities\":{\"allOf\":[{\"description\":\"The user's third party connections/identities.\",\"items\":{\"description\":\"Representation of a user's third party connection/identity.\",\"properties\":{\"id\":{\"description\":\"The ID of the user at the provider\",\"type\":\"string\"},\"identity_id\":{\"description\":\"The identity's ID\",\"format\":\"uuid4\",\"type\":\"string\"},\"provider\":{\"description\":\"Contains the display name of the provider, if available. Otherwise contains the provider ID.\\n\",\"type\":\"string\"}},\"type\":\"object\"},\"type\":\"array\"},{\"deprecated\":true},{\"description\":\"Deprecated, use `user.identities` instead.\"}]},\"identity\":{\"allOf\":[{\"description\":\"Representation of a user's third party connection/identity.\",\"properties\":{\"id\":{\"description\":\"The ID of the user at the provider\",\"type\":\"string\"},\"identity_id\":{\"description\":\"The identity's ID\",\"format\":\"uuid4\",\"type\":\"string\"},\"provider\":{\"description\":\"Contains the display name of the provider, if available. Otherwise contains the provider ID.\\n\",\"type\":\"string\"}},\"type\":\"object\"},{\"deprecated\":true},{\"description\":\"Deprecated, use `user.identities` instead.\"}]},\"is_primary\":{\"description\":\"Indicates it's the primary email address.\",\"type\":\"boolean\"},\"is_verified\":{\"description\":\"Indicated the email has been verified.\",\"type\":\"boolean\"}},\"type\":\"object\"},\"type\":\"array\"},\"family_name\":{\"type\":\"string\"},\"given_name\":{\"type\":\"string\"},\"id\":{\"allOf\":[{\"example\":\"c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c\",\"format\":\"uuid4\",\"type\":\"string\"}],\"deprecated\":true,\"description\":\"The ID of the user. Deprecated, use `user_id` instead.\"},\"metadata\":{\"description\":\"The public and unsafe metadata of a user\",\"properties\":{\"public_metadata\":{\"additionalProperties\":true,\"example\":{\"role\":\"admin\"},\"type\":\"object\"},\"unsafe_metadata\":{\"additionalProperties\":true,\"example\":{\"birthday\":\"2025-05-12\"},\"type\":\"object\"}},\"type\":\"object\"},\"mfa_config\":{\"properties\":{\"auth_app_set_up\":{\"type\":\"boolean\"},\"security_key_enabled\":{\"type\":\"boolean\"},\"totp_enabled\":{\"type\":\"boolean\"}},\"type\":\"object\"},\"name\":{\"type\":\"string\"},\"passkeys\":{\"example\":[{\"aaguid\":\"01020304-0506-0708-0102-030405060708\",\"attestation_type\":\"packed\",\"backup_eligible\":true,\"backup_state\":true,\"created_at\":\"2026-02-24T21:40:36.26936Z\",\"id\":\"5333cc5b-c7c4-48cf-8248-9c184ac72b65\",\"last_used_at\":\"2026-02-24T21:40:36.26936Z\",\"mfa_only\":false,\"name\":\"iCloud\",\"public_key\":\"pQECYyagASFYIBblARCP_at3cmprjzQN1lJ...\",\"transports\":[\"internal\"]}],\"items\":{\"properties\":{\"aaguid\":{\"format\":\"uuid\",\"type\":\"string\"},\"attestation_type\":{\"enum\":[\"none\",\"packed\",\"tpm\",\"android-key\",\"android-safetynet\",\"fido-u2f\",\"apple\"],\"type\":\"string\"},\"backup_eligible\":{\"type\":\"boolean\"},\"backup_state\":{\"type\":\"boolean\"},\"created_at\":{\"format\":\"date-time\",\"type\":\"string\"},\"id\":{\"format\":\"uuid\",\"type\":\"string\"},\"last_used_at\":{\"format\":\"date-time\",\"type\":\"string\"},\"mfa_only\":{\"type\":\"boolean\"},\"name\":{\"type\":\"string\"},\"public-key\":{\"type\":\"string\"},\"transports\":{\"items\":{\"enum\":[\"ble\",\"internal\",\"nfc\",\"usb\"],\"type\":\"string\"},\"type\":\"array\"}},\"type\":\"object\"},\"type\":\"array\"},\"picture\":{\"format\":\"uri\",\"type\":\"string\"},\"security_keys\":{\"example\":[{\"aaguid\":\"90636e1f-ef82-43bf-bdcf-5255f139d12f\",\"attestation_type\":\"packed\",\"backup_eligible\":true,\"backup_state\":false,\"created_at\":\"2026-02-24T21:40:36.26936Z\",\"id\":\"f826013e-e7e3-4366-a6d8-9359effc8cdd\",\"last_used_at\":\"2026-02-24T21:40:36.26936Z\",\"mfa_only\":true,\"name\":\"Yubikey Bio\",\"public_key\":\"aNMEEyadASFYIBblARCP_at3cmp4gg3zQN1lJ...\",\"transports\":[\"usb\"]}],\"items\":{\"properties\":{\"aaguid\":{\"format\":\"uuid\",\"type\":\"string\"},\"attestation_type\":{\"enum\":[\"none\",\"packed\",\"tpm\",\"android-key\",\"android-safetynet\",\"fido-u2f\",\"apple\"],\"type\":\"string\"},\"backup_eligible\":{\"type\":\"boolean\"},\"backup_state\":{\"type\":\"boolean\"},\"created_at\":{\"format\":\"date-time\",\"type\":\"string\"},\"id\":{\"format\":\"uuid\",\"type\":\"string\"},\"last_used_at\":{\"format\":\"date-time\",\"type\":\"string\"},\"mfa_only\":{\"type\":\"boolean\"},\"name\":{\"type\":\"string\"},\"public-key\":{\"type\":\"string\"},\"transports\":{\"items\":{\"enum\":[\"ble\",\"internal\",\"nfc\",\"usb\"],\"type\":\"string\"},\"type\":\"array\"}},\"type\":\"object\"},\"type\":\"array\"},\"updated_at\":{\"description\":\"Time of last update of the user\",\"format\":\"date-time\",\"type\":\"string\"},\"user_id\":{\"allOf\":[{\"example\":\"c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c\",\"format\":\"uuid4\",\"type\":\"string\"}],\"description\":\"The ID of the user\"}},\"type\":\"object\"},{\"properties\":{\"email\":{\"description\":\"The email address of the user\",\"format\":\"email\",\"type\":\"string\"},\"username\":{\"description\":\"The username of the user\",\"type\":\"string\"},\"webauthn_credentials\":{\"description\":\"A list of WebAuthn credentials\",\"example\":[{\"aaguid\":\"01020304-0506-0708-0102-030405060708\",\"attestation_type\":\"packed\",\"backup_eligible\":true,\"backup_state\":true,\"created_at\":\"2026-02-24T21:40:36.26936Z\",\"id\":\"5333cc5b-c7c4-48cf-8248-9c184ac72b65\",\"last_used_at\":\"2026-02-24T21:40:36.26936Z\",\"mfa_only\":false,\"name\":\"iCloud\",\"public_key\":\"pQECYyagASFYIBblARCP_at3cmprjzQN1lJ...\",\"transports\":[\"internal\"]},{\"aaguid\":\"90636e1f-ef82-43bf-bdcf-5255f139d12f\",\"attestation_type\":\"packed\",\"backup_eligible\":true,\"backup_state\":false,\"created_at\":\"2026-02-24T21:40:36.26936Z\",\"id\":\"f826013e-e7e3-4366-a6d8-9359effc8cdd\",\"last_used_at\":\"2026-02-24T21:40:36.26936Z\",\"mfa_only\":true,\"name\":\"Yubikey Bio\",\"public_key\":\"aNMEEyadASFYIBblARCP_at3cmp4gg3zQN1lJ...\",\"transports\":[\"usb\"]}],\"items\":{\"properties\":{\"aaguid\":{\"format\":\"uuid\",\"type\":\"string\"},\"attestation_type\":{\"enum\":[\"none\",\"packed\",\"tpm\",\"android-key\",\"android-safetynet\",\"fido-u2f\",\"apple\"],\"type\":\"string\"},\"backup_eligible\":{\"type\":\"boolean\"},\"backup_state\":{\"type\":\"boolean\"},\"created_at\":{\"format\":\"date-time\",\"type\":\"string\"},\"id\":{\"format\":\"uuid\",\"type\":\"string\"},\"last_used_at\":{\"format\":\"date-time\",\"type\":\"string\"},\"mfa_only\":{\"type\":\"boolean\"},\"name\":{\"type\":\"string\"},\"public-key\":{\"type\":\"string\"},\"transports\":{\"items\":{\"enum\":[\"ble\",\"internal\",\"nfc\",\"usb\"],\"type\":\"string\"},\"type\":\"array\"}},\"type\":\"object\"},\"type\":\"array\"}},\"type\":\"object\"}],\"type\":\"object\"}}},\"description\":\"Details for a user retrieved by ID\"},\"400\":{\"content\":{\"application/json\":{\"example\":{\"code\":400,\"message\":\"Bad Request\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Bad Request\"},\"403\":{\"content\":{\"application/json\":{\"example\":{\"code\":403,\"message\":\"Forbidden\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Forbidden\"},\"404\":{\"content\":{\"application/json\":{\"example\":{\"code\":404,\"message\":\"Not found\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Not Found\"},\"500\":{\"content\":{\"application/json\":{\"example\":{\"code\":500,\"message\":\"Internal Server Error\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Internal server error\"}},\"security\":[{\"CookieAuth\":[]},{\"BearerTokenAuth\":[]}],\"securitySchemes\":{\"BearerTokenAuth\":{\"bearerFormat\":\"JWT\",\"scheme\":\"bearer\",\"type\":\"http\"},\"CookieAuth\":{\"in\":\"cookie\",\"name\":\"hanko\",\"type\":\"apiKey\"}},\"securitySource\":\"operation\"}",
+                    "source": "openapi3",
+                    "version": 1
+                  },
                   "kind": "http",
                   "method": "GET",
                   "orig": "/users/{id}",
@@ -1681,6 +1808,12 @@
                 {
                   "active": true,
                   "args": {},
+                  "contract": {
+                    "id": "DELETE /user",
+                    "json": "{\"operationId\":\"deleteUser\",\"parameters\":[],\"protocol\":\"http\",\"responses\":{\"204\":{\"description\":\"The user has been deleted\"},\"401\":{\"content\":{\"application/json\":{\"example\":{\"code\":401,\"message\":\"Unauthorized\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Unauthorized\"},\"500\":{\"content\":{\"application/json\":{\"example\":{\"code\":500,\"message\":\"Internal Server Error\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Internal server error\"}},\"security\":[{\"CookieAuth\":[]},{\"BearerTokenAuth\":[]}],\"securitySchemes\":{\"BearerTokenAuth\":{\"bearerFormat\":\"JWT\",\"scheme\":\"bearer\",\"type\":\"http\"},\"CookieAuth\":{\"in\":\"cookie\",\"name\":\"hanko\",\"type\":\"apiKey\"}},\"securitySource\":\"operation\"}",
+                    "source": "openapi3",
+                    "version": 1
+                  },
                   "kind": "http",
                   "method": "DELETE",
                   "orig": "/user",
@@ -1816,6 +1949,12 @@
                 {
                   "active": true,
                   "args": {},
+                  "contract": {
+                    "id": "POST /logout",
+                    "json": "{\"operationId\":\"logout\",\"parameters\":[],\"protocol\":\"http\",\"responses\":{\"204\":{\"description\":\"The user has been logged out\"},\"401\":{\"content\":{\"application/json\":{\"example\":{\"code\":401,\"message\":\"Unauthorized\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Unauthorized\"},\"500\":{\"content\":{\"application/json\":{\"example\":{\"code\":500,\"message\":\"Internal Server Error\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Internal server error\"}},\"security\":[{\"CookieAuth\":[]},{\"BearerTokenAuth\":[]}],\"securitySchemes\":{\"BearerTokenAuth\":{\"bearerFormat\":\"JWT\",\"scheme\":\"bearer\",\"type\":\"http\"},\"CookieAuth\":{\"in\":\"cookie\",\"name\":\"hanko\",\"type\":\"apiKey\"}},\"securitySource\":\"operation\"}",
+                    "source": "openapi3",
+                    "version": 1
+                  },
                   "kind": "http",
                   "method": "POST",
                   "orig": "/logout",
@@ -1839,6 +1978,12 @@
                 {
                   "active": true,
                   "args": {},
+                  "contract": {
+                    "id": "GET /me",
+                    "json": "{\"operationId\":\"IsUserAuthorized\",\"parameters\":[],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"schema\":{\"allOf\":[{\"properties\":{\"created_at\":{\"description\":\"Time of creation of the the user\",\"format\":\"date-time\",\"type\":\"string\"},\"emails\":{\"example\":[{\"address\":\"john.doe@example.com\",\"id\":\"5333cc5b-c7c4-48cf-8248-9c184ac72b65\",\"is_primary\":false,\"is_verified\":true}],\"items\":{\"properties\":{\"address\":{\"description\":\"The email address\",\"format\":\"email\",\"type\":\"string\"},\"id\":{\"allOf\":[{\"example\":\"c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c\",\"format\":\"uuid4\",\"type\":\"string\"}],\"description\":\"The ID of the email address\"},\"identities\":{\"allOf\":[{\"description\":\"The user's third party connections/identities.\",\"items\":{\"description\":\"Representation of a user's third party connection/identity.\",\"properties\":{\"id\":{\"description\":\"The ID of the user at the provider\",\"type\":\"string\"},\"identity_id\":{\"description\":\"The identity's ID\",\"format\":\"uuid4\",\"type\":\"string\"},\"provider\":{\"description\":\"Contains the display name of the provider, if available. Otherwise contains the provider ID.\\n\",\"type\":\"string\"}},\"type\":\"object\"},\"type\":\"array\"},{\"deprecated\":true},{\"description\":\"Deprecated, use `user.identities` instead.\"}]},\"identity\":{\"allOf\":[{\"description\":\"Representation of a user's third party connection/identity.\",\"properties\":{\"id\":{\"description\":\"The ID of the user at the provider\",\"type\":\"string\"},\"identity_id\":{\"description\":\"The identity's ID\",\"format\":\"uuid4\",\"type\":\"string\"},\"provider\":{\"description\":\"Contains the display name of the provider, if available. Otherwise contains the provider ID.\\n\",\"type\":\"string\"}},\"type\":\"object\"},{\"deprecated\":true},{\"description\":\"Deprecated, use `user.identities` instead.\"}]},\"is_primary\":{\"description\":\"Indicates it's the primary email address.\",\"type\":\"boolean\"},\"is_verified\":{\"description\":\"Indicated the email has been verified.\",\"type\":\"boolean\"}},\"type\":\"object\"},\"type\":\"array\"},\"family_name\":{\"type\":\"string\"},\"given_name\":{\"type\":\"string\"},\"id\":{\"allOf\":[{\"example\":\"c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c\",\"format\":\"uuid4\",\"type\":\"string\"}],\"deprecated\":true,\"description\":\"The ID of the user. Deprecated, use `user_id` instead.\"},\"metadata\":{\"description\":\"The public and unsafe metadata of a user\",\"properties\":{\"public_metadata\":{\"additionalProperties\":true,\"example\":{\"role\":\"admin\"},\"type\":\"object\"},\"unsafe_metadata\":{\"additionalProperties\":true,\"example\":{\"birthday\":\"2025-05-12\"},\"type\":\"object\"}},\"type\":\"object\"},\"mfa_config\":{\"properties\":{\"auth_app_set_up\":{\"type\":\"boolean\"},\"security_key_enabled\":{\"type\":\"boolean\"},\"totp_enabled\":{\"type\":\"boolean\"}},\"type\":\"object\"},\"name\":{\"type\":\"string\"},\"passkeys\":{\"example\":[{\"aaguid\":\"01020304-0506-0708-0102-030405060708\",\"attestation_type\":\"packed\",\"backup_eligible\":true,\"backup_state\":true,\"created_at\":\"2026-02-24T21:40:36.26936Z\",\"id\":\"5333cc5b-c7c4-48cf-8248-9c184ac72b65\",\"last_used_at\":\"2026-02-24T21:40:36.26936Z\",\"mfa_only\":false,\"name\":\"iCloud\",\"public_key\":\"pQECYyagASFYIBblARCP_at3cmprjzQN1lJ...\",\"transports\":[\"internal\"]}],\"items\":{\"properties\":{\"aaguid\":{\"format\":\"uuid\",\"type\":\"string\"},\"attestation_type\":{\"enum\":[\"none\",\"packed\",\"tpm\",\"android-key\",\"android-safetynet\",\"fido-u2f\",\"apple\"],\"type\":\"string\"},\"backup_eligible\":{\"type\":\"boolean\"},\"backup_state\":{\"type\":\"boolean\"},\"created_at\":{\"format\":\"date-time\",\"type\":\"string\"},\"id\":{\"format\":\"uuid\",\"type\":\"string\"},\"last_used_at\":{\"format\":\"date-time\",\"type\":\"string\"},\"mfa_only\":{\"type\":\"boolean\"},\"name\":{\"type\":\"string\"},\"public-key\":{\"type\":\"string\"},\"transports\":{\"items\":{\"enum\":[\"ble\",\"internal\",\"nfc\",\"usb\"],\"type\":\"string\"},\"type\":\"array\"}},\"type\":\"object\"},\"type\":\"array\"},\"picture\":{\"format\":\"uri\",\"type\":\"string\"},\"security_keys\":{\"example\":[{\"aaguid\":\"90636e1f-ef82-43bf-bdcf-5255f139d12f\",\"attestation_type\":\"packed\",\"backup_eligible\":true,\"backup_state\":false,\"created_at\":\"2026-02-24T21:40:36.26936Z\",\"id\":\"f826013e-e7e3-4366-a6d8-9359effc8cdd\",\"last_used_at\":\"2026-02-24T21:40:36.26936Z\",\"mfa_only\":true,\"name\":\"Yubikey Bio\",\"public_key\":\"aNMEEyadASFYIBblARCP_at3cmp4gg3zQN1lJ...\",\"transports\":[\"usb\"]}],\"items\":{\"properties\":{\"aaguid\":{\"format\":\"uuid\",\"type\":\"string\"},\"attestation_type\":{\"enum\":[\"none\",\"packed\",\"tpm\",\"android-key\",\"android-safetynet\",\"fido-u2f\",\"apple\"],\"type\":\"string\"},\"backup_eligible\":{\"type\":\"boolean\"},\"backup_state\":{\"type\":\"boolean\"},\"created_at\":{\"format\":\"date-time\",\"type\":\"string\"},\"id\":{\"format\":\"uuid\",\"type\":\"string\"},\"last_used_at\":{\"format\":\"date-time\",\"type\":\"string\"},\"mfa_only\":{\"type\":\"boolean\"},\"name\":{\"type\":\"string\"},\"public-key\":{\"type\":\"string\"},\"transports\":{\"items\":{\"enum\":[\"ble\",\"internal\",\"nfc\",\"usb\"],\"type\":\"string\"},\"type\":\"array\"}},\"type\":\"object\"},\"type\":\"array\"},\"updated_at\":{\"description\":\"Time of last update of the user\",\"format\":\"date-time\",\"type\":\"string\"},\"user_id\":{\"allOf\":[{\"example\":\"c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c\",\"format\":\"uuid4\",\"type\":\"string\"}],\"description\":\"The ID of the user\"}},\"type\":\"object\"},{\"properties\":{\"username\":{\"description\":\"The representation of a username of the user\",\"properties\":{\"created_at\":{\"description\":\"Time of creation of the username\",\"format\":\"date-time\",\"type\":\"string\"},\"id\":{\"allOf\":[{\"example\":\"c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c\",\"format\":\"uuid4\",\"type\":\"string\"}],\"description\":\"The ID of the user\"},\"updated_at\":{\"description\":\"Time of last update of the username\",\"format\":\"date-time\",\"type\":\"string\"},\"username\":{\"description\":\"The username of the user\",\"example\":\"john_doe\",\"type\":\"string\"}},\"type\":\"object\"}},\"type\":\"object\"}],\"type\":\"object\"}}},\"description\":\"Details for the current user\"},\"400\":{\"content\":{\"application/json\":{\"example\":{\"code\":400,\"message\":\"Bad Request\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Bad Request\"},\"401\":{\"content\":{\"application/json\":{\"example\":{\"code\":401,\"message\":\"Unauthorized\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Unauthorized\"},\"500\":{\"content\":{\"application/json\":{\"example\":{\"code\":500,\"message\":\"Internal Server Error\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Internal server error\"}},\"security\":[{\"CookieAuth\":[]},{\"BearerTokenAuth\":[]}],\"securitySchemes\":{\"BearerTokenAuth\":{\"bearerFormat\":\"JWT\",\"scheme\":\"bearer\",\"type\":\"http\"},\"CookieAuth\":{\"in\":\"cookie\",\"name\":\"hanko\",\"type\":\"apiKey\"}},\"securitySource\":\"operation\"}",
+                    "source": "openapi3",
+                    "version": 1
+                  },
                   "kind": "http",
                   "method": "GET",
                   "orig": "/me",
@@ -1911,6 +2056,12 @@
                 {
                   "active": true,
                   "args": {},
+                  "contract": {
+                    "id": "POST /webauthn/registration/finalize",
+                    "json": "{\"operationId\":\"webauthnRegFinal\",\"parameters\":[],\"protocol\":\"http\",\"requestBody\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"WebAuthn API response to a navigator.credentials.create() call\",\"properties\":{\"id\":{\"example\":\"_18q6IjW09tiM4NSbsZjocUtGx00Muv5mN6LZCelCMDD...\",\"type\":\"string\"},\"rawId\":{\"example\":\"_18q6IjW09tiM4NSbsZjocUtGx00Muv5mN6LZCelCMDD...\",\"type\":\"string\"},\"response\":{\"properties\":{\"attestationObject\":{\"example\":\"o2NmbXRkbm9uZWdhdHRTdG10oGhhdXRoRGF0YVjfSZYN...\",\"format\":\"base64url\",\"type\":\"string\"},\"clientDataJson\":{\"example\":\"eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdl...\",\"format\":\"base64url\",\"type\":\"string\"},\"transports\":{\"items\":{\"enum\":[\"usb\",\"nfc\",\"ble\",\"internal\"],\"example\":\"internal\",\"type\":\"string\"},\"type\":\"array\"}},\"type\":\"object\"},\"type\":{\"enum\":[\"public-key\"],\"example\":\"public-key\",\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Challenge response\"},\"responses\":{\"200\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"credential_id\":{\"description\":\"The ID of the created credential\",\"format\":\"base64\",\"type\":\"string\"},\"user_id\":{\"allOf\":[{\"example\":\"c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c\",\"format\":\"uuid4\",\"type\":\"string\"}],\"description\":\"The ID of the user on whose behalf a credential was created\"}},\"type\":\"object\"}}},\"description\":\"Successful registration\"},\"400\":{\"content\":{\"application/json\":{\"example\":{\"code\":400,\"message\":\"Bad Request\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Bad Request\"},\"500\":{\"content\":{\"application/json\":{\"example\":{\"code\":500,\"message\":\"Internal Server Error\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Internal server error\"}},\"security\":[{\"CookieAuth\":[]},{\"BearerTokenAuth\":[]}],\"securitySchemes\":{\"BearerTokenAuth\":{\"bearerFormat\":\"JWT\",\"scheme\":\"bearer\",\"type\":\"http\"},\"CookieAuth\":{\"in\":\"cookie\",\"name\":\"hanko\",\"type\":\"apiKey\"}},\"securitySource\":\"operation\"}",
+                    "source": "openapi3",
+                    "version": 1
+                  },
                   "kind": "http",
                   "method": "POST",
                   "orig": "/webauthn/registration/finalize",
@@ -1951,6 +2102,12 @@
                         "type": "`$STRING`"
                       }
                     ]
+                  },
+                  "contract": {
+                    "id": "DELETE /webauthn/credentials/{id}",
+                    "json": "{\"operationId\":\"deleteCredential\",\"parameters\":[{\"description\":\"ID of the WebAuthn credential\",\"in\":\"path\",\"name\":\"id\",\"required\":true,\"schema\":{\"example\":\"c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c\",\"format\":\"uuid4\",\"type\":\"string\"}}],\"protocol\":\"http\",\"responses\":{\"201\":{\"description\":\"Credential updated successfully\"},\"400\":{\"content\":{\"application/json\":{\"example\":{\"code\":400,\"message\":\"Bad Request\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Bad Request\"},\"401\":{\"content\":{\"application/json\":{\"example\":{\"code\":401,\"message\":\"Unauthorized\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Unauthorized\"},\"404\":{\"content\":{\"application/json\":{\"example\":{\"code\":404,\"message\":\"Not found\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Not Found\"},\"500\":{\"content\":{\"application/json\":{\"example\":{\"code\":500,\"message\":\"Internal Server Error\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Internal server error\"}},\"security\":[{\"CookieAuth\":[]},{\"BearerTokenAuth\":[]}],\"securitySchemes\":{\"BearerTokenAuth\":{\"bearerFormat\":\"JWT\",\"scheme\":\"bearer\",\"type\":\"http\"},\"CookieAuth\":{\"in\":\"cookie\",\"name\":\"hanko\",\"type\":\"apiKey\"}},\"securitySource\":\"operation\"}",
+                    "source": "openapi3",
+                    "version": 1
                   },
                   "kind": "http",
                   "method": "DELETE",
@@ -1996,6 +2153,12 @@
                         "type": "`$STRING`"
                       }
                     ]
+                  },
+                  "contract": {
+                    "id": "PATCH /webauthn/credentials/{id}",
+                    "json": "{\"operationId\":\"updateCredential\",\"parameters\":[{\"description\":\"ID of the WebAuthn credential\",\"in\":\"path\",\"name\":\"id\",\"required\":true,\"schema\":{\"example\":\"c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c\",\"format\":\"uuid4\",\"type\":\"string\"}}],\"protocol\":\"http\",\"requestBody\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"name\":{\"description\":\"A new credential name. Has no technical meaning, only serves as an identification aid for the user.\",\"type\":\"string\"}},\"type\":\"object\"}}}},\"responses\":{\"200\":{\"description\":\"Credential updated successfully\"},\"400\":{\"content\":{\"application/json\":{\"example\":{\"code\":400,\"message\":\"Bad Request\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Bad Request\"},\"401\":{\"content\":{\"application/json\":{\"example\":{\"code\":401,\"message\":\"Unauthorized\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Unauthorized\"},\"404\":{\"content\":{\"application/json\":{\"example\":{\"code\":404,\"message\":\"Not found\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Not Found\"},\"500\":{\"content\":{\"application/json\":{\"example\":{\"code\":500,\"message\":\"Internal Server Error\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Internal server error\"}},\"security\":[{\"CookieAuth\":[]},{\"BearerTokenAuth\":[]}],\"securitySchemes\":{\"BearerTokenAuth\":{\"bearerFormat\":\"JWT\",\"scheme\":\"bearer\",\"type\":\"http\"},\"CookieAuth\":{\"in\":\"cookie\",\"name\":\"hanko\",\"type\":\"apiKey\"}},\"securitySource\":\"operation\"}",
+                    "source": "openapi3",
+                    "version": 1
                   },
                   "kind": "http",
                   "method": "PATCH",
@@ -2086,6 +2249,12 @@
                 {
                   "active": true,
                   "args": {},
+                  "contract": {
+                    "id": "POST /webauthn/login/finalize",
+                    "json": "{\"operationId\":\"webauthnLoginFinal\",\"parameters\":[],\"protocol\":\"http\",\"requestBody\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"WebAuthn API response to a navigator.credentials.get() call\",\"properties\":{\"id\":{\"example\":\"_18q6IjW09tiM4NSbsZjocUtGx00Muv5mN6LZCelCMDD...\",\"type\":\"string\"},\"rawId\":{\"example\":\"_18q6IjW09tiM4NSbsZjocUtGx00Muv5mN6LZCelCMDD...\",\"type\":\"string\"},\"response\":{\"properties\":{\"authenticatorData\":{\"example\":\"SZYN5YgOjGh0NBcPZHZgW4_krrmihjLHmVzzuoMdl2MF...\",\"format\":\"base64url\",\"type\":\"string\"},\"clientDataJson\":{\"example\":\"eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdl...\",\"format\":\"base64url\",\"type\":\"string\"},\"signature\":{\"example\":\"MEQCIHe2RXqh6dyZw1LNXgeTTxljCV_qK2ydQjp02CiF...\",\"format\":\"base64url\",\"type\":\"string\"},\"userHandle\":{\"example\":\"rpe_EkgaSEeZG0TwzZyZJw\",\"format\":\"base64url\",\"type\":\"string\"}},\"type\":\"object\"},\"type\":{\"enum\":[\"public-key\"],\"example\":\"public-key\",\"type\":\"string\"}},\"type\":\"object\"}}}},\"responses\":{\"200\":{\"content\":{\"application/json\":{\"schema\":{\"description\":\"Response after a successful login with webauthn\",\"properties\":{\"credential_id\":{\"format\":\"base64url\",\"type\":\"string\"},\"user_id\":{\"format\":\"uuid4\",\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Successful login\",\"headers\":{\"Set-Cookie\":{\"description\":\"Contains the JSON Web Token (JWT) that must be provided to protected endpoints.\\nCookie attributes (e.g. domain) can be set via [configuration](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config) option `session.cookie`.\\n\",\"schema\":{\"description\":\"Value `<JWT>` is a [JSON Web Token](https://www.rfc-editor.org/rfc/rfc7519.html)\",\"example\":\"hanko=<JWT>; Path=/; HttpOnly\",\"type\":\"string\"}},\"X-Auth-Token\":{\"description\":\"Present only when enabled via [configuration](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config) option `session.enable_auth_token_header`\\nfor purposes of cross-domain communication between client and Hanko API.\\n\",\"schema\":{\"description\":\"Enable via [configuration](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config) option `session.enable_auth_token_header`\\nfor purposes of cross-domain communication between client and Hanko API.\\n\",\"externalDocs\":{\"url\":\"https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config\"},\"format\":\"JWT\",\"type\":\"string\"}},\"X-Session-Lifetime\":{\"description\":\"Contains the seconds until the session expires.\\n\",\"schema\":{\"description\":\"Contains the seconds until the session expires.\\n\",\"type\":\"number\"}}}},\"400\":{\"content\":{\"application/json\":{\"example\":{\"code\":400,\"message\":\"Bad Request\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Bad Request\"},\"401\":{\"content\":{\"application/json\":{\"example\":{\"code\":401,\"message\":\"Unauthorized\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Unauthorized\"},\"500\":{\"content\":{\"application/json\":{\"example\":{\"code\":500,\"message\":\"Internal Server Error\"},\"schema\":{\"properties\":{\"code\":{\"format\":\"int32\",\"type\":\"integer\"},\"message\":{\"type\":\"string\"}},\"required\":[\"code\",\"message\"],\"type\":\"object\"}}},\"description\":\"Internal server error\"}},\"securitySchemes\":{\"BearerTokenAuth\":{\"bearerFormat\":\"JWT\",\"scheme\":\"bearer\",\"type\":\"http\"},\"CookieAuth\":{\"in\":\"cookie\",\"name\":\"hanko\",\"type\":\"apiKey\"}},\"securitySource\":\"unspecified\"}",
+                    "source": "openapi3",
+                    "version": 1
+                  },
                   "kind": "http",
                   "method": "POST",
                   "orig": "/webauthn/login/finalize",
@@ -2115,13 +2284,649 @@
         }
       },
       "feature": {
+        "debug": {
+          "active": true,
+          "base": "node_modules/@voxgig/sdkgen/project/.sdk",
+          "config": {
+            "options": {
+              "active": false,
+              "max": 100,
+              "redact": [
+                "authorization",
+                "cookie",
+                "set-cookie",
+                "api-key",
+                "apikey",
+                "x-api-key",
+                "idempotency-key"
+              ]
+            },
+            "optspec": {
+              "now": "`$FUNCTION`",
+              "onEntry": "`$FUNCTION`"
+            },
+            "strict": false
+          },
+          "hook": {
+            "GetData": {
+              "active": false,
+              "await": false
+            },
+            "GetMatch": {
+              "active": false,
+              "await": false
+            },
+            "PostConstruct": {
+              "active": false,
+              "await": false
+            },
+            "PostConstructEntity": {
+              "active": false,
+              "await": false
+            },
+            "PostOperation": {
+              "active": false,
+              "await": false
+            },
+            "PreDone": {
+              "active": true,
+              "await": false
+            },
+            "PreRequest": {
+              "active": true,
+              "await": false
+            },
+            "PreResponse": {
+              "active": true,
+              "await": false
+            },
+            "PreResult": {
+              "active": false,
+              "await": false
+            },
+            "PreSpec": {
+              "active": false,
+              "await": false
+            },
+            "PreTarget": {
+              "active": false,
+              "await": false
+            },
+            "PreUnexpected": {
+              "active": true,
+              "await": false
+            },
+            "SetData": {
+              "active": false,
+              "await": false
+            }
+          },
+          "name": "debug",
+          "needs": {},
+          "origname": "",
+          "package": "@voxgig/sdkgen",
+          "plugin": {},
+          "spec": {},
+          "target": {
+            "go": {
+              "deps": {}
+            },
+            "go-cli": {
+              "deps": {}
+            },
+            "go-mcp": {
+              "deps": {}
+            },
+            "lua": {
+              "deps": {}
+            },
+            "php": {
+              "deps": {}
+            },
+            "py": {
+              "deps": {}
+            },
+            "rb": {
+              "deps": {}
+            },
+            "ts": {
+              "deps": {}
+            }
+          },
+          "title": "Request/response capture ring buffer for debugging",
+          "transport": "none",
+          "version": "0.0.1"
+        },
+        "idempotency": {
+          "active": true,
+          "base": "node_modules/@voxgig/sdkgen/project/.sdk",
+          "config": {
+            "options": {
+              "active": false,
+              "header": "Idempotency-Key",
+              "methods": [
+                "POST",
+                "PUT",
+                "PATCH",
+                "DELETE"
+              ],
+              "ops": [
+                "create",
+                "update",
+                "remove"
+              ]
+            },
+            "optspec": {
+              "keygen": "`$FUNCTION`"
+            },
+            "strict": false
+          },
+          "hook": {
+            "GetData": {
+              "active": false,
+              "await": false
+            },
+            "GetMatch": {
+              "active": false,
+              "await": false
+            },
+            "PostConstruct": {
+              "active": false,
+              "await": false
+            },
+            "PostConstructEntity": {
+              "active": false,
+              "await": false
+            },
+            "PostOperation": {
+              "active": false,
+              "await": false
+            },
+            "PreRequest": {
+              "active": true,
+              "await": false
+            },
+            "PreResponse": {
+              "active": false,
+              "await": false
+            },
+            "PreResult": {
+              "active": false,
+              "await": false
+            },
+            "PreSpec": {
+              "active": false,
+              "await": false
+            },
+            "PreTarget": {
+              "active": false,
+              "await": false
+            },
+            "SetData": {
+              "active": false,
+              "await": false
+            }
+          },
+          "name": "idempotency",
+          "needs": {},
+          "origname": "",
+          "package": "@voxgig/sdkgen",
+          "plugin": {},
+          "spec": {},
+          "target": {
+            "go": {
+              "deps": {}
+            },
+            "go-cli": {
+              "deps": {}
+            },
+            "go-mcp": {
+              "deps": {}
+            },
+            "lua": {
+              "deps": {}
+            },
+            "php": {
+              "deps": {}
+            },
+            "py": {
+              "deps": {}
+            },
+            "rb": {
+              "deps": {}
+            },
+            "ts": {
+              "deps": {}
+            }
+          },
+          "title": "Idempotency keys for safe retries of mutating operations",
+          "transport": "none",
+          "version": "0.0.1"
+        },
+        "metrics": {
+          "active": true,
+          "base": "node_modules/@voxgig/sdkgen/project/.sdk",
+          "config": {
+            "options": {
+              "active": false
+            },
+            "optspec": {
+              "now": "`$FUNCTION`"
+            },
+            "strict": false
+          },
+          "hook": {
+            "GetData": {
+              "active": false,
+              "await": false
+            },
+            "GetMatch": {
+              "active": false,
+              "await": false
+            },
+            "PostConstruct": {
+              "active": false,
+              "await": false
+            },
+            "PostConstructEntity": {
+              "active": false,
+              "await": false
+            },
+            "PostOperation": {
+              "active": false,
+              "await": false
+            },
+            "PreDone": {
+              "active": true,
+              "await": false
+            },
+            "PrePoint": {
+              "active": true,
+              "await": false
+            },
+            "PreRequest": {
+              "active": false,
+              "await": false
+            },
+            "PreResponse": {
+              "active": false,
+              "await": false
+            },
+            "PreResult": {
+              "active": false,
+              "await": false
+            },
+            "PreSpec": {
+              "active": false,
+              "await": false
+            },
+            "PreTarget": {
+              "active": false,
+              "await": false
+            },
+            "PreUnexpected": {
+              "active": true,
+              "await": false
+            },
+            "SetData": {
+              "active": false,
+              "await": false
+            }
+          },
+          "name": "metrics",
+          "needs": {},
+          "origname": "",
+          "package": "@voxgig/sdkgen",
+          "plugin": {},
+          "spec": {},
+          "target": {
+            "go": {
+              "deps": {}
+            },
+            "go-cli": {
+              "deps": {}
+            },
+            "go-mcp": {
+              "deps": {}
+            },
+            "lua": {
+              "deps": {}
+            },
+            "php": {
+              "deps": {}
+            },
+            "py": {
+              "deps": {}
+            },
+            "rb": {
+              "deps": {}
+            },
+            "ts": {
+              "deps": {}
+            }
+          },
+          "title": "Statistics capture: per-operation counters and latency",
+          "transport": "none",
+          "version": "0.0.1"
+        },
+        "paging": {
+          "active": true,
+          "base": "node_modules/@voxgig/sdkgen/project/.sdk",
+          "config": {
+            "options": {
+              "active": false,
+              "afterVar": "after",
+              "cursorParam": "cursor",
+              "firstVar": "first",
+              "limitParam": "limit",
+              "pageParam": "page",
+              "startPage": 1
+            },
+            "optspec": {
+              "limit": "`$NUMBER`",
+              "ops": "`$LIST`"
+            },
+            "strict": false
+          },
+          "hook": {
+            "GetData": {
+              "active": false,
+              "await": false
+            },
+            "GetMatch": {
+              "active": false,
+              "await": false
+            },
+            "PostConstruct": {
+              "active": false,
+              "await": false
+            },
+            "PostConstructEntity": {
+              "active": false,
+              "await": false
+            },
+            "PostOperation": {
+              "active": false,
+              "await": false
+            },
+            "PreRequest": {
+              "active": true,
+              "await": false
+            },
+            "PreResponse": {
+              "active": false,
+              "await": false
+            },
+            "PreResult": {
+              "active": true,
+              "await": false
+            },
+            "PreSpec": {
+              "active": false,
+              "await": false
+            },
+            "PreTarget": {
+              "active": false,
+              "await": false
+            },
+            "SetData": {
+              "active": false,
+              "await": false
+            }
+          },
+          "name": "paging",
+          "needs": {},
+          "origname": "",
+          "package": "@voxgig/sdkgen",
+          "plugin": {},
+          "spec": {},
+          "target": {
+            "go": {
+              "deps": {}
+            },
+            "go-cli": {
+              "deps": {}
+            },
+            "go-mcp": {
+              "deps": {}
+            },
+            "lua": {
+              "deps": {}
+            },
+            "php": {
+              "deps": {}
+            },
+            "py": {
+              "deps": {}
+            },
+            "rb": {
+              "deps": {}
+            },
+            "ts": {
+              "deps": {}
+            }
+          },
+          "title": "Pagination signals for list operations",
+          "transport": "none",
+          "version": "0.0.1"
+        },
+        "ratelimit": {
+          "active": true,
+          "base": "node_modules/@voxgig/sdkgen/project/.sdk",
+          "config": {
+            "options": {
+              "active": false,
+              "burst": 5,
+              "rate": 5
+            },
+            "optspec": {
+              "now": "`$FUNCTION`",
+              "sleep": "`$FUNCTION`"
+            },
+            "strict": false
+          },
+          "hook": {
+            "GetData": {
+              "active": false,
+              "await": false
+            },
+            "GetMatch": {
+              "active": false,
+              "await": false
+            },
+            "PostConstruct": {
+              "active": false,
+              "await": false
+            },
+            "PostConstructEntity": {
+              "active": false,
+              "await": false
+            },
+            "PostOperation": {
+              "active": false,
+              "await": false
+            },
+            "PreRequest": {
+              "active": false,
+              "await": false
+            },
+            "PreResponse": {
+              "active": false,
+              "await": false
+            },
+            "PreResult": {
+              "active": false,
+              "await": false
+            },
+            "PreSpec": {
+              "active": false,
+              "await": false
+            },
+            "PreTarget": {
+              "active": false,
+              "await": false
+            },
+            "SetData": {
+              "active": false,
+              "await": false
+            }
+          },
+          "name": "ratelimit",
+          "needs": {},
+          "origname": "",
+          "package": "@voxgig/sdkgen",
+          "plugin": {},
+          "spec": {},
+          "target": {
+            "go": {
+              "deps": {}
+            },
+            "go-cli": {
+              "deps": {}
+            },
+            "go-mcp": {
+              "deps": {}
+            },
+            "lua": {
+              "deps": {}
+            },
+            "php": {
+              "deps": {}
+            },
+            "py": {
+              "deps": {}
+            },
+            "rb": {
+              "deps": {}
+            },
+            "ts": {
+              "deps": {}
+            }
+          },
+          "title": "Client-side rate limiting via a token bucket",
+          "transport": "wrap",
+          "version": "0.0.1"
+        },
+        "retry": {
+          "active": true,
+          "base": "node_modules/@voxgig/sdkgen/project/.sdk",
+          "config": {
+            "options": {
+              "active": false,
+              "factor": 2,
+              "maxDelay": 2000,
+              "minDelay": 50,
+              "retries": 2,
+              "statuses": [
+                408,
+                425,
+                429,
+                500,
+                502,
+                503,
+                504
+              ]
+            },
+            "optspec": {
+              "jitter": "`$BOOLEAN`",
+              "sleep": "`$FUNCTION`"
+            },
+            "strict": false
+          },
+          "hook": {
+            "GetData": {
+              "active": false,
+              "await": false
+            },
+            "GetMatch": {
+              "active": false,
+              "await": false
+            },
+            "PostConstruct": {
+              "active": false,
+              "await": false
+            },
+            "PostConstructEntity": {
+              "active": false,
+              "await": false
+            },
+            "PostOperation": {
+              "active": false,
+              "await": false
+            },
+            "PreRequest": {
+              "active": false,
+              "await": false
+            },
+            "PreResponse": {
+              "active": false,
+              "await": false
+            },
+            "PreResult": {
+              "active": false,
+              "await": false
+            },
+            "PreSpec": {
+              "active": false,
+              "await": false
+            },
+            "PreTarget": {
+              "active": false,
+              "await": false
+            },
+            "SetData": {
+              "active": false,
+              "await": false
+            }
+          },
+          "name": "retry",
+          "needs": {},
+          "origname": "",
+          "package": "@voxgig/sdkgen",
+          "plugin": {},
+          "spec": {},
+          "target": {
+            "go": {
+              "deps": {}
+            },
+            "go-cli": {
+              "deps": {}
+            },
+            "go-mcp": {
+              "deps": {}
+            },
+            "lua": {
+              "deps": {}
+            },
+            "php": {
+              "deps": {}
+            },
+            "py": {
+              "deps": {}
+            },
+            "rb": {
+              "deps": {}
+            },
+            "ts": {
+              "deps": {}
+            }
+          },
+          "title": "Automatic retry of transient failures with exponential backoff",
+          "transport": "wrap",
+          "version": "0.0.1"
+        },
         "test": {
           "active": true,
           "base": "node_modules/@voxgig/sdkgen/project/.sdk",
           "config": {
             "options": {
               "active": false
-            }
+            },
+            "optspec": {
+              "entity": "`$MAP`",
+              "net": "`$MAP`"
+            },
+            "strict": false
           },
           "hook": {
             "GetData": {
@@ -2211,6 +3016,102 @@
           },
           "title": "In-memory mock transport for testing without a live server",
           "transport": "base",
+          "version": "0.0.1"
+        },
+        "timeout": {
+          "active": true,
+          "base": "node_modules/@voxgig/sdkgen/project/.sdk",
+          "config": {
+            "options": {
+              "active": false,
+              "ms": 30000
+            },
+            "optspec": {
+              "clearTimer": "`$FUNCTION`",
+              "setTimer": "`$FUNCTION`"
+            },
+            "strict": false
+          },
+          "hook": {
+            "GetData": {
+              "active": false,
+              "await": false
+            },
+            "GetMatch": {
+              "active": false,
+              "await": false
+            },
+            "PostConstruct": {
+              "active": false,
+              "await": false
+            },
+            "PostConstructEntity": {
+              "active": false,
+              "await": false
+            },
+            "PostOperation": {
+              "active": false,
+              "await": false
+            },
+            "PreRequest": {
+              "active": false,
+              "await": false
+            },
+            "PreResponse": {
+              "active": false,
+              "await": false
+            },
+            "PreResult": {
+              "active": false,
+              "await": false
+            },
+            "PreSpec": {
+              "active": false,
+              "await": false
+            },
+            "PreTarget": {
+              "active": false,
+              "await": false
+            },
+            "SetData": {
+              "active": false,
+              "await": false
+            }
+          },
+          "name": "timeout",
+          "needs": {},
+          "origname": "",
+          "package": "@voxgig/sdkgen",
+          "plugin": {},
+          "spec": {},
+          "target": {
+            "go": {
+              "deps": {}
+            },
+            "go-cli": {
+              "deps": {}
+            },
+            "go-mcp": {
+              "deps": {}
+            },
+            "lua": {
+              "deps": {}
+            },
+            "php": {
+              "deps": {}
+            },
+            "py": {
+              "deps": {}
+            },
+            "rb": {
+              "deps": {}
+            },
+            "ts": {
+              "deps": {}
+            }
+          },
+          "title": "Per-request timeout with transport abort",
+          "transport": "wrap",
           "version": "0.0.1"
         }
       },
@@ -2867,6 +3768,48 @@
         "website": "https://github.com/teamhanko/hanko"
       },
       "option": {},
+      "optspec": {
+        "allow": {
+          "method": "GET,PUT,POST,PATCH,DELETE,OPTIONS",
+          "op": "create,update,load,list,remove,command,direct,graphql"
+        },
+        "apikey": "",
+        "auth": {
+          "basic": false,
+          "prefix": ""
+        },
+        "base": "http://localhost:8000",
+        "clean": {
+          "keys": "key,token,id"
+        },
+        "entity": {
+          "`$CHILD`": {
+            "`$OPEN`": true,
+            "active": false,
+            "alias": {}
+          }
+        },
+        "extend": "`$ANY`",
+        "headers": {
+          "`$CHILD`": "`$STRING`"
+        },
+        "prefix": "",
+        "secret": "",
+        "server": {
+          "`$CHILD`": ""
+        },
+        "suffix": "",
+        "system": {
+          "fetch": "`$ANY`"
+        },
+        "test": {
+          "active": false,
+          "entity": {
+            "`$OPEN`": true
+          }
+        },
+        "utility": {}
+      },
       "repo": {
         "host": "github.com",
         "path": ""
@@ -2931,7 +3874,7 @@
               },
               "via": "port"
             },
-            "version": "0.1.1"
+            "version": "0.0.1"
           },
           "srcfeature": false,
           "superseded": [
@@ -3012,7 +3955,7 @@
               },
               "via": "root"
             },
-            "version": "0.1.1"
+            "version": "0.0.1"
           },
           "superseded": [],
           "title": "Go CLI"
@@ -3089,7 +4032,7 @@
               },
               "via": "root"
             },
-            "version": "0.1.1"
+            "version": "0.0.1"
           },
           "superseded": [],
           "title": "Go MCP server"
@@ -3157,7 +4100,7 @@
               },
               "via": "port"
             },
-            "version": "0.1.1"
+            "version": "0.0.1"
           },
           "srcfeature": false,
           "superseded": [
@@ -3222,7 +4165,7 @@
               },
               "via": "port"
             },
-            "version": "0.1.1"
+            "version": "0.0.1"
           },
           "srcfeature": false,
           "superseded": [
@@ -3293,7 +4236,7 @@
               },
               "via": "port"
             },
-            "version": "0.1.1"
+            "version": "0.0.1"
           },
           "srcfeature": false,
           "superseded": [
@@ -3369,7 +4312,7 @@
               },
               "via": "port"
             },
-            "version": "0.1.1"
+            "version": "0.0.1"
           },
           "srcfeature": false,
           "superseded": [
@@ -3421,6 +4364,7 @@
           },
           "package": "@voxgig/sdkgen",
           "provides": {
+            "schema": true,
             "sekreto": true
           },
           "publish": {
@@ -3445,7 +4389,7 @@
               },
               "via": "port"
             },
-            "version": "0.1.1"
+            "version": "0.0.1"
           },
           "superseded": [
             "test/runner.ts",
@@ -3462,7 +4406,7 @@
         "live": {
           "app": false,
           "base": "",
-          "strict": false
+          "strict": true
         }
       }
     }

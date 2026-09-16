@@ -152,48 +152,12 @@
 ---@field user_id? string
 
 ---@class Saml
----@field birthdate? string
----@field email? string
----@field email_verified? string
----@field family_name? string
----@field gender? string
----@field given_name? string
----@field locale? string
----@field middle_name? string
----@field name? string
----@field nickname? string
----@field phone? string
----@field phone_verified? string
----@field picture? string
----@field preferred_username? string
----@field profile? string
----@field updated_at? string
----@field website? string
----@field zone_info? string
 
 ---@class SamlLoadMatch
 ---@field cert_only? boolean
 ---@field domain string
 
 ---@class SamlCreateData
----@field birthdate? string
----@field email? string
----@field email_verified? string
----@field family_name? string
----@field gender? string
----@field given_name? string
----@field locale? string
----@field middle_name? string
----@field name? string
----@field nickname? string
----@field phone? string
----@field phone_verified? string
----@field picture? string
----@field preferred_username? string
----@field profile? string
----@field updated_at? string
----@field website? string
----@field zone_info? string
 
 ---@class SessionManagement
 ---@field amr? table

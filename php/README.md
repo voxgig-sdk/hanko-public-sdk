@@ -41,7 +41,7 @@ Entity operations throw a `\Throwable` on failure, so wrap them in
 
 ```php
 try {
-    $credentials = $client->Credential()->list();
+    $emails = $client->Email()->list();
 } catch (\Throwable $err) {
     echo "Error: " . $err->getMessage();
 }
@@ -108,15 +108,18 @@ print_r($fetchdef["headers"]);
 
 ### Use test mode
 
-Create a mock client for unit testing — no server required:
+Create a mock client for unit testing — no server required. Seed fixture
+data via the `entity` option so offline calls resolve without a live server:
 
 ```php
-$client = HankoPublicSDK::test();
+$client = HankoPublicSDK::test([
+    "entity" => ["user" => ["test01" => ["id" => "test01"]]],
+]);
 
 // Entity ops return the ENTITY (throws on error);
 // call data_get() for the mock record.
-$credential = $client->Credential()->list();
-print_r($credential);
+$user = $client->User()->load(["id" => "test01"]);
+print_r($user->data_get());
 ```
 
 ### Use a custom fetch function
@@ -385,7 +388,7 @@ API path: `/passcode/login/finalize`
 | Field | Description |
 | --- | --- |
 | `password` | The actual password, its `minLength` defaults to 8 but can be [configured](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config) through the `password.min_password_length` option. |
-| `user_id` | The ID of the user to perform a password login for |
+| `user_id` | The ID of the user to create/set a password for |
 
 Operations: Create, Update.
 
@@ -395,24 +398,6 @@ API path: `/password/login`
 
 | Field | Description |
 | --- | --- |
-| `birthdate` |  |
-| `email` |  |
-| `email_verified` |  |
-| `family_name` |  |
-| `gender` |  |
-| `given_name` |  |
-| `locale` |  |
-| `middle_name` |  |
-| `name` |  |
-| `nickname` |  |
-| `phone` |  |
-| `phone_verified` |  |
-| `picture` |  |
-| `preferred_username` |  |
-| `profile` |  |
-| `updated_at` |  |
-| `website` |  |
-| `zone_info` |  |
 
 Operations: Create, Load.
 
@@ -810,7 +795,7 @@ Create an instance: `$password = $client->Password();`
 | Field | Type | Description |
 | --- | --- | --- |
 | `password` | `string` | The actual password, its `minLength` defaults to 8 but can be [configured](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config) through the `password.min_password_length` option. |
-| `user_id` | `string` | The ID of the user to perform a password login for |
+| `user_id` | `string` | The ID of the user to create/set a password for |
 
 #### Example: Create
 
@@ -832,29 +817,6 @@ Create an instance: `$saml = $client->Saml();`
 | --- | --- |
 | `create(data)` | Create a new entity with the given data. |
 | `load(match)` | Load a single entity by match criteria. |
-
-#### Fields
-
-| Field | Type | Description |
-| --- | --- | --- |
-| `birthdate` | `string` |  |
-| `email` | `string` |  |
-| `email_verified` | `string` |  |
-| `family_name` | `string` |  |
-| `gender` | `string` |  |
-| `given_name` | `string` |  |
-| `locale` | `string` |  |
-| `middle_name` | `string` |  |
-| `name` | `string` |  |
-| `nickname` | `string` |  |
-| `phone` | `string` |  |
-| `phone_verified` | `string` |  |
-| `picture` | `string` |  |
-| `preferred_username` | `string` |  |
-| `profile` | `string` |  |
-| `updated_at` | `string` |  |
-| `website` | `string` |  |
-| `zone_info` | `string` |  |
 
 #### Example: Load
 
@@ -1131,7 +1093,7 @@ $webauthn_login = $client->WebauthnLogin()->create([
 
 ## Features
 
-This SDK ships 1 optional features. Each is **inactive until you
+This SDK ships 8 optional features. Each is **inactive until you
 switch it on**, so an SDK you have not configured behaves exactly as if none of
 them existed — no retries, no cache, no logging, no measurable overhead.
 
@@ -1140,7 +1102,105 @@ above:
 
 | Feature | What it does |
 |---|---|
+| [`debug`](#debug) | Request/response capture ring buffer for debugging |
+| [`idempotency`](#idempotency) | Idempotency keys for safe retries of mutating operations |
+| [`metrics`](#metrics) | Statistics capture: per-operation counters and latency |
+| [`paging`](#paging) | Pagination signals for list operations |
+| [`ratelimit`](#ratelimit) | Client-side rate limiting via a token bucket |
+| [`retry`](#retry) | Automatic retry of transient failures with exponential backoff |
 | [`test`](#test) | In-memory mock transport for testing without a live server |
+| [`timeout`](#timeout) | Per-request timeout with transport abort |
+
+> **Order matters for `ratelimit`, `retry`, `timeout`.** These wrap the
+> transport, so each one wraps whatever is already installed: the order you
+> activate them in IS the nesting order. Activating them as an ordered list
+> rather than a map is what fixes that order.
+
+### debug
+
+Request/response capture ring buffer for debugging.
+
+| Option | Default |
+|---|---|
+| `active` | `false` |
+| `max` | `100` |
+| `redact` | `['authorization', 'cookie', 'set-cookie', 'api-key', 'apikey', 'x-api-key', 'idempotency-key']` |
+
+Set `feature.debug.active` to enable it, then override any of the options above.
+
+### idempotency
+
+Idempotency keys for safe retries of mutating operations.
+
+| Option | Default |
+|---|---|
+| `active` | `false` |
+| `header` | `'Idempotency-Key'` |
+| `methods` | `['POST', 'PUT', 'PATCH', 'DELETE']` |
+| `ops` | `['create', 'update', 'remove']` |
+
+Set `feature.idempotency.active` to enable it, then override any of the options above.
+
+### metrics
+
+Statistics capture: per-operation counters and latency.
+
+| Option | Default |
+|---|---|
+| `active` | `false` |
+
+Set `feature.metrics.active` to enable it, then override any of the options above.
+
+### paging
+
+Pagination signals for list operations.
+
+| Option | Default |
+|---|---|
+| `active` | `false` |
+| `afterVar` | `'after'` |
+| `cursorParam` | `'cursor'` |
+| `firstVar` | `'first'` |
+| `limitParam` | `'limit'` |
+| `pageParam` | `'page'` |
+| `startPage` | `1` |
+
+Set `feature.paging.active` to enable it, then override any of the options above.
+
+### ratelimit
+
+Client-side rate limiting via a token bucket.
+
+| Option | Default |
+|---|---|
+| `active` | `false` |
+| `burst` | `5` |
+| `rate` | `5` |
+
+Set `feature.ratelimit.active` to enable it, then override any of the options above.
+
+`ratelimit` wraps the transport, so its position among the other
+transport features decides what it sees. A feature activated later wraps one
+activated earlier.
+
+### retry
+
+Automatic retry of transient failures with exponential backoff.
+
+| Option | Default |
+|---|---|
+| `active` | `false` |
+| `factor` | `2` |
+| `maxDelay` | `2000` |
+| `minDelay` | `50` |
+| `retries` | `2` |
+| `statuses` | `[408, 425, 429, 500, 502, 503, 504]` |
+
+Set `feature.retry.active` to enable it, then override any of the options above.
+
+`retry` wraps the transport, so its position among the other
+transport features decides what it sees. A feature activated later wraps one
+activated earlier.
 
 ### test
 
@@ -1151,6 +1211,21 @@ In-memory mock transport for testing without a live server.
 | `active` | `false` |
 
 Set `feature.test.active` to enable it, then override any of the options above.
+
+### timeout
+
+Per-request timeout with transport abort.
+
+| Option | Default |
+|---|---|
+| `active` | `false` |
+| `ms` | `30000` |
+
+Set `feature.timeout.active` to enable it, then override any of the options above.
+
+`timeout` wraps the transport, so its position among the other
+transport features decides what it sees. A feature activated later wraps one
+activated earlier.
 
 
 ## Advanced
@@ -1191,7 +1266,14 @@ with hook methods named after pipeline stages (e.g. `PrePoint`,
 
 The SDK ships with built-in features:
 
+- **DebugFeature**: Request/response capture ring buffer for debugging
+- **IdempotencyFeature**: Idempotency keys for safe retries of mutating operations
+- **MetricsFeature**: Statistics capture: per-operation counters and latency
+- **PagingFeature**: Pagination signals for list operations
+- **RatelimitFeature**: Client-side rate limiting via a token bucket
+- **RetryFeature**: Automatic retry of transient failures with exponential backoff
 - **TestFeature**: In-memory mock transport for testing without a live server
+- **TimeoutFeature**: Per-request timeout with transport abort
 
 Features are initialized in order. Hooks fire in the order features
 were added, so later features can override earlier ones.
@@ -1229,11 +1311,11 @@ Entity instances are stateful. After a successful `list`, the entity
 stores the returned data and match criteria internally.
 
 ```php
-$credential = $client->Credential();
-$credential->list();
+$email = $client->Email();
+$email->list();
 
-// $credential->data_get() now returns the credential data from the last list
-// $credential->match_get() returns the last match criteria
+// $email->data_get() now returns the email data from the last list
+// $email->match_get() returns the last match criteria
 ```
 
 Call `make()` to create a fresh instance with the same configuration

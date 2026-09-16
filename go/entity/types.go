@@ -203,24 +203,6 @@ type PasswordUpdateData struct {
 
 // Saml is the typed data model for the saml entity.
 type Saml struct {
-	Birthdate *string `json:"birthdate,omitempty"`
-	Email *string `json:"email,omitempty"`
-	EmailVerified *string `json:"email_verified,omitempty"`
-	FamilyName *string `json:"family_name,omitempty"`
-	Gender *string `json:"gender,omitempty"`
-	GivenName *string `json:"given_name,omitempty"`
-	Locale *string `json:"locale,omitempty"`
-	MiddleName *string `json:"middle_name,omitempty"`
-	Name *string `json:"name,omitempty"`
-	Nickname *string `json:"nickname,omitempty"`
-	Phone *string `json:"phone,omitempty"`
-	PhoneVerified *string `json:"phone_verified,omitempty"`
-	Picture *string `json:"picture,omitempty"`
-	PreferredUsername *string `json:"preferred_username,omitempty"`
-	Profile *string `json:"profile,omitempty"`
-	UpdatedAt *string `json:"updated_at,omitempty"`
-	Website *string `json:"website,omitempty"`
-	ZoneInfo *string `json:"zone_info,omitempty"`
 }
 
 // SamlLoadMatch is the typed request payload for Saml.LoadTyped.
@@ -231,24 +213,6 @@ type SamlLoadMatch struct {
 
 // SamlCreateData is the typed request payload for Saml.CreateTyped.
 type SamlCreateData struct {
-	Birthdate *string `json:"birthdate,omitempty"`
-	Email *string `json:"email,omitempty"`
-	EmailVerified *string `json:"email_verified,omitempty"`
-	FamilyName *string `json:"family_name,omitempty"`
-	Gender *string `json:"gender,omitempty"`
-	GivenName *string `json:"given_name,omitempty"`
-	Locale *string `json:"locale,omitempty"`
-	MiddleName *string `json:"middle_name,omitempty"`
-	Name *string `json:"name,omitempty"`
-	Nickname *string `json:"nickname,omitempty"`
-	Phone *string `json:"phone,omitempty"`
-	PhoneVerified *string `json:"phone_verified,omitempty"`
-	Picture *string `json:"picture,omitempty"`
-	PreferredUsername *string `json:"preferred_username,omitempty"`
-	Profile *string `json:"profile,omitempty"`
-	UpdatedAt *string `json:"updated_at,omitempty"`
-	Website *string `json:"website,omitempty"`
-	ZoneInfo *string `json:"zone_info,omitempty"`
 }
 
 // SessionManagement is the typed data model for the session_management entity.

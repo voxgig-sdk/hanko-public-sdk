@@ -12,7 +12,7 @@ Learn more about Voxgig SDKs at [voxgig.com/sdk](https://voxgig.com/sdk/).
 
 > TypeScript, Python, PHP, Golang, Ruby, Lua SDKs, a CLI with an interactive REPL, and an MCP server for AI agents — all generated from one OpenAPI spec by [@voxgig/sdkgen](https://github.com/voxgig/sdkgen).
 
-> **Features:** `test` — opt-in,
+> **Features:** `debug`, `idempotency`, `metrics`, `paging`, `ratelimit`, `retry`, `test`, `timeout` — opt-in,
 > inactive until switched on, and configured per client. See the Features
 > section of any SDK README below for what each one does.
 
@@ -43,23 +43,23 @@ network, and no credentials:
 // Shape: { entity: { <entity-name>: { <id>: <record> } } }
 const client = HankoPublicSDK.test({
   entity: {
-    credential: {
-      test01: { id: 'test01' },
+    email: {
+      test01: { id: 'test01', address: 'example_address' },
     },
   },
 })
-const credentials = await client.Credential().list()
-// credentials is an array of Credential entities, populated with mock data
-// — call credentials[0].data() for the record itself
-console.log(credentials)
+const emails = await client.Email().list()
+// emails is an array of Email entities, populated with mock data
+// — call emails[0].data() for the record itself
+console.log(emails)
 ```
 
 ### Python
 
 ```python
 client = HankoPublicSDK.test()
-credentials = client.Credential().list()
-print(credentials)
+emails = client.Email().list()
+print(emails)
 ```
 
 ### PHP
@@ -67,16 +67,16 @@ print(credentials)
 ```php
 // Seed fixture data so offline calls resolve without a live server.
 $client = HankoPublicSDK::test([
-    "entity" => ["credential" => ["test01" => []]],
+    "entity" => ["email" => ["test01" => []]],
 ]);
-$credentials = $client->Credential()->list();
+$emails = $client->Email()->list();
 ```
 
 ### Golang
 
 ```go
 client := sdk.Test()
-result, err := client.Credential(nil).List(
+result, err := client.Email(nil).List(
     nil, nil,
 )
 ```
@@ -86,16 +86,16 @@ result, err := client.Credential(nil).List(
 ```ruby
 # Seed fixture data so offline calls resolve without a live server.
 client = HankoPublicSDK.test({
-  "entity" => { "credential" => { "test01" => {} } },
+  "entity" => { "email" => { "test01" => {} } },
 })
-credentials = client.Credential.list()
+emails = client.Email.list()
 ```
 
 ### Lua
 
 ```lua
 local client = sdk.test()
-local results, err = client:Credential():list()
+local results, err = client:Email():list()
 ```
 
 ## Packages
@@ -353,7 +353,14 @@ forking the SDK.
 
 | Feature | Purpose |
 | --- | --- |
+| **DebugFeature** | Request/response capture ring buffer for debugging |
+| **IdempotencyFeature** | Idempotency keys for safe retries of mutating operations |
+| **MetricsFeature** | Statistics capture: per-operation counters and latency |
+| **PagingFeature** | Pagination signals for list operations |
+| **RatelimitFeature** | Client-side rate limiting via a token bucket |
+| **RetryFeature** | Automatic retry of transient failures with exponential backoff |
 | **TestFeature** | In-memory mock transport for testing without a live server |
+| **TimeoutFeature** | Per-request timeout with transport abort |
 
 Pass custom features via the `extend` option at construction time.
 

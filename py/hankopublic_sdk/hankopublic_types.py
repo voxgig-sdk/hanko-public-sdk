@@ -196,25 +196,8 @@ class PasswordUpdateData(TypedDict, total=False):
     user_id: str
 
 
-class Saml(TypedDict, total=False):
-    birthdate: str
-    email: str
-    email_verified: str
-    family_name: str
-    gender: str
-    given_name: str
-    locale: str
-    middle_name: str
-    name: str
-    nickname: str
-    phone: str
-    phone_verified: str
-    picture: str
-    preferred_username: str
-    profile: str
-    updated_at: str
-    website: str
-    zone_info: str
+class Saml(TypedDict):
+    pass
 
 
 class SamlLoadMatchRequired(TypedDict):
@@ -225,25 +208,8 @@ class SamlLoadMatch(SamlLoadMatchRequired, total=False):
     cert_only: bool
 
 
-class SamlCreateData(TypedDict, total=False):
-    birthdate: str
-    email: str
-    email_verified: str
-    family_name: str
-    gender: str
-    given_name: str
-    locale: str
-    middle_name: str
-    name: str
-    nickname: str
-    phone: str
-    phone_verified: str
-    picture: str
-    preferred_username: str
-    profile: str
-    updated_at: str
-    website: str
-    zone_info: str
+class SamlCreateData(TypedDict):
+    pass
 
 
 class SessionManagementRequired(TypedDict):

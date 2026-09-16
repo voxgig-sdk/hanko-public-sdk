@@ -522,81 +522,8 @@ PasswordUpdateData = Struct.new(
 )
 
 # Saml entity data model.
-#
-# @!attribute [rw] birthdate
-#   @return [String, nil]
-#
-# @!attribute [rw] email
-#   @return [String, nil]
-#
-# @!attribute [rw] email_verified
-#   @return [String, nil]
-#
-# @!attribute [rw] family_name
-#   @return [String, nil]
-#
-# @!attribute [rw] gender
-#   @return [String, nil]
-#
-# @!attribute [rw] given_name
-#   @return [String, nil]
-#
-# @!attribute [rw] locale
-#   @return [String, nil]
-#
-# @!attribute [rw] middle_name
-#   @return [String, nil]
-#
-# @!attribute [rw] name
-#   @return [String, nil]
-#
-# @!attribute [rw] nickname
-#   @return [String, nil]
-#
-# @!attribute [rw] phone
-#   @return [String, nil]
-#
-# @!attribute [rw] phone_verified
-#   @return [String, nil]
-#
-# @!attribute [rw] picture
-#   @return [String, nil]
-#
-# @!attribute [rw] preferred_username
-#   @return [String, nil]
-#
-# @!attribute [rw] profile
-#   @return [String, nil]
-#
-# @!attribute [rw] updated_at
-#   @return [String, nil]
-#
-# @!attribute [rw] website
-#   @return [String, nil]
-#
-# @!attribute [rw] zone_info
-#   @return [String, nil]
-Saml = Struct.new(
-  :birthdate,
-  :email,
-  :email_verified,
-  :family_name,
-  :gender,
-  :given_name,
-  :locale,
-  :middle_name,
-  :name,
-  :nickname,
-  :phone,
-  :phone_verified,
-  :picture,
-  :preferred_username,
-  :profile,
-  :updated_at,
-  :website,
-  :zone_info,
-  keyword_init: true
-)
+class Saml
+end
 
 # Request payload for Saml#load.
 #
@@ -612,81 +539,8 @@ SamlLoadMatch = Struct.new(
 )
 
 # Request payload for Saml#create.
-#
-# @!attribute [rw] birthdate
-#   @return [String, nil]
-#
-# @!attribute [rw] email
-#   @return [String, nil]
-#
-# @!attribute [rw] email_verified
-#   @return [String, nil]
-#
-# @!attribute [rw] family_name
-#   @return [String, nil]
-#
-# @!attribute [rw] gender
-#   @return [String, nil]
-#
-# @!attribute [rw] given_name
-#   @return [String, nil]
-#
-# @!attribute [rw] locale
-#   @return [String, nil]
-#
-# @!attribute [rw] middle_name
-#   @return [String, nil]
-#
-# @!attribute [rw] name
-#   @return [String, nil]
-#
-# @!attribute [rw] nickname
-#   @return [String, nil]
-#
-# @!attribute [rw] phone
-#   @return [String, nil]
-#
-# @!attribute [rw] phone_verified
-#   @return [String, nil]
-#
-# @!attribute [rw] picture
-#   @return [String, nil]
-#
-# @!attribute [rw] preferred_username
-#   @return [String, nil]
-#
-# @!attribute [rw] profile
-#   @return [String, nil]
-#
-# @!attribute [rw] updated_at
-#   @return [String, nil]
-#
-# @!attribute [rw] website
-#   @return [String, nil]
-#
-# @!attribute [rw] zone_info
-#   @return [String, nil]
-SamlCreateData = Struct.new(
-  :birthdate,
-  :email,
-  :email_verified,
-  :family_name,
-  :gender,
-  :given_name,
-  :locale,
-  :middle_name,
-  :name,
-  :nickname,
-  :phone,
-  :phone_verified,
-  :picture,
-  :preferred_username,
-  :profile,
-  :updated_at,
-  :website,
-  :zone_info,
-  keyword_init: true
-)
+class SamlCreateData
+end
 
 # SessionManagement entity data model.
 #

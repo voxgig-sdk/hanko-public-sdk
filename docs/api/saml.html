@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Saml | Hanko Public API</title><link rel="stylesheet" href="../assets/style.css"></head>
+<body><a class="skip" href="#content">Skip to content</a>
+<header class="site-header"><a class="site-title" href="../index.html">Hanko Public API<span>SDK documentation</span></a><div class="site-links"><a class="repo-link" href="https://github.com/voxgig-sdk/hanko-public-sdk">voxgig-sdk/hanko-public-sdk</a></div></header>
+<div class="site-notice" role="note"></div>
+<div class="shell"><nav class="site-nav" aria-label="Documentation"><div class="search"><label for="search">Search documentation</label><input id="search" type="search" data-base="../" placeholder="Find a guide or reference"><div id="results" aria-live="polite"></div></div><details><summary>Overview</summary><a href="../index.html">Hanko Public API</a></details>
+<details open><summary>API</summary><a href="../api/index.html">API overview</a>
+<a href="../api/create_user_response_object.html">CreateUserResponseObject</a>
+<a href="../api/credential.html">Credential</a>
+<a href="../api/credential_creation_option.html">CredentialCreationOption</a>
+<a href="../api/credential_request_option.html">CredentialRequestOption</a>
+<a href="../api/email.html">Email</a>
+<a href="../api/email_management.html">EmailManagement</a>
+<a href="../api/hanko_configuration.html">HankoConfiguration</a>
+<a href="../api/json_web_key_set.html">JsonWebKeySet</a>
+<a href="../api/passcode.html">Passcode</a>
+<a href="../api/password.html">Password</a>
+<a aria-current="page" href="../api/saml.html">Saml</a><div class="nav-sections"><a class="nav-section" href="#post-samlcallback">POST /saml/callback</a>
+<a class="nav-section" href="#get-samlmetadata">GET /saml/metadata</a>
+<a class="nav-section" href="#get-samlprovider">GET /saml/provider</a></div>
+<a href="../api/session_management.html">SessionManagement</a>
+<a href="../api/status.html">Status</a>
+<a href="../api/third_party.html">ThirdParty</a>
+<a href="../api/token.html">Token</a>
+<a href="../api/user.html">User</a>
+<a href="../api/user_management.html">UserManagement</a>
+<a href="../api/web_authn.html">WebAuthn</a>
+<a href="../api/webauthn_login.html">WebauthnLogin</a></details>
+<details><summary>Guides</summary><a href="../guides/authentication.html">Authentication</a>
+<a href="../guides/first-call.html">Make your first API call</a>
+<a href="../guides/errors.html">Handle errors</a>
+<a href="../guides/concepts.html">Entities, SDKs, and tools</a></details>
+<details><summary>SDKs</summary><a href="../sdks/go.html">Golang</a>
+<a href="../sdks/lua.html">Lua</a>
+<a href="../sdks/php.html">PHP</a>
+<a href="../sdks/py.html">Python</a>
+<a href="../sdks/rb.html">Ruby</a>
+<a href="../sdks/ts.html">TypeScript</a></details>
+<details><summary>Tools</summary><a href="../tools/go-cli.html">Go CLI</a>
+<a href="../tools/go-mcp.html">Go MCP server</a></details>
+<details><summary>Features</summary><a href="../features/debug.html">Request/response capture ring buffer for debugging</a>
+<a href="../features/idempotency.html">Idempotency keys for safe retries of mutating operations</a>
+<a href="../features/metrics.html">Statistics capture: per-operation counters and latency</a>
+<a href="../features/paging.html">Pagination signals for list operations</a>
+<a href="../features/ratelimit.html">Client-side rate limiting via a token bucket</a>
+<a href="../features/retry.html">Automatic retry of transient failures with exponential backoff</a>
+<a href="../features/test.html">In-memory mock transport for testing without a live server</a>
+<a href="../features/timeout.html">Per-request timeout with transport abort</a></details></nav><main id="content"><div class="page-context"><span class="section-dot" aria-hidden="true"></span>API</div><h1 id="saml">Saml</h1>
+<h2 id="operations">Operations</h2>
+<p>Every route this entity exposes. Each route links to its own reference on this page.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Route</th>
+<th>SDK operation</th>
+<th>Returns</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>POST</code></td>
+<td><a href="#post-samlcallback"><code>/saml/callback</code></a></td>
+<td><code>create</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><a href="#get-samlmetadata"><code>/saml/metadata</code></a></td>
+<td><code>load</code></td>
+<td>OK</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><a href="#get-samlprovider"><code>/saml/provider</code></a></td>
+<td><code>load</code></td>
+<td>OK</td>
+</tr>
+</tbody>
+</table>
+<h2 id="fields">Fields</h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+</table>
+<h2 id="create">create</h2>
+<h3 id="post-samlcallback" class="operation" data-method="post"><code>POST</code> /saml/callback</h3>
+<p>Operation ID: <code>post-saml-callback</code>.</p>
+<h4 id="request-body">Request body</h4>
+<p><code>application/x-www-form-urlencoded</code></p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>RelayState</code></td>
+<td><code>string</code></td>
+<td>No</td>
+<td></td>
+</tr>
+<tr>
+<td><code>SAMLResponse</code></td>
+<td><code>string</code></td>
+<td>No</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="responses">Responses</h4>
+<h5 id="302-found" class="status" data-status="3xx">302: Found</h5>
+<h5 id="307-temporary-redirect" class="status" data-status="3xx">307: Temporary Redirect</h5>
+<h2 id="load">load</h2>
+<h3 id="get-samlmetadata" class="operation" data-method="get"><code>GET</code> /saml/metadata</h3>
+<p>Operation ID: <code>get-saml-metadata</code>.</p>
+<h4 id="parameters">Parameters</h4>
+<p>| Parameter | In | Type | Required | Description |
+| --- | --- | --- | --- |
+| <code>domain</code> | <code>query</code> | <code>string</code> | Yes | Fully qualified domain name to which a SAML service provider is registered |
+| <code>cert_only</code> | <code>query</code> | <code>boolean</code> | No | Toggle to download the SAML service provider public certificate |</p>
+<h4 id="responses-1">Responses</h4>
+<h5 id="200-ok" class="status" data-status="2xx">200: OK</h5>
+<p><code>application/octet-stream</code></p>
+<p>The response is <code>string (binary)</code>.</p>
+<h5 id="400-bad-request" class="status" data-status="4xx">400: Bad Request</h5>
+<p><code>application/json</code></p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>code</code></td>
+<td><code>integer (int32)</code></td>
+<td>Yes</td>
+<td></td>
+</tr>
+<tr>
+<td><code>message</code></td>
+<td><code>string</code></td>
+<td>Yes</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Example response:</p>
+<pre><code class="language-json">{
+  &quot;code&quot;: 400,
+  &quot;message&quot;: &quot;Bad Request&quot;
+}
+</code></pre>
+<h5 id="404-not-found" class="status" data-status="4xx">404: Not found</h5>
+<h3 id="get-samlprovider" class="operation" data-method="get"><code>GET</code> /saml/provider</h3>
+<p>Operation ID: <code>get-saml-provider</code>.</p>
+<h4 id="parameters-1">Parameters</h4>
+<p>| Parameter | In | Type | Required | Description |
+| --- | --- | --- | --- |
+| <code>domain</code> | <code>query</code> | <code>string (hostname)</code> | Yes | Fully qualified domain name for which a SAML service provider is registered |</p>
+<h4 id="responses-2">Responses</h4>
+<h5 id="200-ok-1" class="status" data-status="2xx">200: OK</h5>
+<p><code>application/json</code></p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>attribute_map</code></td>
+<td><code>object</code></td>
+<td>No</td>
+<td></td>
+</tr>
+<tr>
+<td><code>attribute_map.birthdate</code></td>
+<td><code>string</code></td>
+<td>No</td>
+<td></td>
+</tr>
+<tr>
+<td><code>attribute_map.email</code></td>
+<td><code>string</code></td>
+<td>No</td>
+<td></td>
+</tr>
+<tr>
+<td><code>attribute_map.email_verified</code></td>
+<td><code>string</code></td>
+<td>No</td>
+<td></td>
+</tr>
+<tr>
+<td><code>attribute_map.family_name</code></td>
+<td><code>string</code></td>
+<td>No</td>
+<td></td>
+</tr>
+<tr>
+<td><code>attribute_map.gender</code></td>
+<td><code>string</code></td>
+<td>No</td>
+<td></td>
+</tr>
+<tr>
+<td><code>attribute_map.given_name</code></td>
+<td><code>string</code></td>
+<td>No</td>
+<td></td>
+</tr>
+<tr>
+<td><code>attribute_map.locale</code></td>
+<td><code>string</code></td>
+<td>No</td>
+<td></td>
+</tr>
+<tr>
+<td><code>attribute_map.middle_name</code></td>
+<td><code>string</code></td>
+<td>No</td>
+<td></td>
+</tr>
+<tr>
+<td><code>attribute_map.name</code></td>
+<td><code>string</code></td>
+<td>No</td>
+<td></td>
+</tr>
+<tr>
+<td><code>attribute_map.nickname</code></td>
+<td><code>string</code></td>
+<td>No</td>
+<td></td>
+</tr>
+<tr>
+<td><code>attribute_map.phone</code></td>
+<td><code>string</code></td>
+<td>No</td>
+<td></td>
+</tr>
+<tr>
+<td><code>attribute_map.phone_verified</code></td>
+<td><code>string</code></td>
+<td>No</td>
+<td></td>
+</tr>
+<tr>
+<td><code>attribute_map.picture</code></td>
+<td><code>string</code></td>
+<td>No</td>
+<td></td>
+</tr>
+<tr>
+<td><code>attribute_map.preferred_username</code></td>
+<td><code>string</code></td>
+<td>No</td>
+<td></td>
+</tr>
+<tr>
+<td><code>attribute_map.profile</code></td>
+<td><code>string</code></td>
+<td>No</td>
+<td></td>
+</tr>
+<tr>
+<td><code>attribute_map.updated_at</code></td>
+<td><code>string</code></td>
+<td>No</td>
+<td></td>
+</tr>
+<tr>
+<td><code>attribute_map.website</code></td>
+<td><code>string</code></td>
+<td>No</td>
+<td></td>
+</tr>
+<tr>
+<td><code>attribute_map.zone_info</code></td>
+<td><code>string</code></td>
+<td>No</td>
+<td></td>
+</tr>
+<tr>
+<td><code>domain</code></td>
+<td><code>string (hostname)</code></td>
+<td>No</td>
+<td></td>
+</tr>
+<tr>
+<td><code>enabled</code></td>
+<td><code>boolean</code></td>
+<td>No</td>
+<td></td>
+</tr>
+<tr>
+<td><code>metadata_url</code></td>
+<td><code>string (uri)</code></td>
+<td>No</td>
+<td></td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td><code>string</code></td>
+<td>No</td>
+<td></td>
+</tr>
+<tr>
+<td><code>skip_email_verification</code></td>
+<td><code>boolean</code></td>
+<td>No</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h5 id="400-bad-request-1" class="status" data-status="4xx">400: Bad Request</h5>
+<p><code>application/json</code></p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>code</code></td>
+<td><code>integer (int32)</code></td>
+<td>Yes</td>
+<td></td>
+</tr>
+<tr>
+<td><code>message</code></td>
+<td><code>string</code></td>
+<td>Yes</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Example response:</p>
+<pre><code class="language-json">{
+  &quot;code&quot;: 400,
+  &quot;message&quot;: &quot;Bad Request&quot;
+}
+</code></pre>
+<h5 id="404-not-found-1" class="status" data-status="4xx">404: Not Found</h5>
+</main></div>
+<script src="../assets/search.js" defer></script></body></html>

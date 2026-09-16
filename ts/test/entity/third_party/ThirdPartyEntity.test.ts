@@ -5,6 +5,8 @@ import * as Fs from 'node:fs'
 
 import { test, describe, afterEach } from 'node:test'
 import assert from 'node:assert'
+import { createLiveTransport } from '../../live-runner'
+import { runLiveEntity } from '../../live-entity'
 
 
 import { HankoPublicSDK, BaseFeature, stdutil } from '../../..'
@@ -47,16 +49,13 @@ describe('ThirdPartyEntity', async () => {
 
     const live = 'TRUE' === process.env.HANKO_PUBLIC_TEST_LIVE
     for (const op of ['load']) {
-      if (maybeSkipControl(t, 'entityOp', 'third_party.' + op, live)) return
+      if (!live && maybeSkipControl(t, 'entityOp', 'third_party.' + op, live)) return
     }
 
+    
     const setup = basicSetup()
-    // The basic flow consumes synthetic IDs and field values from the
-    // fixture (entity TestData.json). Those don't exist on the live API.
-    // Skip live runs unless the user provided a real ENTID env override.
-    if (setup.syntheticOnly) {
-      t.skip('live entity test uses synthetic IDs from fixture — set HANKO_PUBLIC_TEST_THIRD_PARTY_ENTID JSON to run live')
-      return
+    if (setup.live) {
+      return runLiveEntity(setup, {"active":true,"alias":{"field":{}},"fields":[],"name":"third_party","op":{"load":{"input":"data","name":"load","points":[{"active":true,"args":{"query":[{"active":true,"kind":"query","name":"code","orig":"code","reqd":false,"type":"`$STRING`","index$":0},{"active":true,"kind":"query","name":"error","orig":"error","reqd":false,"type":"`$STRING`","index$":1},{"active":true,"kind":"query","name":"error_description","orig":"error_description","reqd":false,"type":"`$STRING`","index$":2},{"active":true,"kind":"query","name":"state","orig":"state","reqd":true,"type":"`$STRING`","index$":3}]},"contract":{"id":"GET /thirdparty/callback","json":"{\"operationId\":\"thirdPartyCallback\",\"parameters\":[{\"description\":\"The authorization code that can be exchanged for an access token and to retrieve user provider data\\n\",\"in\":\"query\",\"name\":\"code\",\"schema\":{\"type\":\"string\"}},{\"description\":\"The state\",\"in\":\"query\",\"name\":\"state\",\"required\":true,\"schema\":{\"type\":\"string\"}},{\"description\":\"An error returned from the third party provider\\n\",\"in\":\"query\",\"name\":\"error\",\"schema\":{\"type\":\"string\"}},{\"description\":\"The description of the error that occurred (if any)\",\"in\":\"query\",\"name\":\"error_description\",\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"responses\":{\"307\":{\"description\":\"Redirect to requested redirect URL or to configured site redirect URL\",\"headers\":{\"Location\":{\"description\":\"Redirect to the URL requested via `redirect_to` query parameter during third party\\nprovider login via [`/auth`](#tag/Third-Party/operation/thirdPartyAuth) endpoint on success. On error,\\nredirect to the `third_party.error_redirect_url` set in the backend\\n[configuration](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config).\\nError details are provided in the location URL in the form of `error` and `error_description`\\nquery params.\\n\",\"schema\":{\"type\":\"string\"}},\"Set-Cookie\":{\"description\":\"Present only on successful callback. Contains the JSON Web Token (JWT) that must be provided to protected endpoints.\\nCookie attributes (e.g. domain) can be set via [configuration](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config) option `session.cookie`.\\n\",\"schema\":{\"description\":\"Value `<JWT>` is a [JSON Web Token](https://www.rfc-editor.org/rfc/rfc7519.html)\",\"example\":\"hanko=<JWT>; Path=/; HttpOnly\",\"type\":\"string\"}},\"X-Auth-Token\":{\"description\":\"Present only on successful callback and when enabled via [configuration](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config) option `session.enable_auth_token_header`\\nfor purposes of cross-domain communication between client and Hanko API.\\n\",\"schema\":{\"description\":\"Enable via [configuration](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config) option `session.enable_auth_token_header`\\nfor purposes of cross-domain communication between client and Hanko API.\\n\",\"externalDocs\":{\"url\":\"https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config\"},\"format\":\"JWT\",\"type\":\"string\"}}}}},\"securitySchemes\":{\"BearerTokenAuth\":{\"bearerFormat\":\"JWT\",\"scheme\":\"bearer\",\"type\":\"http\"},\"CookieAuth\":{\"in\":\"cookie\",\"name\":\"hanko\",\"type\":\"apiKey\"}},\"securitySource\":\"unspecified\"}","source":"openapi3","version":1},"kind":"http","method":"GET","orig":"/thirdparty/callback","segments":[{"lit":"thirdparty"},{"lit":"callback"}],"select":{"exist":["code","error","error_description","state"]},"transform":{"req":"`reqdata`","res":"`body`"},"index$":0},{"active":true,"args":{"query":[{"active":true,"kind":"query","name":"provider","orig":"provider","reqd":true,"type":"`$STRING`","index$":0},{"active":true,"kind":"query","name":"redirect_to","orig":"redirect_to","reqd":true,"type":"`$STRING`","index$":1}]},"contract":{"id":"GET /thirdparty/auth","json":"{\"operationId\":\"thirdPartyAuth\",\"parameters\":[{\"description\":\"The name of the third party provider to log in with. Only providers enabled in the\\n[configuration](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config)\\nvia the `thirdparty.providers` option can be used. Requesting an unsupported provider results in a\\nredirect with error details in the location query.\\n\",\"in\":\"query\",\"name\":\"provider\",\"required\":true,\"schema\":{\"enum\":[\"google\",\"github\"],\"type\":\"string\"}},{\"description\":\"Base64url encoded string representing the URL the\\n[`/callback`](#tag/Third-Party/operation/thirdPartyCallback) eventually redirects to after successful login\\nwith the third party provider. It must match one of the allowed redirect URLs set in the backend\\n[configuration](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config)\\nthrough the `third_party.allowed_redirect_urls`.\\n\",\"in\":\"query\",\"name\":\"redirect_to\",\"required\":true,\"schema\":{\"format\":\"base64url\",\"type\":\"string\"}}],\"protocol\":\"http\",\"responses\":{\"307\":{\"description\":\"Redirect to third party provider\",\"headers\":{\"Location\":{\"description\":\"Redirect to the third party provider on success. On error, redirects to the `Referer`. If `Referer` is\\nnot present, redirects to the `third_party.error_redirect_url` set in the backend\\n[configuration](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config).\\nError details are provided in the location URL in the form of `error` and `error_description`\\nquery params.\\n\",\"schema\":{\"type\":\"string\"}}}}},\"securitySchemes\":{\"BearerTokenAuth\":{\"bearerFormat\":\"JWT\",\"scheme\":\"bearer\",\"type\":\"http\"},\"CookieAuth\":{\"in\":\"cookie\",\"name\":\"hanko\",\"type\":\"apiKey\"}},\"securitySource\":\"unspecified\"}","source":"openapi3","version":1},"kind":"http","method":"GET","orig":"/thirdparty/auth","segments":[{"lit":"thirdparty"},{"lit":"auth"}],"select":{"exist":["provider","redirect_to"]},"transform":{"req":"`reqdata`","res":"`body`"},"index$":1}],"key$":"load"}},"relations":{"ancestors":[]},"key$":"third_party","name__orig":"third_party","Name":"ThirdParty","name_":"third_party","name-":"third-party","NAME":"THIRD_PARTY","index$":13}, {"active":true,"entity":"third_party","key$":"BasicThirdPartyFlow","kind":"basic","name":"BasicThirdPartyFlow","param":{},"step":[{"active":true,"data":{},"input":{"ref":"third_party_ref01","srcdatavar":"third_party_ref01_data","suffix":"_dt0"},"match":{},"op":"load","spec":[],"valid":[{"apply":"TextFieldMark","def":{"mark":"Mark01-third_party_ref01"}}],"index$":0}]}, 'ThirdParty')
     }
     const client = setup.client
     const struct = setup.struct
@@ -109,13 +108,6 @@ function basicSetup(extra?: any) {
       }]
     })
 
-  // Detect whether the user provided a real ENTID JSON via env var. The
-  // basic flow consumes synthetic IDs from the fixture file; without an
-  // override those synthetic IDs reach the live API and 4xx. Surface this
-  // to the test so it can skip rather than fail.
-  const idmapEnvVal = process.env['HANKO_PUBLIC_TEST_THIRD_PARTY_ENTID']
-  const idmapOverridden = null != idmapEnvVal && idmapEnvVal.trim().startsWith('{')
-
   const env = envOverride({
     'HANKO_PUBLIC_TEST_THIRD_PARTY_ENTID': idmap,
     'HANKO_PUBLIC_TEST_LIVE': 'FALSE',
@@ -128,7 +120,13 @@ function basicSetup(extra?: any) {
 
   const live = 'TRUE' === env.HANKO_PUBLIC_TEST_LIVE
 
+  const transport = createLiveTransport()
   if (live) {
+    const rawIds = process.env['HANKO_PUBLIC_TEST_THIRD_PARTY_ENTID']
+    idmap = rawIds && rawIds.trim() ? JSON.parse(rawIds) : {}
+    if (!idmap || Array.isArray(idmap) || typeof idmap !== 'object') {
+      throw new Error('Live ENTID must be a JSON object')
+    }
     client = new HankoPublicSDK(merge([
       // FIRST, so the generated fields below win: sdk-test-control.json's
       // test.client.options adds to the live client, it does not redirect it.
@@ -144,7 +142,8 @@ function basicSetup(extra?: any) {
       // argument at all - so a bare 'extra' silently discarded the apikey
       // and server values above and handed the SDK undefined. Harmless
       // while there was nothing in that object; not harmless now.
-      extra || {}
+      extra || {},
+      { system: { fetch: transport.fetch } }
     ]))
   }
 
@@ -157,7 +156,7 @@ function basicSetup(extra?: any) {
     data: entityData,
     explain: 'TRUE' === env.HANKO_PUBLIC_TEST_EXPLAIN,
     live,
-    syntheticOnly: live && !idmapOverridden,
+    transport,
     now: Date.now(),
   }
 

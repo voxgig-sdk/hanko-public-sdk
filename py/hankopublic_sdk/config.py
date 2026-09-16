@@ -37,15 +37,139 @@ def make_config():
         "main": {
             "name": "HankoPublic",
             "slug": "hanko-public",
-            "version": "0.1.1",
+            "version": "0.0.1",
             "target": "py",
         },
         "feature": {
+            "debug": {
+        "options": {
+          "active": False,
+          "max": 100,
+          "redact": [
+            "authorization",
+            "cookie",
+            "set-cookie",
+            "api-key",
+            "apikey",
+            "x-api-key",
+            "idempotency-key",
+          ],
+        },
+        "optspec": {
+          "now": "`$FUNCTION`",
+          "onEntry": "`$FUNCTION`",
+        },
+        "strict": False,
+        "transport": "none",
+      },
+            "idempotency": {
+        "options": {
+          "active": False,
+          "header": "Idempotency-Key",
+          "methods": [
+            "POST",
+            "PUT",
+            "PATCH",
+            "DELETE",
+          ],
+          "ops": [
+            "create",
+            "update",
+            "remove",
+          ],
+        },
+        "optspec": {
+          "keygen": "`$FUNCTION`",
+        },
+        "strict": False,
+        "transport": "none",
+      },
+            "metrics": {
+        "options": {
+          "active": False,
+        },
+        "optspec": {
+          "now": "`$FUNCTION`",
+        },
+        "strict": False,
+        "transport": "none",
+      },
+            "paging": {
+        "options": {
+          "active": False,
+          "afterVar": "after",
+          "cursorParam": "cursor",
+          "firstVar": "first",
+          "limitParam": "limit",
+          "pageParam": "page",
+          "startPage": 1,
+        },
+        "optspec": {
+          "limit": "`$NUMBER`",
+          "ops": "`$LIST`",
+        },
+        "strict": False,
+        "transport": "none",
+      },
+            "ratelimit": {
+        "options": {
+          "active": False,
+          "burst": 5,
+          "rate": 5,
+        },
+        "optspec": {
+          "now": "`$FUNCTION`",
+          "sleep": "`$FUNCTION`",
+        },
+        "strict": False,
+        "transport": "wrap",
+      },
+            "retry": {
+        "options": {
+          "active": False,
+          "factor": 2,
+          "maxDelay": 2000,
+          "minDelay": 50,
+          "retries": 2,
+          "statuses": [
+            408,
+            425,
+            429,
+            500,
+            502,
+            503,
+            504,
+          ],
+        },
+        "optspec": {
+          "jitter": "`$BOOLEAN`",
+          "sleep": "`$FUNCTION`",
+        },
+        "strict": False,
+        "transport": "wrap",
+      },
             "test": {
         "options": {
           "active": False,
         },
+        "optspec": {
+          "entity": "`$MAP`",
+          "net": "`$MAP`",
+        },
+        "strict": False,
         "transport": "base",
+      },
+            "timeout": {
+        "options": {
+          "active": False,
+          "ms": 30000,
+        },
+        "optspec": {
+          "clearTimer": "`$FUNCTION`",
+          "setTimer": "`$FUNCTION`",
+        },
+        "strict": False,
+        "transport": "wrap",
       },
         },
         "options": {
@@ -759,7 +883,7 @@ def make_config():
           {
             "name": "user_id",
             "req": True,
-            "short": "The ID of the user to perform a password login for",
+            "short": "The ID of the user to create/set a password for",
             "type": "`$STRING`",
           },
         ],
@@ -831,80 +955,7 @@ def make_config():
         },
       },
       "saml": {
-        "fields": [
-          {
-            "name": "birthdate",
-            "type": "`$STRING`",
-          },
-          {
-            "name": "email",
-            "type": "`$STRING`",
-          },
-          {
-            "name": "email_verified",
-            "type": "`$STRING`",
-          },
-          {
-            "name": "family_name",
-            "type": "`$STRING`",
-          },
-          {
-            "name": "gender",
-            "type": "`$STRING`",
-          },
-          {
-            "name": "given_name",
-            "type": "`$STRING`",
-          },
-          {
-            "name": "locale",
-            "type": "`$STRING`",
-          },
-          {
-            "name": "middle_name",
-            "type": "`$STRING`",
-          },
-          {
-            "name": "name",
-            "type": "`$STRING`",
-          },
-          {
-            "name": "nickname",
-            "type": "`$STRING`",
-          },
-          {
-            "name": "phone",
-            "type": "`$STRING`",
-          },
-          {
-            "name": "phone_verified",
-            "type": "`$STRING`",
-          },
-          {
-            "name": "picture",
-            "type": "`$STRING`",
-          },
-          {
-            "name": "preferred_username",
-            "type": "`$STRING`",
-          },
-          {
-            "name": "profile",
-            "type": "`$STRING`",
-          },
-          {
-            "name": "updated_at",
-            "type": "`$STRING`",
-          },
-          {
-            "name": "website",
-            "type": "`$STRING`",
-          },
-          {
-            "name": "zone_info",
-            "type": "`$STRING`",
-          },
-        ],
+        "fields": [],
         "name": "saml",
         "op": {
           "create": {

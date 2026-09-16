@@ -29,5 +29,425 @@
         "user_id": "USER01"
       }
     }
+  },
+  "requests": {
+    "POST /passcode/login/finalize": {
+      "provenance": "operation-contract",
+      "contract": {
+        "operationId": "passcodeFinal",
+        "parameters": [],
+        "protocol": "http",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "code": {
+                    "description": "The actual passcode from the email sent to the user during initialization,\na string of 6 decimal digits\n",
+                    "example": "897481",
+                    "maxLength": 6,
+                    "minLength": 6,
+                    "type": "string"
+                  },
+                  "id": {
+                    "allOf": [
+                      {
+                        "example": "c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c",
+                        "format": "uuid4",
+                        "type": "string"
+                      }
+                    ],
+                    "description": "The ID of the passcode"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "Representation of a passcode",
+                  "properties": {
+                    "created_at": {
+                      "description": "Time of creation of the passcode",
+                      "format": "date-time",
+                      "type": "string"
+                    },
+                    "id": {
+                      "allOf": [
+                        {
+                          "example": "c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c",
+                          "format": "uuid4",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "The ID of the passcode"
+                    },
+                    "ttl": {
+                      "description": "Lifespan of a passcode in seconds",
+                      "example": 300,
+                      "type": "integer"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful passcode login finalization",
+            "headers": {
+              "Set-Cookie": {
+                "description": "Contains the JSON Web Token (JWT) that must be provided to protected endpoints.\nCookie attributes (e.g. domain) can be set via [configuration](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config) option `session.cookie`.\n",
+                "schema": {
+                  "description": "Value `<JWT>` is a [JSON Web Token](https://www.rfc-editor.org/rfc/rfc7519.html)",
+                  "example": "hanko=<JWT>; Path=/; HttpOnly",
+                  "type": "string"
+                }
+              },
+              "X-Auth-Token": {
+                "description": "Present only when enabled via [configuration](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config) option `session.enable_auth_token_header`\nfor purposes of cross-domain communication between client and Hanko API.\n",
+                "schema": {
+                  "description": "Enable via [configuration](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config) option `session.enable_auth_token_header`\nfor purposes of cross-domain communication between client and Hanko API.\n",
+                  "externalDocs": {
+                    "url": "https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config"
+                  },
+                  "format": "JWT",
+                  "type": "string"
+                }
+              },
+              "X-Session-Lifetime": {
+                "description": "Contains the seconds until the session expires.\n",
+                "schema": {
+                  "description": "Contains the seconds until the session expires.\n",
+                  "type": "number"
+                }
+              }
+            }
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 400,
+                  "message": "Bad Request"
+                },
+                "schema": {
+                  "properties": {
+                    "code": {
+                      "format": "int32",
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 401,
+                  "message": "Unauthorized"
+                },
+                "schema": {
+                  "properties": {
+                    "code": {
+                      "format": "int32",
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 403,
+                  "message": "Forbidden"
+                },
+                "schema": {
+                  "properties": {
+                    "code": {
+                      "format": "int32",
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "408": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 408,
+                  "message": "Request Timeout"
+                },
+                "schema": {
+                  "properties": {
+                    "code": {
+                      "format": "int32",
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Request Timeout"
+          },
+          "410": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 410,
+                  "message": "Gone"
+                },
+                "schema": {
+                  "properties": {
+                    "code": {
+                      "format": "int32",
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Gone"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 500,
+                  "message": "Internal Server Error"
+                },
+                "schema": {
+                  "properties": {
+                    "code": {
+                      "format": "int32",
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Internal server error"
+          }
+        },
+        "securitySchemes": {
+          "BearerTokenAuth": {
+            "bearerFormat": "JWT",
+            "scheme": "bearer",
+            "type": "http"
+          },
+          "CookieAuth": {
+            "in": "cookie",
+            "name": "hanko",
+            "type": "apiKey"
+          }
+        },
+        "securitySource": "unspecified"
+      }
+    },
+    "POST /passcode/login/initialize": {
+      "provenance": "operation-contract",
+      "contract": {
+        "operationId": "passcodeInit",
+        "parameters": [],
+        "protocol": "http",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "email_id": {
+                    "allOf": [
+                      {
+                        "example": "c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c",
+                        "format": "uuid4",
+                        "type": "string"
+                      }
+                    ],
+                    "description": "The ID of the email address"
+                  },
+                  "user_id": {
+                    "allOf": [
+                      {
+                        "example": "c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c",
+                        "format": "uuid4",
+                        "type": "string"
+                      }
+                    ],
+                    "description": "The ID of the user"
+                  }
+                },
+                "required": [
+                  "user_id"
+                ],
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "Representation of a passcode",
+                  "properties": {
+                    "created_at": {
+                      "description": "Time of creation of the passcode",
+                      "format": "date-time",
+                      "type": "string"
+                    },
+                    "id": {
+                      "allOf": [
+                        {
+                          "example": "c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c",
+                          "format": "uuid4",
+                          "type": "string"
+                        }
+                      ],
+                      "description": "The ID of the passcode"
+                    },
+                    "ttl": {
+                      "description": "Lifespan of a passcode in seconds",
+                      "example": 300,
+                      "type": "integer"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful passcode login initialization"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 400,
+                  "message": "Bad Request"
+                },
+                "schema": {
+                  "properties": {
+                    "code": {
+                      "format": "int32",
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 500,
+                  "message": "Internal Server Error"
+                },
+                "schema": {
+                  "properties": {
+                    "code": {
+                      "format": "int32",
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Internal server error"
+          }
+        },
+        "securitySchemes": {
+          "BearerTokenAuth": {
+            "bearerFormat": "JWT",
+            "scheme": "bearer",
+            "type": "http"
+          },
+          "CookieAuth": {
+            "in": "cookie",
+            "name": "hanko",
+            "type": "apiKey"
+          }
+        },
+        "securitySource": "unspecified"
+      }
+    }
   }
 }

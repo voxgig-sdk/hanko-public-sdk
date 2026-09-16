@@ -10,6 +10,12 @@ main: kit: entity: status: {
       name: "load"
       points: [
         {
+          contract: {
+            id: "GET /"
+            json: "{\"operationId\":\"status\",\"parameters\":[],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"text/html\":{\"schema\":{\"type\":\"string\"}}},\"description\":\"API is running\"},\"500\":{\"content\":{\"text/html\":{\"schema\":{\"type\":\"string\"}}},\"description\":\"API is not functioning properly\"}},\"securitySchemes\":{\"BearerTokenAuth\":{\"bearerFormat\":\"JWT\",\"scheme\":\"bearer\",\"type\":\"http\"},\"CookieAuth\":{\"in\":\"cookie\",\"name\":\"hanko\",\"type\":\"apiKey\"}},\"securitySource\":\"unspecified\"}"
+            source: "openapi3"
+            version: 1
+          }
           method: "GET"
           orig: "/"
           transform: {

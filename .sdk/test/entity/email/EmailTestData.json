@@ -37,5 +37,460 @@
         "is_verified": false
       }
     }
+  },
+  "requests": {
+    "POST /emails": {
+      "provenance": "operation-contract",
+      "contract": {
+        "operationId": "createEmail",
+        "parameters": [],
+        "protocol": "http",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "address": {
+                    "format": "email",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "address"
+                ],
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Email successfully added"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 400,
+                  "message": "Bad Request"
+                },
+                "schema": {
+                  "properties": {
+                    "code": {
+                      "format": "int32",
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Bad Request"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 409,
+                  "message": "Conflict"
+                },
+                "schema": {
+                  "properties": {
+                    "code": {
+                      "format": "int32",
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 500,
+                  "message": "Internal Server Error"
+                },
+                "schema": {
+                  "properties": {
+                    "code": {
+                      "format": "int32",
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "CookieAuth": []
+          },
+          {
+            "BearerTokenAuth": []
+          }
+        ],
+        "securitySchemes": {
+          "BearerTokenAuth": {
+            "bearerFormat": "JWT",
+            "scheme": "bearer",
+            "type": "http"
+          },
+          "CookieAuth": {
+            "in": "cookie",
+            "name": "hanko",
+            "type": "apiKey"
+          }
+        },
+        "securitySource": "operation"
+      }
+    },
+    "GET /emails": {
+      "provenance": "operation-contract",
+      "contract": {
+        "operationId": "listEmails",
+        "parameters": [],
+        "protocol": "http",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": [
+                    {
+                      "address": "john.doe@example.com",
+                      "id": "5333cc5b-c7c4-48cf-8248-9c184ac72b65",
+                      "is_primary": false,
+                      "is_verified": true
+                    }
+                  ],
+                  "items": {
+                    "properties": {
+                      "address": {
+                        "description": "The email address",
+                        "format": "email",
+                        "type": "string"
+                      },
+                      "id": {
+                        "allOf": [
+                          {
+                            "example": "c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c",
+                            "format": "uuid4",
+                            "type": "string"
+                          }
+                        ],
+                        "description": "The ID of the email address"
+                      },
+                      "identities": {
+                        "allOf": [
+                          {
+                            "description": "The user's third party connections/identities.",
+                            "items": {
+                              "description": "Representation of a user's third party connection/identity.",
+                              "properties": {
+                                "id": {
+                                  "description": "The ID of the user at the provider",
+                                  "type": "string"
+                                },
+                                "identity_id": {
+                                  "description": "The identity's ID",
+                                  "format": "uuid4",
+                                  "type": "string"
+                                },
+                                "provider": {
+                                  "description": "Contains the display name of the provider, if available. Otherwise contains the provider ID.\n",
+                                  "type": "string"
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "type": "array"
+                          },
+                          {
+                            "deprecated": true
+                          },
+                          {
+                            "description": "Deprecated, use `user.identities` instead."
+                          }
+                        ]
+                      },
+                      "identity": {
+                        "allOf": [
+                          {
+                            "description": "Representation of a user's third party connection/identity.",
+                            "properties": {
+                              "id": {
+                                "description": "The ID of the user at the provider",
+                                "type": "string"
+                              },
+                              "identity_id": {
+                                "description": "The identity's ID",
+                                "format": "uuid4",
+                                "type": "string"
+                              },
+                              "provider": {
+                                "description": "Contains the display name of the provider, if available. Otherwise contains the provider ID.\n",
+                                "type": "string"
+                              }
+                            },
+                            "type": "object"
+                          },
+                          {
+                            "deprecated": true
+                          },
+                          {
+                            "description": "Deprecated, use `user.identities` instead."
+                          }
+                        ]
+                      },
+                      "is_primary": {
+                        "description": "Indicates it's the primary email address.",
+                        "type": "boolean"
+                      },
+                      "is_verified": {
+                        "description": "Indicated the email has been verified.",
+                        "type": "boolean"
+                      }
+                    },
+                    "type": "object"
+                  },
+                  "type": "array"
+                }
+              }
+            },
+            "description": "A list of emails assigned to the current user"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 401,
+                  "message": "Unauthorized"
+                },
+                "schema": {
+                  "properties": {
+                    "code": {
+                      "format": "int32",
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 500,
+                  "message": "Internal Server Error"
+                },
+                "schema": {
+                  "properties": {
+                    "code": {
+                      "format": "int32",
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "CookieAuth": []
+          },
+          {
+            "BearerTokenAuth": []
+          }
+        ],
+        "securitySchemes": {
+          "BearerTokenAuth": {
+            "bearerFormat": "JWT",
+            "scheme": "bearer",
+            "type": "http"
+          },
+          "CookieAuth": {
+            "in": "cookie",
+            "name": "hanko",
+            "type": "apiKey"
+          }
+        },
+        "securitySource": "operation"
+      }
+    },
+    "DELETE /emails/{id}": {
+      "provenance": "operation-contract",
+      "contract": {
+        "operationId": "deleteEmail",
+        "parameters": [
+          {
+            "description": "ID of the email address",
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "example": "c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c",
+              "format": "uuid4",
+              "type": "string"
+            }
+          }
+        ],
+        "protocol": "http",
+        "responses": {
+          "201": {
+            "description": "Email has been deleted"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 401,
+                  "message": "Unauthorized"
+                },
+                "schema": {
+                  "properties": {
+                    "code": {
+                      "format": "int32",
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 409,
+                  "message": "Conflict"
+                },
+                "schema": {
+                  "properties": {
+                    "code": {
+                      "format": "int32",
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 500,
+                  "message": "Internal Server Error"
+                },
+                "schema": {
+                  "properties": {
+                    "code": {
+                      "format": "int32",
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "CookieAuth": []
+          },
+          {
+            "BearerTokenAuth": []
+          }
+        ],
+        "securitySchemes": {
+          "BearerTokenAuth": {
+            "bearerFormat": "JWT",
+            "scheme": "bearer",
+            "type": "http"
+          },
+          "CookieAuth": {
+            "in": "cookie",
+            "name": "hanko",
+            "type": "apiKey"
+          }
+        },
+        "securitySource": "operation"
+      }
+    }
   }
 }
