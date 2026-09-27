@@ -20,8 +20,6 @@ var NewTestFeatureFunc func() Feature
 
 var NewTimeoutFeatureFunc func() Feature
 
-var NewCreateUserResponseObjectEntityFunc func(client *HankoPublicSDK, entopts map[string]any) HankoPublicEntity
-
 var NewCredentialEntityFunc func(client *HankoPublicSDK, entopts map[string]any) HankoPublicEntity
 
 var NewCredentialCreationOptionEntityFunc func(client *HankoPublicSDK, entopts map[string]any) HankoPublicEntity
@@ -30,11 +28,9 @@ var NewCredentialRequestOptionEntityFunc func(client *HankoPublicSDK, entopts ma
 
 var NewEmailEntityFunc func(client *HankoPublicSDK, entopts map[string]any) HankoPublicEntity
 
-var NewEmailManagementEntityFunc func(client *HankoPublicSDK, entopts map[string]any) HankoPublicEntity
-
 var NewHankoConfigurationEntityFunc func(client *HankoPublicSDK, entopts map[string]any) HankoPublicEntity
 
-var NewJsonWebKeySetEntityFunc func(client *HankoPublicSDK, entopts map[string]any) HankoPublicEntity
+var NewJsonWebKeyEntityFunc func(client *HankoPublicSDK, entopts map[string]any) HankoPublicEntity
 
 var NewPasscodeEntityFunc func(client *HankoPublicSDK, entopts map[string]any) HankoPublicEntity
 

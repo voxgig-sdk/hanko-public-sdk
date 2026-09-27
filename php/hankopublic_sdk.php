@@ -341,24 +341,6 @@ class HankoPublicSDK
     }
 
 
-    private $_create_user_response_object = null;
-
-    // Canonical facade: $client->CreateUserResponseObject()->list() / ->load(["id" => ...]).
-    // PHP method names are case-insensitive, so lowercase $client->create_user_response_object()
-    // resolves here too.
-    public function CreateUserResponseObject($data = null)
-    {
-        require_once __DIR__ . '/entity/create_user_response_object_entity.php';
-        if ($data === null) {
-            if ($this->_create_user_response_object === null) {
-                $this->_create_user_response_object = new CreateUserResponseObjectEntity($this, null);
-            }
-            return $this->_create_user_response_object;
-        }
-        return new CreateUserResponseObjectEntity($this, $data);
-    }
-
-
     private $_credential = null;
 
     // Canonical facade: $client->Credential()->list() / ->load(["id" => ...]).
@@ -431,24 +413,6 @@ class HankoPublicSDK
     }
 
 
-    private $_email_management = null;
-
-    // Canonical facade: $client->EmailManagement()->list() / ->load(["id" => ...]).
-    // PHP method names are case-insensitive, so lowercase $client->email_management()
-    // resolves here too.
-    public function EmailManagement($data = null)
-    {
-        require_once __DIR__ . '/entity/email_management_entity.php';
-        if ($data === null) {
-            if ($this->_email_management === null) {
-                $this->_email_management = new EmailManagementEntity($this, null);
-            }
-            return $this->_email_management;
-        }
-        return new EmailManagementEntity($this, $data);
-    }
-
-
     private $_hanko_configuration = null;
 
     // Canonical facade: $client->HankoConfiguration()->list() / ->load(["id" => ...]).
@@ -467,21 +431,21 @@ class HankoPublicSDK
     }
 
 
-    private $_json_web_key_set = null;
+    private $_json_web_key = null;
 
-    // Canonical facade: $client->JsonWebKeySet()->list() / ->load(["id" => ...]).
-    // PHP method names are case-insensitive, so lowercase $client->json_web_key_set()
+    // Canonical facade: $client->JsonWebKey()->list() / ->load(["id" => ...]).
+    // PHP method names are case-insensitive, so lowercase $client->json_web_key()
     // resolves here too.
-    public function JsonWebKeySet($data = null)
+    public function JsonWebKey($data = null)
     {
-        require_once __DIR__ . '/entity/json_web_key_set_entity.php';
+        require_once __DIR__ . '/entity/json_web_key_entity.php';
         if ($data === null) {
-            if ($this->_json_web_key_set === null) {
-                $this->_json_web_key_set = new JsonWebKeySetEntity($this, null);
+            if ($this->_json_web_key === null) {
+                $this->_json_web_key = new JsonWebKeyEntity($this, null);
             }
-            return $this->_json_web_key_set;
+            return $this->_json_web_key;
         }
-        return new JsonWebKeySetEntity($this, $data);
+        return new JsonWebKeyEntity($this, $data);
     }
 
 

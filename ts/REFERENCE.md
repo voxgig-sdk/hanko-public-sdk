@@ -49,18 +49,6 @@ const client = HankoPublicSDK.test()
 
 ### Instance Methods
 
-#### `CreateUserResponseObject(data?: object)`
-
-Create a new `CreateUserResponseObject` entity instance.
-
-**Parameters:**
-
-| Name | Type | Description |
-| --- | --- | --- |
-| `data` | `object` | Initial entity data. |
-
-**Returns:** `CreateUserResponseObjectEntity` instance.
-
 #### `Credential(data?: object)`
 
 Create a new `Credential` entity instance.
@@ -109,18 +97,6 @@ Create a new `Email` entity instance.
 
 **Returns:** `EmailEntity` instance.
 
-#### `EmailManagement(data?: object)`
-
-Create a new `EmailManagement` entity instance.
-
-**Parameters:**
-
-| Name | Type | Description |
-| --- | --- | --- |
-| `data` | `object` | Initial entity data. |
-
-**Returns:** `EmailManagementEntity` instance.
-
 #### `HankoConfiguration(data?: object)`
 
 Create a new `HankoConfiguration` entity instance.
@@ -133,9 +109,9 @@ Create a new `HankoConfiguration` entity instance.
 
 **Returns:** `HankoConfigurationEntity` instance.
 
-#### `JsonWebKeySet(data?: object)`
+#### `JsonWebKey(data?: object)`
 
-Create a new `JsonWebKeySet` entity instance.
+Create a new `JsonWebKey` entity instance.
 
 **Parameters:**
 
@@ -143,7 +119,7 @@ Create a new `JsonWebKeySet` entity instance.
 | --- | --- | --- |
 | `data` | `object` | Initial entity data. |
 
-**Returns:** `JsonWebKeySetEntity` instance.
+**Returns:** `JsonWebKeyEntity` instance.
 
 #### `Passcode(data?: object)`
 
@@ -319,40 +295,6 @@ same parameters as `direct()`.
 Alias for `HankoPublicSDK.test()`.
 
 **Returns:** `HankoPublicSDK` instance in test mode.
-
-
----
-
-## CreateUserResponseObjectEntity
-
-```ts
-const create_user_response_object = client.CreateUserResponseObject()
-```
-
-### Common Methods
-
-#### `data(data?: object)`
-
-Get or set the entity data. When called with data, sets the entity's
-internal data and returns the current data. When called without
-arguments, returns a copy of the current data.
-
-#### `match(match?: object)`
-
-Get or set the entity match criteria. Works the same as `data()`.
-
-#### `make()`
-
-Create a new `CreateUserResponseObjectEntity` instance with the same client and
-options.
-
-#### `client()`
-
-Return the parent `HankoPublicSDK` instance.
-
-#### `entopts()`
-
-Return a copy of the entity options.
 
 
 ---
@@ -558,6 +500,26 @@ const email = client.Email()
 | `is_primary` | - | - | - |
 | `is_verified` | - | - | - |
 
+### Actions
+
+This entity exposes custom API actions in addition to the standard
+operations. Select one with `$action` in the call's argument; the
+remaining keys are sent as that action's payload.
+
+| Action | Route | Call |
+| --- | --- | --- |
+| `set_primary` | `/emails/{id}/set_primary` | `client.Email().create({ $action: 'set_primary', ... })` |
+
+An action returns that action's OWN response, which is not necessarily a
+Email record — check the API definition for its shape.
+
+```ts
+const result = await client.Email().create({
+  $action: 'set_primary',
+  /* ...the action's own arguments */
+})
+```
+
 ### Operations
 
 #### `create(data: object, ctrl?: object)`
@@ -601,78 +563,6 @@ Get or set the entity match criteria. Works the same as `data()`.
 #### `make()`
 
 Create a new `EmailEntity` instance with the same client and
-options.
-
-#### `client()`
-
-Return the parent `HankoPublicSDK` instance.
-
-#### `entopts()`
-
-Return a copy of the entity options.
-
-
----
-
-## EmailManagementEntity
-
-```ts
-const email_management = client.EmailManagement()
-```
-
-### Fields
-
-| Field | Type | Required | Description |
-| --- | --- | --- | --- |
-| `id` | `string` | No |  |
-
-### Actions
-
-This entity exposes custom API actions in addition to the standard
-operations. Select one with `$action` in the call's argument; the
-remaining keys are sent as that action's payload.
-
-| Action | Route | Call |
-| --- | --- | --- |
-| `set_primary` | `/emails/{id}/set_primary` | `client.EmailManagement().create({ $action: 'set_primary', ... })` |
-
-An action returns that action's OWN response, which is not necessarily a
-EmailManagement record — check the API definition for its shape.
-
-```ts
-const result = await client.EmailManagement().create({
-  $action: 'set_primary',
-  /* ...the action's own arguments */
-})
-```
-
-### Operations
-
-#### `create(data: object, ctrl?: object)`
-
-Create a new entity with the given data.
-
-```ts
-const result = await client.EmailManagement().create({
-  id: 'example_id',
-})
-```
-
-### Common Methods
-
-#### `data(data?: object)`
-
-Get or set the entity data. When called with data, sets the entity's
-internal data and returns the current data. When called without
-arguments, returns a copy of the current data.
-
-#### `match(match?: object)`
-
-Get or set the entity match criteria. Works the same as `data()`.
-
-#### `make()`
-
-Create a new `EmailManagementEntity` instance with the same client and
 options.
 
 #### `client()`
@@ -738,10 +628,10 @@ Return a copy of the entity options.
 
 ---
 
-## JsonWebKeySetEntity
+## JsonWebKeyEntity
 
 ```ts
-const json_web_key_set = client.JsonWebKeySet()
+const json_web_key = client.JsonWebKey()
 ```
 
 ### Fields
@@ -762,7 +652,7 @@ const json_web_key_set = client.JsonWebKeySet()
 List entities matching the given criteria. Returns an array.
 
 ```ts
-const results = await client.JsonWebKeySet().list()
+const results = await client.JsonWebKey().list()
 ```
 
 ### Common Methods
@@ -779,7 +669,7 @@ Get or set the entity match criteria. Works the same as `data()`.
 
 #### `make()`
 
-Create a new `JsonWebKeySetEntity` instance with the same client and
+Create a new `JsonWebKeyEntity` instance with the same client and
 options.
 
 #### `client()`
@@ -1532,14 +1422,14 @@ Return a copy of the entity options.
 
 | Feature | Version | Description |
 | --- | --- | --- |
-| `debug` | 0.0.1 | Request/response capture ring buffer for debugging |
-| `idempotency` | 0.0.1 | Idempotency keys for safe retries of mutating operations |
-| `metrics` | 0.0.1 | Statistics capture: per-operation counters and latency |
-| `paging` | 0.0.1 | Pagination signals for list operations |
-| `ratelimit` | 0.0.1 | Client-side rate limiting via a token bucket |
-| `retry` | 0.0.1 | Automatic retry of transient failures with exponential backoff |
-| `test` | 0.0.1 | In-memory mock transport for testing without a live server |
-| `timeout` | 0.0.1 | Per-request timeout with transport abort |
+| `debug` | 0.0.1 | Debug capture |
+| `idempotency` | 0.0.1 | Idempotency |
+| `metrics` | 0.0.1 | Metrics |
+| `paging` | 0.0.1 | Paging |
+| `ratelimit` | 0.0.1 | Rate limiting |
+| `retry` | 0.0.1 | Retry |
+| `test` | 0.0.1 | Test transport |
+| `timeout` | 0.0.1 | Timeout |
 
 
 Features are activated via the `feature` option:
@@ -1585,7 +1475,7 @@ rather than the transport, so their order does not affect what they observe.
 
 #### `debug`
 
-Request/response capture ring buffer for debugging.
+Debug capture.
 
 **Configuration**
 
@@ -1616,7 +1506,7 @@ its default unless you name it.
 
 #### `idempotency`
 
-Idempotency keys for safe retries of mutating operations.
+Idempotency.
 
 **Configuration**
 
@@ -1647,7 +1537,7 @@ its default unless you name it.
 
 #### `metrics`
 
-Statistics capture: per-operation counters and latency.
+Metrics.
 
 **Configuration**
 
@@ -1675,7 +1565,7 @@ its default unless you name it.
 
 #### `paging`
 
-Pagination signals for list operations.
+Paging.
 
 **Configuration**
 
@@ -1710,7 +1600,7 @@ its default unless you name it.
 
 #### `ratelimit`
 
-Client-side rate limiting via a token bucket.
+Rate limiting.
 
 **Configuration**
 
@@ -1741,7 +1631,7 @@ its default unless you name it.
 
 #### `retry`
 
-Automatic retry of transient failures with exponential backoff.
+Retry.
 
 **Configuration**
 
@@ -1775,7 +1665,7 @@ its default unless you name it.
 
 #### `test`
 
-In-memory mock transport for testing without a live server.
+Test transport.
 
 **Configuration**
 
@@ -1806,7 +1696,7 @@ its default unless you name it.
 
 #### `timeout`
 
-Per-request timeout with transport abort.
+Timeout.
 
 **Configuration**
 

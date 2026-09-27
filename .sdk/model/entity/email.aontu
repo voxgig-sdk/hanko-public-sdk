@@ -1,0 +1,199 @@
+# Entity: email
+
+main: kit: entity: email: {
+
+  alias: field: {}
+
+  fields: {
+    address: {
+      fo: "email"
+      h: "Address"
+      n: "address"
+      op: {
+        list: {
+          req: false
+          type: "`$STRING`"
+        }
+      }
+      r: true
+      sh: "The email address"
+      t: "`$STRING`"
+    }
+    id: {
+      h: "Id"
+      n: "id"
+      r: false
+      sh: "The ID of the email address"
+      t: "`$STRING`"
+    }
+    identities: {
+      h: "Identities"
+      n: "identities"
+      r: false
+      t: "`$ANY`"
+    }
+    identity: {
+      h: "Identity"
+      n: "identity"
+      r: false
+      t: "`$ANY`"
+    }
+    is_primary: {
+      h: "Is Primary"
+      n: "is_primary"
+      r: false
+      sh: "Indicates it's the primary email address."
+      t: "`$BOOLEAN`"
+    }
+    is_verified: {
+      h: "Is Verified"
+      n: "is_verified"
+      r: false
+      sh: "Indicated the email has been verified."
+      t: "`$BOOLEAN`"
+    }
+  }
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "email"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          co: {
+            id: "POST /emails/{id}/set_primary"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                ex: "c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c"
+                k: "param"
+                n: "id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "POST"
+          o: "/emails/{id}/set_primary"
+          q: {
+            "$action": "set_primary"
+            exist: [
+              "id"
+            ]
+          }
+          s: [
+            {
+              lit: "emails"
+            }
+            {
+              var: "id"
+            }
+            {
+              lit: "set_primary"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "POST /emails"
+            source: "openapi3"
+            version: 2
+          }
+          m: "POST"
+          o: "/emails"
+          s: [
+            {
+              lit: "emails"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    list: {
+      name: "list"
+      points: [
+        {
+          co: {
+            id: "GET /emails"
+            source: "openapi3"
+            version: 2
+          }
+          m: "GET"
+          o: "/emails"
+          s: [
+            {
+              lit: "emails"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      points: [
+        {
+          co: {
+            id: "DELETE /emails/{id}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                ex: "c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c"
+                k: "param"
+                n: "id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/emails/{id}"
+          q: {
+            exist: [
+              "id"
+            ]
+          }
+          s: [
+            {
+              lit: "emails"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

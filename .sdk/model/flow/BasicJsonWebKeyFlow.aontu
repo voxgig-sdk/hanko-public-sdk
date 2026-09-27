@@ -1,0 +1,22 @@
+# BasicJsonWebKeyFlow
+
+main: kit: flow: BasicJsonWebKeyFlow:
+{
+  entity: "json_web_key",
+  kind: "basic",
+  name: "BasicJsonWebKeyFlow",
+  step: [
+    {
+      o: "list",
+      v: [
+        {
+          apply: "ItemExists",
+          def: {
+            ref: "json_web_key_ref01"
+          }
+        }
+      ]
+    }
+  ],
+  "key$": "BasicJsonWebKeyFlow"
+}

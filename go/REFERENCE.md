@@ -48,10 +48,6 @@ client := sdk.TestSDK(testopts, sdkopts)
 
 ### Instance Methods
 
-#### `CreateUserResponseObject(data map[string]any) HankoPublicEntity`
-
-Create a new `CreateUserResponseObject` entity instance. Pass `nil` for no initial data.
-
 #### `Credential(data map[string]any) HankoPublicEntity`
 
 Create a new `Credential` entity instance. Pass `nil` for no initial data.
@@ -68,17 +64,13 @@ Create a new `CredentialRequestOption` entity instance. Pass `nil` for no initia
 
 Create a new `Email` entity instance. Pass `nil` for no initial data.
 
-#### `EmailManagement(data map[string]any) HankoPublicEntity`
-
-Create a new `EmailManagement` entity instance. Pass `nil` for no initial data.
-
 #### `HankoConfiguration(data map[string]any) HankoPublicEntity`
 
 Create a new `HankoConfiguration` entity instance. Pass `nil` for no initial data.
 
-#### `JsonWebKeySet(data map[string]any) HankoPublicEntity`
+#### `JsonWebKey(data map[string]any) HankoPublicEntity`
 
-Create a new `JsonWebKeySet` entity instance. Pass `nil` for no initial data.
+Create a new `JsonWebKey` entity instance. Pass `nil` for no initial data.
 
 #### `Passcode(data map[string]any) HankoPublicEntity`
 
@@ -156,37 +148,6 @@ Prepare a fetch definition without sending the request. Accepts the
 same parameters as `Direct()`.
 
 **Returns:** `(map[string]any, error)`
-
-
----
-
-## CreateUserResponseObjectEntity
-
-```go
-createUserResponseObject := client.CreateUserResponseObject(nil)
-fmt.Println(createUserResponseObject.GetName()) // "create_user_response_object"
-```
-
-### Common Methods
-
-#### `Data(args ...any) any`
-
-Get or set the entity data. When called with data, sets the entity's
-internal data and returns the current data. When called without
-arguments, returns a copy of the current data.
-
-#### `Match(args ...any) any`
-
-Get or set the entity match criteria. Works the same as `Data()`.
-
-#### `Make() Entity`
-
-Create a new `CreateUserResponseObjectEntity` instance with the same client and
-options.
-
-#### `GetName() string`
-
-Return the entity name.
 
 
 ---
@@ -460,59 +421,6 @@ Return the entity name.
 
 ---
 
-## EmailManagementEntity
-
-```go
-emailManagement := client.EmailManagement(nil)
-fmt.Println(emailManagement.GetName()) // "email_management"
-```
-
-### Fields
-
-| Field | Type | Required | Description |
-| --- | --- | --- | --- |
-| `id` | `string` | No |  |
-
-### Operations
-
-#### `Create(reqdata, ctrl map[string]any) (any, error)`
-
-Create a new entity with the given data.
-
-```go
-result, err := client.EmailManagement(nil).Create(map[string]any{
-    "id": "example_id",
-}, nil)
-if err != nil {
-    panic(err)
-}
-fmt.Println(result)
-```
-
-### Common Methods
-
-#### `Data(args ...any) any`
-
-Get or set the entity data. When called with data, sets the entity's
-internal data and returns the current data. When called without
-arguments, returns a copy of the current data.
-
-#### `Match(args ...any) any`
-
-Get or set the entity match criteria. Works the same as `Data()`.
-
-#### `Make() Entity`
-
-Create a new `EmailManagementEntity` instance with the same client and
-options.
-
-#### `GetName() string`
-
-Return the entity name.
-
-
----
-
 ## HankoConfigurationEntity
 
 ```go
@@ -566,11 +474,11 @@ Return the entity name.
 
 ---
 
-## JsonWebKeySetEntity
+## JsonWebKeyEntity
 
 ```go
-jsonWebKeySet := client.JsonWebKeySet(nil)
-fmt.Println(jsonWebKeySet.GetName()) // "json_web_key_set"
+jsonWebKey := client.JsonWebKey(nil)
+fmt.Println(jsonWebKey.GetName()) // "json_web_key"
 ```
 
 ### Fields
@@ -591,7 +499,7 @@ fmt.Println(jsonWebKeySet.GetName()) // "json_web_key_set"
 List entities matching the given criteria. Returns an array.
 
 ```go
-results, err := client.JsonWebKeySet(nil).List(nil, nil)
+results, err := client.JsonWebKey(nil).List(nil, nil)
 if err != nil {
     panic(err)
 }
@@ -612,7 +520,7 @@ Get or set the entity match criteria. Works the same as `Data()`.
 
 #### `Make() Entity`
 
-Create a new `JsonWebKeySetEntity` instance with the same client and
+Create a new `JsonWebKeyEntity` instance with the same client and
 options.
 
 #### `GetName() string`
@@ -1362,14 +1270,14 @@ Return the entity name.
 
 | Feature | Version | Description |
 | --- | --- | --- |
-| `debug` | 0.0.1 | Request/response capture ring buffer for debugging |
-| `idempotency` | 0.0.1 | Idempotency keys for safe retries of mutating operations |
-| `metrics` | 0.0.1 | Statistics capture: per-operation counters and latency |
-| `paging` | 0.0.1 | Pagination signals for list operations |
-| `ratelimit` | 0.0.1 | Client-side rate limiting via a token bucket |
-| `retry` | 0.0.1 | Automatic retry of transient failures with exponential backoff |
-| `test` | 0.0.1 | In-memory mock transport for testing without a live server |
-| `timeout` | 0.0.1 | Per-request timeout with transport abort |
+| `debug` | 0.0.1 | Debug capture |
+| `idempotency` | 0.0.1 | Idempotency |
+| `metrics` | 0.0.1 | Metrics |
+| `paging` | 0.0.1 | Paging |
+| `ratelimit` | 0.0.1 | Rate limiting |
+| `retry` | 0.0.1 | Retry |
+| `test` | 0.0.1 | Test transport |
+| `timeout` | 0.0.1 | Timeout |
 
 
 Features are activated via the `feature` option:
@@ -1415,7 +1323,7 @@ rather than the transport, so their order does not affect what they observe.
 
 #### `debug`
 
-Request/response capture ring buffer for debugging.
+Debug capture.
 
 **Configuration**
 
@@ -1446,7 +1354,7 @@ its default unless you name it.
 
 #### `idempotency`
 
-Idempotency keys for safe retries of mutating operations.
+Idempotency.
 
 **Configuration**
 
@@ -1477,7 +1385,7 @@ its default unless you name it.
 
 #### `metrics`
 
-Statistics capture: per-operation counters and latency.
+Metrics.
 
 **Configuration**
 
@@ -1505,7 +1413,7 @@ its default unless you name it.
 
 #### `paging`
 
-Pagination signals for list operations.
+Paging.
 
 **Configuration**
 
@@ -1540,7 +1448,7 @@ its default unless you name it.
 
 #### `ratelimit`
 
-Client-side rate limiting via a token bucket.
+Rate limiting.
 
 **Configuration**
 
@@ -1571,7 +1479,7 @@ its default unless you name it.
 
 #### `retry`
 
-Automatic retry of transient failures with exponential backoff.
+Retry.
 
 **Configuration**
 
@@ -1605,7 +1513,7 @@ its default unless you name it.
 
 #### `test`
 
-In-memory mock transport for testing without a live server.
+Test transport.
 
 **Configuration**
 
@@ -1636,7 +1544,7 @@ its default unless you name it.
 
 #### `timeout`
 
-Per-request timeout with transport abort.
+Timeout.
 
 **Configuration**
 

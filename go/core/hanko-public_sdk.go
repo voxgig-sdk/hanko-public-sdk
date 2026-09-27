@@ -264,7 +264,6 @@ func (sdk *HankoPublicSDK) rawRequest(fetchargs map[string]any) (map[string]any,
 		if !noBody {
 			if jf := vs.GetProp(fm, "json"); jf != nil {
 				if f, ok := jf.(func() any); ok {
-					// f() returns nil on parse error in our fetcher.
 					jsonData = f()
 				}
 			}
@@ -281,17 +280,6 @@ func (sdk *HankoPublicSDK) rawRequest(fetchargs map[string]any) (map[string]any,
 	return map[string]any{"ok": false, "err": ctx.MakeError("direct_invalid", "invalid response type")}, nil
 }
 
-// Raw GraphQL access: the pressure valve that makes the generated surface's
-// deliberate omissions (per-call selection sets, typed filter builders,
-// batching, subscriptions) livable — the whole schema stays reachable.
-//
-// Thin wrapper over the same prepare/fetch path Direct uses, with the one
-// thing raw Direct cannot do for GraphQL: a GraphQL failure rides HTTP 200
-// as a top-level `errors` array, so status alone would report a failed query
-// as ok.
-//
-// NOTE: like Direct, this bypasses the feature pipeline — no retry,
-// ratelimit or paging features apply.
 func (sdk *HankoPublicSDK) Graphql(
 	query string, variables map[string]any, ctrl map[string]any,
 ) (map[string]any, error) {
@@ -338,14 +326,6 @@ func (sdk *HankoPublicSDK) Graphql(
 }
 
 
-// CreateUserResponseObject returns a CreateUserResponseObject entity bound to this client.
-// Idiomatic usage: client.CreateUserResponseObject(nil).List(nil, nil) or
-// client.CreateUserResponseObject(nil).Load(map[string]any{"id": ...}, nil).
-func (sdk *HankoPublicSDK) CreateUserResponseObject(data map[string]any) HankoPublicEntity {
-	return NewCreateUserResponseObjectEntityFunc(sdk, data)
-}
-
-
 // Credential returns a Credential entity bound to this client.
 // Idiomatic usage: client.Credential(nil).List(nil, nil) or
 // client.Credential(nil).Load(map[string]any{"id": ...}, nil).
@@ -378,14 +358,6 @@ func (sdk *HankoPublicSDK) Email(data map[string]any) HankoPublicEntity {
 }
 
 
-// EmailManagement returns a EmailManagement entity bound to this client.
-// Idiomatic usage: client.EmailManagement(nil).List(nil, nil) or
-// client.EmailManagement(nil).Load(map[string]any{"id": ...}, nil).
-func (sdk *HankoPublicSDK) EmailManagement(data map[string]any) HankoPublicEntity {
-	return NewEmailManagementEntityFunc(sdk, data)
-}
-
-
 // HankoConfiguration returns a HankoConfiguration entity bound to this client.
 // Idiomatic usage: client.HankoConfiguration(nil).List(nil, nil) or
 // client.HankoConfiguration(nil).Load(map[string]any{"id": ...}, nil).
@@ -394,11 +366,11 @@ func (sdk *HankoPublicSDK) HankoConfiguration(data map[string]any) HankoPublicEn
 }
 
 
-// JsonWebKeySet returns a JsonWebKeySet entity bound to this client.
-// Idiomatic usage: client.JsonWebKeySet(nil).List(nil, nil) or
-// client.JsonWebKeySet(nil).Load(map[string]any{"id": ...}, nil).
-func (sdk *HankoPublicSDK) JsonWebKeySet(data map[string]any) HankoPublicEntity {
-	return NewJsonWebKeySetEntityFunc(sdk, data)
+// JsonWebKey returns a JsonWebKey entity bound to this client.
+// Idiomatic usage: client.JsonWebKey(nil).List(nil, nil) or
+// client.JsonWebKey(nil).Load(map[string]any{"id": ...}, nil).
+func (sdk *HankoPublicSDK) JsonWebKey(data map[string]any) HankoPublicEntity {
+	return NewJsonWebKeyEntityFunc(sdk, data)
 }
 
 

@@ -1,14 +1,43 @@
 package utility
 
 import (
+	"strings"
+
 	vs "github.com/voxgig-sdk/hanko-public-sdk/go/utility/struct"
 
 	"github.com/voxgig-sdk/hanko-public-sdk/go/core"
 )
 
-const headerAuth = "authorization"
+const credName = "hanko"
+const cookieHeader = "cookie"
 const optionApikey = "apikey"
 const notFound = "__NOTFOUND__"
+
+func cookieSet(headers map[string]any, value any) {
+	kept := []string{}
+
+	if existing, ok := headers[cookieHeader].(string); ok && existing != "" {
+		for _, part := range strings.Split(existing, ";") {
+			piece := strings.TrimSpace(part)
+			if piece == "" || piece == credName ||
+				strings.HasPrefix(piece, credName+"=") {
+				continue
+			}
+			kept = append(kept, piece)
+		}
+	}
+
+	if value != nil {
+		valStr, _ := value.(string)
+		kept = append(kept, credName+"="+valStr)
+	}
+
+	if len(kept) == 0 {
+		delete(headers, cookieHeader)
+	} else {
+		headers[cookieHeader] = strings.Join(kept, "; ")
+	}
+}
 
 func prepareAuthUtil(ctx *core.Context) (*core.Spec, error) {
 	spec := ctx.Spec
@@ -22,7 +51,7 @@ func prepareAuthUtil(ctx *core.Context) (*core.Spec, error) {
 
 	// Public APIs that need no auth omit the options.auth block entirely.
 	if options["auth"] == nil {
-		delete(headers, headerAuth)
+		cookieSet(headers, nil)
 		return spec, nil
 	}
 
@@ -37,22 +66,13 @@ func prepareAuthUtil(ctx *core.Context) (*core.Spec, error) {
 	}
 
 	if skip {
-		delete(headers, headerAuth)
+		cookieSet(headers, nil)
 	} else {
-		authPrefix := ""
-		if ap := vs.GetPath(options, []any{"auth", "prefix"}); ap != nil {
-			authPrefix, _ = ap.(string)
-		}
 		apikeyVal := ""
 		if av, ok := apikey.(string); ok {
 			apikeyVal = av
 		}
-		// Empty prefix (raw apiKey credential) must not add a leading space.
-		if authPrefix == "" {
-			headers[headerAuth] = apikeyVal
-		} else {
-			headers[headerAuth] = authPrefix + " " + apikeyVal
-		}
+		cookieSet(headers, apikeyVal)
 	}
 
 	return spec, nil

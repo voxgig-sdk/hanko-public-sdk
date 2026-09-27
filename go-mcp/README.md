@@ -129,7 +129,7 @@ Both tools take the same argument object:
 
 | Field | Type | Notes |
 |-------|------|-------|
-| `entity` | string | One of the 19 supported entities (see below). |
+| `entity` | string | One of the 17 supported entities (see below). |
 | `query` | object | Optional match map. `{"id":N}` for load; omit or `{}` for list. |
 
 JSON schemas are emitted by the SDK from the `Args` struct's `json` /
@@ -151,9 +151,9 @@ JSON schemas are emitted by the SDK from the `Args` struct's `json` /
 
 ### Entities
 
-The 19 entities valid as the `entity` argument:
+The 17 entities valid as the `entity` argument:
 
-create_user_response_object | credential | credential_creation_option | credential_request_option | email | email_management | hanko_configuration | json_web_key_set | passcode | password | saml | session_management | status | third_party | token | user | user_management | web_authn | webauthn_login
+credential | credential_creation_option | credential_request_option | email | hanko_configuration | json_web_key | passcode | password | saml | session_management | status | third_party | token | user | user_management | web_authn | webauthn_login
 
 ### Smoke test via HTTP (raw JSON-RPC)
 

@@ -307,12 +307,6 @@ class HankoPublicSDK:
         return res
 
 
-    def CreateUserResponseObject(self, data=None) -> "CreateUserResponseObjectEntity":
-        """Entity factory: client.CreateUserResponseObject().list() / client.CreateUserResponseObject().load({"id": ...})."""
-        from hankopublic_sdk.entity.create_user_response_object_entity import CreateUserResponseObjectEntity
-        return CreateUserResponseObjectEntity(self, data)
-
-
     def Credential(self, data=None) -> "CredentialEntity":
         """Entity factory: client.Credential().list() / client.Credential().load({"id": ...})."""
         from hankopublic_sdk.entity.credential_entity import CredentialEntity
@@ -337,22 +331,16 @@ class HankoPublicSDK:
         return EmailEntity(self, data)
 
 
-    def EmailManagement(self, data=None) -> "EmailManagementEntity":
-        """Entity factory: client.EmailManagement().list() / client.EmailManagement().load({"id": ...})."""
-        from hankopublic_sdk.entity.email_management_entity import EmailManagementEntity
-        return EmailManagementEntity(self, data)
-
-
     def HankoConfiguration(self, data=None) -> "HankoConfigurationEntity":
         """Entity factory: client.HankoConfiguration().list() / client.HankoConfiguration().load({"id": ...})."""
         from hankopublic_sdk.entity.hanko_configuration_entity import HankoConfigurationEntity
         return HankoConfigurationEntity(self, data)
 
 
-    def JsonWebKeySet(self, data=None) -> "JsonWebKeySetEntity":
-        """Entity factory: client.JsonWebKeySet().list() / client.JsonWebKeySet().load({"id": ...})."""
-        from hankopublic_sdk.entity.json_web_key_set_entity import JsonWebKeySetEntity
-        return JsonWebKeySetEntity(self, data)
+    def JsonWebKey(self, data=None) -> "JsonWebKeyEntity":
+        """Entity factory: client.JsonWebKey().list() / client.JsonWebKey().load({"id": ...})."""
+        from hankopublic_sdk.entity.json_web_key_entity import JsonWebKeyEntity
+        return JsonWebKeyEntity(self, data)
 
 
     def Passcode(self, data=None) -> "PasscodeEntity":
@@ -448,14 +436,12 @@ class HankoPublicSDK:
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from hankopublic_sdk.entity.create_user_response_object_entity import CreateUserResponseObjectEntity
     from hankopublic_sdk.entity.credential_entity import CredentialEntity
     from hankopublic_sdk.entity.credential_creation_option_entity import CredentialCreationOptionEntity
     from hankopublic_sdk.entity.credential_request_option_entity import CredentialRequestOptionEntity
     from hankopublic_sdk.entity.email_entity import EmailEntity
-    from hankopublic_sdk.entity.email_management_entity import EmailManagementEntity
     from hankopublic_sdk.entity.hanko_configuration_entity import HankoConfigurationEntity
-    from hankopublic_sdk.entity.json_web_key_set_entity import JsonWebKeySetEntity
+    from hankopublic_sdk.entity.json_web_key_entity import JsonWebKeyEntity
     from hankopublic_sdk.entity.passcode_entity import PasscodeEntity
     from hankopublic_sdk.entity.password_entity import PasswordEntity
     from hankopublic_sdk.entity.saml_entity import SamlEntity

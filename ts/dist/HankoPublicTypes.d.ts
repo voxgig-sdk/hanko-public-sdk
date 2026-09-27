@@ -1,5 +1,3 @@
-export interface CreateUserResponseObject {
-}
 export interface Credential {
     aaguid?: string;
     attestation_type?: string;
@@ -83,17 +81,11 @@ export interface EmailCreateData {
     identity?: any;
     is_primary?: boolean;
     is_verified?: boolean;
+    $action?: string;
+    [action: string]: any;
 }
 export interface EmailRemoveMatch {
     id: string;
-}
-export interface EmailManagement {
-    id?: string;
-}
-export interface EmailManagementCreateData {
-    id: string;
-    $action?: string;
-    [action: string]: any;
 }
 export interface HankoConfiguration {
     account?: Record<string, any>;
@@ -105,7 +97,7 @@ export interface HankoConfigurationLoadMatch {
     emails?: Record<string, any>;
     password?: Record<string, any>;
 }
-export interface JsonWebKeySet {
+export interface JsonWebKey {
     alg?: string;
     e?: string;
     kid?: string;
@@ -113,7 +105,7 @@ export interface JsonWebKeySet {
     n?: string;
     use?: string;
 }
-export interface JsonWebKeySetListMatch {
+export interface JsonWebKeyListMatch {
     alg?: string;
     e?: string;
     kid?: string;

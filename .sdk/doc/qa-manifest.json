@@ -1,15 +1,13 @@
 {
   "files": [
     "SUMMARY.md",
-    "docs/api/create_user_response_object.html",
     "docs/api/credential.html",
     "docs/api/credential_creation_option.html",
     "docs/api/credential_request_option.html",
     "docs/api/email.html",
-    "docs/api/email_management.html",
     "docs/api/hanko_configuration.html",
     "docs/api/index.html",
-    "docs/api/json_web_key_set.html",
+    "docs/api/json_web_key.html",
     "docs/api/passcode.html",
     "docs/api/password.html",
     "docs/api/saml.html",

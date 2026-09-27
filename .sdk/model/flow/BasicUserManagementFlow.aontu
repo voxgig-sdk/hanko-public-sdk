@@ -1,0 +1,30 @@
+# BasicUserManagementFlow
+
+main: kit: flow: BasicUserManagementFlow:
+{
+  entity: "user_management",
+  kind: "basic",
+  name: "BasicUserManagementFlow",
+  step: [
+    {
+      i: {
+        ref: "user_management_ref01"
+      }
+
+      o: "create"
+    }
+
+    {
+      o: "list",
+      v: [
+        {
+          apply: "ItemExists",
+          def: {
+            ref: "user_management_ref01"
+          }
+        }
+      ]
+    }
+  ],
+  "key$": "BasicUserManagementFlow"
+}

@@ -1,12 +1,9 @@
 // Typed models for the HankoPublic SDK.
 //
-// GENERATED from the API model: main.kit.entity.<e>.fields[] and per-op
-// params (op.<name>.points[].args.params[]). Field/param types come from the
+// GENERATED from the API model: main.kit.entity.<e>.fields{} and per-op
+// params (op.<name>.points[].g.params[]). Field/param types come from the
 // canonical type sentinels via @voxgig/sdkgen canonToType (source of truth:
 // @voxgig/apidef VALID_CANON). Do not edit by hand.
-
-export interface CreateUserResponseObject {
-}
 
 export interface Credential {
   aaguid?: string
@@ -99,24 +96,16 @@ export interface EmailCreateData {
   identity?: any
   is_primary?: boolean
   is_verified?: boolean
-}
-
-export interface EmailRemoveMatch {
-  id: string
-}
-
-export interface EmailManagement {
-  id?: string
-}
-
-export interface EmailManagementCreateData {
-  id: string
 
   // Selects a custom action instead of the plain create:
   //   'set_primary'
   // The remaining keys are that action's own payload.
   $action?: string
   [action: string]: any
+}
+
+export interface EmailRemoveMatch {
+  id: string
 }
 
 export interface HankoConfiguration {
@@ -131,7 +120,7 @@ export interface HankoConfigurationLoadMatch {
   password?: Record<string, any>
 }
 
-export interface JsonWebKeySet {
+export interface JsonWebKey {
   alg?: string
   e?: string
   kid?: string
@@ -140,7 +129,7 @@ export interface JsonWebKeySet {
   use?: string
 }
 
-export interface JsonWebKeySetListMatch {
+export interface JsonWebKeyListMatch {
   alg?: string
   e?: string
   kid?: string

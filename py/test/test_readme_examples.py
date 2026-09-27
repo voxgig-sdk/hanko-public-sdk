@@ -76,14 +76,12 @@ _CLIENT_VARS = ("client", "sdk")
 
 # The API's capitalised semantic entities -> lowercase fixture key.
 _ENTITIES = {
-    "CreateUserResponseObject": "create_user_response_object",
     "Credential": "credential",
     "CredentialCreationOption": "credential_creation_option",
     "CredentialRequestOption": "credential_request_option",
     "Email": "email",
-    "EmailManagement": "email_management",
     "HankoConfiguration": "hanko_configuration",
-    "JsonWebKeySet": "json_web_key_set",
+    "JsonWebKey": "json_web_key",
     "Passcode": "passcode",
     "Password": "password",
     "Saml": "saml",

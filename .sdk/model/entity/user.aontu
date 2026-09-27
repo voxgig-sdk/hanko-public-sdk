@@ -1,0 +1,264 @@
+# Entity: user
+
+main: kit: entity: user: {
+
+  alias: field: {}
+
+  fields: {
+    created_at: {
+      fo: "date-time"
+      h: "Created At"
+      n: "created_at"
+      r: false
+      sh: "Time of creation of the the user"
+      t: "`$STRING`"
+    }
+    email: {
+      fo: "email"
+      h: "Email"
+      n: "email"
+      op: {
+        create: {
+          req: true
+          type: "`$STRING`"
+        }
+      }
+      r: false
+      sh: "The email address of the user"
+      t: "`$STRING`"
+    }
+    email_id: {
+      fo: "uuid4"
+      h: "Email Id"
+      n: "email_id"
+      r: false
+      sh: "The ID of the newly created email address"
+      t: "`$STRING`"
+    }
+    emails: {
+      h: "Emails"
+      n: "emails"
+      r: false
+      t: "`$ARRAY`"
+    }
+    family_name: {
+      h: "Family Name"
+      n: "family_name"
+      r: false
+      t: "`$STRING`"
+    }
+    given_name: {
+      h: "Given Name"
+      n: "given_name"
+      r: false
+      t: "`$STRING`"
+    }
+    has_webauthn_credential: {
+      h: "Has Webauthn Credential"
+      n: "has_webauthn_credential"
+      r: false
+      t: "`$BOOLEAN`"
+    }
+    id: {
+      de: true
+      fo: "uuid4"
+      h: "Id"
+      n: "id"
+      r: false
+      sh: "The ID of the user."
+      t: "`$STRING`"
+    }
+    metadata: {
+      h: "Metadata"
+      n: "metadata"
+      r: false
+      sh: "The public and unsafe metadata of a user"
+      t: "`$OBJECT`"
+    }
+    mfa_config: {
+      h: "Mfa Config"
+      n: "mfa_config"
+      r: false
+      t: "`$OBJECT`"
+    }
+    name: {
+      h: "Name"
+      n: "name"
+      r: false
+      t: "`$STRING`"
+    }
+    passkeys: {
+      h: "Passkeys"
+      n: "passkeys"
+      r: false
+      t: "`$ARRAY`"
+    }
+    picture: {
+      fo: "uri"
+      h: "Picture"
+      n: "picture"
+      r: false
+      t: "`$STRING`"
+    }
+    security_keys: {
+      h: "Security Keys"
+      n: "security_keys"
+      r: false
+      t: "`$ARRAY`"
+    }
+    updated_at: {
+      fo: "date-time"
+      h: "Updated At"
+      n: "updated_at"
+      r: false
+      sh: "Time of last update of the user"
+      t: "`$STRING`"
+    }
+    user_id: {
+      h: "User Id"
+      n: "user_id"
+      r: false
+      sh: "The ID of the user"
+      t: "`$STRING`"
+    }
+    username: {
+      h: "Username"
+      n: "username"
+      r: false
+      sh: "The username of the user"
+      t: "`$STRING`"
+    }
+    verified: {
+      h: "Verified"
+      n: "verified"
+      r: false
+      t: "`$BOOLEAN`"
+    }
+    webauthn_credentials: {
+      h: "Webauthn Credentials"
+      n: "webauthn_credentials"
+      r: false
+      sh: "A list of WebAuthn credentials"
+      t: "`$ARRAY`"
+    }
+  }
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "user"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          co: {
+            id: "POST /user"
+            source: "openapi3"
+            version: 2
+          }
+          m: "POST"
+          o: "/user"
+          s: [
+            {
+              lit: "user"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "POST /users"
+            source: "openapi3"
+            version: 2
+          }
+          m: "POST"
+          o: "/users"
+          s: [
+            {
+              lit: "users"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /users/{id}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                ex: "c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c"
+                k: "param"
+                n: "id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/users/{id}"
+          q: {
+            exist: [
+              "id"
+            ]
+          }
+          s: [
+            {
+              lit: "users"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      points: [
+        {
+          co: {
+            id: "DELETE /user"
+            source: "openapi3"
+            version: 2
+          }
+          m: "DELETE"
+          o: "/user"
+          s: [
+            {
+              lit: "user"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

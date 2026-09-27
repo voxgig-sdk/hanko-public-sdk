@@ -24,12 +24,6 @@ const FEATURE_CLASS: Record<string, typeof BaseFeature> = {
 }
 
 
-// Per-feature plugin DEFINITIONS (voxgig/plugin `Definition` values), from
-// the model's active plugin groups. A feature that takes a `plugins` option
-// (secrets over sekreto) reads its own entry; a feature with no plugins has
-// none. Named imports above make each definition statically reachable, so
-// an SDK carries exactly the plugin modules its model selects — the same
-// leanness the old side-effect registry imports bought, without a registry.
 const FEATURE_PLUGINS: Record<string, any[]> = {
   
 }
@@ -40,7 +34,6 @@ class Config {
   makeFeature(this: any, fn: string) {
     const fc = FEATURE_CLASS[fn]
     const fi = new fc()
-    // TODO: errors etc
     return fi
   }
 
@@ -55,7 +48,7 @@ class Config {
   main = {
     name: 'HankoPublic',
         slug: "hanko-public",
-    version: "0.0.1",
+    version: "0.1.1",
     target: "ts",
 
   }
@@ -205,6 +198,8 @@ class Config {
 
     auth: {
       prefix: '',
+      in: 'cookie',
+      name: 'hanko',
     },
 
     headers: {
@@ -213,9 +208,6 @@ class Config {
 
     entity: {
       
-        create_user_response_object: {
-        },
-  
         credential: {
         },
   
@@ -228,13 +220,10 @@ class Config {
         email: {
         },
   
-        email_management: {
-        },
-  
         hanko_configuration: {
         },
   
-        json_web_key_set: {
+        json_web_key: {
         },
   
         passcode: {
@@ -275,62 +264,65 @@ class Config {
 
 
   entity = {
-    "create_user_response_object": {
-      "fields": [],
-      "name": "create_user_response_object",
-      "op": {},
-      "relations": {
-        "ancestors": []
-      }
-    },
     "credential": {
       "fields": [
         {
-          "format": "uuid",
           "name": "aaguid",
-          "type": "`$STRING`"
+          "title": "Aaguid",
+          "type": "`$STRING`",
+          "format": "uuid"
         },
         {
           "name": "attestation_type",
+          "title": "Attestation Type",
           "type": "`$STRING`"
         },
         {
           "name": "backup_eligible",
+          "title": "Backup Eligible",
           "type": "`$BOOLEAN`"
         },
         {
           "name": "backup_state",
+          "title": "Backup State",
           "type": "`$BOOLEAN`"
         },
         {
-          "format": "date-time",
           "name": "created_at",
-          "type": "`$STRING`"
+          "title": "Created At",
+          "type": "`$STRING`",
+          "format": "date-time"
         },
         {
-          "format": "uuid",
           "name": "id",
-          "type": "`$STRING`"
+          "title": "Id",
+          "type": "`$STRING`",
+          "format": "uuid"
         },
         {
-          "format": "date-time",
           "name": "last_used_at",
-          "type": "`$STRING`"
+          "title": "Last Used At",
+          "type": "`$STRING`",
+          "format": "date-time"
         },
         {
           "name": "mfa_only",
+          "title": "Mfa Only",
           "type": "`$BOOLEAN`"
         },
         {
           "name": "name",
+          "title": "Name",
           "type": "`$STRING`"
         },
         {
           "name": "publickey",
+          "title": "Publickey",
           "type": "`$STRING`"
         },
         {
           "name": "transports",
+          "title": "Transports",
           "type": "`$ARRAY`"
         }
       ],
@@ -345,7 +337,6 @@ class Config {
           "name": "list",
           "points": [
             {
-              "args": {},
               "kind": "http",
               "method": "GET",
               "orig": "/webauthn/credentials",
@@ -357,15 +348,17 @@ class Config {
                   "lit": "credentials"
                 }
               ],
-              "select": {},
+              "parts": [
+                "webauthn",
+                "credentials"
+              ],
+              "rename": {},
               "transform": {
                 "req": "`reqdata`",
                 "res": "`body`"
               },
-              "parts": [
-                "webauthn",
-                "credentials"
-              ]
+              "args": {},
+              "select": {}
             }
           ]
         }
@@ -378,32 +371,39 @@ class Config {
       "fields": [
         {
           "name": "attestation",
+          "title": "Attestation",
           "type": "`$STRING`"
         },
         {
           "name": "authenticatorSelection",
+          "title": "Authenticator Selection",
           "type": "`$OBJECT`"
         },
         {
-          "format": "base64url",
           "name": "challenge",
-          "type": "`$STRING`"
+          "title": "Challenge",
+          "type": "`$STRING`",
+          "format": "base64url"
         },
         {
           "name": "pubKeyCredParams",
+          "title": "Pub Key Cred Params",
           "type": "`$ARRAY`"
         },
         {
           "name": "rp",
+          "title": "Rp",
           "type": "`$OBJECT`"
         },
         {
-          "format": "int64",
           "name": "timeout",
-          "type": "`$INTEGER`"
+          "title": "Timeout",
+          "type": "`$INTEGER`",
+          "format": "int64"
         },
         {
           "name": "user",
+          "title": "User",
           "type": "`$OBJECT`"
         }
       ],
@@ -414,7 +414,6 @@ class Config {
           "name": "create",
           "points": [
             {
-              "args": {},
               "kind": "http",
               "method": "POST",
               "orig": "/webauthn/registration/initialize",
@@ -429,16 +428,18 @@ class Config {
                   "lit": "initialize"
                 }
               ],
-              "select": {},
-              "transform": {
-                "req": "`reqdata`",
-                "res": "`body.publicKey`"
-              },
               "parts": [
                 "webauthn",
                 "registration",
                 "initialize"
-              ]
+              ],
+              "rename": {},
+              "transform": {
+                "req": "`reqdata`",
+                "res": "`body.publicKey`"
+              },
+              "args": {},
+              "select": {}
             }
           ]
         }
@@ -451,30 +452,36 @@ class Config {
       "fields": [
         {
           "name": "allowCredentials",
+          "title": "Allow Credentials",
           "type": "`$ARRAY`"
         },
         {
-          "format": "base64url",
           "name": "challenge",
-          "type": "`$STRING`"
+          "title": "Challenge",
+          "type": "`$STRING`",
+          "format": "base64url"
         },
         {
           "name": "rpId",
+          "title": "Rp Id",
           "type": "`$STRING`"
         },
         {
-          "format": "int64",
           "name": "timeout",
-          "type": "`$INTEGER`"
+          "title": "Timeout",
+          "type": "`$INTEGER`",
+          "format": "int64"
         },
         {
           "name": "userVerification",
+          "title": "User Verification",
           "type": "`$STRING`"
         },
         {
           "name": "user_id",
-          "short": "The ID of the user on whose behalf WebAuthn login should be performed",
-          "type": "`$STRING`"
+          "title": "User Id",
+          "type": "`$STRING`",
+          "short": "The ID of the user on whose behalf WebAuthn login should be performed"
         }
       ],
       "name": "credential_request_option",
@@ -484,7 +491,6 @@ class Config {
           "name": "create",
           "points": [
             {
-              "args": {},
               "kind": "http",
               "method": "POST",
               "orig": "/webauthn/login/initialize",
@@ -499,16 +505,18 @@ class Config {
                   "lit": "initialize"
                 }
               ],
-              "select": {},
-              "transform": {
-                "req": "`reqdata`",
-                "res": "`body.publicKey`"
-              },
               "parts": [
                 "webauthn",
                 "login",
                 "initialize"
-              ]
+              ],
+              "rename": {},
+              "transform": {
+                "req": "`reqdata`",
+                "res": "`body.publicKey`"
+              },
+              "args": {},
+              "select": {}
             }
           ]
         }
@@ -520,39 +528,45 @@ class Config {
     "email": {
       "fields": [
         {
-          "format": "email",
           "name": "address",
+          "title": "Address",
+          "type": "`$STRING`",
+          "req": true,
           "op": {
             "list": {
               "type": "`$STRING`"
             }
           },
-          "req": true,
           "short": "The email address",
-          "type": "`$STRING`"
+          "format": "email"
         },
         {
           "name": "id",
-          "short": "The ID of the email address",
-          "type": "`$STRING`"
+          "title": "Id",
+          "type": "`$STRING`",
+          "short": "The ID of the email address"
         },
         {
           "name": "identities",
+          "title": "Identities",
           "type": "`$ANY`"
         },
         {
           "name": "identity",
+          "title": "Identity",
           "type": "`$ANY`"
         },
         {
           "name": "is_primary",
-          "short": "Indicates it's the primary email address.",
-          "type": "`$BOOLEAN`"
+          "title": "Is Primary",
+          "type": "`$BOOLEAN`",
+          "short": "Indicates it's the primary email address."
         },
         {
           "name": "is_verified",
-          "short": "Indicated the email has been verified.",
-          "type": "`$BOOLEAN`"
+          "title": "Is Verified",
+          "type": "`$BOOLEAN`",
+          "short": "Indicated the email has been verified."
         }
       ],
       "id": {
@@ -566,130 +580,6 @@ class Config {
           "name": "create",
           "points": [
             {
-              "args": {},
-              "kind": "http",
-              "method": "POST",
-              "orig": "/emails",
-              "segments": [
-                {
-                  "lit": "emails"
-                }
-              ],
-              "select": {},
-              "transform": {
-                "req": "`reqdata`",
-                "res": "`body`"
-              },
-              "parts": [
-                "emails"
-              ]
-            }
-          ]
-        },
-        "list": {
-          "input": "data",
-          "name": "list",
-          "points": [
-            {
-              "args": {},
-              "kind": "http",
-              "method": "GET",
-              "orig": "/emails",
-              "segments": [
-                {
-                  "lit": "emails"
-                }
-              ],
-              "select": {},
-              "transform": {
-                "req": "`reqdata`",
-                "res": "`body`"
-              },
-              "parts": [
-                "emails"
-              ]
-            }
-          ]
-        },
-        "remove": {
-          "input": "data",
-          "name": "remove",
-          "points": [
-            {
-              "args": {
-                "params": [
-                  {
-                    "example": "c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c",
-                    "kind": "param",
-                    "name": "id",
-                    "orig": "id",
-                    "reqd": true,
-                    "type": "`$STRING`"
-                  }
-                ]
-              },
-              "kind": "http",
-              "method": "DELETE",
-              "orig": "/emails/{id}",
-              "segments": [
-                {
-                  "lit": "emails"
-                },
-                {
-                  "var": "id"
-                }
-              ],
-              "select": {
-                "exist": [
-                  "id"
-                ]
-              },
-              "transform": {
-                "req": "`reqdata`",
-                "res": "`body`"
-              },
-              "parts": [
-                "emails",
-                "{id}"
-              ]
-            }
-          ]
-        }
-      },
-      "relations": {
-        "ancestors": []
-      }
-    },
-    "email_management": {
-      "fields": [
-        {
-          "name": "id",
-          "type": "`$STRING`"
-        }
-      ],
-      "id": {
-        "field": "id",
-        "name": "id"
-      },
-      "name": "email_management",
-      "op": {
-        "create": {
-          "input": "data",
-          "name": "create",
-          "points": [
-            {
-              "args": {
-                "params": [
-                  {
-                    "example": "c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c",
-                    "kind": "param",
-                    "name": "id",
-                    "orig": "id",
-                    "reqd": true,
-                    "type": "`$STRING`"
-                  }
-                ]
-              },
               "kind": "http",
               "method": "POST",
               "orig": "/emails/{id}/set_primary",
@@ -704,21 +594,125 @@ class Config {
                   "lit": "set_primary"
                 }
               ],
+              "parts": [
+                "emails",
+                "{id}",
+                "set_primary"
+              ],
+              "rename": {},
+              "transform": {
+                "req": "`reqdata`",
+                "res": "`body`"
+              },
+              "args": {
+                "params": [
+                  {
+                    "name": "id",
+                    "orig": "id",
+                    "type": "`$STRING`",
+                    "kind": "param",
+                    "reqd": true,
+                    "example": "c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c"
+                  }
+                ]
+              },
               "select": {
                 "$action": "set_primary",
                 "exist": [
                   "id"
                 ]
-              },
+              }
+            },
+            {
+              "kind": "http",
+              "method": "POST",
+              "orig": "/emails",
+              "segments": [
+                {
+                  "lit": "emails"
+                }
+              ],
+              "parts": [
+                "emails"
+              ],
+              "rename": {},
               "transform": {
                 "req": "`reqdata`",
                 "res": "`body`"
               },
+              "args": {},
+              "select": {}
+            }
+          ]
+        },
+        "list": {
+          "input": "data",
+          "name": "list",
+          "points": [
+            {
+              "kind": "http",
+              "method": "GET",
+              "orig": "/emails",
+              "segments": [
+                {
+                  "lit": "emails"
+                }
+              ],
+              "parts": [
+                "emails"
+              ],
+              "rename": {},
+              "transform": {
+                "req": "`reqdata`",
+                "res": "`body`"
+              },
+              "args": {},
+              "select": {}
+            }
+          ]
+        },
+        "remove": {
+          "input": "data",
+          "name": "remove",
+          "points": [
+            {
+              "kind": "http",
+              "method": "DELETE",
+              "orig": "/emails/{id}",
+              "segments": [
+                {
+                  "lit": "emails"
+                },
+                {
+                  "var": "id"
+                }
+              ],
               "parts": [
                 "emails",
-                "{id}",
-                "set_primary"
-              ]
+                "{id}"
+              ],
+              "rename": {},
+              "transform": {
+                "req": "`reqdata`",
+                "res": "`body`"
+              },
+              "args": {
+                "params": [
+                  {
+                    "name": "id",
+                    "orig": "id",
+                    "type": "`$STRING`",
+                    "kind": "param",
+                    "reqd": true,
+                    "example": "c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c"
+                  }
+                ]
+              },
+              "select": {
+                "exist": [
+                  "id"
+                ]
+              }
             }
           ]
         }
@@ -731,18 +725,21 @@ class Config {
       "fields": [
         {
           "name": "account",
-          "short": "Controls the behavior regarding user account.",
-          "type": "`$OBJECT`"
+          "title": "Account",
+          "type": "`$OBJECT`",
+          "short": "Controls the behavior regarding user account."
         },
         {
           "name": "emails",
-          "short": "Controls the behavior regarding email addresses.",
-          "type": "`$OBJECT`"
+          "title": "Emails",
+          "type": "`$OBJECT`",
+          "short": "Controls the behavior regarding email addresses."
         },
         {
           "name": "password",
-          "short": "Configuration options concerning passwords",
-          "type": "`$OBJECT`"
+          "title": "Password",
+          "type": "`$OBJECT`",
+          "short": "Configuration options concerning passwords"
         }
       ],
       "name": "hanko_configuration",
@@ -752,7 +749,6 @@ class Config {
           "name": "load",
           "points": [
             {
-              "args": {},
               "kind": "http",
               "method": "GET",
               "orig": "/.well-known/config",
@@ -764,15 +760,17 @@ class Config {
                   "lit": "config"
                 }
               ],
-              "select": {},
+              "parts": [
+                ".well-known",
+                "config"
+              ],
+              "rename": {},
               "transform": {
                 "req": "`reqdata`",
                 "res": "`body`"
               },
-              "parts": [
-                ".well-known",
-                "config"
-              ]
+              "args": {},
+              "select": {}
             }
           ]
         }
@@ -781,43 +779,48 @@ class Config {
         "ancestors": []
       }
     },
-    "json_web_key_set": {
+    "json_web_key": {
       "fields": [
         {
           "name": "alg",
+          "title": "Alg",
           "type": "`$STRING`"
         },
         {
-          "format": "base64url",
           "name": "e",
-          "type": "`$STRING`"
+          "title": "E",
+          "type": "`$STRING`",
+          "format": "base64url"
         },
         {
           "name": "kid",
+          "title": "Kid",
           "type": "`$STRING`"
         },
         {
           "name": "kty",
+          "title": "Kty",
           "type": "`$STRING`"
         },
         {
-          "format": "base64url",
           "name": "n",
-          "type": "`$STRING`"
+          "title": "N",
+          "type": "`$STRING`",
+          "format": "base64url"
         },
         {
           "name": "use",
+          "title": "Use",
           "type": "`$STRING`"
         }
       ],
-      "name": "json_web_key_set",
+      "name": "json_web_key",
       "op": {
         "list": {
           "input": "data",
           "name": "list",
           "points": [
             {
-              "args": {},
               "kind": "http",
               "method": "GET",
               "orig": "/.well-known/jwks.json",
@@ -829,15 +832,17 @@ class Config {
                   "lit": "jwks.json"
                 }
               ],
-              "select": {},
+              "parts": [
+                ".well-known",
+                "jwks.json"
+              ],
+              "rename": {},
               "transform": {
                 "req": "`reqdata`",
                 "res": "`body.keys`"
               },
-              "parts": [
-                ".well-known",
-                "jwks.json"
-              ]
+              "args": {},
+              "select": {}
             }
           ]
         }
@@ -850,24 +855,28 @@ class Config {
       "fields": [
         {
           "name": "code",
-          "short": "The actual passcode from the email sent to the user during initialization, a string of 6 decimal digits",
-          "type": "`$STRING`"
+          "title": "Code",
+          "type": "`$STRING`",
+          "short": "The actual passcode from the email sent to the user during initialization, a string of 6 decimal digits"
         },
         {
           "name": "email_id",
-          "short": "The ID of the email address",
-          "type": "`$STRING`"
+          "title": "Email Id",
+          "type": "`$STRING`",
+          "short": "The ID of the email address"
         },
         {
           "name": "id",
-          "short": "The ID of the passcode",
-          "type": "`$STRING`"
+          "title": "Id",
+          "type": "`$STRING`",
+          "short": "The ID of the passcode"
         },
         {
           "name": "user_id",
+          "title": "User Id",
+          "type": "`$STRING`",
           "req": true,
-          "short": "The ID of the user",
-          "type": "`$STRING`"
+          "short": "The ID of the user"
         }
       ],
       "id": {
@@ -881,7 +890,6 @@ class Config {
           "name": "create",
           "points": [
             {
-              "args": {},
               "kind": "http",
               "method": "POST",
               "orig": "/passcode/login/finalize",
@@ -896,19 +904,20 @@ class Config {
                   "lit": "finalize"
                 }
               ],
-              "select": {},
-              "transform": {
-                "req": "`reqdata`",
-                "res": "`body.id`"
-              },
               "parts": [
                 "passcode",
                 "login",
                 "finalize"
-              ]
+              ],
+              "rename": {},
+              "transform": {
+                "req": "`reqdata`",
+                "res": "`body.id`"
+              },
+              "args": {},
+              "select": {}
             },
             {
-              "args": {},
               "kind": "http",
               "method": "POST",
               "orig": "/passcode/login/initialize",
@@ -923,16 +932,18 @@ class Config {
                   "lit": "initialize"
                 }
               ],
-              "select": {},
-              "transform": {
-                "req": "`reqdata`",
-                "res": "`body.id`"
-              },
               "parts": [
                 "passcode",
                 "login",
                 "initialize"
-              ]
+              ],
+              "rename": {},
+              "transform": {
+                "req": "`reqdata`",
+                "res": "`body.id`"
+              },
+              "args": {},
+              "select": {}
             }
           ]
         }
@@ -945,15 +956,17 @@ class Config {
       "fields": [
         {
           "name": "password",
+          "title": "Password",
+          "type": "`$STRING`",
           "req": true,
-          "short": "The actual password, its `minLength` defaults to 8 but can be [configured](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config) through the `password.min_password_length` option.",
-          "type": "`$STRING`"
+          "short": "The actual password, its `minLength` defaults to 8 but can be [configured](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config) through the `password.min_password_length` option."
         },
         {
           "name": "user_id",
+          "title": "User Id",
+          "type": "`$STRING`",
           "req": true,
-          "short": "The ID of the user to create/set a password for",
-          "type": "`$STRING`"
+          "short": "The ID of the user to create/set a password for"
         }
       ],
       "name": "password",
@@ -963,7 +976,6 @@ class Config {
           "name": "create",
           "points": [
             {
-              "args": {},
               "kind": "http",
               "method": "POST",
               "orig": "/password/login",
@@ -975,19 +987,21 @@ class Config {
                   "lit": "login"
                 }
               ],
-              "select": {
-                "$action": "login"
-              },
+              "parts": [
+                "password",
+                "login"
+              ],
+              "rename": {},
               "transform": {
                 "req": {
                   "password": "`reqdata`"
                 },
                 "res": "`body`"
               },
-              "parts": [
-                "password",
-                "login"
-              ]
+              "args": {},
+              "select": {
+                "$action": "login"
+              }
             }
           ]
         },
@@ -996,7 +1010,6 @@ class Config {
           "name": "update",
           "points": [
             {
-              "args": {},
               "kind": "http",
               "method": "PUT",
               "orig": "/password",
@@ -1005,16 +1018,18 @@ class Config {
                   "lit": "password"
                 }
               ],
-              "select": {},
+              "parts": [
+                "password"
+              ],
+              "rename": {},
               "transform": {
                 "req": {
                   "password": "`reqdata`"
                 },
                 "res": "`body`"
               },
-              "parts": [
-                "password"
-              ]
+              "args": {},
+              "select": {}
             }
           ]
         }
@@ -1032,7 +1047,6 @@ class Config {
           "name": "create",
           "points": [
             {
-              "args": {},
               "kind": "http",
               "method": "POST",
               "orig": "/saml/callback",
@@ -1044,17 +1058,19 @@ class Config {
                   "lit": "callback"
                 }
               ],
-              "select": {
-                "$action": "callback"
-              },
+              "parts": [
+                "saml",
+                "callback"
+              ],
+              "rename": {},
               "transform": {
                 "req": "`reqdata`",
                 "res": "`body`"
               },
-              "parts": [
-                "saml",
-                "callback"
-              ]
+              "args": {},
+              "select": {
+                "$action": "callback"
+              }
             }
           ]
         },
@@ -1063,23 +1079,6 @@ class Config {
           "name": "load",
           "points": [
             {
-              "args": {
-                "query": [
-                  {
-                    "kind": "query",
-                    "name": "cert_only",
-                    "orig": "cert_only",
-                    "type": "`$BOOLEAN`"
-                  },
-                  {
-                    "kind": "query",
-                    "name": "domain",
-                    "orig": "domain",
-                    "reqd": true,
-                    "type": "`$STRING`"
-                  }
-                ]
-              },
               "kind": "http",
               "method": "GET",
               "orig": "/saml/metadata",
@@ -1091,34 +1090,41 @@ class Config {
                   "lit": "metadata"
                 }
               ],
+              "parts": [
+                "saml",
+                "metadata"
+              ],
+              "rename": {},
+              "transform": {
+                "req": "`reqdata`",
+                "res": "`body`"
+              },
+              "args": {
+                "query": [
+                  {
+                    "name": "cert_only",
+                    "orig": "cert_only",
+                    "type": "`$BOOLEAN`",
+                    "kind": "query"
+                  },
+                  {
+                    "name": "domain",
+                    "orig": "domain",
+                    "type": "`$STRING`",
+                    "kind": "query",
+                    "reqd": true
+                  }
+                ]
+              },
               "select": {
                 "$action": "metadata",
                 "exist": [
                   "cert_only",
                   "domain"
                 ]
-              },
-              "transform": {
-                "req": "`reqdata`",
-                "res": "`body`"
-              },
-              "parts": [
-                "saml",
-                "metadata"
-              ]
+              }
             },
             {
-              "args": {
-                "query": [
-                  {
-                    "kind": "query",
-                    "name": "domain",
-                    "orig": "domain",
-                    "reqd": true,
-                    "type": "`$STRING`"
-                  }
-                ]
-              },
               "kind": "http",
               "method": "GET",
               "orig": "/saml/provider",
@@ -1130,20 +1136,32 @@ class Config {
                   "lit": "provider"
                 }
               ],
+              "parts": [
+                "saml",
+                "provider"
+              ],
+              "rename": {},
+              "transform": {
+                "req": "`reqdata`",
+                "res": "`body.attribute_map`"
+              },
+              "args": {
+                "query": [
+                  {
+                    "name": "domain",
+                    "orig": "domain",
+                    "type": "`$STRING`",
+                    "kind": "query",
+                    "reqd": true
+                  }
+                ]
+              },
               "select": {
                 "$action": "provider",
                 "exist": [
                   "domain"
                 ]
-              },
-              "transform": {
-                "req": "`reqdata`",
-                "res": "`body.attribute_map`"
-              },
-              "parts": [
-                "saml",
-                "provider"
-              ]
+              }
             }
           ]
         }
@@ -1156,55 +1174,64 @@ class Config {
       "fields": [
         {
           "name": "amr",
-          "short": "Authentication Method References, JSON array of strings that are identifiers for authentication methods used in the authentication.",
-          "type": "`$ARRAY`"
+          "title": "Amr",
+          "type": "`$ARRAY`",
+          "short": "Authentication Method References, JSON array of strings that are identifiers for authentication methods used in the authentication."
         },
         {
           "name": "audience",
-          "short": "The intended audience of the token.",
-          "type": "`$ARRAY`"
+          "title": "Audience",
+          "type": "`$ARRAY`",
+          "short": "The intended audience of the token."
         },
         {
           "name": "email",
-          "short": "Data about the email address associated with the token's subject, if available.",
-          "type": "`$OBJECT`"
+          "title": "Email",
+          "type": "`$OBJECT`",
+          "short": "Data about the email address associated with the token's subject, if available."
         },
         {
-          "format": "date-time",
           "name": "expiration",
+          "title": "Expiration",
+          "type": "`$STRING`",
           "req": true,
           "short": "The timestamp indicating when the token will expire.",
-          "type": "`$STRING`"
+          "format": "date-time"
         },
         {
-          "format": "date-time",
           "name": "issued_at",
+          "title": "Issued At",
+          "type": "`$STRING`",
           "short": "The timestamp indicating when the token was issued.",
-          "type": "`$STRING`"
+          "format": "date-time"
         },
         {
           "name": "issuer",
-          "short": "The entity that issued the token.",
-          "type": "`$STRING`"
+          "title": "Issuer",
+          "type": "`$STRING`",
+          "short": "The entity that issued the token."
         },
         {
           "name": "session_id",
+          "title": "Session Id",
+          "type": "`$STRING`",
           "req": true,
-          "short": "The unique identifier for the session associated with this token.",
-          "type": "`$STRING`"
+          "short": "The unique identifier for the session associated with this token."
         },
         {
-          "format": "JWT",
           "name": "session_token",
+          "title": "Session Token",
+          "type": "`$STRING`",
           "req": true,
           "short": "The session token (JWT) to validate",
-          "type": "`$STRING`"
+          "format": "JWT"
         },
         {
           "name": "subject",
+          "title": "Subject",
+          "type": "`$ANY`",
           "req": true,
-          "short": "The unique identifier of the token's subject.",
-          "type": "`$ANY`"
+          "short": "The unique identifier of the token's subject."
         }
       ],
       "name": "session_management",
@@ -1214,7 +1241,6 @@ class Config {
           "name": "create",
           "points": [
             {
-              "args": {},
               "kind": "http",
               "method": "POST",
               "orig": "/sessions/validate",
@@ -1226,15 +1252,17 @@ class Config {
                   "lit": "validate"
                 }
               ],
-              "select": {},
+              "parts": [
+                "sessions",
+                "validate"
+              ],
+              "rename": {},
               "transform": {
                 "req": "`reqdata`",
                 "res": "`body.claims`"
               },
-              "parts": [
-                "sessions",
-                "validate"
-              ]
+              "args": {},
+              "select": {}
             }
           ]
         },
@@ -1243,7 +1271,6 @@ class Config {
           "name": "load",
           "points": [
             {
-              "args": {},
               "kind": "http",
               "method": "GET",
               "orig": "/sessions/validate",
@@ -1255,15 +1282,17 @@ class Config {
                   "lit": "validate"
                 }
               ],
-              "select": {},
+              "parts": [
+                "sessions",
+                "validate"
+              ],
+              "rename": {},
               "transform": {
                 "req": "`reqdata`",
                 "res": "`body.claims`"
               },
-              "parts": [
-                "sessions",
-                "validate"
-              ]
+              "args": {},
+              "select": {}
             }
           ]
         }
@@ -1281,17 +1310,18 @@ class Config {
           "name": "load",
           "points": [
             {
-              "args": {},
               "kind": "http",
               "method": "GET",
               "orig": "/",
               "segments": [],
-              "select": {},
+              "parts": [],
+              "rename": {},
               "transform": {
                 "req": "`reqdata`",
                 "res": "`body`"
               },
-              "parts": []
+              "args": {},
+              "select": {}
             }
           ]
         }
@@ -1309,35 +1339,6 @@ class Config {
           "name": "load",
           "points": [
             {
-              "args": {
-                "query": [
-                  {
-                    "kind": "query",
-                    "name": "code",
-                    "orig": "code",
-                    "type": "`$STRING`"
-                  },
-                  {
-                    "kind": "query",
-                    "name": "error",
-                    "orig": "error",
-                    "type": "`$STRING`"
-                  },
-                  {
-                    "kind": "query",
-                    "name": "error_description",
-                    "orig": "error_description",
-                    "type": "`$STRING`"
-                  },
-                  {
-                    "kind": "query",
-                    "name": "state",
-                    "orig": "state",
-                    "reqd": true,
-                    "type": "`$STRING`"
-                  }
-                ]
-              },
               "kind": "http",
               "method": "GET",
               "orig": "/thirdparty/callback",
@@ -1349,6 +1350,44 @@ class Config {
                   "lit": "callback"
                 }
               ],
+              "parts": [
+                "thirdparty",
+                "callback"
+              ],
+              "rename": {},
+              "transform": {
+                "req": "`reqdata`",
+                "res": "`body`"
+              },
+              "args": {
+                "query": [
+                  {
+                    "name": "code",
+                    "orig": "code",
+                    "type": "`$STRING`",
+                    "kind": "query"
+                  },
+                  {
+                    "name": "error",
+                    "orig": "error",
+                    "type": "`$STRING`",
+                    "kind": "query"
+                  },
+                  {
+                    "name": "error_description",
+                    "orig": "error_description",
+                    "type": "`$STRING`",
+                    "kind": "query"
+                  },
+                  {
+                    "name": "state",
+                    "orig": "state",
+                    "type": "`$STRING`",
+                    "kind": "query",
+                    "reqd": true
+                  }
+                ]
+              },
               "select": {
                 "exist": [
                   "code",
@@ -1356,35 +1395,9 @@ class Config {
                   "error_description",
                   "state"
                 ]
-              },
-              "transform": {
-                "req": "`reqdata`",
-                "res": "`body`"
-              },
-              "parts": [
-                "thirdparty",
-                "callback"
-              ]
+              }
             },
             {
-              "args": {
-                "query": [
-                  {
-                    "kind": "query",
-                    "name": "provider",
-                    "orig": "provider",
-                    "reqd": true,
-                    "type": "`$STRING`"
-                  },
-                  {
-                    "kind": "query",
-                    "name": "redirect_to",
-                    "orig": "redirect_to",
-                    "reqd": true,
-                    "type": "`$STRING`"
-                  }
-                ]
-              },
               "kind": "http",
               "method": "GET",
               "orig": "/thirdparty/auth",
@@ -1396,20 +1409,39 @@ class Config {
                   "lit": "auth"
                 }
               ],
+              "parts": [
+                "thirdparty",
+                "auth"
+              ],
+              "rename": {},
+              "transform": {
+                "req": "`reqdata`",
+                "res": "`body`"
+              },
+              "args": {
+                "query": [
+                  {
+                    "name": "provider",
+                    "orig": "provider",
+                    "type": "`$STRING`",
+                    "kind": "query",
+                    "reqd": true
+                  },
+                  {
+                    "name": "redirect_to",
+                    "orig": "redirect_to",
+                    "type": "`$STRING`",
+                    "kind": "query",
+                    "reqd": true
+                  }
+                ]
+              },
               "select": {
                 "exist": [
                   "provider",
                   "redirect_to"
                 ]
-              },
-              "transform": {
-                "req": "`reqdata`",
-                "res": "`body`"
-              },
-              "parts": [
-                "thirdparty",
-                "auth"
-              ]
+              }
             }
           ]
         }
@@ -1421,9 +1453,10 @@ class Config {
     "token": {
       "fields": [
         {
-          "format": "base64url",
           "name": "value",
-          "type": "`$STRING`"
+          "title": "Value",
+          "type": "`$STRING`",
+          "format": "base64url"
         }
       ],
       "name": "token",
@@ -1433,7 +1466,6 @@ class Config {
           "name": "create",
           "points": [
             {
-              "args": {},
               "kind": "http",
               "method": "POST",
               "orig": "/token",
@@ -1442,14 +1474,16 @@ class Config {
                   "lit": "token"
                 }
               ],
-              "select": {},
+              "parts": [
+                "token"
+              ],
+              "rename": {},
               "transform": {
                 "req": "`reqdata`",
                 "res": "`body.user_id`"
               },
-              "parts": [
-                "token"
-              ]
+              "args": {},
+              "select": {}
             }
           ]
         }
@@ -1461,14 +1495,16 @@ class Config {
     "user": {
       "fields": [
         {
-          "format": "date-time",
           "name": "created_at",
+          "title": "Created At",
+          "type": "`$STRING`",
           "short": "Time of creation of the the user",
-          "type": "`$STRING`"
+          "format": "date-time"
         },
         {
-          "format": "email",
           "name": "email",
+          "title": "Email",
+          "type": "`$STRING`",
           "op": {
             "create": {
               "req": true,
@@ -1476,87 +1512,104 @@ class Config {
             }
           },
           "short": "The email address of the user",
-          "type": "`$STRING`"
+          "format": "email"
         },
         {
-          "format": "uuid4",
           "name": "email_id",
+          "title": "Email Id",
+          "type": "`$STRING`",
           "short": "The ID of the newly created email address",
-          "type": "`$STRING`"
+          "format": "uuid4"
         },
         {
           "name": "emails",
+          "title": "Emails",
           "type": "`$ARRAY`"
         },
         {
           "name": "family_name",
+          "title": "Family Name",
           "type": "`$STRING`"
         },
         {
           "name": "given_name",
+          "title": "Given Name",
           "type": "`$STRING`"
         },
         {
           "name": "has_webauthn_credential",
+          "title": "Has Webauthn Credential",
           "type": "`$BOOLEAN`"
         },
         {
-          "deprecated": true,
-          "format": "uuid4",
           "name": "id",
+          "title": "Id",
+          "type": "`$STRING`",
           "short": "The ID of the user.",
-          "type": "`$STRING`"
+          "deprecated": true,
+          "format": "uuid4"
         },
         {
           "name": "metadata",
-          "short": "The public and unsafe metadata of a user",
-          "type": "`$OBJECT`"
+          "title": "Metadata",
+          "type": "`$OBJECT`",
+          "short": "The public and unsafe metadata of a user"
         },
         {
           "name": "mfa_config",
+          "title": "Mfa Config",
           "type": "`$OBJECT`"
         },
         {
           "name": "name",
+          "title": "Name",
           "type": "`$STRING`"
         },
         {
           "name": "passkeys",
+          "title": "Passkeys",
           "type": "`$ARRAY`"
         },
         {
-          "format": "uri",
           "name": "picture",
-          "type": "`$STRING`"
+          "title": "Picture",
+          "type": "`$STRING`",
+          "format": "uri"
         },
         {
           "name": "security_keys",
+          "title": "Security Keys",
           "type": "`$ARRAY`"
         },
         {
-          "format": "date-time",
           "name": "updated_at",
+          "title": "Updated At",
+          "type": "`$STRING`",
           "short": "Time of last update of the user",
-          "type": "`$STRING`"
+          "format": "date-time"
         },
         {
           "name": "user_id",
-          "short": "The ID of the user",
-          "type": "`$STRING`"
+          "title": "User Id",
+          "type": "`$STRING`",
+          "short": "The ID of the user"
         },
         {
           "name": "username",
-          "short": "The username of the user",
-          "type": "`$STRING`"
+          "title": "Username",
+          "type": "`$STRING`",
+          "short": "The username of the user"
         },
         {
           "name": "verified",
+          "title": "Verified",
           "type": "`$BOOLEAN`"
         },
         {
           "name": "webauthn_credentials",
-          "short": "A list of WebAuthn credentials",
-          "type": "`$ARRAY`"
+          "title": "Webauthn Credentials",
+          "type": "`$ARRAY`",
+          "short": "A list of WebAuthn credentials"
         }
       ],
       "id": {
@@ -1570,7 +1623,6 @@ class Config {
           "name": "create",
           "points": [
             {
-              "args": {},
               "kind": "http",
               "method": "POST",
               "orig": "/user",
@@ -1579,17 +1631,18 @@ class Config {
                   "lit": "user"
                 }
               ],
-              "select": {},
+              "parts": [
+                "user"
+              ],
+              "rename": {},
               "transform": {
                 "req": "`reqdata`",
                 "res": "`body`"
               },
-              "parts": [
-                "user"
-              ]
+              "args": {},
+              "select": {}
             },
             {
-              "args": {},
               "kind": "http",
               "method": "POST",
               "orig": "/users",
@@ -1598,14 +1651,16 @@ class Config {
                   "lit": "users"
                 }
               ],
-              "select": {},
+              "parts": [
+                "users"
+              ],
+              "rename": {},
               "transform": {
                 "req": "`reqdata`",
                 "res": "`body`"
               },
-              "parts": [
-                "users"
-              ]
+              "args": {},
+              "select": {}
             }
           ]
         },
@@ -1614,18 +1669,6 @@ class Config {
           "name": "load",
           "points": [
             {
-              "args": {
-                "params": [
-                  {
-                    "example": "c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c",
-                    "kind": "param",
-                    "name": "id",
-                    "orig": "id",
-                    "reqd": true,
-                    "type": "`$STRING`"
-                  }
-                ]
-              },
               "kind": "http",
               "method": "GET",
               "orig": "/users/{id}",
@@ -1637,19 +1680,32 @@ class Config {
                   "var": "id"
                 }
               ],
-              "select": {
-                "exist": [
-                  "id"
-                ]
-              },
+              "parts": [
+                "users",
+                "{id}"
+              ],
+              "rename": {},
               "transform": {
                 "req": "`reqdata`",
                 "res": "`body`"
               },
-              "parts": [
-                "users",
-                "{id}"
-              ]
+              "args": {
+                "params": [
+                  {
+                    "name": "id",
+                    "orig": "id",
+                    "type": "`$STRING`",
+                    "kind": "param",
+                    "reqd": true,
+                    "example": "c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c"
+                  }
+                ]
+              },
+              "select": {
+                "exist": [
+                  "id"
+                ]
+              }
             }
           ]
         },
@@ -1658,7 +1714,6 @@ class Config {
           "name": "remove",
           "points": [
             {
-              "args": {},
               "kind": "http",
               "method": "DELETE",
               "orig": "/user",
@@ -1667,14 +1722,16 @@ class Config {
                   "lit": "user"
                 }
               ],
-              "select": {},
+              "parts": [
+                "user"
+              ],
+              "rename": {},
               "transform": {
                 "req": "`reqdata`",
                 "res": "`body`"
               },
-              "parts": [
-                "user"
-              ]
+              "args": {},
+              "select": {}
             }
           ]
         }
@@ -1686,70 +1743,84 @@ class Config {
     "user_management": {
       "fields": [
         {
-          "format": "date-time",
           "name": "created_at",
+          "title": "Created At",
+          "type": "`$STRING`",
           "short": "Time of creation of the the user",
-          "type": "`$STRING`"
+          "format": "date-time"
         },
         {
           "name": "emails",
+          "title": "Emails",
           "type": "`$ARRAY`"
         },
         {
           "name": "family_name",
+          "title": "Family Name",
           "type": "`$STRING`"
         },
         {
           "name": "given_name",
+          "title": "Given Name",
           "type": "`$STRING`"
         },
         {
-          "deprecated": true,
           "name": "id",
+          "title": "Id",
+          "type": "`$STRING`",
           "short": "The ID of the user.",
-          "type": "`$STRING`"
+          "deprecated": true
         },
         {
           "name": "metadata",
-          "short": "The public and unsafe metadata of a user",
-          "type": "`$OBJECT`"
+          "title": "Metadata",
+          "type": "`$OBJECT`",
+          "short": "The public and unsafe metadata of a user"
         },
         {
           "name": "mfa_config",
+          "title": "Mfa Config",
           "type": "`$OBJECT`"
         },
         {
           "name": "name",
+          "title": "Name",
           "type": "`$STRING`"
         },
         {
           "name": "passkeys",
+          "title": "Passkeys",
           "type": "`$ARRAY`"
         },
         {
-          "format": "uri",
           "name": "picture",
-          "type": "`$STRING`"
+          "title": "Picture",
+          "type": "`$STRING`",
+          "format": "uri"
         },
         {
           "name": "security_keys",
+          "title": "Security Keys",
           "type": "`$ARRAY`"
         },
         {
-          "format": "date-time",
           "name": "updated_at",
+          "title": "Updated At",
+          "type": "`$STRING`",
           "short": "Time of last update of the user",
-          "type": "`$STRING`"
+          "format": "date-time"
         },
         {
           "name": "user_id",
-          "short": "The ID of the user",
-          "type": "`$STRING`"
+          "title": "User Id",
+          "type": "`$STRING`",
+          "short": "The ID of the user"
         },
         {
           "name": "username",
-          "short": "The representation of a username of the user",
-          "type": "`$OBJECT`"
+          "title": "Username",
+          "type": "`$OBJECT`",
+          "short": "The representation of a username of the user"
         }
       ],
       "id": {
@@ -1763,7 +1834,6 @@ class Config {
           "name": "create",
           "points": [
             {
-              "args": {},
               "kind": "http",
               "method": "POST",
               "orig": "/logout",
@@ -1772,14 +1842,16 @@ class Config {
                   "lit": "logout"
                 }
               ],
-              "select": {},
+              "parts": [
+                "logout"
+              ],
+              "rename": {},
               "transform": {
                 "req": "`reqdata`",
                 "res": "`body`"
               },
-              "parts": [
-                "logout"
-              ]
+              "args": {},
+              "select": {}
             }
           ]
         },
@@ -1788,7 +1860,6 @@ class Config {
           "name": "list",
           "points": [
             {
-              "args": {},
               "kind": "http",
               "method": "GET",
               "orig": "/me",
@@ -1797,14 +1868,16 @@ class Config {
                   "lit": "me"
                 }
               ],
-              "select": {},
+              "parts": [
+                "me"
+              ],
+              "rename": {},
               "transform": {
                 "req": "`reqdata`",
                 "res": "`body`"
               },
-              "parts": [
-                "me"
-              ]
+              "args": {},
+              "select": {}
             }
           ]
         }
@@ -1817,23 +1890,28 @@ class Config {
       "fields": [
         {
           "name": "id",
+          "title": "Id",
           "type": "`$STRING`"
         },
         {
           "name": "name",
-          "short": "A new credential name.",
-          "type": "`$STRING`"
+          "title": "Name",
+          "type": "`$STRING`",
+          "short": "A new credential name."
         },
         {
           "name": "rawId",
+          "title": "Raw Id",
           "type": "`$STRING`"
         },
         {
           "name": "response",
+          "title": "Response",
           "type": "`$OBJECT`"
         },
         {
           "name": "type",
+          "title": "Type",
           "type": "`$STRING`"
         }
       ],
@@ -1848,7 +1926,6 @@ class Config {
           "name": "create",
           "points": [
             {
-              "args": {},
               "kind": "http",
               "method": "POST",
               "orig": "/webauthn/registration/finalize",
@@ -1863,16 +1940,18 @@ class Config {
                   "lit": "finalize"
                 }
               ],
-              "select": {},
-              "transform": {
-                "req": "`reqdata`",
-                "res": "`body.user_id`"
-              },
               "parts": [
                 "webauthn",
                 "registration",
                 "finalize"
-              ]
+              ],
+              "rename": {},
+              "transform": {
+                "req": "`reqdata`",
+                "res": "`body.user_id`"
+              },
+              "args": {},
+              "select": {}
             }
           ]
         },
@@ -1881,18 +1960,6 @@ class Config {
           "name": "remove",
           "points": [
             {
-              "args": {
-                "params": [
-                  {
-                    "example": "c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c",
-                    "kind": "param",
-                    "name": "id",
-                    "orig": "id",
-                    "reqd": true,
-                    "type": "`$STRING`"
-                  }
-                ]
-              },
               "kind": "http",
               "method": "DELETE",
               "orig": "/webauthn/credentials/{id}",
@@ -1907,20 +1974,33 @@ class Config {
                   "var": "id"
                 }
               ],
-              "select": {
-                "exist": [
-                  "id"
-                ]
-              },
-              "transform": {
-                "req": "`reqdata`",
-                "res": "`body`"
-              },
               "parts": [
                 "webauthn",
                 "credentials",
                 "{id}"
-              ]
+              ],
+              "rename": {},
+              "transform": {
+                "req": "`reqdata`",
+                "res": "`body`"
+              },
+              "args": {
+                "params": [
+                  {
+                    "name": "id",
+                    "orig": "id",
+                    "type": "`$STRING`",
+                    "kind": "param",
+                    "reqd": true,
+                    "example": "c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c"
+                  }
+                ]
+              },
+              "select": {
+                "exist": [
+                  "id"
+                ]
+              }
             }
           ]
         },
@@ -1929,18 +2009,6 @@ class Config {
           "name": "update",
           "points": [
             {
-              "args": {
-                "params": [
-                  {
-                    "example": "c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c",
-                    "kind": "param",
-                    "name": "id",
-                    "orig": "id",
-                    "reqd": true,
-                    "type": "`$STRING`"
-                  }
-                ]
-              },
               "kind": "http",
               "method": "PATCH",
               "orig": "/webauthn/credentials/{id}",
@@ -1955,20 +2023,33 @@ class Config {
                   "var": "id"
                 }
               ],
-              "select": {
-                "exist": [
-                  "id"
-                ]
-              },
-              "transform": {
-                "req": "`reqdata`",
-                "res": "`body`"
-              },
               "parts": [
                 "webauthn",
                 "credentials",
                 "{id}"
-              ]
+              ],
+              "rename": {},
+              "transform": {
+                "req": "`reqdata`",
+                "res": "`body`"
+              },
+              "args": {
+                "params": [
+                  {
+                    "name": "id",
+                    "orig": "id",
+                    "type": "`$STRING`",
+                    "kind": "param",
+                    "reqd": true,
+                    "example": "c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c"
+                  }
+                ]
+              },
+              "select": {
+                "exist": [
+                  "id"
+                ]
+              }
             }
           ]
         }
@@ -1980,30 +2061,36 @@ class Config {
     "webauthn_login": {
       "fields": [
         {
-          "format": "base64url",
           "name": "credential_id",
-          "type": "`$STRING`"
+          "title": "Credential Id",
+          "type": "`$STRING`",
+          "format": "base64url"
         },
         {
           "name": "id",
+          "title": "Id",
           "type": "`$STRING`"
         },
         {
           "name": "rawId",
+          "title": "Raw Id",
           "type": "`$STRING`"
         },
         {
           "name": "response",
+          "title": "Response",
           "type": "`$OBJECT`"
         },
         {
           "name": "type",
+          "title": "Type",
           "type": "`$STRING`"
         },
         {
-          "format": "uuid4",
           "name": "user_id",
-          "type": "`$STRING`"
+          "title": "User Id",
+          "type": "`$STRING`",
+          "format": "uuid4"
         }
       ],
       "id": {
@@ -2017,7 +2104,6 @@ class Config {
           "name": "create",
           "points": [
             {
-              "args": {},
               "kind": "http",
               "method": "POST",
               "orig": "/webauthn/login/finalize",
@@ -2032,16 +2118,18 @@ class Config {
                   "lit": "finalize"
                 }
               ],
-              "select": {},
-              "transform": {
-                "req": "`reqdata`",
-                "res": "`body`"
-              },
               "parts": [
                 "webauthn",
                 "login",
                 "finalize"
-              ]
+              ],
+              "rename": {},
+              "transform": {
+                "req": "`reqdata`",
+                "res": "`body`"
+              },
+              "args": {},
+              "select": {}
             }
           ]
         }

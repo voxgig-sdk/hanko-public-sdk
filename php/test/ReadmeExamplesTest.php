@@ -40,14 +40,12 @@ class ReadmeExamplesTest extends TestCase
 
     // Entity accessor (\$client->Name()) => fixture storage key (lowercase name).
     private const ENTITIES = [
-        "CreateUserResponseObject" => "create_user_response_object",
         "Credential" => "credential",
         "CredentialCreationOption" => "credential_creation_option",
         "CredentialRequestOption" => "credential_request_option",
         "Email" => "email",
-        "EmailManagement" => "email_management",
         "HankoConfiguration" => "hanko_configuration",
-        "JsonWebKeySet" => "json_web_key_set",
+        "JsonWebKey" => "json_web_key",
         "Passcode" => "passcode",
         "Password" => "password",
         "Saml" => "saml",

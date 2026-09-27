@@ -3,19 +3,14 @@ declare(strict_types=1);
 
 // Typed models for the HankoPublic SDK.
 //
-// GENERATED from the API model: main.kit.entity.<e>.fields[] and per-op
-// params (op.<name>.points[].args.params[]). Field/param types come from the
+// GENERATED from the API model: main.kit.entity.<e>.fields{} and per-op
+// params (op.<name>.points[].g.params[]). Field/param types come from the
 // canonical type sentinels via @voxgig/sdkgen canonToType (source of truth:
 // @voxgig/apidef VALID_CANON). Do not edit by hand.
 //
 // These are documentation-grade value objects (PHP 8 typed properties),
 // registered on the composer classmap autoload. The SDK boundary exchanges
 // assoc-arrays; these classes name the shapes for tooling and typed callers.
-
-/** CreateUserResponseObject entity data model. */
-class CreateUserResponseObject
-{
-}
 
 /** Credential entity data model. */
 class Credential
@@ -134,18 +129,6 @@ class EmailRemoveMatch
     public string $id;
 }
 
-/** EmailManagement entity data model. */
-class EmailManagement
-{
-    public ?string $id = null;
-}
-
-/** Request payload for EmailManagement#create. */
-class EmailManagementCreateData
-{
-    public string $id;
-}
-
 /** HankoConfiguration entity data model. */
 class HankoConfiguration
 {
@@ -162,8 +145,8 @@ class HankoConfigurationLoadMatch
     public ?array $password = null;
 }
 
-/** JsonWebKeySet entity data model. */
-class JsonWebKeySet
+/** JsonWebKey entity data model. */
+class JsonWebKey
 {
     public ?string $alg = null;
     public ?string $e = null;
@@ -173,8 +156,8 @@ class JsonWebKeySet
     public ?string $use = null;
 }
 
-/** Request payload for JsonWebKeySet#list. */
-class JsonWebKeySetListMatch
+/** Request payload for JsonWebKey#list. */
+class JsonWebKeyListMatch
 {
     public ?string $alg = null;
     public ?string $e = null;

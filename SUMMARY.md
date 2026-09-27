@@ -6,15 +6,11 @@
 
 This guide introduces the API, the client libraries, and the companion tools in this repository. Start with the API capabilities, choose a client for your application, and use the linked reference when you need exact request and response details.
 
-The selected API surface contains 19 entities and 32 HTTP routes. There are 6 SDK targets and 2 companion tools.
+The selected API surface contains 17 entities and 32 HTTP routes. There are 6 SDK targets and 2 companion tools.
 
 An entity groups related API operations. An operation can have several routes with different inputs or authentication requirements. The SDK exposes the entity and its operations using the conventions of the selected language.
 
 ## What the API provides
-
-### [CreateUserResponseObject](docs/api/create_user_response_object.html)
-
-SDK operations: .
 
 ### [Credential](docs/api/credential.html)
 
@@ -40,7 +36,7 @@ Key fields to recognise:
 
 ### [Email](docs/api/email.html)
 
-Results: Email successfully added; A list of emails assigned to the current user; Email has been deleted.
+Results: Email has been set as primary; Email successfully added; A list of emails assigned to the current user; Email has been deleted.
 
 SDK operations: `create`, `list`, `remove`.
 
@@ -50,12 +46,6 @@ Key fields to recognise:
 - `id`: The ID of the email address
 - `is_primary`: Indicates it&#39;s the primary email address.
 - `is_verified`: Indicated the email has been verified.
-
-### [EmailManagement](docs/api/email_management.html)
-
-Results: Email has been set as primary.
-
-SDK operations: `create`.
 
 ### [HankoConfiguration](docs/api/hanko_configuration.html)
 
@@ -69,7 +59,7 @@ Key fields to recognise:
 - `emails`: Controls the behavior regarding email addresses.
 - `password`: Configuration options concerning passwords
 
-### [JsonWebKeySet](docs/api/json_web_key_set.html)
+### [JsonWebKey](docs/api/json_web_key.html)
 
 Results: JSON Web Key Set.
 
@@ -188,12 +178,12 @@ Use this map to locate a capability. Consult the entity reference before supplyi
 | [Credential](docs/api/credential.html) | `list` | `GET /webauthn/credentials` | Required |
 | [CredentialCreationOption](docs/api/credential_creation_option.html) | `create` | `POST /webauthn/registration/initialize` | Required |
 | [CredentialRequestOption](docs/api/credential_request_option.html) | `create` | `POST /webauthn/login/initialize` | See reference |
+| [Email](docs/api/email.html) | `create` | `POST /emails/{id}/set_primary` | Required |
 | [Email](docs/api/email.html) | `create` | `POST /emails` | Required |
 | [Email](docs/api/email.html) | `list` | `GET /emails` | Required |
 | [Email](docs/api/email.html) | `remove` | `DELETE /emails/{id}` | Required |
-| [EmailManagement](docs/api/email_management.html) | `create` | `POST /emails/{id}/set_primary` | Required |
 | [HankoConfiguration](docs/api/hanko_configuration.html) | `load` | `GET /.well-known/config` | See reference |
-| [JsonWebKeySet](docs/api/json_web_key_set.html) | `list` | `GET /.well-known/jwks.json` | See reference |
+| [JsonWebKey](docs/api/json_web_key.html) | `list` | `GET /.well-known/jwks.json` | See reference |
 | [Passcode](docs/api/passcode.html) | `create` | `POST /passcode/login/finalize` | See reference |
 | [Passcode](docs/api/passcode.html) | `create` | `POST /passcode/login/initialize` | See reference |
 | [Password](docs/api/password.html) | `create` | `POST /password/login` | See reference |
@@ -266,7 +256,7 @@ Use the MCP server to expose supported API operations to an MCP client.
 
 Repository directory: `go-mcp/`. Not published. Build from the go-mcp directory.
 
-- `hanko-public_list`: List records for an entity. Supported entities: `credential`, `email`, `json_web_key_set`, `user_management`.
+- `hanko-public_list`: List records for an entity. Supported entities: `credential`, `email`, `json_web_key`, `user_management`.
 - `hanko-public_load`: Load one record for an entity. Supported entities: `hanko_configuration`, `saml`, `session_management`, `status`, `third_party`, `user`.
 
 ## Operational features

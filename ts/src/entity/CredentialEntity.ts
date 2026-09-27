@@ -19,7 +19,6 @@ import type {
   CredentialListMatch,
 } from '../HankoPublicTypes'
 
-// TODO: needs Entity superclass
 class CredentialEntity extends HankoPublicEntityBase<Credential> {
 
   constructor(client: HankoPublicSDK, entopts: any) {

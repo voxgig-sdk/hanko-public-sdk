@@ -5,7 +5,7 @@
 The TypeScript SDK for the HankoPublic API — a type-safe, entity-oriented client with full async/await support.
 
 The API is exposed as capitalised, semantic **Entities** — e.g.
-`client.CreateUserResponseObject()` — each with a small set of operations (`list`, `load`, `create`, `update`, `remove`)
+`client.Credential()` — each with a small set of operations (`list`, `load`, `create`, `update`, `remove`)
 instead of raw URL paths and query parameters. This keeps the surface
 predictable and low-friction for both humans and AI agents.
 
@@ -28,7 +28,7 @@ loading a specific record.
 ### 1. Create a client
 
 ```ts
-import { HankoPublicSDK } from '@voxgig-sdk/hanko-public'
+import { HankoPublicSDK } from '@voxgig-sdk/hanko-public-sdk'
 
 const client = new HankoPublicSDK({
   apikey: process.env.HANKO_PUBLIC_APIKEY,
@@ -39,6 +39,20 @@ const client = new HankoPublicSDK({
 })
 ```
 
+### 2. List credential records
+
+`list()` resolves to an array of Credential ENTITIES — every operation
+resolves to entities, not raw records. Iterate them directly, and call
+`.data()` on one for the record it holds:
+
+```ts
+const credentials = await client.Credential().list()
+
+for (const credential of credentials) {
+  console.log(credential)
+}
+```
+
 
 ## Error handling
 
@@ -46,8 +60,8 @@ Entity operations reject on failure, so wrap them in `try` / `catch`:
 
 ```ts
 try {
-  const emails = await client.Email().list()
-  console.log(emails)
+  const jsonwebkeys = await client.JsonWebKey().list()
+  console.log(jsonwebkeys)
 } catch (err) {
   console.error('list failed:', err)
 }
@@ -113,10 +127,10 @@ Create a mock client for unit testing — no server required:
 ```ts
 const client = HankoPublicSDK.test()
 
-const email = await client.Email().list()
-// email is the entity, populated with mock response data
-// — call email.data() for the record itself
-console.log(email)
+const jsonwebkey = await client.JsonWebKey().list()
+// jsonwebkey is the entity, populated with mock response data
+// — call jsonwebkey.data() for the record itself
+console.log(jsonwebkey)
 ```
 
 You can also use the instance method:
@@ -131,14 +145,14 @@ const testClient = client.tester()
 Entity instances remember their last match and data:
 
 ```ts
-const entity = client.Email()
+const entity = client.JsonWebKey()
 
 // First call runs the operation and stores its result
 await entity.list()
 
 // Subsequent calls reuse the stored state
 const data = entity.data()
-console.log(data.id)
+console.log(data)
 ```
 
 ### Add custom middleware
@@ -220,14 +234,12 @@ new HankoPublicSDK(options?: {
 | `utility()` | `Utility` | Deep copy of the SDK utility object. |
 | `prepare(fetchargs?)` | `Promise<FetchDef>` | Build an HTTP request definition without sending it. |
 | `direct(fetchargs?)` | `Promise<DirectResult>` | Build and send an HTTP request. |
-| `CreateUserResponseObject(data?)` | `CreateUserResponseObjectEntity` | Create a CreateUserResponseObject entity instance. |
 | `Credential(data?)` | `CredentialEntity` | Create a Credential entity instance. |
 | `CredentialCreationOption(data?)` | `CredentialCreationOptionEntity` | Create a CredentialCreationOption entity instance. |
 | `CredentialRequestOption(data?)` | `CredentialRequestOptionEntity` | Create a CredentialRequestOption entity instance. |
 | `Email(data?)` | `EmailEntity` | Create an Email entity instance. |
-| `EmailManagement(data?)` | `EmailManagementEntity` | Create an EmailManagement entity instance. |
 | `HankoConfiguration(data?)` | `HankoConfigurationEntity` | Create a HankoConfiguration entity instance. |
-| `JsonWebKeySet(data?)` | `JsonWebKeySetEntity` | Create a JsonWebKeySet entity instance. |
+| `JsonWebKey(data?)` | `JsonWebKeyEntity` | Create a JsonWebKey entity instance. |
 | `Passcode(data?)` | `PasscodeEntity` | Create a Passcode entity instance. |
 | `Password(data?)` | `PasswordEntity` | Create a Password entity instance. |
 | `Saml(data?)` | `SamlEntity` | Create a Saml entity instance. |
@@ -310,15 +322,6 @@ The `prepare()` method returns:
 
 ### Entities
 
-#### CreateUserResponseObject
-
-| Field | Description |
-| --- | --- |
-
-Operations: .
-
-API path: ``
-
 #### Credential
 
 | Field | Description |
@@ -383,16 +386,6 @@ API path: `/webauthn/login/initialize`
 
 Operations: create, list, remove.
 
-API path: `/emails`
-
-#### EmailManagement
-
-| Field | Description |
-| --- | --- |
-| `id` |  |
-
-Operations: create.
-
 API path: `/emails/{id}/set_primary`
 
 #### HankoConfiguration
@@ -407,7 +400,7 @@ Operations: load.
 
 API path: `/.well-known/config`
 
-#### JsonWebKeySet
+#### JsonWebKey
 
 | Field | Description |
 | --- | --- |
@@ -586,11 +579,6 @@ API path: `/webauthn/login/finalize`
 ## Entities
 
 
-### CreateUserResponseObject
-
-Create an instance: `const create_user_response_object = client.CreateUserResponseObject()`
-
-
 ### Credential
 
 Create an instance: `const credential = client.Credential()`
@@ -721,31 +709,6 @@ const email = await client.Email().create({
 ```
 
 
-### EmailManagement
-
-Create an instance: `const email_management = client.EmailManagement()`
-
-#### Operations
-
-| Method | Description |
-| --- | --- |
-| `create(data)` | Create a new entity with the given data. |
-
-#### Fields
-
-| Field | Type | Description |
-| --- | --- | --- |
-| `id` | `string` |  |
-
-#### Example: Create
-
-```ts
-const email_management = await client.EmailManagement().create({
-  id: 'example_id',
-})
-```
-
-
 ### HankoConfiguration
 
 Create an instance: `const hanko_configuration = client.HankoConfiguration()`
@@ -771,9 +734,9 @@ const hanko_configuration = await client.HankoConfiguration().load()
 ```
 
 
-### JsonWebKeySet
+### JsonWebKey
 
-Create an instance: `const json_web_key_set = client.JsonWebKeySet()`
+Create an instance: `const json_web_key = client.JsonWebKey()`
 
 #### Operations
 
@@ -795,7 +758,7 @@ Create an instance: `const json_web_key_set = client.JsonWebKeySet()`
 #### Example: List
 
 ```ts
-const json_web_key_sets = await client.JsonWebKeySet().list()
+const json_web_keys = await client.JsonWebKey().list()
 ```
 
 
@@ -1144,14 +1107,14 @@ above:
 
 | Feature | What it does |
 |---|---|
-| [`debug`](#debug) | Request/response capture ring buffer for debugging |
-| [`idempotency`](#idempotency) | Idempotency keys for safe retries of mutating operations |
-| [`metrics`](#metrics) | Statistics capture: per-operation counters and latency |
-| [`paging`](#paging) | Pagination signals for list operations |
-| [`ratelimit`](#ratelimit) | Client-side rate limiting via a token bucket |
-| [`retry`](#retry) | Automatic retry of transient failures with exponential backoff |
-| [`test`](#test) | In-memory mock transport for testing without a live server |
-| [`timeout`](#timeout) | Per-request timeout with transport abort |
+| [`debug`](#debug) | Debug capture |
+| [`idempotency`](#idempotency) | Idempotency |
+| [`metrics`](#metrics) | Metrics |
+| [`paging`](#paging) | Paging |
+| [`ratelimit`](#ratelimit) | Rate limiting |
+| [`retry`](#retry) | Retry |
+| [`test`](#test) | Test transport |
+| [`timeout`](#timeout) | Timeout |
 
 > **Order matters for `ratelimit`, `retry`, `timeout`.** These wrap the
 > transport, so each one wraps whatever is already installed: the order you
@@ -1160,7 +1123,7 @@ above:
 
 ### debug
 
-Request/response capture ring buffer for debugging.
+Debug capture.
 
 | Option | Default |
 |---|---|
@@ -1172,7 +1135,7 @@ Set `feature.debug.active` to enable it, then override any of the options above.
 
 ### idempotency
 
-Idempotency keys for safe retries of mutating operations.
+Idempotency.
 
 | Option | Default |
 |---|---|
@@ -1185,7 +1148,7 @@ Set `feature.idempotency.active` to enable it, then override any of the options 
 
 ### metrics
 
-Statistics capture: per-operation counters and latency.
+Metrics.
 
 | Option | Default |
 |---|---|
@@ -1195,7 +1158,7 @@ Set `feature.metrics.active` to enable it, then override any of the options abov
 
 ### paging
 
-Pagination signals for list operations.
+Paging.
 
 | Option | Default |
 |---|---|
@@ -1211,7 +1174,7 @@ Set `feature.paging.active` to enable it, then override any of the options above
 
 ### ratelimit
 
-Client-side rate limiting via a token bucket.
+Rate limiting.
 
 | Option | Default |
 |---|---|
@@ -1227,7 +1190,7 @@ activated earlier.
 
 ### retry
 
-Automatic retry of transient failures with exponential backoff.
+Retry.
 
 | Option | Default |
 |---|---|
@@ -1246,7 +1209,7 @@ activated earlier.
 
 ### test
 
-In-memory mock transport for testing without a live server.
+Test transport.
 
 | Option | Default |
 |---|---|
@@ -1256,7 +1219,7 @@ Set `feature.test.active` to enable it, then override any of the options above.
 
 ### timeout
 
-Per-request timeout with transport abort.
+Timeout.
 
 | Option | Default |
 |---|---|
@@ -1308,14 +1271,14 @@ a function that receives the context.
 
 The SDK ships with built-in features:
 
-- **DebugFeature**: Request/response capture ring buffer for debugging
-- **IdempotencyFeature**: Idempotency keys for safe retries of mutating operations
-- **MetricsFeature**: Statistics capture: per-operation counters and latency
-- **PagingFeature**: Pagination signals for list operations
-- **RatelimitFeature**: Client-side rate limiting via a token bucket
-- **RetryFeature**: Automatic retry of transient failures with exponential backoff
-- **TestFeature**: In-memory mock transport for testing without a live server
-- **TimeoutFeature**: Per-request timeout with transport abort
+- **DebugFeature**: Debug capture
+- **IdempotencyFeature**: Idempotency
+- **MetricsFeature**: Metrics
+- **PagingFeature**: Paging
+- **RatelimitFeature**: Rate limiting
+- **RetryFeature**: Retry
+- **TestFeature**: Test transport
+- **TimeoutFeature**: Timeout
 
 Features are initialized in order. Hooks fire in the order features
 were added, so later features can override earlier ones.
@@ -1336,7 +1299,7 @@ hanko-public/
 Import the SDK from the package root:
 
 ```ts
-import { HankoPublicSDK } from '@voxgig-sdk/hanko-public'
+import { HankoPublicSDK } from '@voxgig-sdk/hanko-public-sdk'
 ```
 
 ### Entity state
@@ -1346,11 +1309,11 @@ stores the returned data and match criteria internally. Subsequent
 calls on the same instance can rely on this state.
 
 ```ts
-const email = client.Email()
-await email.list()
+const jsonwebkey = client.JsonWebKey()
+await jsonwebkey.list()
 
-// email.data() now returns the email data from the last `list`
-// email.match() returns the last match criteria
+// jsonwebkey.data() now returns the jsonwebkey data from the last `list`
+// jsonwebkey.match() returns the last match criteria
 ```
 
 Call `make()` to create a fresh instance with the same configuration

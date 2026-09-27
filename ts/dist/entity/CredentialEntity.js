@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CredentialEntity = void 0;
 const HankoPublicEntityBase_1 = require("../HankoPublicEntityBase");
-// TODO: needs Entity superclass
 class CredentialEntity extends HankoPublicEntityBase_1.HankoPublicEntityBase {
     constructor(client, entopts) {
         super(client, entopts);

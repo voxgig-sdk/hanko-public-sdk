@@ -1,0 +1,28 @@
+# BasicHankoConfigurationFlow
+
+main: kit: flow: BasicHankoConfigurationFlow:
+{
+  entity: "hanko_configuration",
+  kind: "basic",
+  name: "BasicHankoConfigurationFlow",
+  step: [
+    {
+      i: {
+        ref: "hanko_configuration_ref01",
+        srcdatavar: "hanko_configuration_ref01_data",
+        suffix: "_dt0"
+      }
+
+      o: "load",
+      v: [
+        {
+          apply: "TextFieldMark",
+          def: {
+            mark: "Mark01-hanko_configuration_ref01"
+          }
+        }
+      ]
+    }
+  ],
+  "key$": "BasicHankoConfigurationFlow"
+}

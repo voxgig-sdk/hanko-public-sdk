@@ -289,13 +289,6 @@ class HankoPublicSDK
   end
 
 
-  # Canonical facade: client.CreateUserResponseObject.list / client.CreateUserResponseObject.load({ "id" => ... })
-  def CreateUserResponseObject(data = nil)
-    require_relative 'entity/create_user_response_object_entity'
-    CreateUserResponseObjectEntity.new(self, data)
-  end
-
-
   # Canonical facade: client.Credential.list / client.Credential.load({ "id" => ... })
   def Credential(data = nil)
     require_relative 'entity/credential_entity'
@@ -324,13 +317,6 @@ class HankoPublicSDK
   end
 
 
-  # Canonical facade: client.EmailManagement.list / client.EmailManagement.load({ "id" => ... })
-  def EmailManagement(data = nil)
-    require_relative 'entity/email_management_entity'
-    EmailManagementEntity.new(self, data)
-  end
-
-
   # Canonical facade: client.HankoConfiguration.list / client.HankoConfiguration.load({ "id" => ... })
   def HankoConfiguration(data = nil)
     require_relative 'entity/hanko_configuration_entity'
@@ -338,10 +324,10 @@ class HankoPublicSDK
   end
 
 
-  # Canonical facade: client.JsonWebKeySet.list / client.JsonWebKeySet.load({ "id" => ... })
-  def JsonWebKeySet(data = nil)
-    require_relative 'entity/json_web_key_set_entity'
-    JsonWebKeySetEntity.new(self, data)
+  # Canonical facade: client.JsonWebKey.list / client.JsonWebKey.load({ "id" => ... })
+  def JsonWebKey(data = nil)
+    require_relative 'entity/json_web_key_entity'
+    JsonWebKeyEntity.new(self, data)
   end
 
 

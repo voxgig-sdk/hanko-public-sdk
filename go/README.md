@@ -4,7 +4,7 @@
 
 The Golang SDK for the HankoPublic API — an entity-oriented client using standard Go conventions. No generics required; data flows as `map[string]any`.
 
-It exposes the API as capitalised, semantic **Entities** — e.g. `client.CreateUserResponseObject(nil)` — each with the same small set of operations (`List`, `Load`, `Create`, `Update`, `Remove`) instead of raw URL paths and query strings. You call meaning, not endpoints, which keeps the cognitive load low.
+It exposes the API as capitalised, semantic **Entities** — e.g. `client.Credential(nil)` — each with the same small set of operations (`List`, `Load`, `Create`, `Update`, `Remove`) instead of raw URL paths and query strings. You call meaning, not endpoints, which keeps the cognitive load low.
 
 > Also generated from this model: `go-cli`, `go-mcp`, `lua`, `php`, `py`, `rb`, `ts` — see
 > the [top-level README](../README.md).
@@ -43,6 +43,7 @@ directly.
 package main
 
 import (
+    "fmt"
     "os"
     sdk "github.com/voxgig-sdk/hanko-public-sdk/go"
 )
@@ -55,7 +56,14 @@ func main() {
     },
     })
 
-    _ = client
+    // List credential records — the value is the array of records itself.
+    credentials, err := client.Credential(nil).List(nil, nil)
+    if err != nil {
+        panic(err)
+    }
+    for _, item := range credentials.([]any) {
+        fmt.Println(item)
+    }
 }
 ```
 
@@ -66,12 +74,12 @@ Every entity operation returns `(value, error)`. Check `err` before
 using the value — there is no exception to catch:
 
 ```go
-emails, err := client.Email(nil).List(nil, nil)
+jsonwebkeys, err := client.JsonWebKey(nil).List(nil, nil)
 if err != nil {
     // handle err
     return
 }
-_ = emails
+_ = jsonwebkeys
 ```
 
 `Direct` follows the same `(value, error)` convention:
@@ -135,13 +143,13 @@ Create a mock client for unit testing — no server required:
 ```go
 client := sdk.Test()
 
-email, err := client.Email(nil).List(
+jsonWebKey, err := client.JsonWebKey(nil).List(
     nil, nil,
 )
 if err != nil {
     panic(err)
 }
-fmt.Println(email) // the returned mock data
+fmt.Println(jsonWebKey) // the returned mock data
 ```
 
 ### Use a custom fetch function
@@ -220,14 +228,12 @@ Creates a test-mode client with mock transport. Both arguments may be `nil`.
 | `GetUtility` | `() *Utility` | Copy of the SDK utility object. |
 | `Prepare` | `(fetchargs map[string]any) (map[string]any, error)` | Build an HTTP request definition without sending. |
 | `Direct` | `(fetchargs map[string]any) (map[string]any, error)` | Build and send an HTTP request. |
-| `CreateUserResponseObject` | `(data map[string]any) HankoPublicEntity` | Create a CreateUserResponseObject entity instance. |
 | `Credential` | `(data map[string]any) HankoPublicEntity` | Create a Credential entity instance. |
 | `CredentialCreationOption` | `(data map[string]any) HankoPublicEntity` | Create a CredentialCreationOption entity instance. |
 | `CredentialRequestOption` | `(data map[string]any) HankoPublicEntity` | Create a CredentialRequestOption entity instance. |
 | `Email` | `(data map[string]any) HankoPublicEntity` | Create an Email entity instance. |
-| `EmailManagement` | `(data map[string]any) HankoPublicEntity` | Create an EmailManagement entity instance. |
 | `HankoConfiguration` | `(data map[string]any) HankoPublicEntity` | Create a HankoConfiguration entity instance. |
-| `JsonWebKeySet` | `(data map[string]any) HankoPublicEntity` | Create a JsonWebKeySet entity instance. |
+| `JsonWebKey` | `(data map[string]any) HankoPublicEntity` | Create a JsonWebKey entity instance. |
 | `Passcode` | `(data map[string]any) HankoPublicEntity` | Create a Passcode entity instance. |
 | `Password` | `(data map[string]any) HankoPublicEntity` | Create a Password entity instance. |
 | `Saml` | `(data map[string]any) HankoPublicEntity` | Create a Saml entity instance. |
@@ -278,15 +284,6 @@ Only `Direct()` returns a response envelope — a `map[string]any` with
 `"ok"`, `"status"`, `"headers"`, and `"data"` keys.
 
 ### Entities
-
-#### CreateUserResponseObject
-
-| Field | Description |
-| --- | --- |
-
-Operations: .
-
-API path: ``
 
 #### Credential
 
@@ -352,16 +349,6 @@ API path: `/webauthn/login/initialize`
 
 Operations: Create, List, Remove.
 
-API path: `/emails`
-
-#### EmailManagement
-
-| Field | Description |
-| --- | --- |
-| `"id"` |  |
-
-Operations: Create.
-
 API path: `/emails/{id}/set_primary`
 
 #### HankoConfiguration
@@ -376,7 +363,7 @@ Operations: Load.
 
 API path: `/.well-known/config`
 
-#### JsonWebKeySet
+#### JsonWebKey
 
 | Field | Description |
 | --- | --- |
@@ -555,11 +542,6 @@ API path: `/webauthn/login/finalize`
 ## Entities
 
 
-### CreateUserResponseObject
-
-Create an instance: `createUserResponseObject := client.CreateUserResponseObject(nil)`
-
-
 ### Credential
 
 Create an instance: `credential := client.Credential(nil)`
@@ -710,35 +692,6 @@ fmt.Println(result)
 ```
 
 
-### EmailManagement
-
-Create an instance: `emailManagement := client.EmailManagement(nil)`
-
-#### Operations
-
-| Method | Description |
-| --- | --- |
-| `Create(data, ctrl)` | Create a new entity with the given data. |
-
-#### Fields
-
-| Field | Type | Description |
-| --- | --- | --- |
-| `id` | `string` |  |
-
-#### Example: Create
-
-```go
-result, err := client.EmailManagement(nil).Create(map[string]any{
-    "id": "example_id",
-}, nil)
-if err != nil {
-    panic(err)
-}
-fmt.Println(result)
-```
-
-
 ### HankoConfiguration
 
 Create an instance: `hankoConfiguration := client.HankoConfiguration(nil)`
@@ -768,9 +721,9 @@ fmt.Println(hankoConfiguration) // the loaded record
 ```
 
 
-### JsonWebKeySet
+### JsonWebKey
 
-Create an instance: `jsonWebKeySet := client.JsonWebKeySet(nil)`
+Create an instance: `jsonWebKey := client.JsonWebKey(nil)`
 
 #### Operations
 
@@ -792,11 +745,11 @@ Create an instance: `jsonWebKeySet := client.JsonWebKeySet(nil)`
 #### Example: List
 
 ```go
-jsonWebKeySets, err := client.JsonWebKeySet(nil).List(nil, nil)
+jsonWebKeys, err := client.JsonWebKey(nil).List(nil, nil)
 if err != nil {
     panic(err)
 }
-fmt.Println(jsonWebKeySets) // the array of records
+fmt.Println(jsonWebKeys) // the array of records
 ```
 
 
@@ -1205,14 +1158,14 @@ above:
 
 | Feature | What it does |
 |---|---|
-| [`debug`](#debug) | Request/response capture ring buffer for debugging |
-| [`idempotency`](#idempotency) | Idempotency keys for safe retries of mutating operations |
-| [`metrics`](#metrics) | Statistics capture: per-operation counters and latency |
-| [`paging`](#paging) | Pagination signals for list operations |
-| [`ratelimit`](#ratelimit) | Client-side rate limiting via a token bucket |
-| [`retry`](#retry) | Automatic retry of transient failures with exponential backoff |
-| [`test`](#test) | In-memory mock transport for testing without a live server |
-| [`timeout`](#timeout) | Per-request timeout with transport abort |
+| [`debug`](#debug) | Debug capture |
+| [`idempotency`](#idempotency) | Idempotency |
+| [`metrics`](#metrics) | Metrics |
+| [`paging`](#paging) | Paging |
+| [`ratelimit`](#ratelimit) | Rate limiting |
+| [`retry`](#retry) | Retry |
+| [`test`](#test) | Test transport |
+| [`timeout`](#timeout) | Timeout |
 
 > **Order matters for `ratelimit`, `retry`, `timeout`.** These wrap the
 > transport, so each one wraps whatever is already installed: the order you
@@ -1221,7 +1174,7 @@ above:
 
 ### debug
 
-Request/response capture ring buffer for debugging.
+Debug capture.
 
 | Option | Default |
 |---|---|
@@ -1233,7 +1186,7 @@ Set `feature.debug.active` to enable it, then override any of the options above.
 
 ### idempotency
 
-Idempotency keys for safe retries of mutating operations.
+Idempotency.
 
 | Option | Default |
 |---|---|
@@ -1246,7 +1199,7 @@ Set `feature.idempotency.active` to enable it, then override any of the options 
 
 ### metrics
 
-Statistics capture: per-operation counters and latency.
+Metrics.
 
 | Option | Default |
 |---|---|
@@ -1256,7 +1209,7 @@ Set `feature.metrics.active` to enable it, then override any of the options abov
 
 ### paging
 
-Pagination signals for list operations.
+Paging.
 
 | Option | Default |
 |---|---|
@@ -1272,7 +1225,7 @@ Set `feature.paging.active` to enable it, then override any of the options above
 
 ### ratelimit
 
-Client-side rate limiting via a token bucket.
+Rate limiting.
 
 | Option | Default |
 |---|---|
@@ -1288,7 +1241,7 @@ activated earlier.
 
 ### retry
 
-Automatic retry of transient failures with exponential backoff.
+Retry.
 
 | Option | Default |
 |---|---|
@@ -1307,7 +1260,7 @@ activated earlier.
 
 ### test
 
-In-memory mock transport for testing without a live server.
+Test transport.
 
 | Option | Default |
 |---|---|
@@ -1317,7 +1270,7 @@ Set `feature.test.active` to enable it, then override any of the options above.
 
 ### timeout
 
-Per-request timeout with transport abort.
+Timeout.
 
 | Option | Default |
 |---|---|
@@ -1369,14 +1322,14 @@ stage names.
 
 The SDK ships with built-in features:
 
-- **DebugFeature**: Request/response capture ring buffer for debugging
-- **IdempotencyFeature**: Idempotency keys for safe retries of mutating operations
-- **MetricsFeature**: Statistics capture: per-operation counters and latency
-- **PagingFeature**: Pagination signals for list operations
-- **RatelimitFeature**: Client-side rate limiting via a token bucket
-- **RetryFeature**: Automatic retry of transient failures with exponential backoff
-- **TestFeature**: In-memory mock transport for testing without a live server
-- **TimeoutFeature**: Per-request timeout with transport abort
+- **DebugFeature**: Debug capture
+- **IdempotencyFeature**: Idempotency
+- **MetricsFeature**: Metrics
+- **PagingFeature**: Paging
+- **RatelimitFeature**: Rate limiting
+- **RetryFeature**: Retry
+- **TestFeature**: Test transport
+- **TimeoutFeature**: Timeout
 
 Features are initialized in order. Hooks fire in the order features
 were added, so later features can override earlier ones.
@@ -1411,11 +1364,11 @@ Entity instances are stateful. After a successful `List`, the entity
 stores the returned data and match criteria internally.
 
 ```go
-email := client.Email(nil)
-email.List(nil, nil)
+jsonwebkey := client.JsonWebKey(nil)
+jsonwebkey.List(nil, nil)
 
-// email.Data() now returns the email data from the last list
-// email.Match() returns the last match criteria
+// jsonwebkey.Data() now returns the jsonwebkey data from the last list
+// jsonwebkey.Match() returns the last match criteria
 ```
 
 Call `Make()` to create a fresh instance with the same configuration

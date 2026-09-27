@@ -1,7 +1,7 @@
 // Typed models for the HankoPublic SDK.
 //
-// GENERATED from the API model: main.kit.entity.<e>.fields[] and per-op
-// params (op.<name>.points[].args.params[]). Field/param types come from the
+// GENERATED from the API model: main.kit.entity.<e>.fields{} and per-op
+// params (op.<name>.points[].g.params[]). Field/param types come from the
 // canonical type sentinels via @voxgig/sdkgen canonToType (source of truth:
 // @voxgig/apidef VALID_CANON). Do not edit by hand.
 package entity
@@ -12,23 +12,8 @@ import (
 	"github.com/voxgig-sdk/hanko-public-sdk/go/core"
 )
 
-// CreateUserResponseObject is the typed data model for the create_user_response_object entity.
-type CreateUserResponseObject struct {
-}
-
 // Credential is the typed data model for the credential entity.
 type Credential struct {
-	Aaguid *string `json:"aaguid,omitempty"`
-	AttestationType *string `json:"attestation_type,omitempty"`
-	BackupEligible *bool `json:"backup_eligible,omitempty"`
-	BackupState *bool `json:"backup_state,omitempty"`
-	CreatedAt *string `json:"created_at,omitempty"`
-	Id *string `json:"id,omitempty"`
-	LastUsedAt *string `json:"last_used_at,omitempty"`
-	MfaOnly *bool `json:"mfa_only,omitempty"`
-	Name *string `json:"name,omitempty"`
-	Publickey *string `json:"publickey,omitempty"`
-	Transports *[]any `json:"transports,omitempty"`
 }
 
 // CredentialListMatch is the typed request payload for Credential.ListTyped.
@@ -48,13 +33,6 @@ type CredentialListMatch struct {
 
 // CredentialCreationOption is the typed data model for the credential_creation_option entity.
 type CredentialCreationOption struct {
-	Attestation *string `json:"attestation,omitempty"`
-	AuthenticatorSelection *map[string]any `json:"authenticatorSelection,omitempty"`
-	Challenge *string `json:"challenge,omitempty"`
-	PubKeyCredParams *[]any `json:"pubKeyCredParams,omitempty"`
-	Rp *map[string]any `json:"rp,omitempty"`
-	Timeout *int `json:"timeout,omitempty"`
-	User *map[string]any `json:"user,omitempty"`
 }
 
 // CredentialCreationOptionCreateData is the typed request payload for CredentialCreationOption.CreateTyped.
@@ -70,12 +48,6 @@ type CredentialCreationOptionCreateData struct {
 
 // CredentialRequestOption is the typed data model for the credential_request_option entity.
 type CredentialRequestOption struct {
-	AllowCredentials *[]any `json:"allowCredentials,omitempty"`
-	Challenge *string `json:"challenge,omitempty"`
-	RpId *string `json:"rpId,omitempty"`
-	Timeout *int `json:"timeout,omitempty"`
-	UserVerification *string `json:"userVerification,omitempty"`
-	UserId *string `json:"user_id,omitempty"`
 }
 
 // CredentialRequestOptionCreateData is the typed request payload for CredentialRequestOption.CreateTyped.
@@ -90,12 +62,6 @@ type CredentialRequestOptionCreateData struct {
 
 // Email is the typed data model for the email entity.
 type Email struct {
-	Address string `json:"address"`
-	Id *string `json:"id,omitempty"`
-	Identities *any `json:"identities,omitempty"`
-	Identity *any `json:"identity,omitempty"`
-	IsPrimary *bool `json:"is_primary,omitempty"`
-	IsVerified *bool `json:"is_verified,omitempty"`
 }
 
 // EmailListMatch is the typed request payload for Email.ListTyped.
@@ -123,21 +89,8 @@ type EmailRemoveMatch struct {
 	Id string `json:"id"`
 }
 
-// EmailManagement is the typed data model for the email_management entity.
-type EmailManagement struct {
-	Id *string `json:"id,omitempty"`
-}
-
-// EmailManagementCreateData is the typed request payload for EmailManagement.CreateTyped.
-type EmailManagementCreateData struct {
-	Id string `json:"id"`
-}
-
 // HankoConfiguration is the typed data model for the hanko_configuration entity.
 type HankoConfiguration struct {
-	Account *map[string]any `json:"account,omitempty"`
-	Emails *map[string]any `json:"emails,omitempty"`
-	Password *map[string]any `json:"password,omitempty"`
 }
 
 // HankoConfigurationLoadMatch is the typed request payload for HankoConfiguration.LoadTyped.
@@ -147,18 +100,12 @@ type HankoConfigurationLoadMatch struct {
 	Password *map[string]any `json:"password,omitempty"`
 }
 
-// JsonWebKeySet is the typed data model for the json_web_key_set entity.
-type JsonWebKeySet struct {
-	Alg *string `json:"alg,omitempty"`
-	E *string `json:"e,omitempty"`
-	Kid *string `json:"kid,omitempty"`
-	Kty *string `json:"kty,omitempty"`
-	N *string `json:"n,omitempty"`
-	Use *string `json:"use,omitempty"`
+// JsonWebKey is the typed data model for the json_web_key entity.
+type JsonWebKey struct {
 }
 
-// JsonWebKeySetListMatch is the typed request payload for JsonWebKeySet.ListTyped.
-type JsonWebKeySetListMatch struct {
+// JsonWebKeyListMatch is the typed request payload for JsonWebKey.ListTyped.
+type JsonWebKeyListMatch struct {
 	Alg *string `json:"alg,omitempty"`
 	E *string `json:"e,omitempty"`
 	Kid *string `json:"kid,omitempty"`
@@ -169,10 +116,6 @@ type JsonWebKeySetListMatch struct {
 
 // Passcode is the typed data model for the passcode entity.
 type Passcode struct {
-	Code *string `json:"code,omitempty"`
-	EmailId *string `json:"email_id,omitempty"`
-	Id *string `json:"id,omitempty"`
-	UserId string `json:"user_id"`
 }
 
 // PasscodeCreateData is the typed request payload for Passcode.CreateTyped.
@@ -185,8 +128,6 @@ type PasscodeCreateData struct {
 
 // Password is the typed data model for the password entity.
 type Password struct {
-	Password string `json:"password"`
-	UserId string `json:"user_id"`
 }
 
 // PasswordCreateData is the typed request payload for Password.CreateTyped.
@@ -217,15 +158,6 @@ type SamlCreateData struct {
 
 // SessionManagement is the typed data model for the session_management entity.
 type SessionManagement struct {
-	Amr *[]any `json:"amr,omitempty"`
-	Audience *[]any `json:"audience,omitempty"`
-	Email *map[string]any `json:"email,omitempty"`
-	Expiration string `json:"expiration"`
-	IssuedAt *string `json:"issued_at,omitempty"`
-	Issuer *string `json:"issuer,omitempty"`
-	SessionId string `json:"session_id"`
-	SessionToken string `json:"session_token"`
-	Subject any `json:"subject"`
 }
 
 // SessionManagementLoadMatch is the typed request payload for SessionManagement.LoadTyped.
@@ -276,7 +208,6 @@ type ThirdPartyLoadMatch struct {
 
 // Token is the typed data model for the token entity.
 type Token struct {
-	Value *string `json:"value,omitempty"`
 }
 
 // TokenCreateData is the typed request payload for Token.CreateTyped.
@@ -286,25 +217,6 @@ type TokenCreateData struct {
 
 // User is the typed data model for the user entity.
 type User struct {
-	CreatedAt *string `json:"created_at,omitempty"`
-	Email *string `json:"email,omitempty"`
-	EmailId *string `json:"email_id,omitempty"`
-	Emails *[]any `json:"emails,omitempty"`
-	FamilyName *string `json:"family_name,omitempty"`
-	GivenName *string `json:"given_name,omitempty"`
-	HasWebauthnCredential *bool `json:"has_webauthn_credential,omitempty"`
-	Id *string `json:"id,omitempty"`
-	Metadata *map[string]any `json:"metadata,omitempty"`
-	MfaConfig *map[string]any `json:"mfa_config,omitempty"`
-	Name *string `json:"name,omitempty"`
-	Passkeys *[]any `json:"passkeys,omitempty"`
-	Picture *string `json:"picture,omitempty"`
-	SecurityKeys *[]any `json:"security_keys,omitempty"`
-	UpdatedAt *string `json:"updated_at,omitempty"`
-	UserId *string `json:"user_id,omitempty"`
-	Username *string `json:"username,omitempty"`
-	Verified *bool `json:"verified,omitempty"`
-	WebauthnCredentials *[]any `json:"webauthn_credentials,omitempty"`
 }
 
 // UserLoadMatch is the typed request payload for User.LoadTyped.
@@ -360,20 +272,6 @@ type UserRemoveMatch struct {
 
 // UserManagement is the typed data model for the user_management entity.
 type UserManagement struct {
-	CreatedAt *string `json:"created_at,omitempty"`
-	Emails *[]any `json:"emails,omitempty"`
-	FamilyName *string `json:"family_name,omitempty"`
-	GivenName *string `json:"given_name,omitempty"`
-	Id *string `json:"id,omitempty"`
-	Metadata *map[string]any `json:"metadata,omitempty"`
-	MfaConfig *map[string]any `json:"mfa_config,omitempty"`
-	Name *string `json:"name,omitempty"`
-	Passkeys *[]any `json:"passkeys,omitempty"`
-	Picture *string `json:"picture,omitempty"`
-	SecurityKeys *[]any `json:"security_keys,omitempty"`
-	UpdatedAt *string `json:"updated_at,omitempty"`
-	UserId *string `json:"user_id,omitempty"`
-	Username *map[string]any `json:"username,omitempty"`
 }
 
 // UserManagementListMatch is the typed request payload for UserManagement.ListTyped.
@@ -414,11 +312,6 @@ type UserManagementCreateData struct {
 
 // WebAuthn is the typed data model for the web_authn entity.
 type WebAuthn struct {
-	Id *string `json:"id,omitempty"`
-	Name *string `json:"name,omitempty"`
-	RawId *string `json:"rawId,omitempty"`
-	Response *map[string]any `json:"response,omitempty"`
-	Type *string `json:"type,omitempty"`
 }
 
 // WebAuthnCreateData is the typed request payload for WebAuthn.CreateTyped.
@@ -446,12 +339,6 @@ type WebAuthnRemoveMatch struct {
 
 // WebauthnLogin is the typed data model for the webauthn_login entity.
 type WebauthnLogin struct {
-	CredentialId *string `json:"credential_id,omitempty"`
-	Id *string `json:"id,omitempty"`
-	RawId *string `json:"rawId,omitempty"`
-	Response *map[string]any `json:"response,omitempty"`
-	Type *string `json:"type,omitempty"`
-	UserId *string `json:"user_id,omitempty"`
 }
 
 // WebauthnLoginCreateData is the typed request payload for WebauthnLogin.CreateTyped.

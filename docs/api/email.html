@@ -6,16 +6,15 @@
 <div class="site-notice" role="note"></div>
 <div class="shell"><nav class="site-nav" aria-label="Documentation"><div class="search"><label for="search">Search documentation</label><input id="search" type="search" data-base="../" placeholder="Find a guide or reference"><div id="results" aria-live="polite"></div></div><details><summary>Overview</summary><a href="../index.html">Hanko Public API</a></details>
 <details open><summary>API</summary><a href="../api/index.html">API overview</a>
-<a href="../api/create_user_response_object.html">CreateUserResponseObject</a>
 <a href="../api/credential.html">Credential</a>
 <a href="../api/credential_creation_option.html">CredentialCreationOption</a>
 <a href="../api/credential_request_option.html">CredentialRequestOption</a>
-<a aria-current="page" href="../api/email.html">Email</a><div class="nav-sections"><a class="nav-section" href="#post-emails">POST /emails</a>
+<a aria-current="page" href="../api/email.html">Email</a><div class="nav-sections"><a class="nav-section" href="#post-emailsidset_primary">POST /emails/{id}/set_primary</a>
+<a class="nav-section" href="#post-emails">POST /emails</a>
 <a class="nav-section" href="#get-emails">GET /emails</a>
 <a class="nav-section" href="#delete-emailsid">DELETE /emails/{id}</a></div>
-<a href="../api/email_management.html">EmailManagement</a>
 <a href="../api/hanko_configuration.html">HankoConfiguration</a>
-<a href="../api/json_web_key_set.html">JsonWebKeySet</a>
+<a href="../api/json_web_key.html">JsonWebKey</a>
 <a href="../api/passcode.html">Passcode</a>
 <a href="../api/password.html">Password</a>
 <a href="../api/saml.html">Saml</a>
@@ -39,14 +38,14 @@
 <a href="../sdks/ts.html">TypeScript</a></details>
 <details><summary>Tools</summary><a href="../tools/go-cli.html">Go CLI</a>
 <a href="../tools/go-mcp.html">Go MCP server</a></details>
-<details><summary>Features</summary><a href="../features/debug.html">Request/response capture ring buffer for debugging</a>
-<a href="../features/idempotency.html">Idempotency keys for safe retries of mutating operations</a>
-<a href="../features/metrics.html">Statistics capture: per-operation counters and latency</a>
-<a href="../features/paging.html">Pagination signals for list operations</a>
-<a href="../features/ratelimit.html">Client-side rate limiting via a token bucket</a>
-<a href="../features/retry.html">Automatic retry of transient failures with exponential backoff</a>
-<a href="../features/test.html">In-memory mock transport for testing without a live server</a>
-<a href="../features/timeout.html">Per-request timeout with transport abort</a></details></nav><main id="content"><div class="page-context"><span class="section-dot" aria-hidden="true"></span>API</div><h1 id="email">Email</h1>
+<details><summary>Features</summary><a href="../features/debug.html">Debug capture</a>
+<a href="../features/idempotency.html">Idempotency</a>
+<a href="../features/metrics.html">Metrics</a>
+<a href="../features/paging.html">Paging</a>
+<a href="../features/ratelimit.html">Rate limiting</a>
+<a href="../features/retry.html">Retry</a>
+<a href="../features/test.html">Test transport</a>
+<a href="../features/timeout.html">Timeout</a></details></nav><main id="content"><div class="page-context"><span class="section-dot" aria-hidden="true"></span>API</div><h1 id="email">Email</h1>
 <h2 id="operations">Operations</h2>
 <p>Every route this entity exposes. Each route links to its own reference on this page.</p>
 <table>
@@ -59,6 +58,12 @@
 </tr>
 </thead>
 <tbody>
+<tr>
+<td><code>POST</code></td>
+<td><a href="#post-emailsidset_primary"><code>/emails/{id}/set_primary</code></a></td>
+<td><code>create</code></td>
+<td>Email has been set as primary</td>
+</tr>
 <tr>
 <td><code>POST</code></td>
 <td><a href="#post-emails"><code>/emails</code></a></td>
@@ -79,6 +84,56 @@
 </tr>
 </tbody>
 </table>
+<h2 id="examples">Examples</h2>
+<p>One example per SDK, generated from the API model. The argument names are the parameters and fields of this entity, and the values are placeholders. The examples are not compiled or executed.</p>
+<h3 id="golang">Golang</h3>
+<p>Construct <code>client</code> as shown in the <a href="../sdks/go.html#set-up-the-client">Golang setup</a>, then call the operations:</p>
+<pre><code class="language-go">emails, err := client.Email(nil).List(nil, nil)
+if err != nil {
+    panic(err)
+}
+fmt.Println(emails)
+created, err := client.Email(nil).Create(map[string]any{&quot;address&quot;: &quot;example&quot;}, nil)
+if err != nil {
+    panic(err)
+}
+fmt.Println(created)
+removed, err := client.Email(nil).Remove(map[string]any{&quot;id&quot;: &quot;example&quot;}, nil)
+if err != nil {
+    panic(err)
+}
+fmt.Println(removed)
+</code></pre>
+<h3 id="lua">Lua</h3>
+<p>Construct <code>client</code> as shown in the <a href="../sdks/lua.html#set-up-the-client">Lua setup</a>, then call the operations:</p>
+<pre><code class="language-lua">local emails, err = client:Email():list()
+local created, err = client:Email():create({ address = &quot;example&quot; })
+local removed, err = client:Email():remove({ id = &quot;example&quot; })
+</code></pre>
+<h3 id="php">PHP</h3>
+<p>Construct <code>client</code> as shown in the <a href="../sdks/php.html#set-up-the-client">PHP setup</a>, then call the operations:</p>
+<pre><code class="language-php">$emails = $client-&gt;Email()-&gt;list();
+$created = $client-&gt;Email()-&gt;create([&quot;address&quot; =&gt; &quot;example&quot;]);
+$client-&gt;Email()-&gt;remove([&quot;id&quot; =&gt; &quot;example&quot;]);
+</code></pre>
+<h3 id="python">Python</h3>
+<p>Construct <code>client</code> as shown in the <a href="../sdks/py.html#set-up-the-client">Python setup</a>, then call the operations:</p>
+<pre><code class="language-py">emails = client.Email().list()
+created = client.Email().create({ &quot;address&quot;: &quot;example&quot; })
+client.Email().remove({&quot;id&quot;: &quot;example&quot;})
+</code></pre>
+<h3 id="ruby">Ruby</h3>
+<p>Construct <code>client</code> as shown in the <a href="../sdks/rb.html#set-up-the-client">Ruby setup</a>, then call the operations:</p>
+<pre><code class="language-rb">emails = client.Email.list()
+created = client.Email.create({ &quot;address&quot; =&gt; &quot;example&quot; })
+client.Email.remove({ &quot;id&quot; =&gt; &quot;example&quot; })
+</code></pre>
+<h3 id="typescript">TypeScript</h3>
+<p>Construct <code>client</code> as shown in the <a href="../sdks/ts.html#set-up-the-client">TypeScript setup</a>, then call the operations:</p>
+<pre><code class="language-ts">const emails = await client.Email().list()
+const created = await client.Email().create({ address: &quot;example&quot; })
+await client.Email().remove({ id: &quot;example&quot; })
+</code></pre>
 <h2 id="fields">Fields</h2>
 <table>
 <thead>
@@ -106,13 +161,13 @@
 <td><code>identities</code></td>
 <td><code>any</code></td>
 <td>No</td>
-<td></td>
+<td>Identities</td>
 </tr>
 <tr>
 <td><code>identity</code></td>
 <td><code>any</code></td>
 <td>No</td>
-<td></td>
+<td>Identity</td>
 </tr>
 <tr>
 <td><code>is_primary</code></td>
@@ -129,6 +184,111 @@
 </tbody>
 </table>
 <h2 id="create">create</h2>
+<h3 id="post-emailsidset_primary" class="operation" data-method="post"><code>POST</code> /emails/{id}/set_primary</h3>
+<p>Operation ID: <code>setPrimaryEmail</code>.</p>
+<p>Authentication: API key in the cookie (<code>CookieAuth</code>) or bearer token (<code>BearerTokenAuth</code>).</p>
+<h4 id="parameters">Parameters</h4>
+<p>| Parameter | In | Type | Required | Description |
+| --- | --- | --- | --- |
+| <code>id</code> | <code>path</code> | <code>string (uuid4)</code> | Yes | ID of the email address |</p>
+<h4 id="responses">Responses</h4>
+<h5 id="201-email-has-been-set-as-primary" class="status" data-status="2xx">201: Email has been set as primary</h5>
+<h5 id="400-bad-request" class="status" data-status="4xx">400: Bad Request</h5>
+<p><code>application/json</code></p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>code</code></td>
+<td><code>integer (int32)</code></td>
+<td>Yes</td>
+<td></td>
+</tr>
+<tr>
+<td><code>message</code></td>
+<td><code>string</code></td>
+<td>Yes</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Example response:</p>
+<pre><code class="language-json">{
+  &quot;code&quot;: 400,
+  &quot;message&quot;: &quot;Bad Request&quot;
+}
+</code></pre>
+<h5 id="401-unauthorized" class="status" data-status="4xx">401: Unauthorized</h5>
+<p><code>application/json</code></p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>code</code></td>
+<td><code>integer (int32)</code></td>
+<td>Yes</td>
+<td></td>
+</tr>
+<tr>
+<td><code>message</code></td>
+<td><code>string</code></td>
+<td>Yes</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Example response:</p>
+<pre><code class="language-json">{
+  &quot;code&quot;: 401,
+  &quot;message&quot;: &quot;Unauthorized&quot;
+}
+</code></pre>
+<h5 id="500-internal-server-error" class="status" data-status="5xx">500: Internal server error</h5>
+<p><code>application/json</code></p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>code</code></td>
+<td><code>integer (int32)</code></td>
+<td>Yes</td>
+<td></td>
+</tr>
+<tr>
+<td><code>message</code></td>
+<td><code>string</code></td>
+<td>Yes</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Example response:</p>
+<pre><code class="language-json">{
+  &quot;code&quot;: 500,
+  &quot;message&quot;: &quot;Internal Server Error&quot;
+}
+</code></pre>
 <h3 id="post-emails" class="operation" data-method="post"><code>POST</code> /emails</h3>
 <p>Operation ID: <code>createEmail</code>.</p>
 <p>Authentication: API key in the cookie (<code>CookieAuth</code>) or bearer token (<code>BearerTokenAuth</code>).</p>
@@ -152,9 +312,9 @@
 </tr>
 </tbody>
 </table>
-<h4 id="responses">Responses</h4>
+<h4 id="responses-1">Responses</h4>
 <h5 id="201-email-successfully-added" class="status" data-status="2xx">201: Email successfully added</h5>
-<h5 id="400-bad-request" class="status" data-status="4xx">400: Bad Request</h5>
+<h5 id="400-bad-request-1" class="status" data-status="4xx">400: Bad Request</h5>
 <p><code>application/json</code></p>
 <table>
 <thead>
@@ -218,7 +378,7 @@
   &quot;message&quot;: &quot;Conflict&quot;
 }
 </code></pre>
-<h5 id="500-internal-server-error" class="status" data-status="5xx">500: Internal server error</h5>
+<h5 id="500-internal-server-error-1" class="status" data-status="5xx">500: Internal server error</h5>
 <p><code>application/json</code></p>
 <table>
 <thead>
@@ -254,7 +414,7 @@
 <h3 id="get-emails" class="operation" data-method="get"><code>GET</code> /emails</h3>
 <p>Operation ID: <code>listEmails</code>.</p>
 <p>Authentication: API key in the cookie (<code>CookieAuth</code>) or bearer token (<code>BearerTokenAuth</code>).</p>
-<h4 id="responses-1">Responses</h4>
+<h4 id="responses-2">Responses</h4>
 <h5 id="200-a-list-of-emails-assigned-to-the-current-user" class="status" data-status="2xx">200: A list of emails assigned to the current user</h5>
 <p><code>application/json</code></p>
 <table>
@@ -305,7 +465,7 @@
 </tr>
 </tbody>
 </table>
-<h5 id="401-unauthorized" class="status" data-status="4xx">401: Unauthorized</h5>
+<h5 id="401-unauthorized-1" class="status" data-status="4xx">401: Unauthorized</h5>
 <p><code>application/json</code></p>
 <table>
 <thead>
@@ -337,7 +497,7 @@
   &quot;message&quot;: &quot;Unauthorized&quot;
 }
 </code></pre>
-<h5 id="500-internal-server-error-1" class="status" data-status="5xx">500: Internal server error</h5>
+<h5 id="500-internal-server-error-2" class="status" data-status="5xx">500: Internal server error</h5>
 <p><code>application/json</code></p>
 <table>
 <thead>
@@ -373,13 +533,13 @@
 <h3 id="delete-emailsid" class="operation" data-method="delete"><code>DELETE</code> /emails/{id}</h3>
 <p>Operation ID: <code>deleteEmail</code>.</p>
 <p>Authentication: API key in the cookie (<code>CookieAuth</code>) or bearer token (<code>BearerTokenAuth</code>).</p>
-<h4 id="parameters">Parameters</h4>
+<h4 id="parameters-1">Parameters</h4>
 <p>| Parameter | In | Type | Required | Description |
 | --- | --- | --- | --- |
 | <code>id</code> | <code>path</code> | <code>string (uuid4)</code> | Yes | ID of the email address |</p>
-<h4 id="responses-2">Responses</h4>
+<h4 id="responses-3">Responses</h4>
 <h5 id="201-email-has-been-deleted" class="status" data-status="2xx">201: Email has been deleted</h5>
-<h5 id="401-unauthorized-1" class="status" data-status="4xx">401: Unauthorized</h5>
+<h5 id="401-unauthorized-2" class="status" data-status="4xx">401: Unauthorized</h5>
 <p><code>application/json</code></p>
 <table>
 <thead>
@@ -443,7 +603,7 @@
   &quot;message&quot;: &quot;Conflict&quot;
 }
 </code></pre>
-<h5 id="500-internal-server-error-2" class="status" data-status="5xx">500: Internal server error</h5>
+<h5 id="500-internal-server-error-3" class="status" data-status="5xx">500: Internal server error</h5>
 <p><code>application/json</code></p>
 <table>
 <thead>

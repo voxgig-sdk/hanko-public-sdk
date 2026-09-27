@@ -1,11 +1,9 @@
-import { CreateUserResponseObjectEntity } from './entity/CreateUserResponseObjectEntity';
 import { CredentialEntity } from './entity/CredentialEntity';
 import { CredentialCreationOptionEntity } from './entity/CredentialCreationOptionEntity';
 import { CredentialRequestOptionEntity } from './entity/CredentialRequestOptionEntity';
 import { EmailEntity } from './entity/EmailEntity';
-import { EmailManagementEntity } from './entity/EmailManagementEntity';
 import { HankoConfigurationEntity } from './entity/HankoConfigurationEntity';
-import { JsonWebKeySetEntity } from './entity/JsonWebKeySetEntity';
+import { JsonWebKeyEntity } from './entity/JsonWebKeyEntity';
 import { PasscodeEntity } from './entity/PasscodeEntity';
 import { PasswordEntity } from './entity/PasswordEntity';
 import { SamlEntity } from './entity/SamlEntity';
@@ -62,14 +60,12 @@ declare class HankoPublicSDK {
         data?: undefined;
     }>;
     graphql(query: string, variables?: any, ctrl?: any): Promise<any>;
-    CreateUserResponseObject(entopts?: Record<string, any>): CreateUserResponseObjectEntity;
     Credential(entopts?: Record<string, any>): CredentialEntity;
     CredentialCreationOption(entopts?: Record<string, any>): CredentialCreationOptionEntity;
     CredentialRequestOption(entopts?: Record<string, any>): CredentialRequestOptionEntity;
     Email(entopts?: Record<string, any>): EmailEntity;
-    EmailManagement(entopts?: Record<string, any>): EmailManagementEntity;
     HankoConfiguration(entopts?: Record<string, any>): HankoConfigurationEntity;
-    JsonWebKeySet(entopts?: Record<string, any>): JsonWebKeySetEntity;
+    JsonWebKey(entopts?: Record<string, any>): JsonWebKeyEntity;
     Passcode(entopts?: Record<string, any>): PasscodeEntity;
     Password(entopts?: Record<string, any>): PasswordEntity;
     Saml(entopts?: Record<string, any>): SamlEntity;

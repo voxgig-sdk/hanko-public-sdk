@@ -1,0 +1,134 @@
+# Entity: saml
+
+main: kit: entity: saml: {
+
+  alias: field: {}
+
+  name: "saml"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          co: {
+            id: "POST /saml/callback"
+            source: "openapi3"
+            version: 2
+          }
+          m: "POST"
+          o: "/saml/callback"
+          q: {
+            "$action": "callback"
+          }
+          s: [
+            {
+              lit: "saml"
+            }
+            {
+              lit: "callback"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /saml/metadata"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            query: [
+              {
+                k: "query"
+                n: "cert_only"
+                or: "cert_only"
+                r: false
+                t: "`$BOOLEAN`"
+              }
+              {
+                k: "query"
+                n: "domain"
+                or: "domain"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/saml/metadata"
+          q: {
+            "$action": "metadata"
+            exist: [
+              "cert_only"
+              "domain"
+            ]
+          }
+          s: [
+            {
+              lit: "saml"
+            }
+            {
+              lit: "metadata"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
+            id: "GET /saml/provider"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            query: [
+              {
+                k: "query"
+                n: "domain"
+                or: "domain"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/saml/provider"
+          q: {
+            "$action": "provider"
+            exist: [
+              "domain"
+            ]
+          }
+          s: [
+            {
+              lit: "saml"
+            }
+            {
+              lit: "provider"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.attribute_map`"
+          }
+        }
+      ]
+    }
+  }
+
+  fields: {
+  }
+
+
+
+}

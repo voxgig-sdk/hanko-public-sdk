@@ -1,7 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.prepareAuth = prepareAuth;
-const HEADER_auth = 'authorization';
+const CRED_name = 'hanko';
+const COOKIE_header = 'cookie';
 const OPTION_apikey = 'apikey';
 const OPTION_secret = 'secret';
 const NOTFOUND = '__NOTFOUND__';
@@ -17,37 +18,41 @@ function prepareAuth(ctx) {
         return ctx.error('auth_no_spec', 'Expected context spec property to be defined.');
     }
     const headers = spec.headers;
+    function cookieSet(headers, value) {
+        const existing = getprop(headers, COOKIE_header, '');
+        const kept = [];
+        if ('string' === typeof existing && '' !== existing) {
+            for (const part of existing.split(';')) {
+                const piece = part.trim();
+                if ('' === piece || piece === CRED_name || piece.startsWith(CRED_name + '=')) {
+                    continue;
+                }
+                kept.push(piece);
+            }
+        }
+        if (null != value) {
+            kept.push(CRED_name + '=' + value);
+        }
+        if (0 === kept.length) {
+            delprop(headers, COOKIE_header);
+        }
+        else {
+            setprop(headers, COOKIE_header, kept.join('; '));
+        }
+    }
     const options = client.options();
     // Public APIs that need no auth omit the options.auth block entirely.
     if (null == options.auth) {
-        delprop(headers, HEADER_auth);
+        cookieSet(headers, null);
         return spec;
     }
     const prefix = options.auth.prefix;
     const apikey = getprop(options, OPTION_apikey, NOTFOUND);
-    // True HTTP Basic Auth needs TWO credentials, base64-joined - a single
-    // token in the header (the branch below) can never authenticate against
-    // an API that actually checks `Authorization: Basic base64(user:pass)`.
-    if (true === options.auth.basic) {
-        const secret = getprop(options, OPTION_secret, NOTFOUND);
-        const noApikey = NOTFOUND === apikey || null == apikey || '' === apikey;
-        const noSecret = NOTFOUND === secret || null == secret || '' === secret;
-        if (noApikey || noSecret) {
-            delprop(headers, HEADER_auth);
-        }
-        else {
-            const b64 = Buffer.from(apikey + ':' + secret).toString('base64');
-            setprop(headers, HEADER_auth, prefix ? prefix + ' ' + b64 : b64);
-        }
-        return spec;
-    }
     if (NOTFOUND === apikey || null == apikey || '' === apikey) {
-        delprop(headers, HEADER_auth);
+        cookieSet(headers, null);
     }
     else {
-        // A raw credential (empty prefix, e.g. an apiKey scheme) must go in
-        // as-is; only a non-empty prefix (Bearer/Basic/OAuth) is space-joined.
-        setprop(headers, HEADER_auth, prefix ? prefix + ' ' + apikey : apikey);
+        cookieSet(headers, apikey);
     }
     return spec;
 }

@@ -4,7 +4,7 @@
 
 The Lua SDK for the HankoPublic API — an entity-oriented client using Lua conventions.
 
-It exposes the API as capitalised, semantic **Entities** — e.g. `client:CreateUserResponseObject()` — each with the same small set of operations (`list`, `load`, `create`, `update`, `remove`) instead of raw URL paths and query strings. You call meaning, not endpoints, which keeps the cognitive load low.
+It exposes the API as capitalised, semantic **Entities** — e.g. `client:Credential()` — each with the same small set of operations (`list`, `load`, `create`, `update`, `remove`) instead of raw URL paths and query strings. You call meaning, not endpoints, which keeps the cognitive load low.
 
 > Other languages, the CLI, and MCP server live alongside this one — see
 > the [top-level README](../README.md).
@@ -35,6 +35,20 @@ local client = sdk.new({
 })
 ```
 
+### 2. List credential records
+
+Entity operations return `(value, err)`. For `list`, `value` is the
+array of records itself — iterate it directly (there is no wrapper).
+
+```lua
+local credentials, err = client:Credential():list()
+if err then error(err) end
+
+for _, item in ipairs(credentials) do
+  print(item["id"])
+end
+```
+
 
 ## Error handling
 
@@ -42,7 +56,7 @@ Entity operations return `(value, err)`. Check `err` before using
 the value:
 
 ```lua
-local emails, err = client:Email():list()
+local jsonwebkeys, err = client:JsonWebKey():list()
 if err then error(err) end
 ```
 
@@ -100,7 +114,7 @@ Create a mock client for unit testing — no server required:
 ```lua
 local client = sdk.test()
 
-local result, err = client:Email():list()
+local result, err = client:JsonWebKey():list()
 -- result is the returned data; err is set on failure
 ```
 
@@ -181,14 +195,12 @@ Creates a test-mode client with mock transport. Both arguments may be `nil`.
 | `get_utility` | `() -> Utility` | Copy of the SDK utility object. |
 | `prepare` | `(fetchargs) -> table, err` | Build an HTTP request definition without sending. |
 | `direct` | `(fetchargs) -> table, err` | Build and send an HTTP request. |
-| `CreateUserResponseObject` | `(data) -> CreateUserResponseObjectEntity` | Create a CreateUserResponseObject entity instance. |
 | `Credential` | `(data) -> CredentialEntity` | Create a Credential entity instance. |
 | `CredentialCreationOption` | `(data) -> CredentialCreationOptionEntity` | Create a CredentialCreationOption entity instance. |
 | `CredentialRequestOption` | `(data) -> CredentialRequestOptionEntity` | Create a CredentialRequestOption entity instance. |
 | `Email` | `(data) -> EmailEntity` | Create an Email entity instance. |
-| `EmailManagement` | `(data) -> EmailManagementEntity` | Create an EmailManagement entity instance. |
 | `HankoConfiguration` | `(data) -> HankoConfigurationEntity` | Create a HankoConfiguration entity instance. |
-| `JsonWebKeySet` | `(data) -> JsonWebKeySetEntity` | Create a JsonWebKeySet entity instance. |
+| `JsonWebKey` | `(data) -> JsonWebKeyEntity` | Create a JsonWebKey entity instance. |
 | `Passcode` | `(data) -> PasscodeEntity` | Create a Passcode entity instance. |
 | `Password` | `(data) -> PasswordEntity` | Create a Password entity instance. |
 | `Saml` | `(data) -> SamlEntity` | Create a Saml entity instance. |
@@ -239,15 +251,6 @@ Only `direct()` returns a response envelope — a `table` with `ok`,
 `status`, `headers`, and `data` keys.
 
 ### Entities
-
-#### CreateUserResponseObject
-
-| Field | Description |
-| --- | --- |
-
-Operations: .
-
-API path: ``
 
 #### Credential
 
@@ -313,16 +316,6 @@ API path: `/webauthn/login/initialize`
 
 Operations: Create, List, Remove.
 
-API path: `/emails`
-
-#### EmailManagement
-
-| Field | Description |
-| --- | --- |
-| `id` |  |
-
-Operations: Create.
-
 API path: `/emails/{id}/set_primary`
 
 #### HankoConfiguration
@@ -337,7 +330,7 @@ Operations: Load.
 
 API path: `/.well-known/config`
 
-#### JsonWebKeySet
+#### JsonWebKey
 
 | Field | Description |
 | --- | --- |
@@ -516,11 +509,6 @@ API path: `/webauthn/login/finalize`
 ## Entities
 
 
-### CreateUserResponseObject
-
-Create an instance: `local create_user_response_object = client:CreateUserResponseObject(nil)`
-
-
 ### Credential
 
 Create an instance: `local credential = client:Credential(nil)`
@@ -651,31 +639,6 @@ local email, err = client:Email():create({
 ```
 
 
-### EmailManagement
-
-Create an instance: `local email_management = client:EmailManagement(nil)`
-
-#### Operations
-
-| Method | Description |
-| --- | --- |
-| `create(data)` | Create a new entity with the given data. |
-
-#### Fields
-
-| Field | Type | Description |
-| --- | --- | --- |
-| `id` | `string` |  |
-
-#### Example: Create
-
-```lua
-local email_management, err = client:EmailManagement():create({
-  id = "example_id", -- string
-})
-```
-
-
 ### HankoConfiguration
 
 Create an instance: `local hanko_configuration = client:HankoConfiguration(nil)`
@@ -701,9 +664,9 @@ local hanko_configuration, err = client:HankoConfiguration():load()
 ```
 
 
-### JsonWebKeySet
+### JsonWebKey
 
-Create an instance: `local json_web_key_set = client:JsonWebKeySet(nil)`
+Create an instance: `local json_web_key = client:JsonWebKey(nil)`
 
 #### Operations
 
@@ -725,7 +688,7 @@ Create an instance: `local json_web_key_set = client:JsonWebKeySet(nil)`
 #### Example: List
 
 ```lua
-local json_web_key_sets, err = client:JsonWebKeySet():list()
+local json_web_keys, err = client:JsonWebKey():list()
 ```
 
 
@@ -1074,14 +1037,14 @@ above:
 
 | Feature | What it does |
 |---|---|
-| [`debug`](#debug) | Request/response capture ring buffer for debugging |
-| [`idempotency`](#idempotency) | Idempotency keys for safe retries of mutating operations |
-| [`metrics`](#metrics) | Statistics capture: per-operation counters and latency |
-| [`paging`](#paging) | Pagination signals for list operations |
-| [`ratelimit`](#ratelimit) | Client-side rate limiting via a token bucket |
-| [`retry`](#retry) | Automatic retry of transient failures with exponential backoff |
-| [`test`](#test) | In-memory mock transport for testing without a live server |
-| [`timeout`](#timeout) | Per-request timeout with transport abort |
+| [`debug`](#debug) | Debug capture |
+| [`idempotency`](#idempotency) | Idempotency |
+| [`metrics`](#metrics) | Metrics |
+| [`paging`](#paging) | Paging |
+| [`ratelimit`](#ratelimit) | Rate limiting |
+| [`retry`](#retry) | Retry |
+| [`test`](#test) | Test transport |
+| [`timeout`](#timeout) | Timeout |
 
 > **Order matters for `ratelimit`, `retry`, `timeout`.** These wrap the
 > transport, so each one wraps whatever is already installed: the order you
@@ -1090,7 +1053,7 @@ above:
 
 ### debug
 
-Request/response capture ring buffer for debugging.
+Debug capture.
 
 | Option | Default |
 |---|---|
@@ -1102,7 +1065,7 @@ Set `feature.debug.active` to enable it, then override any of the options above.
 
 ### idempotency
 
-Idempotency keys for safe retries of mutating operations.
+Idempotency.
 
 | Option | Default |
 |---|---|
@@ -1115,7 +1078,7 @@ Set `feature.idempotency.active` to enable it, then override any of the options 
 
 ### metrics
 
-Statistics capture: per-operation counters and latency.
+Metrics.
 
 | Option | Default |
 |---|---|
@@ -1125,7 +1088,7 @@ Set `feature.metrics.active` to enable it, then override any of the options abov
 
 ### paging
 
-Pagination signals for list operations.
+Paging.
 
 | Option | Default |
 |---|---|
@@ -1141,7 +1104,7 @@ Set `feature.paging.active` to enable it, then override any of the options above
 
 ### ratelimit
 
-Client-side rate limiting via a token bucket.
+Rate limiting.
 
 | Option | Default |
 |---|---|
@@ -1157,7 +1120,7 @@ activated earlier.
 
 ### retry
 
-Automatic retry of transient failures with exponential backoff.
+Retry.
 
 | Option | Default |
 |---|---|
@@ -1176,7 +1139,7 @@ activated earlier.
 
 ### test
 
-In-memory mock transport for testing without a live server.
+Test transport.
 
 | Option | Default |
 |---|---|
@@ -1186,7 +1149,7 @@ Set `feature.test.active` to enable it, then override any of the options above.
 
 ### timeout
 
-Per-request timeout with transport abort.
+Timeout.
 
 | Option | Default |
 |---|---|
@@ -1238,14 +1201,14 @@ with hook methods named after pipeline stages (e.g. `PrePoint`,
 
 The SDK ships with built-in features:
 
-- **DebugFeature**: Request/response capture ring buffer for debugging
-- **IdempotencyFeature**: Idempotency keys for safe retries of mutating operations
-- **MetricsFeature**: Statistics capture: per-operation counters and latency
-- **PagingFeature**: Pagination signals for list operations
-- **RatelimitFeature**: Client-side rate limiting via a token bucket
-- **RetryFeature**: Automatic retry of transient failures with exponential backoff
-- **TestFeature**: In-memory mock transport for testing without a live server
-- **TimeoutFeature**: Per-request timeout with transport abort
+- **DebugFeature**: Debug capture
+- **IdempotencyFeature**: Idempotency
+- **MetricsFeature**: Metrics
+- **PagingFeature**: Paging
+- **RatelimitFeature**: Rate limiting
+- **RetryFeature**: Retry
+- **TestFeature**: Test transport
+- **TimeoutFeature**: Timeout
 
 Features are initialized in order. Hooks fire in the order features
 were added, so later features can override earlier ones.
@@ -1265,6 +1228,7 @@ Use `helpers.to_map()` to safely validate that a value is a table.
 lua/
 ├── hanko-public_sdk.lua    -- Main SDK module
 ├── config.lua               -- Configuration
+├── schema.lua               -- Generated option + entity specs
 ├── features.lua             -- Feature factory
 ├── core/                    -- Core types and context
 ├── entity/                  -- Entity implementations
@@ -1283,11 +1247,11 @@ Entity instances are stateful. After a successful `list`, the entity
 stores the returned data and match criteria internally.
 
 ```lua
-local email = client:Email()
-email:list()
+local jsonwebkey = client:JsonWebKey()
+jsonwebkey:list()
 
--- email:data_get() now returns the email data from the last list
--- email:match_get() returns the last match criteria
+-- jsonwebkey:data_get() now returns the jsonwebkey data from the last list
+-- jsonwebkey:match_get() returns the last match criteria
 ```
 
 Call `make()` to create a fresh instance with the same configuration

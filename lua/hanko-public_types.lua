@@ -1,12 +1,10 @@
 -- Typed models for the HankoPublic SDK (LuaLS annotations).
 --
--- GENERATED from the API model: main.kit.entity.<e>.fields[] and per-op
--- params (op.<name>.points[].args.params[]). Field/param types come from the
+-- GENERATED from the API model: main.kit.entity.<e>.fields{} and per-op
+-- params (op.<name>.points[].g.params[]). Field/param types come from the
 -- canonical type sentinels via @voxgig/sdkgen canonToType (source of truth:
 -- @voxgig/apidef VALID_CANON). Annotations only — no runtime effect. Do not
 -- edit by hand.
-
----@class CreateUserResponseObject
 
 ---@class Credential
 ---@field aaguid? string
@@ -95,12 +93,6 @@
 ---@class EmailRemoveMatch
 ---@field id string
 
----@class EmailManagement
----@field id? string
-
----@class EmailManagementCreateData
----@field id string
-
 ---@class HankoConfiguration
 ---@field account? table
 ---@field emails? table
@@ -111,7 +103,7 @@
 ---@field emails? table
 ---@field password? table
 
----@class JsonWebKeySet
+---@class JsonWebKey
 ---@field alg? string
 ---@field e? string
 ---@field kid? string
@@ -119,7 +111,7 @@
 ---@field n? string
 ---@field use? string
 
----@class JsonWebKeySetListMatch
+---@class JsonWebKeyListMatch
 ---@field alg? string
 ---@field e? string
 ---@field kid? string

@@ -1,7 +1,7 @@
 # Typed models for the HankoPublic SDK.
 #
-# GENERATED from the API model: main.kit.entity.<e>.fields[] and per-op
-# params (op.<name>.points[].args.params[]). Field/param types come from the
+# GENERATED from the API model: main.kit.entity.<e>.fields{} and per-op
+# params (op.<name>.points[].g.params[]). Field/param types come from the
 # canonical type sentinels via @voxgig/sdkgen canonToType (source of truth:
 # @voxgig/apidef VALID_CANON). Do not edit by hand.
 #
@@ -14,10 +14,6 @@
 from __future__ import annotations
 
 from typing import TypedDict, Any
-
-
-class CreateUserResponseObject(TypedDict):
-    pass
 
 
 class Credential(TypedDict, total=False):
@@ -123,14 +119,6 @@ class EmailRemoveMatch(TypedDict):
     id: str
 
 
-class EmailManagement(TypedDict, total=False):
-    id: str
-
-
-class EmailManagementCreateData(TypedDict):
-    id: str
-
-
 class HankoConfiguration(TypedDict, total=False):
     account: dict
     emails: dict
@@ -143,7 +131,7 @@ class HankoConfigurationLoadMatch(TypedDict, total=False):
     password: dict
 
 
-class JsonWebKeySet(TypedDict, total=False):
+class JsonWebKey(TypedDict, total=False):
     alg: str
     e: str
     kid: str
@@ -152,7 +140,7 @@ class JsonWebKeySet(TypedDict, total=False):
     use: str
 
 
-class JsonWebKeySetListMatch(TypedDict, total=False):
+class JsonWebKeyListMatch(TypedDict, total=False):
     alg: str
     e: str
     kid: str

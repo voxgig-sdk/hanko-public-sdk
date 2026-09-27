@@ -1,0 +1,173 @@
+# Entity: web_authn
+
+main: kit: entity: web_authn: {
+
+  alias: field: {}
+
+  fields: {
+    id: {
+      h: "Id"
+      n: "id"
+      r: false
+      t: "`$STRING`"
+    }
+    name: {
+      h: "Name"
+      n: "name"
+      r: false
+      sh: "A new credential name."
+      t: "`$STRING`"
+    }
+    rawId: {
+      h: "Raw Id"
+      n: "rawId"
+      r: false
+      t: "`$STRING`"
+    }
+    response: {
+      h: "Response"
+      n: "response"
+      r: false
+      t: "`$OBJECT`"
+    }
+    type: {
+      h: "Type"
+      n: "type"
+      r: false
+      t: "`$STRING`"
+    }
+  }
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "web_authn"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          co: {
+            id: "POST /webauthn/registration/finalize"
+            source: "openapi3"
+            version: 2
+          }
+          m: "POST"
+          o: "/webauthn/registration/finalize"
+          s: [
+            {
+              lit: "webauthn"
+            }
+            {
+              lit: "registration"
+            }
+            {
+              lit: "finalize"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.user_id`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      points: [
+        {
+          co: {
+            id: "DELETE /webauthn/credentials/{id}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                ex: "c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c"
+                k: "param"
+                n: "id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "DELETE"
+          o: "/webauthn/credentials/{id}"
+          q: {
+            exist: [
+              "id"
+            ]
+          }
+          s: [
+            {
+              lit: "webauthn"
+            }
+            {
+              lit: "credentials"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      points: [
+        {
+          co: {
+            id: "PATCH /webauthn/credentials/{id}"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                ex: "c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c"
+                k: "param"
+                n: "id"
+                or: "id"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "PATCH"
+          o: "/webauthn/credentials/{id}"
+          q: {
+            exist: [
+              "id"
+            ]
+          }
+          s: [
+            {
+              lit: "webauthn"
+            }
+            {
+              lit: "credentials"
+            }
+            {
+              var: "id"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

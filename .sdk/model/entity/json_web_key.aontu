@@ -1,0 +1,80 @@
+# Entity: json_web_key
+
+main: kit: entity: json_web_key: {
+
+  alias: field: {}
+
+  fields: {
+    alg: {
+      h: "Alg"
+      n: "alg"
+      r: false
+      t: "`$STRING`"
+    }
+    e: {
+      fo: "base64url"
+      h: "E"
+      n: "e"
+      r: false
+      t: "`$STRING`"
+    }
+    kid: {
+      h: "Kid"
+      n: "kid"
+      r: false
+      t: "`$STRING`"
+    }
+    kty: {
+      h: "Kty"
+      n: "kty"
+      r: false
+      t: "`$STRING`"
+    }
+    n: {
+      fo: "base64url"
+      h: "N"
+      n: "n"
+      r: false
+      t: "`$STRING`"
+    }
+    use: {
+      h: "Use"
+      n: "use"
+      r: false
+      t: "`$STRING`"
+    }
+  }
+
+  name: "json_web_key"
+  op: {
+    list: {
+      name: "list"
+      points: [
+        {
+          co: {
+            id: "GET /.well-known/jwks.json"
+            source: "openapi3"
+            version: 2
+          }
+          m: "GET"
+          o: "/.well-known/jwks.json"
+          s: [
+            {
+              lit: ".well-known"
+            }
+            {
+              lit: "jwks.json"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.keys`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

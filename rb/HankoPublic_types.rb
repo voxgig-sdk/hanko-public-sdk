@@ -2,15 +2,11 @@
 
 # Typed models for the HankoPublic SDK.
 #
-# GENERATED from the API model: main.kit.entity.<e>.fields[] and per-op
-# params (op.<name>.points[].args.params[]). Member types come from the
+# GENERATED from the API model: main.kit.entity.<e>.fields{} and per-op
+# params (op.<name>.points[].g.params[]). Member types come from the
 # canonical type sentinels via @voxgig/sdkgen canonToType (source of truth:
 # @voxgig/apidef VALID_CANON). Ruby types are unenforced; these YARD
 # annotations document the shapes. Do not edit by hand.
-
-# CreateUserResponseObject entity data model.
-class CreateUserResponseObject
-end
 
 # Credential entity data model.
 #
@@ -330,24 +326,6 @@ EmailRemoveMatch = Struct.new(
   keyword_init: true
 )
 
-# EmailManagement entity data model.
-#
-# @!attribute [rw] id
-#   @return [String, nil]
-EmailManagement = Struct.new(
-  :id,
-  keyword_init: true
-)
-
-# Request payload for EmailManagement#create.
-#
-# @!attribute [rw] id
-#   @return [String]
-EmailManagementCreateData = Struct.new(
-  :id,
-  keyword_init: true
-)
-
 # HankoConfiguration entity data model.
 #
 # @!attribute [rw] account
@@ -382,7 +360,7 @@ HankoConfigurationLoadMatch = Struct.new(
   keyword_init: true
 )
 
-# JsonWebKeySet entity data model.
+# JsonWebKey entity data model.
 #
 # @!attribute [rw] alg
 #   @return [String, nil]
@@ -401,7 +379,7 @@ HankoConfigurationLoadMatch = Struct.new(
 #
 # @!attribute [rw] use
 #   @return [String, nil]
-JsonWebKeySet = Struct.new(
+JsonWebKey = Struct.new(
   :alg,
   :e,
   :kid,
@@ -411,7 +389,7 @@ JsonWebKeySet = Struct.new(
   keyword_init: true
 )
 
-# Request payload for JsonWebKeySet#list.
+# Request payload for JsonWebKey#list.
 #
 # @!attribute [rw] alg
 #   @return [String, nil]
@@ -430,7 +408,7 @@ JsonWebKeySet = Struct.new(
 #
 # @!attribute [rw] use
 #   @return [String, nil]
-JsonWebKeySetListMatch = Struct.new(
+JsonWebKeyListMatch = Struct.new(
   :alg,
   :e,
   :kid,

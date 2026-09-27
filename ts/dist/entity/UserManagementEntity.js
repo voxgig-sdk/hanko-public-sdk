@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserManagementEntity = void 0;
 const HankoPublicEntityBase_1 = require("../HankoPublicEntityBase");
-// TODO: needs Entity superclass
 class UserManagementEntity extends HankoPublicEntityBase_1.HankoPublicEntityBase {
     constructor(client, entopts) {
         super(client, entopts);
@@ -158,12 +157,6 @@ class UserManagementEntity extends HankoPublicEntityBase_1.HankoPublicEntityBase
                 }
             }
             const out = done(ctx);
-            // An operation resolves to the ENTITY, not the raw data — the record
-            // has just been absorbed into this instance and is reached through
-            // data(). `done` still runs: it completes the pipeline and raises on
-            // failure, and when throwing is disabled it hands back the error
-            // payload, which passes through unchanged. See AGENTS.md "Entity
-            // operations return ENTITIES".
             return (ctx.result && ctx.result.ok) ? this : out;
         }
         catch (err) {

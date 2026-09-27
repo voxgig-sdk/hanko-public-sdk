@@ -1,0 +1,134 @@
+# Entity: session_management
+
+main: kit: entity: session_management: {
+
+  alias: field: {}
+
+  fields: {
+    amr: {
+      h: "Amr"
+      n: "amr"
+      r: false
+      sh: "Authentication Method References, JSON array of strings that are identifiers for authentication methods used in the authentication."
+      t: "`$ARRAY`"
+    }
+    audience: {
+      h: "Audience"
+      n: "audience"
+      r: false
+      sh: "The intended audience of the token."
+      t: "`$ARRAY`"
+    }
+    email: {
+      h: "Email"
+      n: "email"
+      r: false
+      sh: "Data about the email address associated with the token's subject, if available."
+      t: "`$OBJECT`"
+    }
+    expiration: {
+      fo: "date-time"
+      h: "Expiration"
+      n: "expiration"
+      r: true
+      sh: "The timestamp indicating when the token will expire."
+      t: "`$STRING`"
+    }
+    issued_at: {
+      fo: "date-time"
+      h: "Issued At"
+      n: "issued_at"
+      r: false
+      sh: "The timestamp indicating when the token was issued."
+      t: "`$STRING`"
+    }
+    issuer: {
+      h: "Issuer"
+      n: "issuer"
+      r: false
+      sh: "The entity that issued the token."
+      t: "`$STRING`"
+    }
+    session_id: {
+      h: "Session Id"
+      n: "session_id"
+      r: true
+      sh: "The unique identifier for the session associated with this token."
+      t: "`$STRING`"
+    }
+    session_token: {
+      fo: "JWT"
+      h: "Session Token"
+      n: "session_token"
+      r: true
+      sh: "The session token (JWT) to validate"
+      t: "`$STRING`"
+    }
+    subject: {
+      h: "Subject"
+      n: "subject"
+      r: true
+      sh: "The unique identifier of the token's subject."
+      t: "`$ANY`"
+    }
+  }
+
+  name: "session_management"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          co: {
+            id: "POST /sessions/validate"
+            source: "openapi3"
+            version: 2
+          }
+          m: "POST"
+          o: "/sessions/validate"
+          s: [
+            {
+              lit: "sessions"
+            }
+            {
+              lit: "validate"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.claims`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /sessions/validate"
+            source: "openapi3"
+            version: 2
+          }
+          m: "GET"
+          o: "/sessions/validate"
+          s: [
+            {
+              lit: "sessions"
+            }
+            {
+              lit: "validate"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body.claims`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

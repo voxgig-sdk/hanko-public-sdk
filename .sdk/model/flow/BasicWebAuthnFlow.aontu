@@ -1,0 +1,50 @@
+# BasicWebAuthnFlow
+
+main: kit: flow: BasicWebAuthnFlow:
+{
+  entity: "web_authn",
+  kind: "basic",
+  name: "BasicWebAuthnFlow",
+  step: [
+    {
+      i: {
+        ref: "web_authn_ref01"
+      }
+
+      o: "create"
+    }
+
+    {
+      i: {
+        ref: "web_authn_ref01",
+        srcdatavar: "web_authn_ref01_data",
+        suffix: "_up0",
+        textfield: "name"
+      }
+
+      o: "update",
+      s: [
+        {
+          apply: "TextFieldMark",
+          def: {
+            mark: "Mark01-web_authn_ref01"
+          }
+        }
+      ]
+    }
+
+    {
+      i: {
+        ref: "web_authn_ref01",
+        suffix: "_rm0"
+      }
+
+      m: {
+        id: "web_authn01"
+      }
+
+      o: "remove"
+    }
+  ],
+  "key$": "BasicWebAuthnFlow"
+}

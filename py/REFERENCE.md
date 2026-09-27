@@ -42,10 +42,6 @@ client = HankoPublicSDK.test()
 
 ### Instance Methods
 
-#### `CreateUserResponseObject(data=None)`
-
-Create a new `CreateUserResponseObjectEntity` instance. Pass `None` for no initial data.
-
 #### `Credential(data=None)`
 
 Create a new `CredentialEntity` instance. Pass `None` for no initial data.
@@ -62,17 +58,13 @@ Create a new `CredentialRequestOptionEntity` instance. Pass `None` for no initia
 
 Create a new `EmailEntity` instance. Pass `None` for no initial data.
 
-#### `EmailManagement(data=None)`
-
-Create a new `EmailManagementEntity` instance. Pass `None` for no initial data.
-
 #### `HankoConfiguration(data=None)`
 
 Create a new `HankoConfigurationEntity` instance. Pass `None` for no initial data.
 
-#### `JsonWebKeySet(data=None)`
+#### `JsonWebKey(data=None)`
 
-Create a new `JsonWebKeySetEntity` instance. Pass `None` for no initial data.
+Create a new `JsonWebKeyEntity` instance. Pass `None` for no initial data.
 
 #### `Passcode(data=None)`
 
@@ -146,41 +138,6 @@ Make a direct HTTP request to any API endpoint. Returns a result `dict` with `ok
 #### `prepare(fetchargs=None) -> dict`
 
 Prepare a fetch definition without sending. Returns the `fetchdef` and raises on error.
-
-
----
-
-## CreateUserResponseObjectEntity
-
-```python
-create_user_response_object = client.CreateUserResponseObject()
-```
-
-### Common Methods
-
-#### `data_get() -> dict`
-
-Get the entity data.
-
-#### `data_set(data)`
-
-Set the entity data.
-
-#### `match_get() -> dict`
-
-Get the entity match criteria.
-
-#### `match_set(match)`
-
-Set the entity match criteria.
-
-#### `make() -> Entity`
-
-Create a new `CreateUserResponseObjectEntity` instance with the same options.
-
-#### `get_name() -> str`
-
-Return the entity name.
 
 
 ---
@@ -450,59 +407,6 @@ Return the entity name.
 
 ---
 
-## EmailManagementEntity
-
-```python
-email_management = client.EmailManagement()
-```
-
-### Fields
-
-| Field | Type | Required | Description |
-| --- | --- | --- | --- |
-| `id` | `str` | No |  |
-
-### Operations
-
-#### `create(reqdata, ctrl=None) -> dict`
-
-Create a new entity with the given data. Returns the created entity data and raises on error.
-
-```python
-result = client.EmailManagement().create({
-    "id": "example_id",  # str
-})
-```
-
-### Common Methods
-
-#### `data_get() -> dict`
-
-Get the entity data.
-
-#### `data_set(data)`
-
-Set the entity data.
-
-#### `match_get() -> dict`
-
-Get the entity match criteria.
-
-#### `match_set(match)`
-
-Set the entity match criteria.
-
-#### `make() -> Entity`
-
-Create a new `EmailManagementEntity` instance with the same options.
-
-#### `get_name() -> str`
-
-Return the entity name.
-
-
----
-
 ## HankoConfigurationEntity
 
 ```python
@@ -556,10 +460,10 @@ Return the entity name.
 
 ---
 
-## JsonWebKeySetEntity
+## JsonWebKeyEntity
 
 ```python
-json_web_key_set = client.JsonWebKeySet()
+json_web_key = client.JsonWebKey()
 ```
 
 ### Fields
@@ -580,9 +484,9 @@ json_web_key_set = client.JsonWebKeySet()
 List entities matching the given criteria. The match is optional — call `list()` with no argument to list all records. Returns a list and raises on error.
 
 ```python
-results = client.JsonWebKeySet().list()
-for json_web_key_set in results:
-    print(json_web_key_set)
+results = client.JsonWebKey().list()
+for json_web_key in results:
+    print(json_web_key)
 ```
 
 ### Common Methods
@@ -605,7 +509,7 @@ Set the entity match criteria.
 
 #### `make() -> Entity`
 
-Create a new `JsonWebKeySetEntity` instance with the same options.
+Create a new `JsonWebKeyEntity` instance with the same options.
 
 #### `get_name() -> str`
 
@@ -1324,14 +1228,14 @@ Return the entity name.
 
 | Feature | Version | Description |
 | --- | --- | --- |
-| `debug` | 0.0.1 | Request/response capture ring buffer for debugging |
-| `idempotency` | 0.0.1 | Idempotency keys for safe retries of mutating operations |
-| `metrics` | 0.0.1 | Statistics capture: per-operation counters and latency |
-| `paging` | 0.0.1 | Pagination signals for list operations |
-| `ratelimit` | 0.0.1 | Client-side rate limiting via a token bucket |
-| `retry` | 0.0.1 | Automatic retry of transient failures with exponential backoff |
-| `test` | 0.0.1 | In-memory mock transport for testing without a live server |
-| `timeout` | 0.0.1 | Per-request timeout with transport abort |
+| `debug` | 0.0.1 | Debug capture |
+| `idempotency` | 0.0.1 | Idempotency |
+| `metrics` | 0.0.1 | Metrics |
+| `paging` | 0.0.1 | Paging |
+| `ratelimit` | 0.0.1 | Rate limiting |
+| `retry` | 0.0.1 | Retry |
+| `test` | 0.0.1 | Test transport |
+| `timeout` | 0.0.1 | Timeout |
 
 
 Features are activated via the `feature` option:
@@ -1377,7 +1281,7 @@ rather than the transport, so their order does not affect what they observe.
 
 #### `debug`
 
-Request/response capture ring buffer for debugging.
+Debug capture.
 
 **Configuration**
 
@@ -1408,7 +1312,7 @@ its default unless you name it.
 
 #### `idempotency`
 
-Idempotency keys for safe retries of mutating operations.
+Idempotency.
 
 **Configuration**
 
@@ -1439,7 +1343,7 @@ its default unless you name it.
 
 #### `metrics`
 
-Statistics capture: per-operation counters and latency.
+Metrics.
 
 **Configuration**
 
@@ -1467,7 +1371,7 @@ its default unless you name it.
 
 #### `paging`
 
-Pagination signals for list operations.
+Paging.
 
 **Configuration**
 
@@ -1502,7 +1406,7 @@ its default unless you name it.
 
 #### `ratelimit`
 
-Client-side rate limiting via a token bucket.
+Rate limiting.
 
 **Configuration**
 
@@ -1533,7 +1437,7 @@ its default unless you name it.
 
 #### `retry`
 
-Automatic retry of transient failures with exponential backoff.
+Retry.
 
 **Configuration**
 
@@ -1567,7 +1471,7 @@ its default unless you name it.
 
 #### `test`
 
-In-memory mock transport for testing without a live server.
+Test transport.
 
 **Configuration**
 
@@ -1598,7 +1502,7 @@ its default unless you name it.
 
 #### `timeout`
 
-Per-request timeout with transport abort.
+Timeout.
 
 **Configuration**
 

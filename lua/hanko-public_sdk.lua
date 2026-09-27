@@ -353,20 +353,6 @@ end
 
 
 
--- Idiomatic facade: client:CreateUserResponseObject():list() / client:CreateUserResponseObject():load({ id = ... })
--- Entity access is capitalised (PascalCase) for parity with the other SDKs.
-function HankoPublicSDK:CreateUserResponseObject(data)
-  local EntityMod = require("entity.create_user_response_object_entity")
-  if data == nil then
-    if self._create_user_response_object == nil then
-      self._create_user_response_object = EntityMod.new(self, nil)
-    end
-    return self._create_user_response_object
-  end
-  return EntityMod.new(self, data)
-end
-
-
 -- Idiomatic facade: client:Credential():list() / client:Credential():load({ id = ... })
 -- Entity access is capitalised (PascalCase) for parity with the other SDKs.
 function HankoPublicSDK:Credential(data)
@@ -423,20 +409,6 @@ function HankoPublicSDK:Email(data)
 end
 
 
--- Idiomatic facade: client:EmailManagement():list() / client:EmailManagement():load({ id = ... })
--- Entity access is capitalised (PascalCase) for parity with the other SDKs.
-function HankoPublicSDK:EmailManagement(data)
-  local EntityMod = require("entity.email_management_entity")
-  if data == nil then
-    if self._email_management == nil then
-      self._email_management = EntityMod.new(self, nil)
-    end
-    return self._email_management
-  end
-  return EntityMod.new(self, data)
-end
-
-
 -- Idiomatic facade: client:HankoConfiguration():list() / client:HankoConfiguration():load({ id = ... })
 -- Entity access is capitalised (PascalCase) for parity with the other SDKs.
 function HankoPublicSDK:HankoConfiguration(data)
@@ -451,15 +423,15 @@ function HankoPublicSDK:HankoConfiguration(data)
 end
 
 
--- Idiomatic facade: client:JsonWebKeySet():list() / client:JsonWebKeySet():load({ id = ... })
+-- Idiomatic facade: client:JsonWebKey():list() / client:JsonWebKey():load({ id = ... })
 -- Entity access is capitalised (PascalCase) for parity with the other SDKs.
-function HankoPublicSDK:JsonWebKeySet(data)
-  local EntityMod = require("entity.json_web_key_set_entity")
+function HankoPublicSDK:JsonWebKey(data)
+  local EntityMod = require("entity.json_web_key_entity")
   if data == nil then
-    if self._json_web_key_set == nil then
-      self._json_web_key_set = EntityMod.new(self, nil)
+    if self._json_web_key == nil then
+      self._json_web_key = EntityMod.new(self, nil)
     end
-    return self._json_web_key_set
+    return self._json_web_key
   end
   return EntityMod.new(self, data)
 end

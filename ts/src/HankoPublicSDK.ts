@@ -1,13 +1,11 @@
 // HankoPublic Ts SDK
 
-import { CreateUserResponseObjectEntity } from './entity/CreateUserResponseObjectEntity'
 import { CredentialEntity } from './entity/CredentialEntity'
 import { CredentialCreationOptionEntity } from './entity/CredentialCreationOptionEntity'
 import { CredentialRequestOptionEntity } from './entity/CredentialRequestOptionEntity'
 import { EmailEntity } from './entity/EmailEntity'
-import { EmailManagementEntity } from './entity/EmailManagementEntity'
 import { HankoConfigurationEntity } from './entity/HankoConfigurationEntity'
-import { JsonWebKeySetEntity } from './entity/JsonWebKeySetEntity'
+import { JsonWebKeyEntity } from './entity/JsonWebKeyEntity'
 import { PasscodeEntity } from './entity/PasscodeEntity'
 import { PasswordEntity } from './entity/PasswordEntity'
 import { SamlEntity } from './entity/SamlEntity'
@@ -142,7 +140,6 @@ class HankoPublicSDK {
 
     const options = this._options
 
-    // Build spec directly from SDK options + user-provided fetch args.
     const spec: any = {
       base: options.base,
       prefix: options.prefix,
@@ -158,7 +155,6 @@ class HankoPublicSDK {
 
     ctx.spec = spec
 
-    // Merge user-provided headers over SDK defaults.
     if (fetchargs.headers) {
       const uheaders = fetchargs.headers
       for (let key in uheaders) {
@@ -168,7 +164,6 @@ class HankoPublicSDK {
 
     
 
-    // Apply SDK auth (apikey, auth prefix, etc.)
     const authResult = prepareAuth(ctx)
     if (authResult instanceof Error) {
       return authResult
@@ -261,18 +256,6 @@ class HankoPublicSDK {
 
 
 
-  // Raw GraphQL access: the pressure valve that makes the generated
-  // surface's deliberate omissions (per-call selection sets, typed filter
-  // builders, batching, subscriptions) livable — the whole schema stays
-  // reachable.
-  //
-  // Thin wrapper over the same prepare/fetch path `direct` uses, with the
-  // one thing raw `direct` cannot do for GraphQL: a GraphQL failure rides
-  // HTTP 200 as a top-level `errors` array, so status alone would report a
-  // failed query as ok.
-  //
-  // NOTE: like `direct`, this bypasses the feature pipeline — no retry,
-  // ratelimit or paging features apply.
   async graphql(query: string, variables?: any, ctrl?: any) {
     const options = this._options
 
@@ -315,15 +298,6 @@ class HankoPublicSDK {
 
 
 
-  // Entity access: `client.CreateUserResponseObject().list()` / `client.CreateUserResponseObject().load({ id })`.
-  // The argument is the entity OPTIONS object (passed to the entity
-  // constructor as entopts), not initial entity data.
-  CreateUserResponseObject(entopts?: Record<string, any>) {
-    const self = this
-    return new CreateUserResponseObjectEntity(self, entopts)
-  }
-
-
   // Entity access: `client.Credential().list()` / `client.Credential().load({ id })`.
   // The argument is the entity OPTIONS object (passed to the entity
   // constructor as entopts), not initial entity data.
@@ -360,15 +334,6 @@ class HankoPublicSDK {
   }
 
 
-  // Entity access: `client.EmailManagement().list()` / `client.EmailManagement().load({ id })`.
-  // The argument is the entity OPTIONS object (passed to the entity
-  // constructor as entopts), not initial entity data.
-  EmailManagement(entopts?: Record<string, any>) {
-    const self = this
-    return new EmailManagementEntity(self, entopts)
-  }
-
-
   // Entity access: `client.HankoConfiguration().list()` / `client.HankoConfiguration().load({ id })`.
   // The argument is the entity OPTIONS object (passed to the entity
   // constructor as entopts), not initial entity data.
@@ -378,12 +343,12 @@ class HankoPublicSDK {
   }
 
 
-  // Entity access: `client.JsonWebKeySet().list()` / `client.JsonWebKeySet().load({ id })`.
+  // Entity access: `client.JsonWebKey().list()` / `client.JsonWebKey().load({ id })`.
   // The argument is the entity OPTIONS object (passed to the entity
   // constructor as entopts), not initial entity data.
-  JsonWebKeySet(entopts?: Record<string, any>) {
+  JsonWebKey(entopts?: Record<string, any>) {
     const self = this
-    return new JsonWebKeySetEntity(self, entopts)
+    return new JsonWebKeyEntity(self, entopts)
   }
 
 

@@ -2,14 +2,12 @@
 // HankoPublic Ts SDK
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SDK = exports.HankoPublicSDK = exports.HankoPublicEntityBase = exports.BaseFeature = exports.config = exports.stdutil = void 0;
-const CreateUserResponseObjectEntity_1 = require("./entity/CreateUserResponseObjectEntity");
 const CredentialEntity_1 = require("./entity/CredentialEntity");
 const CredentialCreationOptionEntity_1 = require("./entity/CredentialCreationOptionEntity");
 const CredentialRequestOptionEntity_1 = require("./entity/CredentialRequestOptionEntity");
 const EmailEntity_1 = require("./entity/EmailEntity");
-const EmailManagementEntity_1 = require("./entity/EmailManagementEntity");
 const HankoConfigurationEntity_1 = require("./entity/HankoConfigurationEntity");
-const JsonWebKeySetEntity_1 = require("./entity/JsonWebKeySetEntity");
+const JsonWebKeyEntity_1 = require("./entity/JsonWebKeyEntity");
 const PasscodeEntity_1 = require("./entity/PasscodeEntity");
 const PasswordEntity_1 = require("./entity/PasswordEntity");
 const SamlEntity_1 = require("./entity/SamlEntity");
@@ -102,7 +100,6 @@ class HankoPublicSDK {
             ctrl: fetchargs.ctrl || {},
         }, this._rootctx);
         const options = this._options;
-        // Build spec directly from SDK options + user-provided fetch args.
         const spec = {
             base: options.base,
             prefix: options.prefix,
@@ -116,14 +113,12 @@ class HankoPublicSDK {
             step: 'start',
         };
         ctx.spec = spec;
-        // Merge user-provided headers over SDK defaults.
         if (fetchargs.headers) {
             const uheaders = fetchargs.headers;
             for (let key in uheaders) {
                 spec.headers[key] = uheaders[key];
             }
         }
-        // Apply SDK auth (apikey, auth prefix, etc.)
         const authResult = prepareAuth(ctx);
         if (authResult instanceof Error) {
             return authResult;
@@ -198,18 +193,6 @@ class HankoPublicSDK {
             return { ok: false, err };
         }
     }
-    // Raw GraphQL access: the pressure valve that makes the generated
-    // surface's deliberate omissions (per-call selection sets, typed filter
-    // builders, batching, subscriptions) livable — the whole schema stays
-    // reachable.
-    //
-    // Thin wrapper over the same prepare/fetch path `direct` uses, with the
-    // one thing raw `direct` cannot do for GraphQL: a GraphQL failure rides
-    // HTTP 200 as a top-level `errors` array, so status alone would report a
-    // failed query as ok.
-    //
-    // NOTE: like `direct`, this bypasses the feature pipeline — no retry,
-    // ratelimit or paging features apply.
     async graphql(query, variables, ctrl) {
         const options = this._options;
         if (!options.allow.op.includes('graphql')) {
@@ -243,13 +226,6 @@ class HankoPublicSDK {
         }
         return res;
     }
-    // Entity access: `client.CreateUserResponseObject().list()` / `client.CreateUserResponseObject().load({ id })`.
-    // The argument is the entity OPTIONS object (passed to the entity
-    // constructor as entopts), not initial entity data.
-    CreateUserResponseObject(entopts) {
-        const self = this;
-        return new CreateUserResponseObjectEntity_1.CreateUserResponseObjectEntity(self, entopts);
-    }
     // Entity access: `client.Credential().list()` / `client.Credential().load({ id })`.
     // The argument is the entity OPTIONS object (passed to the entity
     // constructor as entopts), not initial entity data.
@@ -278,13 +254,6 @@ class HankoPublicSDK {
         const self = this;
         return new EmailEntity_1.EmailEntity(self, entopts);
     }
-    // Entity access: `client.EmailManagement().list()` / `client.EmailManagement().load({ id })`.
-    // The argument is the entity OPTIONS object (passed to the entity
-    // constructor as entopts), not initial entity data.
-    EmailManagement(entopts) {
-        const self = this;
-        return new EmailManagementEntity_1.EmailManagementEntity(self, entopts);
-    }
     // Entity access: `client.HankoConfiguration().list()` / `client.HankoConfiguration().load({ id })`.
     // The argument is the entity OPTIONS object (passed to the entity
     // constructor as entopts), not initial entity data.
@@ -292,12 +261,12 @@ class HankoPublicSDK {
         const self = this;
         return new HankoConfigurationEntity_1.HankoConfigurationEntity(self, entopts);
     }
-    // Entity access: `client.JsonWebKeySet().list()` / `client.JsonWebKeySet().load({ id })`.
+    // Entity access: `client.JsonWebKey().list()` / `client.JsonWebKey().load({ id })`.
     // The argument is the entity OPTIONS object (passed to the entity
     // constructor as entopts), not initial entity data.
-    JsonWebKeySet(entopts) {
+    JsonWebKey(entopts) {
         const self = this;
-        return new JsonWebKeySetEntity_1.JsonWebKeySetEntity(self, entopts);
+        return new JsonWebKeyEntity_1.JsonWebKeyEntity(self, entopts);
     }
     // Entity access: `client.Passcode().list()` / `client.Passcode().load({ id })`.
     // The argument is the entity OPTIONS object (passed to the entity

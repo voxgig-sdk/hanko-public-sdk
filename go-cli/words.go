@@ -9,18 +9,6 @@ import (
 	sdk "github.com/voxgig-sdk/hanko-public-sdk/go"
 )
 
-// registerSDKWords installs three native boru words bound to the SDK:
-// list / load / update. Each is declared with two overloads matching
-// the signature  [query?:(Node or Scalar) entity:atom]:
-//
-//   [entity:Atom]            — no query (e.g. `list book`)
-//   [query:Any entity:Atom]  — query is any Node or Scalar (e.g.
-//                              `load {id:1} book`, `load 1 book`)
-//
-// The entity slot is /q-quoted so a bareword `book` parses as the
-// Atom "book" rather than dispatching as an undefined word. Both
-// overloads are all-forward (BarrierAllForward), so args are collected
-// from the tokens following the word.
 func registerSDKWords(r *eng.Registry, client *sdk.HankoPublicSDK) {
 	for _, op := range []string{"list", "load", "update"} {
 		op := op
@@ -89,8 +77,6 @@ func runOp(client *sdk.HankoPublicSDK, op string, query *eng.Value, entityAtom e
 // emits one `case "<name>":` per entity defined in the SDK model.
 func entityFor(client *sdk.HankoPublicSDK, name string) (sdk.HankoPublicEntity, error) {
 	switch strings.ToLower(name) {
-	case "create_user_response_object":
-		return client.CreateUserResponseObject(nil), nil
 	case "credential":
 		return client.Credential(nil), nil
 	case "credential_creation_option":
@@ -99,12 +85,10 @@ func entityFor(client *sdk.HankoPublicSDK, name string) (sdk.HankoPublicEntity, 
 		return client.CredentialRequestOption(nil), nil
 	case "email":
 		return client.Email(nil), nil
-	case "email_management":
-		return client.EmailManagement(nil), nil
 	case "hanko_configuration":
 		return client.HankoConfiguration(nil), nil
-	case "json_web_key_set":
-		return client.JsonWebKeySet(nil), nil
+	case "json_web_key":
+		return client.JsonWebKey(nil), nil
 	case "passcode":
 		return client.Passcode(nil), nil
 	case "password":
