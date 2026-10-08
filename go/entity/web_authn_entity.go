@@ -1,6 +1,9 @@
 package entity
 
 import (
+	"encoding/json"
+	"fmt"
+
 	"github.com/voxgig-sdk/hanko-public-sdk/go/core"
 
 	vs "github.com/voxgig-sdk/hanko-public-sdk/go/utility/struct"
@@ -49,6 +52,25 @@ func NewWebAuthnEntity(client *core.HankoPublicSDK, entopts map[string]any) *Web
 }
 
 func (e *WebAuthnEntity) GetName() string { return e.name }
+
+// An entity prints and serialises as its data, as ts's toString and toJSON
+// do: the client it holds carries the options.
+func (e *WebAuthnEntity) String() string {
+	return "WebAuthn " + vs.Jsonify(e.data, map[string]any{"indent": 0})
+}
+
+func (e *WebAuthnEntity) GoString() string {
+	return e.String()
+}
+
+func (e *WebAuthnEntity) MarshalJSON() ([]byte, error) {
+	out := map[string]any{}
+	for k, v := range e.data {
+		out[k] = v
+	}
+	out["voxgig$entity"] = "WebAuthn"
+	return json.Marshal(out)
+}
 
 func (e *WebAuthnEntity) MarkDeleted() {
 	e.deleted = true
@@ -118,8 +140,8 @@ func (e *WebAuthnEntity) MatchTyped(match ...WebAuthn) WebAuthn {
 	return typedFrom[WebAuthn](e.Match())
 }
 
-func (e *WebAuthnEntity) Stream(action string, args map[string]any, callopts map[string]any) <-chan any {
-	out := make(chan any)
+func (e *WebAuthnEntity) Stream(action string, args map[string]any, callopts map[string]any) <-chan core.StreamItem {
+	out := make(chan core.StreamItem)
 
 	if callopts == nil {
 		callopts = map[string]any{}
@@ -161,7 +183,7 @@ func (e *WebAuthnEntity) Stream(action string, args map[string]any, callopts map
 		ctx.Meta["stream_out"] = body
 	}
 
-	send := func(item any) bool {
+	send := func(item core.StreamItem) bool {
 		select {
 		case <-signal:
 			return false
@@ -170,76 +192,105 @@ func (e *WebAuthnEntity) Stream(action string, args map[string]any, callopts map
 		}
 	}
 
-	go func() {
-		defer close(out)
-
-		utility.FeatureHook(ctx, "PrePoint")
-		point, err := utility.MakePoint(ctx)
-		ctx.Out["point"] = point
+	// What MakeError or Done hands back: the error, as the last value, or
+	// under `throw: false` the data there is.
+	sendData := func(data any, err error) {
 		if err != nil {
-			return
-		}
-
-		utility.FeatureHook(ctx, "PreSpec")
-		spec, err := utility.MakeSpec(ctx)
-		ctx.Out["spec"] = spec
-		if err != nil {
-			return
-		}
-
-		utility.FeatureHook(ctx, "PreRequest")
-		req, err := utility.MakeRequest(ctx)
-		ctx.Out["request"] = req
-		if err != nil {
-			return
-		}
-
-		utility.FeatureHook(ctx, "PreResponse")
-		resp, err := utility.MakeResponse(ctx)
-		ctx.Out["response"] = resp
-		if err != nil {
-			return
-		}
-
-		utility.FeatureHook(ctx, "PreResult")
-		result, err := utility.MakeResult(ctx)
-		ctx.Out["result"] = result
-		if err != nil {
-			return
-		}
-
-		utility.FeatureHook(ctx, "PreDone")
-
-		// Inbound: prefer the streaming feature's incremental iterator; else
-		// fall back to the materialised items so Stream always yields.
-		if ctx.Result != nil && ctx.Result.Stream != nil {
-			for item := range ctx.Result.Stream() {
-				if !send(item) {
-					return
-				}
-			}
-			return
-		}
-
-		data, derr := utility.Done(ctx)
-		if derr != nil {
+			send(core.StreamItem{Err: err})
 			return
 		}
 		switch d := data.(type) {
 		case []any:
 			for _, item := range d {
-				if !send(item) {
+				if !send(core.StreamItem{Item: item}) {
 					return
 				}
 			}
 		case nil:
 			// nothing to yield
 		default:
-			send(d)
+			send(core.StreamItem{Item: d})
 		}
+	}
+
+	go func() {
+		defer close(out)
+
+		// A panicking hook or stream function leaves through MakeError, as
+		// runOp's does. A goroutine the stream function starts is out of reach.
+		defer func() {
+			if r := recover(); r != nil {
+				sendData(e.recovered(ctx, r))
+			}
+		}()
+
+		// A failed step leaves through MakeError, as an operation's does.
+		if err := e.streamSteps(ctx); err != nil {
+			sendData(utility.MakeError(ctx, err))
+			return
+		}
+
+		// Inbound: prefer the streaming feature's incremental iterator; else
+		// fall back to the materialised items so Stream always yields.
+		if ctx.Result != nil && ctx.Result.Stream != nil {
+			// Done does not run on this path, so its record is cleaned here.
+			utility.CleanExplain(ctx)
+			for item := range ctx.Result.Stream() {
+				if !send(core.StreamItem{Item: item}) {
+					return
+				}
+			}
+			return
+		}
+
+		sendData(utility.Done(ctx))
 	}()
 
 	return out
+}
+
+// The steps an operation runs, with their hooks; the first that fails hands
+// back its error.
+func (e *WebAuthnEntity) streamSteps(ctx *core.Context) error {
+	utility := e.utility
+
+	utility.FeatureHook(ctx, "PrePoint")
+	point, err := utility.MakePoint(ctx)
+	ctx.Out["point"] = point
+	if err != nil {
+		return err
+	}
+
+	utility.FeatureHook(ctx, "PreSpec")
+	spec, err := utility.MakeSpec(ctx)
+	ctx.Out["spec"] = spec
+	if err != nil {
+		return err
+	}
+
+	utility.FeatureHook(ctx, "PreRequest")
+	req, err := utility.MakeRequest(ctx)
+	ctx.Out["request"] = req
+	if err != nil {
+		return err
+	}
+
+	utility.FeatureHook(ctx, "PreResponse")
+	resp, err := utility.MakeResponse(ctx)
+	ctx.Out["response"] = resp
+	if err != nil {
+		return err
+	}
+
+	utility.FeatureHook(ctx, "PreResult")
+	result, err := utility.MakeResult(ctx)
+	ctx.Out["result"] = result
+	if err != nil {
+		return err
+	}
+
+	utility.FeatureHook(ctx, "PreDone")
+	return nil
 }
 
 func (e *WebAuthnEntity) Load(_ map[string]any, _ map[string]any) (any, error) {
@@ -247,9 +298,37 @@ func (e *WebAuthnEntity) Load(_ map[string]any, _ map[string]any) (any, error) {
 }
 
 
-func (e *WebAuthnEntity) List(_ map[string]any, _ map[string]any) (any, error) {
-	return core.UnsupportedOp("list", e.name)
+
+func (e *WebAuthnEntity) List(reqmatch map[string]any, ctrl map[string]any) (any, error) {
+	utility := e.utility
+	ctx := utility.MakeContext(map[string]any{
+		"opname":   "list",
+		"ctrl":     ctrl,
+		"match":    e.match,
+		"data":     e.data,
+		"reqmatch": reqmatch,
+	}, e.entctx)
+
+	return e.runOp(ctx, func() {
+		if ctx.Result != nil {
+			if ctx.Result.Resmatch != nil {
+				e.match = ctx.Result.Resmatch
+			}
+		}
+	})
 }
+
+// ListTyped is the statically-typed variant of List: it takes an
+// WebAuthnListMatch and returns []WebAuthn. It delegates to the untyped
+// List (identical runtime) and converts at the typed boundary.
+func (e *WebAuthnEntity) ListTyped(reqmatch WebAuthnListMatch, ctrl map[string]any) ([]WebAuthn, error) {
+	res, err := e.List(asMap(reqmatch), ctrl)
+	if err != nil {
+		return nil, err
+	}
+	return typedSliceFrom[WebAuthn](res), nil
+}
+
 
 
 
@@ -327,6 +406,11 @@ func (e *WebAuthnEntity) UpdateTyped(reqdata WebAuthnUpdateData, ctrl map[string
 
 
 
+func (e *WebAuthnEntity) Patch(_ map[string]any, _ map[string]any) (any, error) {
+	return core.UnsupportedOp("patch", e.name)
+}
+
+
 
 func (e *WebAuthnEntity) Remove(reqmatch map[string]any, ctrl map[string]any) (any, error) {
 	utility := e.utility
@@ -366,8 +450,14 @@ func (e *WebAuthnEntity) RemoveTyped(reqmatch WebAuthnRemoveMatch, ctrl map[stri
 
 
 
-func (e *WebAuthnEntity) runOp(ctx *core.Context, postDone func()) (any, error) {
+func (e *WebAuthnEntity) runOp(ctx *core.Context, postDone func()) (out any, err error) {
 	utility := e.utility
+
+	defer func() {
+		if r := recover(); r != nil {
+			out, err = e.recovered(ctx, r)
+		}
+	}()
 
 	utility.FeatureHook(ctx, "PrePoint")
 	point, err := utility.MakePoint(ctx)
@@ -407,9 +497,9 @@ func (e *WebAuthnEntity) runOp(ctx *core.Context, postDone func()) (any, error) 
 	utility.FeatureHook(ctx, "PreDone")
 	postDone()
 
-	out, doneErr := utility.Done(ctx)
-	if doneErr != nil {
-		return out, doneErr
+	out, err = utility.Done(ctx)
+	if err != nil {
+		return out, err
 	}
 
 	opname := ""
@@ -425,4 +515,14 @@ func (e *WebAuthnEntity) runOp(ctx *core.Context, postDone func()) (any, error) 
 	}
 
 	return out, nil
+}
+
+// A hook, fetcher or parser that panics never reached MakeError, and its
+// message can quote the request.
+func (e *WebAuthnEntity) recovered(ctx *core.Context, r any) (any, error) {
+	perr, ok := r.(error)
+	if !ok {
+		perr = fmt.Errorf("%v", r)
+	}
+	return e.utility.MakeError(ctx, perr)
 }

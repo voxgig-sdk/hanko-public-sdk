@@ -6,32 +6,6 @@
 -- @voxgig/apidef VALID_CANON). Annotations only — no runtime effect. Do not
 -- edit by hand.
 
----@class Credential
----@field aaguid? string
----@field attestation_type? string
----@field backup_eligible? boolean
----@field backup_state? boolean
----@field created_at? string
----@field id? string
----@field last_used_at? string
----@field mfa_only? boolean
----@field name? string
----@field publickey? string
----@field transports? table
-
----@class CredentialListMatch
----@field aaguid? string
----@field attestation_type? string
----@field backup_eligible? boolean
----@field backup_state? boolean
----@field created_at? string
----@field id? string
----@field last_used_at? string
----@field mfa_only? boolean
----@field name? string
----@field publickey? string
----@field transports? table
-
 ---@class CredentialCreationOption
 ---@field attestation? string
 ---@field authenticatorSelection? table
@@ -121,14 +95,18 @@
 
 ---@class Passcode
 ---@field code? string
+---@field created_at? string
 ---@field email_id? string
 ---@field id? string
+---@field ttl? number
 ---@field user_id string
 
 ---@class PasscodeCreateData
 ---@field code? string
+---@field created_at? string
 ---@field email_id? string
 ---@field id? string
+---@field ttl? number
 ---@field user_id string
 
 ---@class Password
@@ -152,37 +130,28 @@
 ---@class SamlCreateData
 
 ---@class SessionManagement
----@field amr? table
----@field audience? table
----@field email? table
----@field expiration string
----@field issued_at? string
----@field issuer? string
----@field session_id string
+---@field claims table
+---@field expiration_time? string
+---@field idle_expires_at? string
+---@field is_valid? boolean
 ---@field session_token string
----@field subject any
+---@field user_id? string
 
 ---@class SessionManagementLoadMatch
----@field amr? table
----@field audience? table
----@field email? table
----@field expiration? string
----@field issued_at? string
----@field issuer? string
----@field session_id? string
+---@field claims? table
+---@field expiration_time? string
+---@field idle_expires_at? string
+---@field is_valid? boolean
 ---@field session_token? string
----@field subject? any
+---@field user_id? string
 
 ---@class SessionManagementCreateData
----@field amr? table
----@field audience? table
----@field email? table
----@field expiration string
----@field issued_at? string
----@field issuer? string
----@field session_id string
+---@field claims table
+---@field expiration_time? string
+---@field idle_expires_at? string
+---@field is_valid? boolean
 ---@field session_token string
----@field subject any
+---@field user_id? string
 
 ---@class Status
 
@@ -191,15 +160,15 @@
 ---@class ThirdParty
 
 ---@class ThirdPartyLoadMatch
----@field code? string
----@field error? string
----@field error_description? string
----@field state string
+---@field provider string
+---@field redirect_to string
 
 ---@class Token
+---@field user_id? string
 ---@field value? string
 
 ---@class TokenCreateData
+---@field user_id? string
 ---@field value? string
 
 ---@class User
@@ -317,25 +286,76 @@
 ---@field username? table
 
 ---@class WebAuthn
+---@field aaguid? string
+---@field attestation_type? string
+---@field backup_eligible? boolean
+---@field backup_state? boolean
+---@field created_at? string
+---@field credential_id? string
 ---@field id? string
+---@field last_used_at? string
+---@field mfa_only? boolean
 ---@field name? string
+---@field publickey? string
 ---@field rawId? string
 ---@field response? table
+---@field transports? table
 ---@field type? string
+---@field user_id? string
+
+---@class WebAuthnListMatch
+---@field aaguid? string
+---@field attestation_type? string
+---@field backup_eligible? boolean
+---@field backup_state? boolean
+---@field created_at? string
+---@field credential_id? string
+---@field id? string
+---@field last_used_at? string
+---@field mfa_only? boolean
+---@field name? string
+---@field publickey? string
+---@field rawId? string
+---@field response? table
+---@field transports? table
+---@field type? string
+---@field user_id? string
 
 ---@class WebAuthnCreateData
+---@field aaguid? string
+---@field attestation_type? string
+---@field backup_eligible? boolean
+---@field backup_state? boolean
+---@field created_at? string
+---@field credential_id? string
 ---@field id? string
+---@field last_used_at? string
+---@field mfa_only? boolean
 ---@field name? string
+---@field publickey? string
 ---@field rawId? string
 ---@field response? table
+---@field transports? table
 ---@field type? string
+---@field user_id? string
 
 ---@class WebAuthnUpdateData
 ---@field id string
+---@field aaguid? string
+---@field attestation_type? string
+---@field backup_eligible? boolean
+---@field backup_state? boolean
+---@field created_at? string
+---@field credential_id? string
+---@field last_used_at? string
+---@field mfa_only? boolean
 ---@field name? string
+---@field publickey? string
 ---@field rawId? string
 ---@field response? table
+---@field transports? table
 ---@field type? string
+---@field user_id? string
 
 ---@class WebAuthnRemoveMatch
 ---@field id string

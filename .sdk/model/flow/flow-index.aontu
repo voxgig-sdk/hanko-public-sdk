@@ -1,7 +1,6 @@
 # Flows
 
 @"./BasicCredentialCreationOptionFlow.aontu"
-@"./BasicCredentialFlow.aontu"
 @"./BasicCredentialRequestOptionFlow.aontu"
 @"./BasicEmailFlow.aontu"
 @"./BasicHankoConfigurationFlow.aontu"

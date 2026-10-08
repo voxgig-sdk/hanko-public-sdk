@@ -9,7 +9,7 @@ import { createLiveTransport } from '../../live-runner'
 import { runLiveEntity } from '../../live-entity'
 
 
-import { HankoPublicSDK, BaseFeature, stdutil } from '../../..'
+import { HankoPublicSDK, BaseFeature, config, stdutil } from '../../..'
 
 import {
   envOverride,
@@ -41,6 +41,18 @@ describe('TokenEntity', async () => {
   })
 
 
+  test('validate', async (t) => {
+    if (null == (config as any).feature?.validate) {
+      t.skip('feature not present in this SDK: validate')
+      return
+    }
+    const client = HankoPublicSDK.test(undefined, { feature: { validate: { active: true } } })
+    await assert.rejects(client.Token().create({"user_id":1} as any),
+      (err: any) => 'validate_failed' === err.code)
+  })
+
+
+
   test('basic', async (t) => {
 
     const live = 'TRUE' === process.env.HANKO_PUBLIC_TEST_LIVE
@@ -51,7 +63,7 @@ describe('TokenEntity', async () => {
     
     const setup = basicSetup()
     if (setup.live) {
-      return runLiveEntity(setup, {"active":true,"alias":{"field":{}},"fields":{"value":{"a":true,"fo":"base64url","h":"Value","n":"value","r":false,"t":"`$STRING`","key$":"value","index$":0}},"name":"token","op":{"create":{"input":"data","name":"create","points":[{"a":true,"co":{"id":"POST /token","source":"openapi3","version":2},"g":{},"k":"http","m":"POST","o":"/token","q":{},"r":{},"s":[{"lit":"token"}],"t":{"req":"`reqdata`","res":"`body.user_id`"},"index$":0}],"key$":"create"}},"relations":{"ancestors":[]},"key$":"token","name__orig":"token","Name":"Token","name_":"token","name-":"token","NAME":"TOKEN","index$":12}, {"active":true,"entity":"token","key$":"BasicTokenFlow","kind":"basic","name":"BasicTokenFlow","param":{},"step":[{"a":true,"d":{},"i":{"ref":"token_ref01"},"m":{},"o":"create","s":[],"v":[],"index$":0}]}, 'Token', {"POST /token":{"protocol":"http","requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{"value":{"type":"string","format":"base64url","key$":"value"}},"index$":1}}}},"parameters":[]}})
+      return runLiveEntity(setup, {"active":true,"alias":{"field":{}},"fields":{"user_id":{"a":true,"fo":"uuid4","h":"User Id","n":"user_id","r":false,"sh":"The ID of the user on whose behalf the token was exchanged.","t":"`$STRING`","key$":"user_id","index$":0},"value":{"a":true,"fo":"base64url","h":"Value","n":"value","r":false,"t":"`$STRING`","key$":"value","index$":1}},"name":"token","op":{"create":{"input":"data","name":"create","points":[{"a":true,"bf":["value"],"co":{"id":"POST /token","source":"openapi3","version":2},"g":{},"k":"http","m":"POST","o":"/token","q":{},"r":{},"rs":{"kind":"json","media":"application/json"},"s":[{"lit":"token"}],"t":{"req":"`reqdata`","res":"`body`"},"index$":0}],"key$":"create"}},"relations":{"ancestors":[]},"key$":"token","name__orig":"token","Name":"Token","name_":"token","name-":"token","NAME":"TOKEN","index$":11}, {"active":true,"entity":"token","key$":"BasicTokenFlow","kind":"basic","name":"BasicTokenFlow","param":{},"step":[{"a":true,"d":{},"i":{"ref":"token_ref01"},"m":{},"o":"create","s":[],"v":[],"index$":0}]}, 'Token', {"POST /token":{"protocol":"http","requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{"value":{"type":"string","format":"base64url","key$":"value"}},"index$":1}}}},"parameters":[]}}, { strict: LIVE_STRICT, t })
     }
     const client = setup.client
     const struct = setup.struct
@@ -72,6 +84,12 @@ describe('TokenEntity', async () => {
 })
 
 
+
+// main.kit.test.live.strict is true (the default is true): a live
+// request that fails, or a live test missing an input it needs,
+// fails the test.
+// An account with no record for a test to read skips it either way.
+const LIVE_STRICT = true
 
 function basicSetup(extra?: any) {
   // TODO: fix test def options

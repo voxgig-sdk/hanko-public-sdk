@@ -5,7 +5,7 @@
 The TypeScript SDK for the HankoPublic API — a type-safe, entity-oriented client with full async/await support.
 
 The API is exposed as capitalised, semantic **Entities** — e.g.
-`client.Credential()` — each with a small set of operations (`list`, `load`, `create`, `update`, `remove`)
+`client.CredentialCreationOption()` — each with a small set of operations (`list`, `load`, `create`, `update`, `remove`)
 instead of raw URL paths and query parameters. This keeps the surface
 predictable and low-friction for both humans and AI agents.
 
@@ -15,15 +15,19 @@ predictable and low-friction for both humans and AI agents.
 
 ## Install
 This package is not yet published to npm. Install it from the GitHub
-release tag (`ts/vX.Y.Z`):
+release tag (`ts/vX.Y.Z`, see [Tags](https://github.com/voxgig-sdk/hanko-public-sdk/tags)), or from a
+clone, which carries the compiled `dist/`:
 
-- Releases: [https://github.com/voxgig-sdk/hanko-public-sdk/releases](https://github.com/voxgig-sdk/hanko-public-sdk/releases)
+```bash
+git clone https://github.com/voxgig-sdk/hanko-public-sdk
+npm install ./hanko-public-sdk/ts
+```
 
 
 ## Tutorial: your first API call
 
 This tutorial walks through creating a client, listing entities, and
-loading a specific record.
+loading a specific record. The client sends the API key as the `hanko` cookie.
 
 ### 1. Create a client
 
@@ -39,18 +43,15 @@ const client = new HankoPublicSDK({
 })
 ```
 
-### 2. List credential records
-
-`list()` resolves to an array of Credential ENTITIES — every operation
-resolves to entities, not raw records. Iterate them directly, and call
-`.data()` on one for the record it holds:
+### 4. Create, update, and remove
 
 ```ts
-const credentials = await client.Credential().list()
+// Create — returns the created CredentialCreationOption ENTITY (.data() for the record)
+const created = await client.CredentialCreationOption().create({
+  attestation: 'example_attestation',
+  authenticatorSelection: {},
+})
 
-for (const credential of credentials) {
-  console.log(credential)
-}
 ```
 
 
@@ -61,14 +62,15 @@ Entity operations reject on failure, so wrap them in `try` / `catch`:
 ```ts
 try {
   const jsonwebkeys = await client.JsonWebKey().list()
-  console.log(jsonwebkeys)
+  console.log(jsonwebkeys.map((item) => item.data()))
 } catch (err) {
   console.error('list failed:', err)
 }
 ```
 
 The low-level `direct()` method does **not** throw — it returns the
-value or an `Error`, so check the result before using it:
+result envelope. Branch on `ok`; on failure `status` holds the HTTP status
+(for error responses) and `err` holds the error:
 
 ```ts
 const result = await client.direct({
@@ -77,8 +79,8 @@ const result = await client.direct({
   params: { id: 'example_id' },
 })
 
-if (result instanceof Error) {
-  throw result
+if (!result.ok) {
+  console.error('request failed:', result.status, result.err)
 }
 ```
 
@@ -96,9 +98,6 @@ const result = await client.direct({
   params: { id: 'example' },
 })
 
-if (result instanceof Error) {
-  throw result
-}
 if (result.ok) {
   console.log(result.status)  // 200
   console.log(result.data)    // response body
@@ -127,10 +126,9 @@ Create a mock client for unit testing — no server required:
 ```ts
 const client = HankoPublicSDK.test()
 
-const jsonwebkey = await client.JsonWebKey().list()
-// jsonwebkey is the entity, populated with mock response data
-// — call jsonwebkey.data() for the record itself
-console.log(jsonwebkey)
+const jsonwebkeys = await client.JsonWebKey().list()
+// jsonwebkeys is an array of JsonWebKey entities, one per mock record
+console.log(jsonwebkeys.map((jsonwebkey) => jsonwebkey.data()))
 ```
 
 You can also use the instance method:
@@ -234,7 +232,6 @@ new HankoPublicSDK(options?: {
 | `utility()` | `Utility` | Deep copy of the SDK utility object. |
 | `prepare(fetchargs?)` | `Promise<FetchDef>` | Build an HTTP request definition without sending it. |
 | `direct(fetchargs?)` | `Promise<DirectResult>` | Build and send an HTTP request. |
-| `Credential(data?)` | `CredentialEntity` | Create a Credential entity instance. |
 | `CredentialCreationOption(data?)` | `CredentialCreationOptionEntity` | Create a CredentialCreationOption entity instance. |
 | `CredentialRequestOption(data?)` | `CredentialRequestOptionEntity` | Create a CredentialRequestOption entity instance. |
 | `Email(data?)` | `EmailEntity` | Create an Email entity instance. |
@@ -267,11 +264,11 @@ All entities share the same interface.
 
 | Method | Signature | Description |
 | --- | --- | --- |
-| `load` | `load(reqmatch?, ctrl?): Promise<Entity>` | Load a single entity by match criteria. |
-| `list` | `list(reqmatch?, ctrl?): Promise<Entity[]>` | List entities matching the criteria. |
-| `create` | `create(reqdata?, ctrl?): Promise<Entity>` | Create a new entity. |
-| `update` | `update(reqdata?, ctrl?): Promise<Entity>` | Update an existing entity. |
-| `remove` | `remove(reqmatch?, ctrl?): Promise<void>` | Remove an entity. |
+| `load` | `load(reqmatch?, ctrl?): Promise<Entity>` | Load a single entity by match criteria, and return it. |
+| `list` | `list(reqmatch?, ctrl?): Promise<Entity[]>` | List entities matching the criteria, one per record. |
+| `create` | `create(reqdata?, ctrl?): Promise<Entity>` | Create a new entity, and return it. |
+| `update` | `update(reqdata?, ctrl?): Promise<Entity>` | Update an existing entity, and return it. |
+| `remove` | `remove(reqmatch?, ctrl?): Promise<Entity>` | Remove an entity, and return it marked as deleted. |
 | `data` | `data(data?: Partial<Entity>): Entity` | Get or set entity data. |
 | `match` | `match(match?: Partial<Entity>): Partial<Entity>` | Get or set entity match criteria. |
 | `make` | `make(): Entity` | Create a new instance with the same options. |
@@ -280,13 +277,13 @@ All entities share the same interface.
 
 #### Return values
 
-Entity operations resolve to the entity data directly — there is no
-result envelope:
+Entity operations resolve to the entity itself — there is no result
+envelope, and an entity's `data()` reads its record:
 
 - `load`, `create` and `update` resolve to a single entity object.
 - `list` resolves to an **array** of entity objects (iterate it directly;
   there is no `.data` and no `.ok`).
-- `remove` resolves to `void`.
+- `remove` resolves to the entity, marked as deleted.
 
 On a failed request these methods **throw**, so wrap calls in
 `try`/`catch` to handle errors. Only `direct()` returns the result
@@ -321,26 +318,6 @@ The `prepare()` method returns:
 ```
 
 ### Entities
-
-#### Credential
-
-| Field | Description |
-| --- | --- |
-| `aaguid` |  |
-| `attestation_type` |  |
-| `backup_eligible` |  |
-| `backup_state` |  |
-| `created_at` |  |
-| `id` |  |
-| `last_used_at` |  |
-| `mfa_only` |  |
-| `name` |  |
-| `publickey` |  |
-| `transports` |  |
-
-Operations: list.
-
-API path: `/webauthn/credentials`
 
 #### CredentialCreationOption
 
@@ -420,8 +397,10 @@ API path: `/.well-known/jwks.json`
 | Field | Description |
 | --- | --- |
 | `code` | The actual passcode from the email sent to the user during initialization, a string of 6 decimal digits |
+| `created_at` | Time of creation of the passcode |
 | `email_id` | The ID of the email address |
 | `id` | The ID of the passcode |
+| `ttl` | Lifespan of a passcode in seconds |
 | `user_id` | The ID of the user |
 
 Operations: create.
@@ -452,15 +431,12 @@ API path: `/saml/callback`
 
 | Field | Description |
 | --- | --- |
-| `amr` | Authentication Method References, JSON array of strings that are identifiers for authentication methods used in the authentication. |
-| `audience` | The intended audience of the token. |
-| `email` | Data about the email address associated with the token's subject, if available. |
-| `expiration` | The timestamp indicating when the token will expire. |
-| `issued_at` | The timestamp indicating when the token was issued. |
-| `issuer` | The entity that issued the token. |
-| `session_id` | The unique identifier for the session associated with this token. |
+| `claims` | The claims extracted from a JWT. |
+| `expiration_time` | Date-time indicating the expiration of the session. |
+| `idle_expires_at` | Timestamp (in UTC) indicating when the session will expire due to inactivity, assuming no further activity occurs before this time. |
+| `is_valid` | Indicates whether the session is valid or not |
 | `session_token` | The session token (JWT) to validate |
-| `subject` | The unique identifier of the token's subject. |
+| `user_id` | The ID of the user the session is associated with. |
 
 Operations: create, load.
 
@@ -482,12 +458,13 @@ API path: `/`
 
 Operations: load.
 
-API path: `/thirdparty/callback`
+API path: `/thirdparty/auth`
 
 #### Token
 
 | Field | Description |
 | --- | --- |
+| `user_id` | The ID of the user on whose behalf the token was exchanged. |
 | `value` |  |
 
 Operations: create.
@@ -549,13 +526,24 @@ API path: `/logout`
 
 | Field | Description |
 | --- | --- |
+| `aaguid` |  |
+| `attestation_type` |  |
+| `backup_eligible` |  |
+| `backup_state` |  |
+| `created_at` |  |
+| `credential_id` | The ID of the created credential |
 | `id` |  |
+| `last_used_at` |  |
+| `mfa_only` |  |
 | `name` | A new credential name. |
+| `publickey` |  |
 | `rawId` |  |
 | `response` |  |
+| `transports` |  |
 | `type` |  |
+| `user_id` | The ID of the user on whose behalf a credential was created |
 
-Operations: create, remove, update.
+Operations: create, list, remove, update.
 
 API path: `/webauthn/registration/finalize`
 
@@ -577,39 +565,6 @@ API path: `/webauthn/login/finalize`
 
 
 ## Entities
-
-
-### Credential
-
-Create an instance: `const credential = client.Credential()`
-
-#### Operations
-
-| Method | Description |
-| --- | --- |
-| `list(match)` | List entities matching the criteria. |
-
-#### Fields
-
-| Field | Type | Description |
-| --- | --- | --- |
-| `aaguid` | `string` |  |
-| `attestation_type` | `string` |  |
-| `backup_eligible` | `boolean` |  |
-| `backup_state` | `boolean` |  |
-| `created_at` | `string` |  |
-| `id` | `string` |  |
-| `last_used_at` | `string` |  |
-| `mfa_only` | `boolean` |  |
-| `name` | `string` |  |
-| `publickey` | `string` |  |
-| `transports` | `any[]` |  |
-
-#### Example: List
-
-```ts
-const credentials = await client.Credential().list()
-```
 
 
 ### CredentialCreationOption
@@ -777,8 +732,10 @@ Create an instance: `const passcode = client.Passcode()`
 | Field | Type | Description |
 | --- | --- | --- |
 | `code` | `string` | The actual passcode from the email sent to the user during initialization, a string of 6 decimal digits |
+| `created_at` | `string` | Time of creation of the passcode |
 | `email_id` | `string` | The ID of the email address |
 | `id` | `string` | The ID of the passcode |
+| `ttl` | `number` | Lifespan of a passcode in seconds |
 | `user_id` | `string` | The ID of the user |
 
 #### Example: Create
@@ -829,12 +786,6 @@ Create an instance: `const saml = client.Saml()`
 | `create(data)` | Create a new entity with the given data. |
 | `load(match)` | Load a single entity by match criteria. |
 
-#### Example: Load
-
-```ts
-const saml = await client.Saml().load({ domain: 'domain' })
-```
-
 #### Example: Create
 
 ```ts
@@ -858,15 +809,12 @@ Create an instance: `const session_management = client.SessionManagement()`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `amr` | `any[]` | Authentication Method References, JSON array of strings that are identifiers for authentication methods used in the authentication. |
-| `audience` | `any[]` | The intended audience of the token. |
-| `email` | `Record<string, any>` | Data about the email address associated with the token's subject, if available. |
-| `expiration` | `string` | The timestamp indicating when the token will expire. |
-| `issued_at` | `string` | The timestamp indicating when the token was issued. |
-| `issuer` | `string` | The entity that issued the token. |
-| `session_id` | `string` | The unique identifier for the session associated with this token. |
+| `claims` | `Record<string, any>` | The claims extracted from a JWT. |
+| `expiration_time` | `string` | Date-time indicating the expiration of the session. |
+| `idle_expires_at` | `string` | Timestamp (in UTC) indicating when the session will expire due to inactivity, assuming no further activity occurs before this time. |
+| `is_valid` | `boolean` | Indicates whether the session is valid or not |
 | `session_token` | `string` | The session token (JWT) to validate |
-| `subject` | `any` | The unique identifier of the token's subject. |
+| `user_id` | `string` | The ID of the user the session is associated with. |
 
 #### Example: Load
 
@@ -878,10 +826,8 @@ const session_management = await client.SessionManagement().load()
 
 ```ts
 const session_management = await client.SessionManagement().create({
-  expiration: 'example_expiration',
-  session_id: 'example_session_id',
+  claims: {},
   session_token: 'example_session_token',
-  subject: 'example_subject',
 })
 ```
 
@@ -916,7 +862,7 @@ Create an instance: `const third_party = client.ThirdParty()`
 #### Example: Load
 
 ```ts
-const third_party = await client.ThirdParty().load({ state: 'state' })
+const third_party = await client.ThirdParty().load({ provider: 'provider', redirect_to: 'redirect_to' })
 ```
 
 
@@ -934,6 +880,7 @@ Create an instance: `const token = client.Token()`
 
 | Field | Type | Description |
 | --- | --- | --- |
+| `user_id` | `string` | The ID of the user on whose behalf the token was exchanged. |
 | `value` | `string` |  |
 
 #### Example: Create
@@ -1047,6 +994,7 @@ Create an instance: `const web_authn = client.WebAuthn()`
 | Method | Description |
 | --- | --- |
 | `create(data)` | Create a new entity with the given data. |
+| `list(match)` | List entities matching the criteria. |
 | `remove(match)` | Remove the matching entity. |
 | `update(data)` | Update an existing entity. |
 
@@ -1054,11 +1002,28 @@ Create an instance: `const web_authn = client.WebAuthn()`
 
 | Field | Type | Description |
 | --- | --- | --- |
+| `aaguid` | `string` |  |
+| `attestation_type` | `string` |  |
+| `backup_eligible` | `boolean` |  |
+| `backup_state` | `boolean` |  |
+| `created_at` | `string` |  |
+| `credential_id` | `string` | The ID of the created credential |
 | `id` | `string` |  |
+| `last_used_at` | `string` |  |
+| `mfa_only` | `boolean` |  |
 | `name` | `string` | A new credential name. |
+| `publickey` | `string` |  |
 | `rawId` | `string` |  |
 | `response` | `Record<string, any>` |  |
+| `transports` | `any[]` |  |
 | `type` | `string` |  |
+| `user_id` | `string` | The ID of the user on whose behalf a credential was created |
+
+#### Example: List
+
+```ts
+const web_authns = await client.WebAuthn().list()
+```
 
 #### Example: Create
 

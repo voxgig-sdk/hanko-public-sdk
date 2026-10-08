@@ -5,17 +5,77 @@ main: kit: entity: web_authn: {
   alias: field: {}
 
   fields: {
+    aaguid: {
+      fo: "uuid"
+      h: "Aaguid"
+      n: "aaguid"
+      r: false
+      t: "`$STRING`"
+    }
+    attestation_type: {
+      h: "Attestation Type"
+      n: "attestation_type"
+      r: false
+      t: "`$STRING`"
+    }
+    backup_eligible: {
+      h: "Backup Eligible"
+      n: "backup_eligible"
+      r: false
+      t: "`$BOOLEAN`"
+    }
+    backup_state: {
+      h: "Backup State"
+      n: "backup_state"
+      r: false
+      t: "`$BOOLEAN`"
+    }
+    created_at: {
+      fo: "date-time"
+      h: "Created At"
+      n: "created_at"
+      r: false
+      t: "`$STRING`"
+    }
+    credential_id: {
+      fo: "base64"
+      h: "Credential Id"
+      n: "credential_id"
+      r: false
+      sh: "The ID of the created credential"
+      t: "`$STRING`"
+    }
     id: {
+      fo: "uuid"
       h: "Id"
       n: "id"
       r: false
       t: "`$STRING`"
+    }
+    last_used_at: {
+      fo: "date-time"
+      h: "Last Used At"
+      n: "last_used_at"
+      r: false
+      t: "`$STRING`"
+    }
+    mfa_only: {
+      h: "Mfa Only"
+      n: "mfa_only"
+      r: false
+      t: "`$BOOLEAN`"
     }
     name: {
       h: "Name"
       n: "name"
       r: false
       sh: "A new credential name."
+      t: "`$STRING`"
+    }
+    publickey: {
+      h: "Publickey"
+      n: "publickey"
+      r: false
       t: "`$STRING`"
     }
     rawId: {
@@ -30,10 +90,24 @@ main: kit: entity: web_authn: {
       r: false
       t: "`$OBJECT`"
     }
+    transports: {
+      h: "Transports"
+      n: "transports"
+      r: false
+      t: "`$ARRAY`"
+    }
     type: {
       h: "Type"
       n: "type"
       r: false
+      t: "`$STRING`"
+    }
+    user_id: {
+      fo: "uuid4"
+      h: "User Id"
+      n: "user_id"
+      r: false
+      sh: "The ID of the user on whose behalf a credential was created"
       t: "`$STRING`"
     }
   }
@@ -49,6 +123,12 @@ main: kit: entity: web_authn: {
       name: "create"
       points: [
         {
+          bf: [
+            "id"
+            "rawId"
+            "response"
+            "type"
+          ]
           co: {
             id: "POST /webauthn/registration/finalize"
             source: "openapi3"
@@ -56,6 +136,10 @@ main: kit: entity: web_authn: {
           }
           m: "POST"
           o: "/webauthn/registration/finalize"
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "webauthn"
@@ -69,7 +153,37 @@ main: kit: entity: web_authn: {
           ]
           t: {
             req: "`reqdata`"
-            res: "`body.user_id`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    list: {
+      name: "list"
+      points: [
+        {
+          co: {
+            id: "GET /webauthn/credentials"
+            source: "openapi3"
+            version: 2
+          }
+          m: "GET"
+          o: "/webauthn/credentials"
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "webauthn"
+            }
+            {
+              lit: "credentials"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
           }
         }
       ]
@@ -124,6 +238,9 @@ main: kit: entity: web_authn: {
       name: "update"
       points: [
         {
+          bf: [
+            "name"
+          ]
           co: {
             id: "PATCH /webauthn/credentials/{id}"
             source: "openapi3"

@@ -58,6 +58,10 @@ main: kit: entity: json_web_key: {
           }
           m: "GET"
           o: "/.well-known/jwks.json"
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: ".well-known"

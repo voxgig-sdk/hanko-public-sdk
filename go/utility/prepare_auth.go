@@ -13,23 +13,24 @@ const cookieHeader = "cookie"
 const optionApikey = "apikey"
 const notFound = "__NOTFOUND__"
 
-func cookieSet(headers map[string]any, value any) {
+// The client's auth.name option, when set, replaces the name the API declares.
+func authName(options map[string]any) string {
+	if name, ok := vs.GetPath(options, []any{"auth", "name"}).(string); ok && name != "" {
+		return name
+	}
+	return credName
+}
+
+func cookieSet(headers map[string]any, name string, value any) {
 	kept := []string{}
 
 	if existing, ok := headers[cookieHeader].(string); ok && existing != "" {
-		for _, part := range strings.Split(existing, ";") {
-			piece := strings.TrimSpace(part)
-			if piece == "" || piece == credName ||
-				strings.HasPrefix(piece, credName+"=") {
-				continue
-			}
-			kept = append(kept, piece)
-		}
+		kept = cookieKeep(existing, map[string]bool{name: true})
 	}
 
 	if value != nil {
 		valStr, _ := value.(string)
-		kept = append(kept, credName+"="+valStr)
+		kept = append(kept, name+"="+valStr)
 	}
 
 	if len(kept) == 0 {
@@ -51,8 +52,15 @@ func prepareAuthUtil(ctx *core.Context) (*core.Spec, error) {
 
 	// Public APIs that need no auth omit the options.auth block entirely.
 	if options["auth"] == nil {
-		cookieSet(headers, nil)
+		cookieSet(headers, credName, nil)
 		return spec, nil
+	}
+
+	name := authName(options)
+
+	// A credential left under the declared name would travel beside the renamed one.
+	if name != credName {
+		cookieSet(headers, credName, nil)
 	}
 
 	apikey := vs.GetProp(options, optionApikey, notFound)
@@ -66,13 +74,13 @@ func prepareAuthUtil(ctx *core.Context) (*core.Spec, error) {
 	}
 
 	if skip {
-		cookieSet(headers, nil)
+		cookieSet(headers, name, nil)
 	} else {
 		apikeyVal := ""
 		if av, ok := apikey.(string); ok {
 			apikeyVal = av
 		}
-		cookieSet(headers, apikeyVal)
+		cookieSet(headers, name, apikeyVal)
 	}
 
 	return spec, nil

@@ -2,15 +2,18 @@
   "existing": {
     "token": {
       "TOKEN00": {
-        "value": "sa",
+        "user_id": "USER01",
+        "value": "s15",
         "id": "TOKEN00"
       },
       "TOKEN01": {
-        "value": "s14",
+        "user_id": "USER01",
+        "value": "s29",
         "id": "TOKEN01"
       },
       "TOKEN02": {
-        "value": "s1e",
+        "user_id": "USER01",
+        "value": "s3d",
         "id": "TOKEN02"
       }
     }
@@ -18,7 +21,8 @@
   "new": {
     "token": {
       "token_ref01": {
-        "value": "s28"
+        "user_id": "USER01",
+        "value": "s51"
       }
     }
   },

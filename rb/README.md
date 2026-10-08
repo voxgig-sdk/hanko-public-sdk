@@ -4,7 +4,7 @@
 
 The Ruby SDK for the HankoPublic API — an entity-oriented client using idiomatic Ruby conventions.
 
-The SDK exposes the API as capitalised, semantic **Entities** — for example `client.Credential` — with named operations (`list`/`load`/`create`/`update`/`remove`) instead of raw URL paths and query strings. Working with resources and verbs keeps call sites self-describing and reduces cognitive load.
+The SDK exposes the API as capitalised, semantic **Entities** — for example `client.CredentialCreationOption` — with named operations (`list`/`load`/`create`/`update`/`remove`) instead of raw URL paths and query strings. Working with resources and verbs keeps call sites self-describing and reduces cognitive load.
 
 > Other languages, the CLI, and MCP server live alongside this one — see
 > the [top-level README](../README.md).
@@ -12,15 +12,24 @@ The SDK exposes the API as capitalised, semantic **Entities** — for example `c
 
 ## Install
 This package is not yet published to RubyGems. Install it from the
-GitHub release tag (`rb/vX.Y.Z`):
+GitHub release tag (`rb/vX.Y.Z`, see [Tags](https://github.com/voxgig-sdk/hanko-public-sdk/tags)), or
+from a clone:
 
-- Releases: [https://github.com/voxgig-sdk/hanko-public-sdk/releases](https://github.com/voxgig-sdk/hanko-public-sdk/releases)
+```bash
+git clone https://github.com/voxgig-sdk/hanko-public-sdk
+```
+
+Then add it to your `Gemfile` by path, and run `bundle install`:
+
+```ruby
+gem "voxgig-sdk-hanko-public-sdk", path: "./hanko-public-sdk/rb"
+```
 
 
 ## Tutorial: your first API call
 
 This tutorial walks through creating a client, listing entities, and
-loading a specific record.
+loading a specific record. The client sends the API key as the `hanko` cookie.
 
 ### 1. Create a client
 
@@ -32,18 +41,12 @@ client = HankoPublicSDK.new({
 })
 ```
 
-### 2. List credential records
+### 4. Create, update, and remove
 
 ```ruby
-begin
-  # list returns an Array of Credential records — iterate directly.
-  credentials = client.Credential.list
-  credentials.each do |item|
-    puts "#{item["id"]} #{item["aaguid"]}"
-  end
-rescue => err
-  warn "list failed: #{err}"
-end
+# create returns the ENTITY — call data_get for the created CredentialCreationOption record.
+created = client.CredentialCreationOption.create({ "attestation" => "example_attestation", "authenticatorSelection" => {} })
+
 ```
 
 
@@ -121,10 +124,10 @@ Create a mock client for unit testing — no server required:
 ```ruby
 client = HankoPublicSDK.test
 
-# Entity ops return the ENTITY (raises on error);
-# call data_get for the mock record.
-jsonwebkey = client.JsonWebKey.list()
-puts jsonwebkey
+# list returns an Array of JsonWebKey entities, one per mock record (raises on
+# error); data_get reads each record.
+jsonwebkeys = client.JsonWebKey.list()
+jsonwebkeys.each { |item| puts item.data_get }
 ```
 
 ### Use a custom fetch function
@@ -202,7 +205,6 @@ Creates a test-mode client with mock transport. Both arguments may be `nil`.
 | `get_utility` | `() -> Utility` | Copy of the SDK utility object. |
 | `prepare` | `(fetchargs) -> Hash` | Build an HTTP request definition without sending. Raises on error. |
 | `direct` | `(fetchargs) -> Hash` | Build and send an HTTP request. Returns a result hash (`result["ok"]`); does not raise. |
-| `Credential` | `(data) -> CredentialEntity` | Create a Credential entity instance. |
 | `CredentialCreationOption` | `(data) -> CredentialCreationOptionEntity` | Create a CredentialCreationOption entity instance. |
 | `CredentialRequestOption` | `(data) -> CredentialRequestOptionEntity` | Create a CredentialRequestOption entity instance. |
 | `Email` | `(data) -> EmailEntity` | Create an Email entity instance. |
@@ -226,11 +228,11 @@ All entities share the same interface.
 
 | Method | Signature | Description |
 | --- | --- | --- |
-| `load` | `(reqmatch, ctrl) -> any` | Load a single entity by match criteria. Raises on error. |
-| `list` | `(reqmatch = nil, ctrl) -> Array` | List entities matching the criteria (call with no argument to list all). Raises on error. |
-| `create` | `(reqdata, ctrl) -> any` | Create a new entity. Raises on error. |
-| `update` | `(reqdata, ctrl) -> any` | Update an existing entity. Raises on error. |
-| `remove` | `(reqmatch, ctrl) -> any` | Remove an entity. Raises on error. |
+| `load` | `(reqmatch, ctrl) -> any` | Load a single entity by match criteria, and return it. Raises on error. |
+| `list` | `(reqmatch = nil, ctrl) -> Array` | List entities matching the criteria (call with no argument to list all), one per record. Raises on error. |
+| `create` | `(reqdata, ctrl) -> any` | Create a new entity, and return it. Raises on error. |
+| `update` | `(reqdata, ctrl) -> any` | Update an existing entity, and return it. Raises on error. |
+| `remove` | `(reqmatch, ctrl) -> any` | Remove an entity, and return it marked as deleted. Raises on error. |
 | `data_get` | `() -> Hash` | Get entity data. |
 | `data_set` | `(data)` | Set entity data. |
 | `match_get` | `() -> Hash` | Get entity match criteria. |
@@ -240,9 +242,10 @@ All entities share the same interface.
 
 ### Result shape
 
-Entity operations return the result data directly. On failure they
-raise a `HankoPublicError` (a `StandardError` subclass), so wrap
-calls in `begin`/`rescue` where you need to handle errors.
+Entity operations return the entity, and `list` an `Array` of entities, one
+per record; an entity's `data_get` reads its record. On failure they raise a
+`HankoPublicError` (a `StandardError` subclass), so wrap calls in
+`begin`/`rescue` where you need to handle errors.
 
 The `direct` escape hatch is the exception: it never raises and instead
 returns a result `Hash` with these keys:
@@ -256,26 +259,6 @@ returns a result `Hash` with these keys:
 | `err` | `Error` | Present when `ok` is `false`. |
 
 ### Entities
-
-#### Credential
-
-| Field | Description |
-| --- | --- |
-| `aaguid` |  |
-| `attestation_type` |  |
-| `backup_eligible` |  |
-| `backup_state` |  |
-| `created_at` |  |
-| `id` |  |
-| `last_used_at` |  |
-| `mfa_only` |  |
-| `name` |  |
-| `publickey` |  |
-| `transports` |  |
-
-Operations: List.
-
-API path: `/webauthn/credentials`
 
 #### CredentialCreationOption
 
@@ -355,8 +338,10 @@ API path: `/.well-known/jwks.json`
 | Field | Description |
 | --- | --- |
 | `code` | The actual passcode from the email sent to the user during initialization, a string of 6 decimal digits |
+| `created_at` | Time of creation of the passcode |
 | `email_id` | The ID of the email address |
 | `id` | The ID of the passcode |
+| `ttl` | Lifespan of a passcode in seconds |
 | `user_id` | The ID of the user |
 
 Operations: Create.
@@ -387,15 +372,12 @@ API path: `/saml/callback`
 
 | Field | Description |
 | --- | --- |
-| `amr` | Authentication Method References, JSON array of strings that are identifiers for authentication methods used in the authentication. |
-| `audience` | The intended audience of the token. |
-| `email` | Data about the email address associated with the token's subject, if available. |
-| `expiration` | The timestamp indicating when the token will expire. |
-| `issued_at` | The timestamp indicating when the token was issued. |
-| `issuer` | The entity that issued the token. |
-| `session_id` | The unique identifier for the session associated with this token. |
+| `claims` | The claims extracted from a JWT. |
+| `expiration_time` | Date-time indicating the expiration of the session. |
+| `idle_expires_at` | Timestamp (in UTC) indicating when the session will expire due to inactivity, assuming no further activity occurs before this time. |
+| `is_valid` | Indicates whether the session is valid or not |
 | `session_token` | The session token (JWT) to validate |
-| `subject` | The unique identifier of the token's subject. |
+| `user_id` | The ID of the user the session is associated with. |
 
 Operations: Create, Load.
 
@@ -417,12 +399,13 @@ API path: `/`
 
 Operations: Load.
 
-API path: `/thirdparty/callback`
+API path: `/thirdparty/auth`
 
 #### Token
 
 | Field | Description |
 | --- | --- |
+| `user_id` | The ID of the user on whose behalf the token was exchanged. |
 | `value` |  |
 
 Operations: Create.
@@ -484,13 +467,24 @@ API path: `/logout`
 
 | Field | Description |
 | --- | --- |
+| `aaguid` |  |
+| `attestation_type` |  |
+| `backup_eligible` |  |
+| `backup_state` |  |
+| `created_at` |  |
+| `credential_id` | The ID of the created credential |
 | `id` |  |
+| `last_used_at` |  |
+| `mfa_only` |  |
 | `name` | A new credential name. |
+| `publickey` |  |
 | `rawId` |  |
 | `response` |  |
+| `transports` |  |
 | `type` |  |
+| `user_id` | The ID of the user on whose behalf a credential was created |
 
-Operations: Create, Remove, Update.
+Operations: Create, List, Remove, Update.
 
 API path: `/webauthn/registration/finalize`
 
@@ -512,40 +506,6 @@ API path: `/webauthn/login/finalize`
 
 
 ## Entities
-
-
-### Credential
-
-Create an instance: `credential = client.Credential`
-
-#### Operations
-
-| Method | Description |
-| --- | --- |
-| `list(match)` | List entities matching the criteria. |
-
-#### Fields
-
-| Field | Type | Description |
-| --- | --- | --- |
-| `aaguid` | `String` |  |
-| `attestation_type` | `String` |  |
-| `backup_eligible` | `Boolean` |  |
-| `backup_state` | `Boolean` |  |
-| `created_at` | `String` |  |
-| `id` | `String` |  |
-| `last_used_at` | `String` |  |
-| `mfa_only` | `Boolean` |  |
-| `name` | `String` |  |
-| `publickey` | `String` |  |
-| `transports` | `Array` |  |
-
-#### Example: List
-
-```ruby
-# list returns an Array of Credential records (raises on error).
-credentials = client.Credential.list
-```
 
 
 ### CredentialCreationOption
@@ -633,8 +593,9 @@ Create an instance: `email = client.Email`
 #### Example: List
 
 ```ruby
-# list returns an Array of Email records (raises on error).
+# list returns an Array of Email entities, one per record (raises on error).
 emails = client.Email.list
+emails.each { |item| puts item.data_get }
 ```
 
 #### Example: Create
@@ -696,8 +657,9 @@ Create an instance: `json_web_key = client.JsonWebKey`
 #### Example: List
 
 ```ruby
-# list returns an Array of JsonWebKey records (raises on error).
+# list returns an Array of JsonWebKey entities, one per record (raises on error).
 json_web_keys = client.JsonWebKey.list
+json_web_keys.each { |item| puts item.data_get }
 ```
 
 
@@ -716,8 +678,10 @@ Create an instance: `passcode = client.Passcode`
 | Field | Type | Description |
 | --- | --- | --- |
 | `code` | `String` | The actual passcode from the email sent to the user during initialization, a string of 6 decimal digits |
+| `created_at` | `String` | Time of creation of the passcode |
 | `email_id` | `String` | The ID of the email address |
 | `id` | `String` | The ID of the passcode |
+| `ttl` | `Integer` | Lifespan of a passcode in seconds |
 | `user_id` | `String` | The ID of the user |
 
 #### Example: Create
@@ -768,13 +732,6 @@ Create an instance: `saml = client.Saml`
 | `create(data)` | Create a new entity with the given data. |
 | `load(match)` | Load a single entity by match criteria. |
 
-#### Example: Load
-
-```ruby
-# load returns the ENTITY — call data_get for the Saml record (raises on error).
-saml = client.Saml.load({ "domain" => "domain" })
-```
-
 #### Example: Create
 
 ```ruby
@@ -798,15 +755,12 @@ Create an instance: `session_management = client.SessionManagement`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `amr` | `Array` | Authentication Method References, JSON array of strings that are identifiers for authentication methods used in the authentication. |
-| `audience` | `Array` | The intended audience of the token. |
-| `email` | `Hash` | Data about the email address associated with the token's subject, if available. |
-| `expiration` | `String` | The timestamp indicating when the token will expire. |
-| `issued_at` | `String` | The timestamp indicating when the token was issued. |
-| `issuer` | `String` | The entity that issued the token. |
-| `session_id` | `String` | The unique identifier for the session associated with this token. |
+| `claims` | `Hash` | The claims extracted from a JWT. |
+| `expiration_time` | `String` | Date-time indicating the expiration of the session. |
+| `idle_expires_at` | `String` | Timestamp (in UTC) indicating when the session will expire due to inactivity, assuming no further activity occurs before this time. |
+| `is_valid` | `Boolean` | Indicates whether the session is valid or not |
 | `session_token` | `String` | The session token (JWT) to validate |
-| `subject` | `Object` | The unique identifier of the token's subject. |
+| `user_id` | `String` | The ID of the user the session is associated with. |
 
 #### Example: Load
 
@@ -819,10 +773,8 @@ session_management = client.SessionManagement.load()
 
 ```ruby
 session_management = client.SessionManagement.create({
-  "expiration" => "example_expiration", # String
-  "session_id" => "example_session_id", # String
+  "claims" => {}, # Hash
   "session_token" => "example_session_token", # String
-  "subject" => "example_subject", # Object
 })
 ```
 
@@ -859,7 +811,7 @@ Create an instance: `third_party = client.ThirdParty`
 
 ```ruby
 # load returns the ENTITY — call data_get for the ThirdParty record (raises on error).
-third_party = client.ThirdParty.load({ "state" => "state" })
+third_party = client.ThirdParty.load({ "provider" => "provider", "redirect_to" => "redirect_to" })
 ```
 
 
@@ -877,6 +829,7 @@ Create an instance: `token = client.Token`
 
 | Field | Type | Description |
 | --- | --- | --- |
+| `user_id` | `String` | The ID of the user on whose behalf the token was exchanged. |
 | `value` | `String` |  |
 
 #### Example: Create
@@ -971,8 +924,9 @@ Create an instance: `user_management = client.UserManagement`
 #### Example: List
 
 ```ruby
-# list returns an Array of UserManagement records (raises on error).
+# list returns an Array of UserManagement entities, one per record (raises on error).
 user_managements = client.UserManagement.list
+user_managements.each { |item| puts item.data_get }
 ```
 
 #### Example: Create
@@ -992,6 +946,7 @@ Create an instance: `web_authn = client.WebAuthn`
 | Method | Description |
 | --- | --- |
 | `create(data)` | Create a new entity with the given data. |
+| `list(match)` | List entities matching the criteria. |
 | `remove(match)` | Remove the matching entity. |
 | `update(data)` | Update an existing entity. |
 
@@ -999,11 +954,30 @@ Create an instance: `web_authn = client.WebAuthn`
 
 | Field | Type | Description |
 | --- | --- | --- |
+| `aaguid` | `String` |  |
+| `attestation_type` | `String` |  |
+| `backup_eligible` | `Boolean` |  |
+| `backup_state` | `Boolean` |  |
+| `created_at` | `String` |  |
+| `credential_id` | `String` | The ID of the created credential |
 | `id` | `String` |  |
+| `last_used_at` | `String` |  |
+| `mfa_only` | `Boolean` |  |
 | `name` | `String` | A new credential name. |
+| `publickey` | `String` |  |
 | `rawId` | `String` |  |
 | `response` | `Hash` |  |
+| `transports` | `Array` |  |
 | `type` | `String` |  |
+| `user_id` | `String` | The ID of the user on whose behalf a credential was created |
+
+#### Example: List
+
+```ruby
+# list returns an Array of WebAuthn entities, one per record (raises on error).
+web_authns = client.WebAuthn.list
+web_authns.each { |item| puts item.data_get }
+```
 
 #### Example: Create
 

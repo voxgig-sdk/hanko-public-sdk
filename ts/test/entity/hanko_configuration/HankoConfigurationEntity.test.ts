@@ -9,7 +9,7 @@ import { createLiveTransport } from '../../live-runner'
 import { runLiveEntity } from '../../live-entity'
 
 
-import { HankoPublicSDK, BaseFeature, stdutil } from '../../..'
+import { HankoPublicSDK, BaseFeature, config, stdutil } from '../../..'
 
 import {
   envOverride,
@@ -41,6 +41,8 @@ describe('HankoConfigurationEntity', async () => {
   })
 
 
+
+
   test('basic', async (t) => {
 
     const live = 'TRUE' === process.env.HANKO_PUBLIC_TEST_LIVE
@@ -51,7 +53,7 @@ describe('HankoConfigurationEntity', async () => {
     
     const setup = basicSetup()
     if (setup.live) {
-      return runLiveEntity(setup, {"active":true,"alias":{"field":{}},"fields":{"account":{"a":true,"h":"Account","n":"account","r":false,"sh":"Controls the behavior regarding user account.","t":"`$OBJECT`","key$":"account","index$":0},"emails":{"a":true,"h":"Emails","n":"emails","r":false,"sh":"Controls the behavior regarding email addresses.","t":"`$OBJECT`","key$":"emails","index$":1},"password":{"a":true,"h":"Password","n":"password","r":false,"sh":"Configuration options concerning passwords","t":"`$OBJECT`","key$":"password","index$":2}},"name":"hanko_configuration","op":{"load":{"input":"data","name":"load","points":[{"a":true,"co":{"id":"GET /.well-known/config","source":"openapi3","version":2},"g":{},"k":"http","m":"GET","o":"/.well-known/config","q":{},"r":{},"s":[{"lit":".well-known"},{"lit":"config"}],"t":{"req":"`reqdata`","res":"`body`"},"index$":0}],"key$":"load"}},"relations":{"ancestors":[]},"key$":"hanko_configuration","name__orig":"hanko_configuration","Name":"HankoConfiguration","name_":"hanko_configuration","name-":"hanko-configuration","NAME":"HANKO_CONFIGURATION","index$":4}, {"active":true,"entity":"hanko_configuration","key$":"BasicHankoConfigurationFlow","kind":"basic","name":"BasicHankoConfigurationFlow","param":{},"step":[{"a":true,"d":{},"i":{"ref":"hanko_configuration_ref01","srcdatavar":"hanko_configuration_ref01_data","suffix":"_dt0"},"m":{},"o":"load","s":[],"v":[{"apply":"TextFieldMark","def":{"mark":"Mark01-hanko_configuration_ref01"}}],"index$":0}]}, 'HankoConfiguration', {"GET /.well-known/config":{"protocol":"http","parameters":[]}})
+      return runLiveEntity(setup, {"active":true,"alias":{"field":{}},"fields":{"account":{"a":true,"h":"Account","n":"account","r":false,"sh":"Controls the behavior regarding user account.","t":"`$OBJECT`","key$":"account","index$":0},"emails":{"a":true,"h":"Emails","n":"emails","r":false,"sh":"Controls the behavior regarding email addresses.","t":"`$OBJECT`","key$":"emails","index$":1},"password":{"a":true,"h":"Password","n":"password","r":false,"sh":"Configuration options concerning passwords","t":"`$OBJECT`","key$":"password","index$":2}},"name":"hanko_configuration","op":{"load":{"input":"data","name":"load","points":[{"a":true,"co":{"id":"GET /.well-known/config","source":"openapi3","version":2},"g":{},"k":"http","m":"GET","o":"/.well-known/config","q":{},"r":{},"rs":{"kind":"json","media":"application/json"},"s":[{"lit":".well-known"},{"lit":"config"}],"t":{"req":"`reqdata`","res":"`body`"},"index$":0}],"key$":"load"}},"relations":{"ancestors":[]},"key$":"hanko_configuration","name__orig":"hanko_configuration","Name":"HankoConfiguration","name_":"hanko_configuration","name-":"hanko-configuration","NAME":"HANKO_CONFIGURATION","index$":3}, {"active":true,"entity":"hanko_configuration","key$":"BasicHankoConfigurationFlow","kind":"basic","name":"BasicHankoConfigurationFlow","param":{},"step":[{"a":true,"d":{},"i":{"ref":"hanko_configuration_ref01","srcdatavar":"hanko_configuration_ref01_data","suffix":"_dt0"},"m":{},"o":"load","s":[],"v":[{"apply":"TextFieldMark","def":{"mark":"Mark01-hanko_configuration_ref01"}}],"index$":0}]}, 'HankoConfiguration', {"GET /.well-known/config":{"protocol":"http","parameters":[]}}, { strict: LIVE_STRICT, t })
     }
     const client = setup.client
     const struct = setup.struct
@@ -72,6 +74,12 @@ describe('HankoConfigurationEntity', async () => {
 })
 
 
+
+// main.kit.test.live.strict is true (the default is true): a live
+// request that fails, or a live test missing an input it needs,
+// fails the test.
+// An account with no record for a test to read skips it either way.
+const LIVE_STRICT = true
 
 function basicSetup(extra?: any) {
   // TODO: fix test def options

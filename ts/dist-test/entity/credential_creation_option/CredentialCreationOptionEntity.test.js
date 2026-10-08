@@ -54,6 +54,14 @@ const utility_1 = require("../../utility");
         const ent = testsdk.CredentialCreationOption();
         (0, node_assert_1.default)(null != ent);
     });
+    (0, node_test_1.test)('validate', async (t) => {
+        if (null == __1.config.feature?.validate) {
+            t.skip('feature not present in this SDK: validate');
+            return;
+        }
+        const client = __1.HankoPublicSDK.test(undefined, { feature: { validate: { active: true } } });
+        await node_assert_1.default.rejects(client.CredentialCreationOption().create({ "attestation": 1 }), (err) => 'validate_failed' === err.code);
+    });
     (0, node_test_1.test)('basic', async (t) => {
         const live = 'TRUE' === process.env.HANKO_PUBLIC_TEST_LIVE;
         for (const op of ['create']) {
@@ -62,7 +70,7 @@ const utility_1 = require("../../utility");
         }
         const setup = basicSetup();
         if (setup.live) {
-            return (0, live_entity_1.runLiveEntity)(setup, { "active": true, "alias": { "field": {} }, "fields": { "attestation": { "a": true, "h": "Attestation", "n": "attestation", "r": false, "t": "`$STRING`", "key$": "attestation", "index$": 0 }, "authenticatorSelection": { "a": true, "h": "Authenticator Selection", "n": "authenticatorSelection", "r": false, "t": "`$OBJECT`", "key$": "authenticatorSelection", "index$": 1 }, "challenge": { "a": true, "fo": "base64url", "h": "Challenge", "n": "challenge", "r": false, "t": "`$STRING`", "key$": "challenge", "index$": 2 }, "pubKeyCredParams": { "a": true, "h": "Pub Key Cred Params", "n": "pubKeyCredParams", "r": false, "t": "`$ARRAY`", "key$": "pubKeyCredParams", "index$": 3 }, "rp": { "a": true, "h": "Rp", "n": "rp", "r": false, "t": "`$OBJECT`", "key$": "rp", "index$": 4 }, "timeout": { "a": true, "fo": "int64", "h": "Timeout", "n": "timeout", "r": false, "t": "`$INTEGER`", "key$": "timeout", "index$": 5 }, "user": { "a": true, "h": "User", "n": "user", "r": false, "t": "`$OBJECT`", "key$": "user", "index$": 6 } }, "name": "credential_creation_option", "op": { "create": { "input": "data", "name": "create", "points": [{ "a": true, "co": { "id": "POST /webauthn/registration/initialize", "source": "openapi3", "version": 2 }, "g": {}, "k": "http", "m": "POST", "o": "/webauthn/registration/initialize", "q": {}, "r": {}, "s": [{ "lit": "webauthn" }, { "lit": "registration" }, { "lit": "initialize" }], "t": { "req": "`reqdata`", "res": "`body.publicKey`" }, "index$": 0 }], "key$": "create" } }, "relations": { "ancestors": [] }, "key$": "credential_creation_option", "name__orig": "credential_creation_option", "Name": "CredentialCreationOption", "name_": "credential_creation_option", "name-": "credential-creation-option", "NAME": "CREDENTIAL_CREATION_OPTION", "index$": 1 }, { "active": true, "entity": "credential_creation_option", "key$": "BasicCredentialCreationOptionFlow", "kind": "basic", "name": "BasicCredentialCreationOptionFlow", "param": {}, "step": [{ "a": true, "d": {}, "i": { "ref": "credential_creation_option_ref01" }, "m": {}, "o": "create", "s": [], "v": [], "index$": 0 }] }, 'CredentialCreationOption', { "POST /webauthn/registration/initialize": { "protocol": "http", "parameters": [] } });
+            return (0, live_entity_1.runLiveEntity)(setup, { "active": true, "alias": { "field": {} }, "fields": { "attestation": { "a": true, "h": "Attestation", "n": "attestation", "r": false, "t": "`$STRING`", "key$": "attestation", "index$": 0 }, "authenticatorSelection": { "a": true, "h": "Authenticator Selection", "n": "authenticatorSelection", "r": false, "t": "`$OBJECT`", "key$": "authenticatorSelection", "index$": 1 }, "challenge": { "a": true, "fo": "base64url", "h": "Challenge", "n": "challenge", "r": false, "t": "`$STRING`", "key$": "challenge", "index$": 2 }, "pubKeyCredParams": { "a": true, "h": "Pub Key Cred Params", "n": "pubKeyCredParams", "r": false, "t": "`$ARRAY`", "key$": "pubKeyCredParams", "index$": 3 }, "rp": { "a": true, "h": "Rp", "n": "rp", "r": false, "t": "`$OBJECT`", "key$": "rp", "index$": 4 }, "timeout": { "a": true, "fo": "int64", "h": "Timeout", "n": "timeout", "r": false, "t": "`$INTEGER`", "key$": "timeout", "index$": 5 }, "user": { "a": true, "h": "User", "n": "user", "r": false, "t": "`$OBJECT`", "key$": "user", "index$": 6 } }, "name": "credential_creation_option", "op": { "create": { "input": "data", "name": "create", "points": [{ "a": true, "co": { "id": "POST /webauthn/registration/initialize", "source": "openapi3", "version": 2 }, "g": {}, "k": "http", "m": "POST", "o": "/webauthn/registration/initialize", "q": {}, "r": {}, "rs": { "kind": "json", "media": "application/json" }, "s": [{ "lit": "webauthn" }, { "lit": "registration" }, { "lit": "initialize" }], "t": { "req": "`reqdata`", "res": "`body.publicKey`" }, "index$": 0 }], "key$": "create" } }, "relations": { "ancestors": [] }, "key$": "credential_creation_option", "name__orig": "credential_creation_option", "Name": "CredentialCreationOption", "name_": "credential_creation_option", "name-": "credential-creation-option", "NAME": "CREDENTIAL_CREATION_OPTION", "index$": 0 }, { "active": true, "entity": "credential_creation_option", "key$": "BasicCredentialCreationOptionFlow", "kind": "basic", "name": "BasicCredentialCreationOptionFlow", "param": {}, "step": [{ "a": true, "d": {}, "i": { "ref": "credential_creation_option_ref01" }, "m": {}, "o": "create", "s": [], "v": [], "index$": 0 }] }, 'CredentialCreationOption', { "POST /webauthn/registration/initialize": { "protocol": "http", "parameters": [] } }, { strict: LIVE_STRICT, t });
         }
         const client = setup.client;
         const struct = setup.struct;
@@ -75,6 +83,11 @@ const utility_1 = require("../../utility");
         (0, node_assert_1.default)(null != credential_creation_option_ref01_data);
     });
 });
+// main.kit.test.live.strict is true (the default is true): a live
+// request that fails, or a live test missing an input it needs,
+// fails the test.
+// An account with no record for a test to read skips it either way.
+const LIVE_STRICT = true;
 function basicSetup(extra) {
     // TODO: fix test def options
     const options = {}; // null

@@ -17,6 +17,10 @@ main: kit: entity: status: {
           }
           m: "GET"
           o: "/"
+          rs: {
+            kind: "raw"
+            media: "text/html"
+          }
           t: {
             req: "`reqdata`"
             res: "`body`"

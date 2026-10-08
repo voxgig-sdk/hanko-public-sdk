@@ -9,7 +9,7 @@ import { createLiveTransport } from '../../live-runner'
 import { runLiveEntity } from '../../live-entity'
 
 
-import { HankoPublicSDK, BaseFeature, stdutil } from '../../..'
+import { HankoPublicSDK, BaseFeature, config, stdutil } from '../../..'
 
 import {
   envOverride,
@@ -41,6 +41,64 @@ describe('JsonWebKeyEntity', async () => {
   })
 
 
+  class FailHook extends BaseFeature {
+    name = 'failhook'
+    version = '0.0.1'
+    active = true
+    unexpected = 0
+    init() { }
+    PreSpec() { throw new Error('json_web_key hook failed') }
+    PreUnexpected() { this.unexpected++ }
+  }
+
+  test('stream-error', async () => {
+    const offline = { net: { offline: true } }
+    await assert.rejects(async () => {
+      for await (const _item of HankoPublicSDK.test(offline).JsonWebKey().stream('list')) { }
+    }, /offline/)
+
+    for await (const _item of HankoPublicSDK.test(offline).JsonWebKey()
+      .stream('list', undefined, { ctrl: { throw: false } })) { }
+
+    if (null != (config as any).feature?.rbac) {
+      const denied = HankoPublicSDK.test(undefined, { feature: { rbac: { active: true, deny: true } } })
+      await assert.rejects(async () => {
+        for await (const _item of denied.JsonWebKey().stream('list')) { }
+      }, (err: any) => 'rbac_denied' === err.code)
+    }
+  })
+
+  test('stream-ctrl', async () => {
+    const explain: any = {}
+    const ctrl: any = { explain }
+    for await (const _item of HankoPublicSDK.test().JsonWebKey().stream('list', undefined, { ctrl })) { }
+    assert.deepStrictEqual(Object.keys(ctrl), ['explain'])
+    assert(explain === ctrl.explain && 0 < Object.keys(explain).length)
+  })
+
+  test('unexpected', async () => {
+    const hook = new FailHook()
+    const client = new HankoPublicSDK({ feature: { test: { active: true } }, extend: [hook] })
+    await assert.rejects(client.JsonWebKey().list(), /hook failed/)
+    assert(0 < hook.unexpected)
+
+    const fired = hook.unexpected
+    assert.strictEqual(await client.JsonWebKey().list(undefined, { throw: false }), undefined)
+    assert(fired < hook.unexpected)
+  })
+
+  test('validate', async (t) => {
+    if (null == (config as any).feature?.validate) {
+      t.skip('feature not present in this SDK: validate')
+      return
+    }
+    const client = HankoPublicSDK.test(undefined, { feature: { validate: { active: true } } })
+    await assert.rejects(client.JsonWebKey().list({"alg":1} as any),
+      (err: any) => 'validate_failed' === err.code)
+  })
+
+
+
   test('basic', async (t) => {
 
     const live = 'TRUE' === process.env.HANKO_PUBLIC_TEST_LIVE
@@ -51,7 +109,7 @@ describe('JsonWebKeyEntity', async () => {
     
     const setup = basicSetup()
     if (setup.live) {
-      return runLiveEntity(setup, {"active":true,"alias":{"field":{}},"fields":{"alg":{"a":true,"h":"Alg","n":"alg","r":false,"t":"`$STRING`","key$":"alg","index$":0},"e":{"a":true,"fo":"base64url","h":"E","n":"e","r":false,"t":"`$STRING`","key$":"e","index$":1},"kid":{"a":true,"h":"Kid","n":"kid","r":false,"t":"`$STRING`","key$":"kid","index$":2},"kty":{"a":true,"h":"Kty","n":"kty","r":false,"t":"`$STRING`","key$":"kty","index$":3},"n":{"a":true,"fo":"base64url","h":"N","n":"n","r":false,"t":"`$STRING`","key$":"n","index$":4},"use":{"a":true,"h":"Use","n":"use","r":false,"t":"`$STRING`","key$":"use","index$":5}},"name":"json_web_key","op":{"list":{"input":"data","name":"list","points":[{"a":true,"co":{"id":"GET /.well-known/jwks.json","source":"openapi3","version":2},"g":{},"k":"http","m":"GET","o":"/.well-known/jwks.json","q":{},"r":{},"s":[{"lit":".well-known"},{"lit":"jwks.json"}],"t":{"req":"`reqdata`","res":"`body.keys`"},"index$":0}],"key$":"list"}},"relations":{"ancestors":[]},"key$":"json_web_key","name__orig":"json_web_key","Name":"JsonWebKey","name_":"json_web_key","name-":"json-web-key","NAME":"JSON_WEB_KEY","index$":5}, {"active":true,"entity":"json_web_key","key$":"BasicJsonWebKeyFlow","kind":"basic","name":"BasicJsonWebKeyFlow","param":{},"step":[{"a":true,"d":{},"i":{},"m":{},"o":"list","s":[],"v":[{"apply":"ItemExists","def":{"ref":"json_web_key_ref01"}}],"index$":0}]}, 'JsonWebKey', {"GET /.well-known/jwks.json":{"protocol":"http","parameters":[]}})
+      return runLiveEntity(setup, {"active":true,"alias":{"field":{}},"fields":{"alg":{"a":true,"h":"Alg","n":"alg","r":false,"t":"`$STRING`","key$":"alg","index$":0},"e":{"a":true,"fo":"base64url","h":"E","n":"e","r":false,"t":"`$STRING`","key$":"e","index$":1},"kid":{"a":true,"h":"Kid","n":"kid","r":false,"t":"`$STRING`","key$":"kid","index$":2},"kty":{"a":true,"h":"Kty","n":"kty","r":false,"t":"`$STRING`","key$":"kty","index$":3},"n":{"a":true,"fo":"base64url","h":"N","n":"n","r":false,"t":"`$STRING`","key$":"n","index$":4},"use":{"a":true,"h":"Use","n":"use","r":false,"t":"`$STRING`","key$":"use","index$":5}},"name":"json_web_key","op":{"list":{"input":"data","name":"list","points":[{"a":true,"co":{"id":"GET /.well-known/jwks.json","source":"openapi3","version":2},"g":{},"k":"http","m":"GET","o":"/.well-known/jwks.json","q":{},"r":{},"rs":{"kind":"json","media":"application/json"},"s":[{"lit":".well-known"},{"lit":"jwks.json"}],"t":{"req":"`reqdata`","res":"`body.keys`"},"index$":0}],"key$":"list"}},"relations":{"ancestors":[]},"key$":"json_web_key","name__orig":"json_web_key","Name":"JsonWebKey","name_":"json_web_key","name-":"json-web-key","NAME":"JSON_WEB_KEY","index$":4}, {"active":true,"entity":"json_web_key","key$":"BasicJsonWebKeyFlow","kind":"basic","name":"BasicJsonWebKeyFlow","param":{},"step":[{"a":true,"d":{},"i":{},"m":{},"o":"list","s":[],"v":[{"apply":"ItemExists","def":{"ref":"json_web_key_ref01"}}],"index$":0}]}, 'JsonWebKey', {"GET /.well-known/jwks.json":{"protocol":"http","parameters":[]}}, { strict: LIVE_STRICT, t })
     }
     const client = setup.client
     const struct = setup.struct
@@ -72,6 +130,12 @@ describe('JsonWebKeyEntity', async () => {
 })
 
 
+
+// main.kit.test.live.strict is true (the default is true): a live
+// request that fails, or a live test missing an input it needs,
+// fails the test.
+// An account with no record for a test to read skips it either way.
+const LIVE_STRICT = true
 
 function basicSetup(extra?: any) {
   // TODO: fix test def options

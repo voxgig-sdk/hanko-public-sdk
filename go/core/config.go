@@ -141,6 +141,7 @@ func MakeConfig() map[string]any {
 				},
 				"optspec": map[string]any{
 					"clearTimer": "`$FUNCTION`",
+					"now": "`$FUNCTION`",
 					"setTimer": "`$FUNCTION`",
 				},
 				"strict": false,
@@ -161,7 +162,6 @@ func MakeConfig() map[string]any {
 				"content-type": "application/json",
 			},
 			"entity": map[string]any{
-				"credential": map[string]any{},
 				"credential_creation_option": map[string]any{},
 				"credential_request_option": map[string]any{},
 				"email": map[string]any{},
@@ -181,109 +181,6 @@ func MakeConfig() map[string]any {
 			},
 		},
 		"entity": map[string]any{
-			"credential": map[string]any{
-				"fields": []any{
-					map[string]any{
-						"name": "aaguid",
-						"title": "Aaguid",
-						"type": "`$STRING`",
-						"format": "uuid",
-					},
-					map[string]any{
-						"name": "attestation_type",
-						"title": "Attestation Type",
-						"type": "`$STRING`",
-					},
-					map[string]any{
-						"name": "backup_eligible",
-						"title": "Backup Eligible",
-						"type": "`$BOOLEAN`",
-					},
-					map[string]any{
-						"name": "backup_state",
-						"title": "Backup State",
-						"type": "`$BOOLEAN`",
-					},
-					map[string]any{
-						"name": "created_at",
-						"title": "Created At",
-						"type": "`$STRING`",
-						"format": "date-time",
-					},
-					map[string]any{
-						"name": "id",
-						"title": "Id",
-						"type": "`$STRING`",
-						"format": "uuid",
-					},
-					map[string]any{
-						"name": "last_used_at",
-						"title": "Last Used At",
-						"type": "`$STRING`",
-						"format": "date-time",
-					},
-					map[string]any{
-						"name": "mfa_only",
-						"title": "Mfa Only",
-						"type": "`$BOOLEAN`",
-					},
-					map[string]any{
-						"name": "name",
-						"title": "Name",
-						"type": "`$STRING`",
-					},
-					map[string]any{
-						"name": "publickey",
-						"title": "Publickey",
-						"type": "`$STRING`",
-					},
-					map[string]any{
-						"name": "transports",
-						"title": "Transports",
-						"type": "`$ARRAY`",
-					},
-				},
-				"id": map[string]any{
-					"field": "id",
-					"name": "id",
-				},
-				"name": "credential",
-				"op": map[string]any{
-					"list": map[string]any{
-						"input": "data",
-						"name": "list",
-						"points": []any{
-							map[string]any{
-								"kind": "http",
-								"method": "GET",
-								"orig": "/webauthn/credentials",
-								"segments": []any{
-									map[string]any{
-										"lit": "webauthn",
-									},
-									map[string]any{
-										"lit": "credentials",
-									},
-								},
-								"parts": []any{
-									"webauthn",
-									"credentials",
-								},
-								"rename": map[string]any{},
-								"transform": map[string]any{
-									"req": "`reqdata`",
-									"res": "`body`",
-								},
-								"args": map[string]any{},
-								"select": map[string]any{},
-							},
-						},
-					},
-				},
-				"relations": map[string]any{
-					"ancestors": []any{},
-				},
-			},
 			"credential_creation_option": map[string]any{
 				"fields": []any{
 					map[string]any{
@@ -357,6 +254,10 @@ func MakeConfig() map[string]any {
 								},
 								"args": map[string]any{},
 								"select": map[string]any{},
+								"response": map[string]any{
+									"kind": "json",
+									"media": "application/json",
+								},
 							},
 						},
 					},
@@ -399,6 +300,7 @@ func MakeConfig() map[string]any {
 						"title": "User Id",
 						"type": "`$STRING`",
 						"short": "The ID of the user on whose behalf WebAuthn login should be performed",
+						"format": "uuid4",
 					},
 				},
 				"name": "credential_request_option",
@@ -434,6 +336,10 @@ func MakeConfig() map[string]any {
 								},
 								"args": map[string]any{},
 								"select": map[string]any{},
+								"response": map[string]any{
+									"kind": "json",
+									"media": "application/json",
+								},
 							},
 						},
 					},
@@ -462,6 +368,7 @@ func MakeConfig() map[string]any {
 						"title": "Id",
 						"type": "`$STRING`",
 						"short": "The ID of the email address",
+						"format": "uuid4",
 					},
 					map[string]any{
 						"name": "identities",
@@ -585,6 +492,10 @@ func MakeConfig() map[string]any {
 								},
 								"args": map[string]any{},
 								"select": map[string]any{},
+								"response": map[string]any{
+									"kind": "json",
+									"media": "application/json",
+								},
 							},
 						},
 					},
@@ -688,6 +599,10 @@ func MakeConfig() map[string]any {
 								},
 								"args": map[string]any{},
 								"select": map[string]any{},
+								"response": map[string]any{
+									"kind": "json",
+									"media": "application/json",
+								},
 							},
 						},
 					},
@@ -760,6 +675,10 @@ func MakeConfig() map[string]any {
 								},
 								"args": map[string]any{},
 								"select": map[string]any{},
+								"response": map[string]any{
+									"kind": "json",
+									"media": "application/json",
+								},
 							},
 						},
 					},
@@ -777,16 +696,31 @@ func MakeConfig() map[string]any {
 						"short": "The actual passcode from the email sent to the user during initialization, a string of 6 decimal digits",
 					},
 					map[string]any{
+						"name": "created_at",
+						"title": "Created At",
+						"type": "`$STRING`",
+						"short": "Time of creation of the passcode",
+						"format": "date-time",
+					},
+					map[string]any{
 						"name": "email_id",
 						"title": "Email Id",
 						"type": "`$STRING`",
 						"short": "The ID of the email address",
+						"format": "uuid4",
 					},
 					map[string]any{
 						"name": "id",
 						"title": "Id",
 						"type": "`$STRING`",
 						"short": "The ID of the passcode",
+						"format": "uuid4",
+					},
+					map[string]any{
+						"name": "ttl",
+						"title": "Ttl",
+						"type": "`$INTEGER`",
+						"short": "Lifespan of a passcode in seconds",
 					},
 					map[string]any{
 						"name": "user_id",
@@ -794,6 +728,7 @@ func MakeConfig() map[string]any {
 						"type": "`$STRING`",
 						"req": true,
 						"short": "The ID of the user",
+						"format": "uuid4",
 					},
 				},
 				"id": map[string]any{
@@ -829,10 +764,14 @@ func MakeConfig() map[string]any {
 								"rename": map[string]any{},
 								"transform": map[string]any{
 									"req": "`reqdata`",
-									"res": "`body.id`",
+									"res": "`body`",
 								},
 								"args": map[string]any{},
 								"select": map[string]any{},
+								"response": map[string]any{
+									"kind": "json",
+									"media": "application/json",
+								},
 							},
 							map[string]any{
 								"kind": "http",
@@ -857,10 +796,14 @@ func MakeConfig() map[string]any {
 								"rename": map[string]any{},
 								"transform": map[string]any{
 									"req": "`reqdata`",
-									"res": "`body.id`",
+									"res": "`body`",
 								},
 								"args": map[string]any{},
 								"select": map[string]any{},
+								"response": map[string]any{
+									"kind": "json",
+									"media": "application/json",
+								},
 							},
 						},
 					},
@@ -884,6 +827,7 @@ func MakeConfig() map[string]any {
 						"type": "`$STRING`",
 						"req": true,
 						"short": "The ID of the user to create/set a password for",
+						"format": "uuid4",
 					},
 				},
 				"name": "password",
@@ -910,9 +854,7 @@ func MakeConfig() map[string]any {
 								},
 								"rename": map[string]any{},
 								"transform": map[string]any{
-									"req": map[string]any{
-										"password": "`reqdata`",
-									},
+									"req": "`reqdata`",
 									"res": "`body`",
 								},
 								"args": map[string]any{},
@@ -940,9 +882,7 @@ func MakeConfig() map[string]any {
 								},
 								"rename": map[string]any{},
 								"transform": map[string]any{
-									"req": map[string]any{
-										"password": "`reqdata`",
-									},
+									"req": "`reqdata`",
 									"res": "`body`",
 								},
 								"args": map[string]any{},
@@ -987,6 +927,18 @@ func MakeConfig() map[string]any {
 								"args": map[string]any{},
 								"select": map[string]any{
 									"$action": "callback",
+								},
+								"body": map[string]any{
+									"fields": []any{
+										map[string]any{
+											"name": "RelayState",
+										},
+										map[string]any{
+											"name": "SAMLResponse",
+										},
+									},
+									"kind": "form",
+									"media": "application/x-www-form-urlencoded",
 								},
 							},
 						},
@@ -1036,9 +988,13 @@ func MakeConfig() map[string]any {
 								"select": map[string]any{
 									"$action": "metadata",
 									"exist": []any{
-										"cert_only",
 										"domain",
 									},
+								},
+								"response": map[string]any{
+									"binary": true,
+									"kind": "raw",
+									"media": "application/octet-stream",
 								},
 							},
 							map[string]any{
@@ -1060,7 +1016,7 @@ func MakeConfig() map[string]any {
 								"rename": map[string]any{},
 								"transform": map[string]any{
 									"req": "`reqdata`",
-									"res": "`body.attribute_map`",
+									"res": "`body`",
 								},
 								"args": map[string]any{
 									"query": []any{
@@ -1079,6 +1035,10 @@ func MakeConfig() map[string]any {
 										"domain",
 									},
 								},
+								"response": map[string]any{
+									"kind": "json",
+									"media": "application/json",
+								},
 							},
 						},
 					},
@@ -1090,50 +1050,32 @@ func MakeConfig() map[string]any {
 			"session_management": map[string]any{
 				"fields": []any{
 					map[string]any{
-						"name": "amr",
-						"title": "Amr",
-						"type": "`$ARRAY`",
-						"short": "Authentication Method References, JSON array of strings that are identifiers for authentication methods used in the authentication.",
-					},
-					map[string]any{
-						"name": "audience",
-						"title": "Audience",
-						"type": "`$ARRAY`",
-						"short": "The intended audience of the token.",
-					},
-					map[string]any{
-						"name": "email",
-						"title": "Email",
+						"name": "claims",
+						"title": "Claims",
 						"type": "`$OBJECT`",
-						"short": "Data about the email address associated with the token's subject, if available.",
+						"req": true,
+						"short": "The claims extracted from a JWT.",
 					},
 					map[string]any{
-						"name": "expiration",
-						"title": "Expiration",
+						"name": "expiration_time",
+						"title": "Expiration Time",
 						"type": "`$STRING`",
-						"req": true,
-						"short": "The timestamp indicating when the token will expire.",
+						"short": "Date-time indicating the expiration of the session.",
+						"deprecated": true,
 						"format": "date-time",
 					},
 					map[string]any{
-						"name": "issued_at",
-						"title": "Issued At",
+						"name": "idle_expires_at",
+						"title": "Idle Expires At",
 						"type": "`$STRING`",
-						"short": "The timestamp indicating when the token was issued.",
+						"short": "Timestamp (in UTC) indicating when the session will expire due to inactivity, assuming no further activity occurs before this time.",
 						"format": "date-time",
 					},
 					map[string]any{
-						"name": "issuer",
-						"title": "Issuer",
-						"type": "`$STRING`",
-						"short": "The entity that issued the token.",
-					},
-					map[string]any{
-						"name": "session_id",
-						"title": "Session Id",
-						"type": "`$STRING`",
-						"req": true,
-						"short": "The unique identifier for the session associated with this token.",
+						"name": "is_valid",
+						"title": "Is Valid",
+						"type": "`$BOOLEAN`",
+						"short": "Indicates whether the session is valid or not",
 					},
 					map[string]any{
 						"name": "session_token",
@@ -1144,11 +1086,12 @@ func MakeConfig() map[string]any {
 						"format": "JWT",
 					},
 					map[string]any{
-						"name": "subject",
-						"title": "Subject",
-						"type": "`$ANY`",
-						"req": true,
-						"short": "The unique identifier of the token's subject.",
+						"name": "user_id",
+						"title": "User Id",
+						"type": "`$STRING`",
+						"short": "The ID of the user the session is associated with.",
+						"deprecated": true,
+						"format": "uuid4",
 					},
 				},
 				"name": "session_management",
@@ -1176,10 +1119,14 @@ func MakeConfig() map[string]any {
 								"rename": map[string]any{},
 								"transform": map[string]any{
 									"req": "`reqdata`",
-									"res": "`body.claims`",
+									"res": "`body`",
 								},
 								"args": map[string]any{},
 								"select": map[string]any{},
+								"response": map[string]any{
+									"kind": "json",
+									"media": "application/json",
+								},
 							},
 						},
 					},
@@ -1206,10 +1153,14 @@ func MakeConfig() map[string]any {
 								"rename": map[string]any{},
 								"transform": map[string]any{
 									"req": "`reqdata`",
-									"res": "`body.claims`",
+									"res": "`body`",
 								},
 								"args": map[string]any{},
 								"select": map[string]any{},
+								"response": map[string]any{
+									"kind": "json",
+									"media": "application/json",
+								},
 							},
 						},
 					},
@@ -1239,6 +1190,10 @@ func MakeConfig() map[string]any {
 								},
 								"args": map[string]any{},
 								"select": map[string]any{},
+								"response": map[string]any{
+									"kind": "raw",
+									"media": "text/html",
+								},
 							},
 						},
 					},
@@ -1255,6 +1210,52 @@ func MakeConfig() map[string]any {
 						"input": "data",
 						"name": "load",
 						"points": []any{
+							map[string]any{
+								"kind": "http",
+								"method": "GET",
+								"orig": "/thirdparty/auth",
+								"segments": []any{
+									map[string]any{
+										"lit": "thirdparty",
+									},
+									map[string]any{
+										"lit": "auth",
+									},
+								},
+								"parts": []any{
+									"thirdparty",
+									"auth",
+								},
+								"rename": map[string]any{},
+								"transform": map[string]any{
+									"req": "`reqdata`",
+									"res": "`body`",
+								},
+								"args": map[string]any{
+									"query": []any{
+										map[string]any{
+											"name": "provider",
+											"orig": "provider",
+											"type": "`$STRING`",
+											"kind": "query",
+											"reqd": true,
+										},
+										map[string]any{
+											"name": "redirect_to",
+											"orig": "redirect_to",
+											"type": "`$STRING`",
+											"kind": "query",
+											"reqd": true,
+										},
+									},
+								},
+								"select": map[string]any{
+									"exist": []any{
+										"provider",
+										"redirect_to",
+									},
+								},
+							},
 							map[string]any{
 								"kind": "http",
 								"method": "GET",
@@ -1307,56 +1308,7 @@ func MakeConfig() map[string]any {
 								},
 								"select": map[string]any{
 									"exist": []any{
-										"code",
-										"error",
-										"error_description",
 										"state",
-									},
-								},
-							},
-							map[string]any{
-								"kind": "http",
-								"method": "GET",
-								"orig": "/thirdparty/auth",
-								"segments": []any{
-									map[string]any{
-										"lit": "thirdparty",
-									},
-									map[string]any{
-										"lit": "auth",
-									},
-								},
-								"parts": []any{
-									"thirdparty",
-									"auth",
-								},
-								"rename": map[string]any{},
-								"transform": map[string]any{
-									"req": "`reqdata`",
-									"res": "`body`",
-								},
-								"args": map[string]any{
-									"query": []any{
-										map[string]any{
-											"name": "provider",
-											"orig": "provider",
-											"type": "`$STRING`",
-											"kind": "query",
-											"reqd": true,
-										},
-										map[string]any{
-											"name": "redirect_to",
-											"orig": "redirect_to",
-											"type": "`$STRING`",
-											"kind": "query",
-											"reqd": true,
-										},
-									},
-								},
-								"select": map[string]any{
-									"exist": []any{
-										"provider",
-										"redirect_to",
 									},
 								},
 							},
@@ -1369,6 +1321,13 @@ func MakeConfig() map[string]any {
 			},
 			"token": map[string]any{
 				"fields": []any{
+					map[string]any{
+						"name": "user_id",
+						"title": "User Id",
+						"type": "`$STRING`",
+						"short": "The ID of the user on whose behalf the token was exchanged.",
+						"format": "uuid4",
+					},
 					map[string]any{
 						"name": "value",
 						"title": "Value",
@@ -1397,10 +1356,14 @@ func MakeConfig() map[string]any {
 								"rename": map[string]any{},
 								"transform": map[string]any{
 									"req": "`reqdata`",
-									"res": "`body.user_id`",
+									"res": "`body`",
 								},
 								"args": map[string]any{},
 								"select": map[string]any{},
+								"response": map[string]any{
+									"kind": "json",
+									"media": "application/json",
+								},
 							},
 						},
 					},
@@ -1510,6 +1473,7 @@ func MakeConfig() map[string]any {
 						"title": "User Id",
 						"type": "`$STRING`",
 						"short": "The ID of the user",
+						"format": "uuid4",
 					},
 					map[string]any{
 						"name": "username",
@@ -1558,6 +1522,10 @@ func MakeConfig() map[string]any {
 								},
 								"args": map[string]any{},
 								"select": map[string]any{},
+								"response": map[string]any{
+									"kind": "json",
+									"media": "application/json",
+								},
 							},
 							map[string]any{
 								"kind": "http",
@@ -1578,6 +1546,10 @@ func MakeConfig() map[string]any {
 								},
 								"args": map[string]any{},
 								"select": map[string]any{},
+								"response": map[string]any{
+									"kind": "json",
+									"media": "application/json",
+								},
 							},
 						},
 					},
@@ -1622,6 +1594,10 @@ func MakeConfig() map[string]any {
 									"exist": []any{
 										"id",
 									},
+								},
+								"response": map[string]any{
+									"kind": "json",
+									"media": "application/json",
 								},
 							},
 						},
@@ -1687,6 +1663,7 @@ func MakeConfig() map[string]any {
 						"type": "`$STRING`",
 						"short": "The ID of the user.",
 						"deprecated": true,
+						"format": "uuid4",
 					},
 					map[string]any{
 						"name": "metadata",
@@ -1732,6 +1709,7 @@ func MakeConfig() map[string]any {
 						"title": "User Id",
 						"type": "`$STRING`",
 						"short": "The ID of the user",
+						"format": "uuid4",
 					},
 					map[string]any{
 						"name": "username",
@@ -1795,6 +1773,10 @@ func MakeConfig() map[string]any {
 								},
 								"args": map[string]any{},
 								"select": map[string]any{},
+								"response": map[string]any{
+									"kind": "json",
+									"media": "application/json",
+								},
 							},
 						},
 					},
@@ -1806,15 +1788,66 @@ func MakeConfig() map[string]any {
 			"web_authn": map[string]any{
 				"fields": []any{
 					map[string]any{
+						"name": "aaguid",
+						"title": "Aaguid",
+						"type": "`$STRING`",
+						"format": "uuid",
+					},
+					map[string]any{
+						"name": "attestation_type",
+						"title": "Attestation Type",
+						"type": "`$STRING`",
+					},
+					map[string]any{
+						"name": "backup_eligible",
+						"title": "Backup Eligible",
+						"type": "`$BOOLEAN`",
+					},
+					map[string]any{
+						"name": "backup_state",
+						"title": "Backup State",
+						"type": "`$BOOLEAN`",
+					},
+					map[string]any{
+						"name": "created_at",
+						"title": "Created At",
+						"type": "`$STRING`",
+						"format": "date-time",
+					},
+					map[string]any{
+						"name": "credential_id",
+						"title": "Credential Id",
+						"type": "`$STRING`",
+						"short": "The ID of the created credential",
+						"format": "base64",
+					},
+					map[string]any{
 						"name": "id",
 						"title": "Id",
 						"type": "`$STRING`",
+						"format": "uuid",
+					},
+					map[string]any{
+						"name": "last_used_at",
+						"title": "Last Used At",
+						"type": "`$STRING`",
+						"format": "date-time",
+					},
+					map[string]any{
+						"name": "mfa_only",
+						"title": "Mfa Only",
+						"type": "`$BOOLEAN`",
 					},
 					map[string]any{
 						"name": "name",
 						"title": "Name",
 						"type": "`$STRING`",
 						"short": "A new credential name.",
+					},
+					map[string]any{
+						"name": "publickey",
+						"title": "Publickey",
+						"type": "`$STRING`",
 					},
 					map[string]any{
 						"name": "rawId",
@@ -1827,9 +1860,21 @@ func MakeConfig() map[string]any {
 						"type": "`$OBJECT`",
 					},
 					map[string]any{
+						"name": "transports",
+						"title": "Transports",
+						"type": "`$ARRAY`",
+					},
+					map[string]any{
 						"name": "type",
 						"title": "Type",
 						"type": "`$STRING`",
+					},
+					map[string]any{
+						"name": "user_id",
+						"title": "User Id",
+						"type": "`$STRING`",
+						"short": "The ID of the user on whose behalf a credential was created",
+						"format": "uuid4",
 					},
 				},
 				"id": map[string]any{
@@ -1865,10 +1910,48 @@ func MakeConfig() map[string]any {
 								"rename": map[string]any{},
 								"transform": map[string]any{
 									"req": "`reqdata`",
-									"res": "`body.user_id`",
+									"res": "`body`",
 								},
 								"args": map[string]any{},
 								"select": map[string]any{},
+								"response": map[string]any{
+									"kind": "json",
+									"media": "application/json",
+								},
+							},
+						},
+					},
+					"list": map[string]any{
+						"input": "data",
+						"name": "list",
+						"points": []any{
+							map[string]any{
+								"kind": "http",
+								"method": "GET",
+								"orig": "/webauthn/credentials",
+								"segments": []any{
+									map[string]any{
+										"lit": "webauthn",
+									},
+									map[string]any{
+										"lit": "credentials",
+									},
+								},
+								"parts": []any{
+									"webauthn",
+									"credentials",
+								},
+								"rename": map[string]any{},
+								"transform": map[string]any{
+									"req": "`reqdata`",
+									"res": "`body`",
+								},
+								"args": map[string]any{},
+								"select": map[string]any{},
+								"response": map[string]any{
+									"kind": "json",
+									"media": "application/json",
+								},
 							},
 						},
 					},
@@ -2047,6 +2130,10 @@ func MakeConfig() map[string]any {
 								},
 								"args": map[string]any{},
 								"select": map[string]any{},
+								"response": map[string]any{
+									"kind": "json",
+									"media": "application/json",
+								},
 							},
 						},
 					},

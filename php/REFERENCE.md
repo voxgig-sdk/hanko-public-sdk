@@ -42,10 +42,6 @@ $client = HankoPublicSDK::test();
 
 ### Instance Methods
 
-#### `Credential($data = null)`
-
-Create a new `CredentialEntity` instance. Pass `null` for no initial data.
-
 #### `CredentialCreationOption($data = null)`
 
 Create a new `CredentialCreationOptionEntity` instance. Pass `null` for no initial data.
@@ -147,68 +143,6 @@ Prepare a fetch definition without sending the request. Returns the
 
 ---
 
-## CredentialEntity
-
-```php
-$credential = $client->Credential();
-```
-
-### Fields
-
-| Field | Type | Required | Description |
-| --- | --- | --- | --- |
-| `aaguid` | `string` | No |  |
-| `attestation_type` | `string` | No |  |
-| `backup_eligible` | `bool` | No |  |
-| `backup_state` | `bool` | No |  |
-| `created_at` | `string` | No |  |
-| `id` | `string` | No |  |
-| `last_used_at` | `string` | No |  |
-| `mfa_only` | `bool` | No |  |
-| `name` | `string` | No |  |
-| `publickey` | `string` | No |  |
-| `transports` | `array` | No |  |
-
-### Operations
-
-#### `list(?array $reqmatch = null, ?array $ctrl = null): mixed`
-
-List entities matching the given criteria (call with no argument to list all). Returns an array. Throws on error.
-
-```php
-$results = $client->Credential()->list();
-```
-
-### Common Methods
-
-#### `data_get(): array`
-
-Get the entity data. Returns a copy of the current data.
-
-#### `data_set($data): void`
-
-Set the entity data.
-
-#### `match_get(): array`
-
-Get the entity match criteria.
-
-#### `match_set($match): void`
-
-Set the entity match criteria.
-
-#### `make(): CredentialEntity`
-
-Create a new `CredentialEntity` instance with the same client and
-options.
-
-#### `get_name(): string`
-
-Return the entity name.
-
-
----
-
 ## CredentialCreationOptionEntity
 
 ```php
@@ -231,7 +165,7 @@ $credential_creation_option = $client->CredentialCreationOption();
 
 #### `create(array $reqdata, ?array $ctrl = null): mixed`
 
-Create a new entity with the given data. Throws on error.
+Create a new entity with the given data. Returns the created entity and throws on error.
 
 ```php
 $result = $client->CredentialCreationOption()->create([
@@ -289,7 +223,7 @@ $credential_request_option = $client->CredentialRequestOption();
 
 #### `create(array $reqdata, ?array $ctrl = null): mixed`
 
-Create a new entity with the given data. Throws on error.
+Create a new entity with the given data. Returns the created entity and throws on error.
 
 ```php
 $result = $client->CredentialRequestOption()->create([
@@ -358,7 +292,7 @@ $email = $client->Email();
 
 #### `create(array $reqdata, ?array $ctrl = null): mixed`
 
-Create a new entity with the given data. Throws on error.
+Create a new entity with the given data. Returns the created entity and throws on error.
 
 ```php
 $result = $client->Email()->create([
@@ -368,7 +302,7 @@ $result = $client->Email()->create([
 
 #### `list(?array $reqmatch = null, ?array $ctrl = null): mixed`
 
-List entities matching the given criteria (call with no argument to list all). Returns an array. Throws on error.
+List entities matching the given criteria (call with no argument to list all). Returns an array of entities, one per record, and throws on error.
 
 ```php
 $results = $client->Email()->list();
@@ -376,7 +310,7 @@ $results = $client->Email()->list();
 
 #### `remove(array $reqmatch, ?array $ctrl = null): mixed`
 
-Remove the entity matching the given criteria. Throws on error.
+Remove the entity matching the given criteria. Returns the entity, marked as deleted, and throws on error.
 
 ```php
 $result = $client->Email()->remove(["id" => "id"]);
@@ -430,7 +364,7 @@ $hanko_configuration = $client->HankoConfiguration();
 
 #### `load(array $reqmatch, ?array $ctrl = null): mixed`
 
-Load a single entity matching the given criteria. Throws on error.
+Load a single entity matching the given criteria. Returns the entity, whose record `data_get()` reads, and throws on error.
 
 ```php
 $result = $client->HankoConfiguration()->load();
@@ -487,7 +421,7 @@ $json_web_key = $client->JsonWebKey();
 
 #### `list(?array $reqmatch = null, ?array $ctrl = null): mixed`
 
-List entities matching the given criteria (call with no argument to list all). Returns an array. Throws on error.
+List entities matching the given criteria (call with no argument to list all). Returns an array of entities, one per record, and throws on error.
 
 ```php
 $results = $client->JsonWebKey()->list();
@@ -534,15 +468,17 @@ $passcode = $client->Passcode();
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
 | `code` | `string` | No | The actual passcode from the email sent to the user during initialization, a string of 6 decimal digits |
+| `created_at` | `string` | No | Time of creation of the passcode |
 | `email_id` | `string` | No | The ID of the email address |
 | `id` | `string` | No | The ID of the passcode |
+| `ttl` | `int` | No | Lifespan of a passcode in seconds |
 | `user_id` | `string` | Yes | The ID of the user |
 
 ### Operations
 
 #### `create(array $reqdata, ?array $ctrl = null): mixed`
 
-Create a new entity with the given data. Throws on error.
+Create a new entity with the given data. Returns the created entity and throws on error.
 
 ```php
 $result = $client->Passcode()->create([
@@ -597,7 +533,7 @@ $password = $client->Password();
 
 #### `create(array $reqdata, ?array $ctrl = null): mixed`
 
-Create a new entity with the given data. Throws on error.
+Create a new entity with the given data. Returns the created entity and throws on error.
 
 ```php
 $result = $client->Password()->create([
@@ -608,7 +544,7 @@ $result = $client->Password()->create([
 
 #### `update(array $reqdata, ?array $ctrl = null): mixed`
 
-Update an existing entity. The data must include the entity `id`. Throws on error.
+Update an existing entity. The data must include the entity `id`. Returns the updated entity and throws on error.
 
 ```php
 $result = $client->Password()->update([
@@ -656,20 +592,18 @@ $saml = $client->Saml();
 
 #### `create(array $reqdata, ?array $ctrl = null): mixed`
 
-Create a new entity with the given data. Throws on error.
+Create a new entity with the given data. Returns the created entity and throws on error.
 
 ```php
 $result = $client->Saml()->create([
 ]);
 ```
 
+Declares a `application/x-www-form-urlencoded` body, which this SDK does not encode yet: it sends the data as JSON.
+
 #### `load(array $reqmatch, ?array $ctrl = null): mixed`
 
-Load a single entity matching the given criteria. Throws on error.
-
-```php
-$result = $client->Saml()->load(["domain" => "domain"]);
-```
+Load a single entity matching the given criteria. Returns the entity, whose record `data_get()` reads, and throws on error.
 
 ### Common Methods
 
@@ -711,34 +645,29 @@ $session_management = $client->SessionManagement();
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `amr` | `array` | No | Authentication Method References, JSON array of strings that are identifiers for authentication methods used in the authentication. |
-| `audience` | `array` | No | The intended audience of the token. |
-| `email` | `array` | No | Data about the email address associated with the token's subject, if available. |
-| `expiration` | `string` | Yes | The timestamp indicating when the token will expire. |
-| `issued_at` | `string` | No | The timestamp indicating when the token was issued. |
-| `issuer` | `string` | No | The entity that issued the token. |
-| `session_id` | `string` | Yes | The unique identifier for the session associated with this token. |
+| `claims` | `array` | Yes | The claims extracted from a JWT. |
+| `expiration_time` | `string` | No | Date-time indicating the expiration of the session. |
+| `idle_expires_at` | `string` | No | Timestamp (in UTC) indicating when the session will expire due to inactivity, assuming no further activity occurs before this time. |
+| `is_valid` | `bool` | No | Indicates whether the session is valid or not |
 | `session_token` | `string` | Yes | The session token (JWT) to validate |
-| `subject` | `mixed` | Yes | The unique identifier of the token's subject. |
+| `user_id` | `string` | No | The ID of the user the session is associated with. |
 
 ### Operations
 
 #### `create(array $reqdata, ?array $ctrl = null): mixed`
 
-Create a new entity with the given data. Throws on error.
+Create a new entity with the given data. Returns the created entity and throws on error.
 
 ```php
 $result = $client->SessionManagement()->create([
-  "expiration" => null, // string
-  "session_id" => null, // string
+  "claims" => null, // array
   "session_token" => null, // string
-  "subject" => null, // mixed
 ]);
 ```
 
 #### `load(array $reqmatch, ?array $ctrl = null): mixed`
 
-Load a single entity matching the given criteria. Throws on error.
+Load a single entity matching the given criteria. Returns the entity, whose record `data_get()` reads, and throws on error.
 
 ```php
 $result = $client->SessionManagement()->load();
@@ -784,7 +713,7 @@ $status = $client->Status();
 
 #### `load(array $reqmatch, ?array $ctrl = null): mixed`
 
-Load a single entity matching the given criteria. Throws on error.
+Load a single entity matching the given criteria. Returns the entity, whose record `data_get()` reads, and throws on error.
 
 ```php
 $result = $client->Status()->load();
@@ -830,10 +759,10 @@ $third_party = $client->ThirdParty();
 
 #### `load(array $reqmatch, ?array $ctrl = null): mixed`
 
-Load a single entity matching the given criteria. Throws on error.
+Load a single entity matching the given criteria. Returns the entity, whose record `data_get()` reads, and throws on error.
 
 ```php
-$result = $client->ThirdParty()->load(["state" => "state"]);
+$result = $client->ThirdParty()->load(["provider" => "provider", "redirect_to" => "redirect_to"]);
 ```
 
 ### Common Methods
@@ -876,13 +805,14 @@ $token = $client->Token();
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
+| `user_id` | `string` | No | The ID of the user on whose behalf the token was exchanged. |
 | `value` | `string` | No |  |
 
 ### Operations
 
 #### `create(array $reqdata, ?array $ctrl = null): mixed`
 
-Create a new entity with the given data. Throws on error.
+Create a new entity with the given data. Returns the created entity and throws on error.
 
 ```php
 $result = $client->Token()->create([
@@ -977,7 +907,7 @@ $user = $client->User();
 
 #### `create(array $reqdata, ?array $ctrl = null): mixed`
 
-Create a new entity with the given data. Throws on error.
+Create a new entity with the given data. Returns the created entity and throws on error.
 
 ```php
 $result = $client->User()->create([
@@ -986,7 +916,7 @@ $result = $client->User()->create([
 
 #### `load(array $reqmatch, ?array $ctrl = null): mixed`
 
-Load a single entity matching the given criteria. Throws on error.
+Load a single entity matching the given criteria. Returns the entity, whose record `data_get()` reads, and throws on error.
 
 ```php
 $result = $client->User()->load(["id" => "user_id"]);
@@ -994,7 +924,7 @@ $result = $client->User()->load(["id" => "user_id"]);
 
 #### `remove(array $reqmatch, ?array $ctrl = null): mixed`
 
-Remove the entity matching the given criteria. Throws on error.
+Remove the entity matching the given criteria. Returns the entity, marked as deleted, and throws on error.
 
 ```php
 $result = $client->User()->remove(["id" => "user_id"]);
@@ -1059,7 +989,7 @@ $user_management = $client->UserManagement();
 
 #### `create(array $reqdata, ?array $ctrl = null): mixed`
 
-Create a new entity with the given data. Throws on error.
+Create a new entity with the given data. Returns the created entity and throws on error.
 
 ```php
 $result = $client->UserManagement()->create([
@@ -1068,7 +998,7 @@ $result = $client->UserManagement()->create([
 
 #### `list(?array $reqmatch = null, ?array $ctrl = null): mixed`
 
-List entities matching the given criteria (call with no argument to list all). Returns an array. Throws on error.
+List entities matching the given criteria (call with no argument to list all). Returns an array of entities, one per record, and throws on error.
 
 ```php
 $results = $client->UserManagement()->list();
@@ -1114,26 +1044,45 @@ $web_authn = $client->WebAuthn();
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
+| `aaguid` | `string` | No |  |
+| `attestation_type` | `string` | No |  |
+| `backup_eligible` | `bool` | No |  |
+| `backup_state` | `bool` | No |  |
+| `created_at` | `string` | No |  |
+| `credential_id` | `string` | No | The ID of the created credential |
 | `id` | `string` | No |  |
+| `last_used_at` | `string` | No |  |
+| `mfa_only` | `bool` | No |  |
 | `name` | `string` | No | A new credential name. |
+| `publickey` | `string` | No |  |
 | `rawId` | `string` | No |  |
 | `response` | `array` | No |  |
+| `transports` | `array` | No |  |
 | `type` | `string` | No |  |
+| `user_id` | `string` | No | The ID of the user on whose behalf a credential was created |
 
 ### Operations
 
 #### `create(array $reqdata, ?array $ctrl = null): mixed`
 
-Create a new entity with the given data. Throws on error.
+Create a new entity with the given data. Returns the created entity and throws on error.
 
 ```php
 $result = $client->WebAuthn()->create([
 ]);
 ```
 
+#### `list(?array $reqmatch = null, ?array $ctrl = null): mixed`
+
+List entities matching the given criteria (call with no argument to list all). Returns an array of entities, one per record, and throws on error.
+
+```php
+$results = $client->WebAuthn()->list();
+```
+
 #### `remove(array $reqmatch, ?array $ctrl = null): mixed`
 
-Remove the entity matching the given criteria. Throws on error.
+Remove the entity matching the given criteria. Returns the entity, marked as deleted, and throws on error.
 
 ```php
 $result = $client->WebAuthn()->remove(["id" => "id"]);
@@ -1141,7 +1090,7 @@ $result = $client->WebAuthn()->remove(["id" => "id"]);
 
 #### `update(array $reqdata, ?array $ctrl = null): mixed`
 
-Update an existing entity. The data must include the entity `id`. Throws on error.
+Update an existing entity. The data must include the entity `id`. Returns the updated entity and throws on error.
 
 ```php
 $result = $client->WebAuthn()->update([
@@ -1201,7 +1150,7 @@ $webauthn_login = $client->WebauthnLogin();
 
 #### `create(array $reqdata, ?array $ctrl = null): mixed`
 
-Create a new entity with the given data. Throws on error.
+Create a new entity with the given data. Returns the created entity and throws on error.
 
 ```php
 $result = $client->WebauthnLogin()->create([
@@ -1528,6 +1477,7 @@ Timeout.
 | Option | Type |
 |---|---|
 | `clearTimer` | function |
+| `now` | function |
 | `setTimer` | function |
 
 These take no default: the feature behaves one way when you supply them and

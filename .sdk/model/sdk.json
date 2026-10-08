@@ -53,7 +53,7 @@
         },
         "edition": {
           "github-pages": {
-            "active": true,
+            "active": false,
             "base": "node_modules/@voxgig/docgen/project/.sdk",
             "brand": {},
             "filter": {
@@ -123,137 +123,6 @@
         "target": {}
       },
       "entity": {
-        "credential": {
-          "active": true,
-          "alias": {
-            "field": {}
-          },
-          "fields": {
-            "aaguid": {
-              "a": true,
-              "fo": "uuid",
-              "h": "Aaguid",
-              "n": "aaguid",
-              "r": false,
-              "t": "`$STRING`"
-            },
-            "attestation_type": {
-              "a": true,
-              "h": "Attestation Type",
-              "n": "attestation_type",
-              "r": false,
-              "t": "`$STRING`"
-            },
-            "backup_eligible": {
-              "a": true,
-              "h": "Backup Eligible",
-              "n": "backup_eligible",
-              "r": false,
-              "t": "`$BOOLEAN`"
-            },
-            "backup_state": {
-              "a": true,
-              "h": "Backup State",
-              "n": "backup_state",
-              "r": false,
-              "t": "`$BOOLEAN`"
-            },
-            "created_at": {
-              "a": true,
-              "fo": "date-time",
-              "h": "Created At",
-              "n": "created_at",
-              "r": false,
-              "t": "`$STRING`"
-            },
-            "id": {
-              "a": true,
-              "fo": "uuid",
-              "h": "Id",
-              "n": "id",
-              "r": false,
-              "t": "`$STRING`"
-            },
-            "last_used_at": {
-              "a": true,
-              "fo": "date-time",
-              "h": "Last Used At",
-              "n": "last_used_at",
-              "r": false,
-              "t": "`$STRING`"
-            },
-            "mfa_only": {
-              "a": true,
-              "h": "Mfa Only",
-              "n": "mfa_only",
-              "r": false,
-              "t": "`$BOOLEAN`"
-            },
-            "name": {
-              "a": true,
-              "h": "Name",
-              "n": "name",
-              "r": false,
-              "t": "`$STRING`"
-            },
-            "publickey": {
-              "a": true,
-              "h": "Publickey",
-              "n": "publickey",
-              "r": false,
-              "t": "`$STRING`"
-            },
-            "transports": {
-              "a": true,
-              "h": "Transports",
-              "n": "transports",
-              "r": false,
-              "t": "`$ARRAY`"
-            }
-          },
-          "id": {
-            "field": "id",
-            "name": "id"
-          },
-          "name": "credential",
-          "op": {
-            "list": {
-              "input": "data",
-              "name": "list",
-              "points": [
-                {
-                  "a": true,
-                  "co": {
-                    "id": "GET /webauthn/credentials",
-                    "source": "openapi3",
-                    "version": 2
-                  },
-                  "g": {},
-                  "k": "http",
-                  "m": "GET",
-                  "o": "/webauthn/credentials",
-                  "q": {},
-                  "r": {},
-                  "s": [
-                    {
-                      "lit": "webauthn"
-                    },
-                    {
-                      "lit": "credentials"
-                    }
-                  ],
-                  "t": {
-                    "req": "`reqdata`",
-                    "res": "`body`"
-                  }
-                }
-              ]
-            }
-          },
-          "relations": {
-            "ancestors": []
-          }
-        },
         "credential_creation_option": {
           "active": true,
           "alias": {
@@ -331,6 +200,10 @@
                   "o": "/webauthn/registration/initialize",
                   "q": {},
                   "r": {},
+                  "rs": {
+                    "kind": "json",
+                    "media": "application/json"
+                  },
                   "s": [
                     {
                       "lit": "webauthn"
@@ -399,6 +272,7 @@
             },
             "user_id": {
               "a": true,
+              "fo": "uuid4",
               "h": "User Id",
               "n": "user_id",
               "r": false,
@@ -414,6 +288,9 @@
               "points": [
                 {
                   "a": true,
+                  "bf": [
+                    "user_id"
+                  ],
                   "co": {
                     "id": "POST /webauthn/login/initialize",
                     "source": "openapi3",
@@ -425,6 +302,10 @@
                   "o": "/webauthn/login/initialize",
                   "q": {},
                   "r": {},
+                  "rs": {
+                    "kind": "json",
+                    "media": "application/json"
+                  },
                   "s": [
                     {
                       "lit": "webauthn"
@@ -471,6 +352,7 @@
             },
             "id": {
               "a": true,
+              "fo": "uuid4",
               "h": "Id",
               "n": "id",
               "r": false,
@@ -566,6 +448,9 @@
                 },
                 {
                   "a": true,
+                  "bf": [
+                    "address"
+                  ],
                   "co": {
                     "id": "POST /emails",
                     "source": "openapi3",
@@ -606,6 +491,10 @@
                   "o": "/emails",
                   "q": {},
                   "r": {},
+                  "rs": {
+                    "kind": "json",
+                    "media": "application/json"
+                  },
                   "s": [
                     {
                       "lit": "emails"
@@ -721,6 +610,10 @@
                   "o": "/.well-known/config",
                   "q": {},
                   "r": {},
+                  "rs": {
+                    "kind": "json",
+                    "media": "application/json"
+                  },
                   "s": [
                     {
                       "lit": ".well-known"
@@ -811,6 +704,10 @@
                   "o": "/.well-known/jwks.json",
                   "q": {},
                   "r": {},
+                  "rs": {
+                    "kind": "json",
+                    "media": "application/json"
+                  },
                   "s": [
                     {
                       "lit": ".well-known"
@@ -845,8 +742,18 @@
               "sh": "The actual passcode from the email sent to the user during initialization, a string of 6 decimal digits",
               "t": "`$STRING`"
             },
+            "created_at": {
+              "a": true,
+              "fo": "date-time",
+              "h": "Created At",
+              "n": "created_at",
+              "r": false,
+              "sh": "Time of creation of the passcode",
+              "t": "`$STRING`"
+            },
             "email_id": {
               "a": true,
+              "fo": "uuid4",
               "h": "Email Id",
               "n": "email_id",
               "r": false,
@@ -855,14 +762,24 @@
             },
             "id": {
               "a": true,
+              "fo": "uuid4",
               "h": "Id",
               "n": "id",
               "r": false,
               "sh": "The ID of the passcode",
               "t": "`$STRING`"
             },
+            "ttl": {
+              "a": true,
+              "h": "Ttl",
+              "n": "ttl",
+              "r": false,
+              "sh": "Lifespan of a passcode in seconds",
+              "t": "`$INTEGER`"
+            },
             "user_id": {
               "a": true,
+              "fo": "uuid4",
               "h": "User Id",
               "n": "user_id",
               "r": true,
@@ -882,6 +799,10 @@
               "points": [
                 {
                   "a": true,
+                  "bf": [
+                    "code",
+                    "id"
+                  ],
                   "co": {
                     "id": "POST /passcode/login/finalize",
                     "source": "openapi3",
@@ -893,6 +814,10 @@
                   "o": "/passcode/login/finalize",
                   "q": {},
                   "r": {},
+                  "rs": {
+                    "kind": "json",
+                    "media": "application/json"
+                  },
                   "s": [
                     {
                       "lit": "passcode"
@@ -906,11 +831,15 @@
                   ],
                   "t": {
                     "req": "`reqdata`",
-                    "res": "`body.id`"
+                    "res": "`body`"
                   }
                 },
                 {
                   "a": true,
+                  "bf": [
+                    "email_id",
+                    "user_id"
+                  ],
                   "co": {
                     "id": "POST /passcode/login/initialize",
                     "source": "openapi3",
@@ -922,6 +851,10 @@
                   "o": "/passcode/login/initialize",
                   "q": {},
                   "r": {},
+                  "rs": {
+                    "kind": "json",
+                    "media": "application/json"
+                  },
                   "s": [
                     {
                       "lit": "passcode"
@@ -935,7 +868,7 @@
                   ],
                   "t": {
                     "req": "`reqdata`",
-                    "res": "`body.id`"
+                    "res": "`body`"
                   }
                 }
               ]
@@ -961,6 +894,7 @@
             },
             "user_id": {
               "a": true,
+              "fo": "uuid4",
               "h": "User Id",
               "n": "user_id",
               "r": true,
@@ -976,6 +910,10 @@
               "points": [
                 {
                   "a": true,
+                  "bf": [
+                    "password",
+                    "user_id"
+                  ],
                   "co": {
                     "id": "POST /password/login",
                     "source": "openapi3",
@@ -998,9 +936,7 @@
                     }
                   ],
                   "t": {
-                    "req": {
-                      "password": "`reqdata`"
-                    },
+                    "req": "`reqdata`",
                     "res": "`body`"
                   }
                 }
@@ -1012,6 +948,10 @@
               "points": [
                 {
                   "a": true,
+                  "bf": [
+                    "password",
+                    "user_id"
+                  ],
                   "co": {
                     "id": "PUT /password",
                     "source": "openapi3",
@@ -1029,9 +969,7 @@
                     }
                   ],
                   "t": {
-                    "req": {
-                      "password": "`reqdata`"
-                    },
+                    "req": "`reqdata`",
                     "res": "`body`"
                   }
                 }
@@ -1069,6 +1007,18 @@
                     "$action": "callback"
                   },
                   "r": {},
+                  "rb": {
+                    "fields": [
+                      {
+                        "name": "RelayState"
+                      },
+                      {
+                        "name": "SAMLResponse"
+                      }
+                    ],
+                    "kind": "form",
+                    "media": "application/x-www-form-urlencoded"
+                  },
                   "s": [
                     {
                       "lit": "saml"
@@ -1121,11 +1071,15 @@
                   "q": {
                     "$action": "metadata",
                     "exist": [
-                      "cert_only",
                       "domain"
                     ]
                   },
                   "r": {},
+                  "rs": {
+                    "binary": true,
+                    "kind": "raw",
+                    "media": "application/octet-stream"
+                  },
                   "s": [
                     {
                       "lit": "saml"
@@ -1168,6 +1122,10 @@
                     ]
                   },
                   "r": {},
+                  "rs": {
+                    "kind": "json",
+                    "media": "application/json"
+                  },
                   "s": [
                     {
                       "lit": "saml"
@@ -1178,7 +1136,7 @@
                   ],
                   "t": {
                     "req": "`reqdata`",
-                    "res": "`body.attribute_map`"
+                    "res": "`body`"
                   }
                 }
               ]
@@ -1194,63 +1152,40 @@
             "field": {}
           },
           "fields": {
-            "amr": {
+            "claims": {
               "a": true,
-              "h": "Amr",
-              "n": "amr",
-              "r": false,
-              "sh": "Authentication Method References, JSON array of strings that are identifiers for authentication methods used in the authentication.",
-              "t": "`$ARRAY`"
-            },
-            "audience": {
-              "a": true,
-              "h": "Audience",
-              "n": "audience",
-              "r": false,
-              "sh": "The intended audience of the token.",
-              "t": "`$ARRAY`"
-            },
-            "email": {
-              "a": true,
-              "h": "Email",
-              "n": "email",
-              "r": false,
-              "sh": "Data about the email address associated with the token's subject, if available.",
+              "h": "Claims",
+              "n": "claims",
+              "r": true,
+              "sh": "The claims extracted from a JWT.",
               "t": "`$OBJECT`"
             },
-            "expiration": {
+            "expiration_time": {
+              "a": true,
+              "de": true,
+              "fo": "date-time",
+              "h": "Expiration Time",
+              "n": "expiration_time",
+              "r": false,
+              "sh": "Date-time indicating the expiration of the session.",
+              "t": "`$STRING`"
+            },
+            "idle_expires_at": {
               "a": true,
               "fo": "date-time",
-              "h": "Expiration",
-              "n": "expiration",
-              "r": true,
-              "sh": "The timestamp indicating when the token will expire.",
-              "t": "`$STRING`"
-            },
-            "issued_at": {
-              "a": true,
-              "fo": "date-time",
-              "h": "Issued At",
-              "n": "issued_at",
+              "h": "Idle Expires At",
+              "n": "idle_expires_at",
               "r": false,
-              "sh": "The timestamp indicating when the token was issued.",
+              "sh": "Timestamp (in UTC) indicating when the session will expire due to inactivity, assuming no further activity occurs before this time.",
               "t": "`$STRING`"
             },
-            "issuer": {
+            "is_valid": {
               "a": true,
-              "h": "Issuer",
-              "n": "issuer",
+              "h": "Is Valid",
+              "n": "is_valid",
               "r": false,
-              "sh": "The entity that issued the token.",
-              "t": "`$STRING`"
-            },
-            "session_id": {
-              "a": true,
-              "h": "Session Id",
-              "n": "session_id",
-              "r": true,
-              "sh": "The unique identifier for the session associated with this token.",
-              "t": "`$STRING`"
+              "sh": "Indicates whether the session is valid or not",
+              "t": "`$BOOLEAN`"
             },
             "session_token": {
               "a": true,
@@ -1261,13 +1196,15 @@
               "sh": "The session token (JWT) to validate",
               "t": "`$STRING`"
             },
-            "subject": {
+            "user_id": {
               "a": true,
-              "h": "Subject",
-              "n": "subject",
-              "r": true,
-              "sh": "The unique identifier of the token's subject.",
-              "t": "`$ANY`"
+              "de": true,
+              "fo": "uuid4",
+              "h": "User Id",
+              "n": "user_id",
+              "r": false,
+              "sh": "The ID of the user the session is associated with.",
+              "t": "`$STRING`"
             }
           },
           "name": "session_management",
@@ -1278,6 +1215,9 @@
               "points": [
                 {
                   "a": true,
+                  "bf": [
+                    "session_token"
+                  ],
                   "co": {
                     "id": "POST /sessions/validate",
                     "source": "openapi3",
@@ -1289,6 +1229,10 @@
                   "o": "/sessions/validate",
                   "q": {},
                   "r": {},
+                  "rs": {
+                    "kind": "json",
+                    "media": "application/json"
+                  },
                   "s": [
                     {
                       "lit": "sessions"
@@ -1299,7 +1243,7 @@
                   ],
                   "t": {
                     "req": "`reqdata`",
-                    "res": "`body.claims`"
+                    "res": "`body`"
                   }
                 }
               ]
@@ -1321,6 +1265,10 @@
                   "o": "/sessions/validate",
                   "q": {},
                   "r": {},
+                  "rs": {
+                    "kind": "json",
+                    "media": "application/json"
+                  },
                   "s": [
                     {
                       "lit": "sessions"
@@ -1331,7 +1279,7 @@
                   ],
                   "t": {
                     "req": "`reqdata`",
-                    "res": "`body.claims`"
+                    "res": "`body`"
                   }
                 }
               ]
@@ -1366,6 +1314,10 @@
                   "o": "/",
                   "q": {},
                   "r": {},
+                  "rs": {
+                    "kind": "raw",
+                    "media": "text/html"
+                  },
                   "s": [],
                   "t": {
                     "req": "`reqdata`",
@@ -1391,74 +1343,6 @@
               "input": "data",
               "name": "load",
               "points": [
-                {
-                  "a": true,
-                  "co": {
-                    "id": "GET /thirdparty/callback",
-                    "source": "openapi3",
-                    "version": 2
-                  },
-                  "g": {
-                    "query": [
-                      {
-                        "a": true,
-                        "k": "query",
-                        "n": "code",
-                        "or": "code",
-                        "r": false,
-                        "t": "`$STRING`"
-                      },
-                      {
-                        "a": true,
-                        "k": "query",
-                        "n": "error",
-                        "or": "error",
-                        "r": false,
-                        "t": "`$STRING`"
-                      },
-                      {
-                        "a": true,
-                        "k": "query",
-                        "n": "error_description",
-                        "or": "error_description",
-                        "r": false,
-                        "t": "`$STRING`"
-                      },
-                      {
-                        "a": true,
-                        "k": "query",
-                        "n": "state",
-                        "or": "state",
-                        "r": true,
-                        "t": "`$STRING`"
-                      }
-                    ]
-                  },
-                  "k": "http",
-                  "m": "GET",
-                  "o": "/thirdparty/callback",
-                  "q": {
-                    "exist": [
-                      "code",
-                      "error",
-                      "error_description",
-                      "state"
-                    ]
-                  },
-                  "r": {},
-                  "s": [
-                    {
-                      "lit": "thirdparty"
-                    },
-                    {
-                      "lit": "callback"
-                    }
-                  ],
-                  "t": {
-                    "req": "`reqdata`",
-                    "res": "`body`"
-                  }
-                },
                 {
                   "a": true,
                   "co": {
@@ -1508,6 +1392,71 @@
                     "req": "`reqdata`",
                     "res": "`body`"
                   }
+                },
+                {
+                  "a": true,
+                  "co": {
+                    "id": "GET /thirdparty/callback",
+                    "source": "openapi3",
+                    "version": 2
+                  },
+                  "g": {
+                    "query": [
+                      {
+                        "a": true,
+                        "k": "query",
+                        "n": "code",
+                        "or": "code",
+                        "r": false,
+                        "t": "`$STRING`"
+                      },
+                      {
+                        "a": true,
+                        "k": "query",
+                        "n": "error",
+                        "or": "error",
+                        "r": false,
+                        "t": "`$STRING`"
+                      },
+                      {
+                        "a": true,
+                        "k": "query",
+                        "n": "error_description",
+                        "or": "error_description",
+                        "r": false,
+                        "t": "`$STRING`"
+                      },
+                      {
+                        "a": true,
+                        "k": "query",
+                        "n": "state",
+                        "or": "state",
+                        "r": true,
+                        "t": "`$STRING`"
+                      }
+                    ]
+                  },
+                  "k": "http",
+                  "m": "GET",
+                  "o": "/thirdparty/callback",
+                  "q": {
+                    "exist": [
+                      "state"
+                    ]
+                  },
+                  "r": {},
+                  "s": [
+                    {
+                      "lit": "thirdparty"
+                    },
+                    {
+                      "lit": "callback"
+                    }
+                  ],
+                  "t": {
+                    "req": "`reqdata`",
+                    "res": "`body`"
+                  }
                 }
               ]
             }
@@ -1522,6 +1471,15 @@
             "field": {}
           },
           "fields": {
+            "user_id": {
+              "a": true,
+              "fo": "uuid4",
+              "h": "User Id",
+              "n": "user_id",
+              "r": false,
+              "sh": "The ID of the user on whose behalf the token was exchanged.",
+              "t": "`$STRING`"
+            },
             "value": {
               "a": true,
               "fo": "base64url",
@@ -1539,6 +1497,9 @@
               "points": [
                 {
                   "a": true,
+                  "bf": [
+                    "value"
+                  ],
                   "co": {
                     "id": "POST /token",
                     "source": "openapi3",
@@ -1550,6 +1511,10 @@
                   "o": "/token",
                   "q": {},
                   "r": {},
+                  "rs": {
+                    "kind": "json",
+                    "media": "application/json"
+                  },
                   "s": [
                     {
                       "lit": "token"
@@ -1557,7 +1522,7 @@
                   ],
                   "t": {
                     "req": "`reqdata`",
-                    "res": "`body.user_id`"
+                    "res": "`body`"
                   }
                 }
               ]
@@ -1699,6 +1664,7 @@
             },
             "user_id": {
               "a": true,
+              "fo": "uuid4",
               "h": "User Id",
               "n": "user_id",
               "r": false,
@@ -1741,6 +1707,9 @@
               "points": [
                 {
                   "a": true,
+                  "bf": [
+                    "email"
+                  ],
                   "co": {
                     "id": "POST /user",
                     "source": "openapi3",
@@ -1752,6 +1721,10 @@
                   "o": "/user",
                   "q": {},
                   "r": {},
+                  "rs": {
+                    "kind": "json",
+                    "media": "application/json"
+                  },
                   "s": [
                     {
                       "lit": "user"
@@ -1764,6 +1737,9 @@
                 },
                 {
                   "a": true,
+                  "bf": [
+                    "email"
+                  ],
                   "co": {
                     "id": "POST /users",
                     "source": "openapi3",
@@ -1775,6 +1751,10 @@
                   "o": "/users",
                   "q": {},
                   "r": {},
+                  "rs": {
+                    "kind": "json",
+                    "media": "application/json"
+                  },
                   "s": [
                     {
                       "lit": "users"
@@ -1820,6 +1800,10 @@
                     ]
                   },
                   "r": {},
+                  "rs": {
+                    "kind": "json",
+                    "media": "application/json"
+                  },
                   "s": [
                     {
                       "lit": "users"
@@ -1908,6 +1892,7 @@
             "id": {
               "a": true,
               "de": true,
+              "fo": "uuid4",
               "h": "Id",
               "n": "id",
               "r": false,
@@ -1969,6 +1954,7 @@
             },
             "user_id": {
               "a": true,
+              "fo": "uuid4",
               "h": "User Id",
               "n": "user_id",
               "r": false,
@@ -2036,6 +2022,10 @@
                   "o": "/me",
                   "q": {},
                   "r": {},
+                  "rs": {
+                    "kind": "json",
+                    "media": "application/json"
+                  },
                   "s": [
                     {
                       "lit": "me"
@@ -2059,12 +2049,74 @@
             "field": {}
           },
           "fields": {
+            "aaguid": {
+              "a": true,
+              "fo": "uuid",
+              "h": "Aaguid",
+              "n": "aaguid",
+              "r": false,
+              "t": "`$STRING`"
+            },
+            "attestation_type": {
+              "a": true,
+              "h": "Attestation Type",
+              "n": "attestation_type",
+              "r": false,
+              "t": "`$STRING`"
+            },
+            "backup_eligible": {
+              "a": true,
+              "h": "Backup Eligible",
+              "n": "backup_eligible",
+              "r": false,
+              "t": "`$BOOLEAN`"
+            },
+            "backup_state": {
+              "a": true,
+              "h": "Backup State",
+              "n": "backup_state",
+              "r": false,
+              "t": "`$BOOLEAN`"
+            },
+            "created_at": {
+              "a": true,
+              "fo": "date-time",
+              "h": "Created At",
+              "n": "created_at",
+              "r": false,
+              "t": "`$STRING`"
+            },
+            "credential_id": {
+              "a": true,
+              "fo": "base64",
+              "h": "Credential Id",
+              "n": "credential_id",
+              "r": false,
+              "sh": "The ID of the created credential",
+              "t": "`$STRING`"
+            },
             "id": {
               "a": true,
+              "fo": "uuid",
               "h": "Id",
               "n": "id",
               "r": false,
               "t": "`$STRING`"
+            },
+            "last_used_at": {
+              "a": true,
+              "fo": "date-time",
+              "h": "Last Used At",
+              "n": "last_used_at",
+              "r": false,
+              "t": "`$STRING`"
+            },
+            "mfa_only": {
+              "a": true,
+              "h": "Mfa Only",
+              "n": "mfa_only",
+              "r": false,
+              "t": "`$BOOLEAN`"
             },
             "name": {
               "a": true,
@@ -2072,6 +2124,13 @@
               "n": "name",
               "r": false,
               "sh": "A new credential name.",
+              "t": "`$STRING`"
+            },
+            "publickey": {
+              "a": true,
+              "h": "Publickey",
+              "n": "publickey",
+              "r": false,
               "t": "`$STRING`"
             },
             "rawId": {
@@ -2088,11 +2147,27 @@
               "r": false,
               "t": "`$OBJECT`"
             },
+            "transports": {
+              "a": true,
+              "h": "Transports",
+              "n": "transports",
+              "r": false,
+              "t": "`$ARRAY`"
+            },
             "type": {
               "a": true,
               "h": "Type",
               "n": "type",
               "r": false,
+              "t": "`$STRING`"
+            },
+            "user_id": {
+              "a": true,
+              "fo": "uuid4",
+              "h": "User Id",
+              "n": "user_id",
+              "r": false,
+              "sh": "The ID of the user on whose behalf a credential was created",
               "t": "`$STRING`"
             }
           },
@@ -2108,6 +2183,12 @@
               "points": [
                 {
                   "a": true,
+                  "bf": [
+                    "id",
+                    "rawId",
+                    "response",
+                    "type"
+                  ],
                   "co": {
                     "id": "POST /webauthn/registration/finalize",
                     "source": "openapi3",
@@ -2119,6 +2200,10 @@
                   "o": "/webauthn/registration/finalize",
                   "q": {},
                   "r": {},
+                  "rs": {
+                    "kind": "json",
+                    "media": "application/json"
+                  },
                   "s": [
                     {
                       "lit": "webauthn"
@@ -2132,7 +2217,43 @@
                   ],
                   "t": {
                     "req": "`reqdata`",
-                    "res": "`body.user_id`"
+                    "res": "`body`"
+                  }
+                }
+              ]
+            },
+            "list": {
+              "input": "data",
+              "name": "list",
+              "points": [
+                {
+                  "a": true,
+                  "co": {
+                    "id": "GET /webauthn/credentials",
+                    "source": "openapi3",
+                    "version": 2
+                  },
+                  "g": {},
+                  "k": "http",
+                  "m": "GET",
+                  "o": "/webauthn/credentials",
+                  "q": {},
+                  "r": {},
+                  "rs": {
+                    "kind": "json",
+                    "media": "application/json"
+                  },
+                  "s": [
+                    {
+                      "lit": "webauthn"
+                    },
+                    {
+                      "lit": "credentials"
+                    }
+                  ],
+                  "t": {
+                    "req": "`reqdata`",
+                    "res": "`body`"
                   }
                 }
               ]
@@ -2194,6 +2315,9 @@
               "points": [
                 {
                   "a": true,
+                  "bf": [
+                    "name"
+                  ],
                   "co": {
                     "id": "PATCH /webauthn/credentials/{id}",
                     "source": "openapi3",
@@ -2307,6 +2431,12 @@
               "points": [
                 {
                   "a": true,
+                  "bf": [
+                    "id",
+                    "rawId",
+                    "response",
+                    "type"
+                  ],
                   "co": {
                     "id": "POST /webauthn/login/finalize",
                     "source": "openapi3",
@@ -2318,6 +2448,10 @@
                   "o": "/webauthn/login/finalize",
                   "q": {},
                   "r": {},
+                  "rs": {
+                    "kind": "json",
+                    "media": "application/json"
+                  },
                   "s": [
                     {
                       "lit": "webauthn"
@@ -3094,6 +3228,7 @@
             },
             "optspec": {
               "clearTimer": "`$FUNCTION`",
+              "now": "`$FUNCTION`",
               "setTimer": "`$FUNCTION`"
             },
             "strict": false
@@ -3201,32 +3336,6 @@
               "o": "create",
               "s": [],
               "v": []
-            }
-          ]
-        },
-        "BasicCredentialFlow": {
-          "active": true,
-          "entity": "credential",
-          "key$": "BasicCredentialFlow",
-          "kind": "basic",
-          "name": "BasicCredentialFlow",
-          "param": {},
-          "step": [
-            {
-              "a": true,
-              "d": {},
-              "i": {},
-              "m": {},
-              "o": "list",
-              "s": [],
-              "v": [
-                {
-                  "apply": "ItemExists",
-                  "def": {
-                    "ref": "credential_ref01"
-                  }
-                }
-              ]
             }
           ]
         },
@@ -3716,11 +3825,27 @@
             {
               "a": true,
               "d": {},
+              "i": {},
+              "m": {},
+              "o": "list",
+              "s": [],
+              "v": [
+                {
+                  "apply": "ItemExists",
+                  "def": {
+                    "ref": "web_authn_ref01"
+                  }
+                }
+              ]
+            },
+            {
+              "a": true,
+              "d": {},
               "i": {
                 "ref": "web_authn_ref01",
                 "srcdatavar": "web_authn_ref01_data",
                 "suffix": "_up0",
-                "textfield": "name"
+                "textfield": "aaguid"
               },
               "m": {},
               "o": "update",
@@ -3747,6 +3872,24 @@
               "o": "remove",
               "s": [],
               "v": []
+            },
+            {
+              "a": true,
+              "d": {},
+              "i": {
+                "suffix": "_rt0"
+              },
+              "m": {},
+              "o": "list",
+              "s": [],
+              "v": [
+                {
+                  "apply": "ItemNotExists",
+                  "def": {
+                    "ref": "web_authn_ref01"
+                  }
+                }
+              ]
             }
           ]
         },
@@ -3782,6 +3925,17 @@
           "url": "https://www.gnu.org/licenses/agpl-3.0.txt"
         },
         "security": {
+          "alternatives": [
+            [
+              {
+                "in": "header",
+                "name": "Authorization",
+                "prefix": "Bearer",
+                "scheme": "BearerTokenAuth",
+                "type": "http"
+              }
+            ]
+          ],
           "in": "cookie",
           "name": "hanko",
           "prefix": "",
@@ -3808,7 +3962,7 @@
       "optspec": {
         "allow": {
           "method": "GET,PUT,POST,PATCH,DELETE,OPTIONS",
-          "op": "create,update,load,list,remove,command,direct,graphql"
+          "op": "create,update,patch,load,list,remove,command,direct,graphql"
         },
         "apikey": "",
         "auth": {
@@ -3819,7 +3973,12 @@
         },
         "base": "http://localhost:8000",
         "clean": {
-          "keys": "key,token,id"
+          "active": true,
+          "hint": "0",
+          "keys": "key,secret,token,password,passwd,authorization,cookie,credential,signature",
+          "mask": "[redacted]",
+          "min": "4",
+          "values": ""
         },
         "entity": {
           "`$CHILD`": {
@@ -3856,6 +4015,11 @@
         "top": {
           "active": true
         }
+      },
+      "publisher": {
+        "name": "",
+        "security": "",
+        "url": ""
       },
       "repo": {
         "host": "github.com",
@@ -4086,7 +4250,10 @@
             "version": "0.1.1"
           },
           "superseded": [],
-          "title": "Go MCP server"
+          "title": "Go MCP server",
+          "tool": {
+            "write": false
+          }
         },
         "lua": {
           "active": true,
@@ -4463,6 +4630,17 @@
           "base": "",
           "strict": true
         }
+      },
+      "text": {
+        "about_md": "",
+        "docs_url": "",
+        "entity_desc": {},
+        "homepage": "",
+        "meta_source": "",
+        "summary": "",
+        "tagline": "",
+        "title": "",
+        "website": ""
       }
     }
   },

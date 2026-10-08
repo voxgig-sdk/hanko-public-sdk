@@ -37,6 +37,8 @@ require_once __DIR__ . '/TransformResponse.php';
 
 HankoPublicUtility::setRegistrar(function (HankoPublicUtility $u): void {
     $u->clean = [HankoPublicClean::class, 'call'];
+    $u->clean_add = [HankoPublicClean::class, 'add'];
+    $u->clean_explain = [HankoPublicDone::class, 'clean_explain'];
     $u->done = [HankoPublicDone::class, 'call'];
     $u->make_error = [HankoPublicMakeError::class, 'call'];
     $u->feature_add = [HankoPublicFeatureAdd::class, 'call'];

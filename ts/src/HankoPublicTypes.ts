@@ -5,34 +5,6 @@
 // canonical type sentinels via @voxgig/sdkgen canonToType (source of truth:
 // @voxgig/apidef VALID_CANON). Do not edit by hand.
 
-export interface Credential {
-  aaguid?: string
-  attestation_type?: string
-  backup_eligible?: boolean
-  backup_state?: boolean
-  created_at?: string
-  id?: string
-  last_used_at?: string
-  mfa_only?: boolean
-  name?: string
-  publickey?: string
-  transports?: any[]
-}
-
-export interface CredentialListMatch {
-  aaguid?: string
-  attestation_type?: string
-  backup_eligible?: boolean
-  backup_state?: boolean
-  created_at?: string
-  id?: string
-  last_used_at?: string
-  mfa_only?: boolean
-  name?: string
-  publickey?: string
-  transports?: any[]
-}
-
 export interface CredentialCreationOption {
   attestation?: string
   authenticatorSelection?: Record<string, any>
@@ -140,15 +112,19 @@ export interface JsonWebKeyListMatch {
 
 export interface Passcode {
   code?: string
+  created_at?: string
   email_id?: string
   id?: string
+  ttl?: number
   user_id: string
 }
 
 export interface PasscodeCreateData {
   code?: string
+  created_at?: string
   email_id?: string
   id?: string
+  ttl?: number
   user_id: string
 }
 
@@ -197,39 +173,30 @@ export interface SamlCreateData {
 }
 
 export interface SessionManagement {
-  amr?: any[]
-  audience?: any[]
-  email?: Record<string, any>
-  expiration: string
-  issued_at?: string
-  issuer?: string
-  session_id: string
+  claims: Record<string, any>
+  expiration_time?: string
+  idle_expires_at?: string
+  is_valid?: boolean
   session_token: string
-  subject: any
+  user_id?: string
 }
 
 export interface SessionManagementLoadMatch {
-  amr?: any[]
-  audience?: any[]
-  email?: Record<string, any>
-  expiration?: string
-  issued_at?: string
-  issuer?: string
-  session_id?: string
+  claims?: Record<string, any>
+  expiration_time?: string
+  idle_expires_at?: string
+  is_valid?: boolean
   session_token?: string
-  subject?: any
+  user_id?: string
 }
 
 export interface SessionManagementCreateData {
-  amr?: any[]
-  audience?: any[]
-  email?: Record<string, any>
-  expiration: string
-  issued_at?: string
-  issuer?: string
-  session_id: string
+  claims: Record<string, any>
+  expiration_time?: string
+  idle_expires_at?: string
+  is_valid?: boolean
   session_token: string
-  subject: any
+  user_id?: string
 }
 
 export interface Status {
@@ -242,17 +209,17 @@ export interface ThirdParty {
 }
 
 export interface ThirdPartyLoadMatch {
-  code?: string
-  error?: string
-  error_description?: string
-  state: string
+  provider: string
+  redirect_to: string
 }
 
 export interface Token {
+  user_id?: string
   value?: string
 }
 
 export interface TokenCreateData {
+  user_id?: string
   value?: string
 }
 
@@ -378,27 +345,79 @@ export interface UserManagementCreateData {
 }
 
 export interface WebAuthn {
+  aaguid?: string
+  attestation_type?: string
+  backup_eligible?: boolean
+  backup_state?: boolean
+  created_at?: string
+  credential_id?: string
   id?: string
+  last_used_at?: string
+  mfa_only?: boolean
   name?: string
+  publickey?: string
   rawId?: string
   response?: Record<string, any>
+  transports?: any[]
   type?: string
+  user_id?: string
+}
+
+export interface WebAuthnListMatch {
+  aaguid?: string
+  attestation_type?: string
+  backup_eligible?: boolean
+  backup_state?: boolean
+  created_at?: string
+  credential_id?: string
+  id?: string
+  last_used_at?: string
+  mfa_only?: boolean
+  name?: string
+  publickey?: string
+  rawId?: string
+  response?: Record<string, any>
+  transports?: any[]
+  type?: string
+  user_id?: string
 }
 
 export interface WebAuthnCreateData {
+  aaguid?: string
+  attestation_type?: string
+  backup_eligible?: boolean
+  backup_state?: boolean
+  created_at?: string
+  credential_id?: string
   id?: string
+  last_used_at?: string
+  mfa_only?: boolean
   name?: string
+  publickey?: string
   rawId?: string
   response?: Record<string, any>
+  transports?: any[]
   type?: string
+  user_id?: string
 }
 
 export interface WebAuthnUpdateData {
   id: string
+  aaguid?: string
+  attestation_type?: string
+  backup_eligible?: boolean
+  backup_state?: boolean
+  created_at?: string
+  credential_id?: string
+  last_used_at?: string
+  mfa_only?: boolean
   name?: string
+  publickey?: string
   rawId?: string
   response?: Record<string, any>
+  transports?: any[]
   type?: string
+  user_id?: string
 }
 
 export interface WebAuthnRemoveMatch {

@@ -31,7 +31,7 @@ Each feature is generated into every SDK target — as a directory
 `<lang>/src/feature/<name>/` (ts/js) or a flat file in the `<lang>/feature/`
 package (other languages). Each target's guide documents its features.
 
-**Entities** (17): `Credential`, `CredentialCreationOption`, `CredentialRequestOption`, `Email`, `HankoConfiguration`, `JsonWebKey`, `Passcode`, `Password`, `Saml`, `SessionManagement`, `Status`, `ThirdParty`, `Token`, `User`, `UserManagement`, `WebAuthn`, `WebauthnLogin`.
+**Entities** (16): `CredentialCreationOption`, `CredentialRequestOption`, `Email`, `HankoConfiguration`, `JsonWebKey`, `Passcode`, `Password`, `Saml`, `SessionManagement`, `Status`, `ThirdParty`, `Token`, `User`, `UserManagement`, `WebAuthn`, `WebauthnLogin`.
 
 ## Generating and updating the SDK
 

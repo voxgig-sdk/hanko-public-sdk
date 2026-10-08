@@ -41,6 +41,10 @@ main: kit: entity: hanko_configuration: {
           }
           m: "GET"
           o: "/.well-known/config"
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: ".well-known"

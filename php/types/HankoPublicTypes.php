@@ -12,38 +12,6 @@ declare(strict_types=1);
 // registered on the composer classmap autoload. The SDK boundary exchanges
 // assoc-arrays; these classes name the shapes for tooling and typed callers.
 
-/** Credential entity data model. */
-class Credential
-{
-    public ?string $aaguid = null;
-    public ?string $attestation_type = null;
-    public ?bool $backup_eligible = null;
-    public ?bool $backup_state = null;
-    public ?string $created_at = null;
-    public ?string $id = null;
-    public ?string $last_used_at = null;
-    public ?bool $mfa_only = null;
-    public ?string $name = null;
-    public ?string $publickey = null;
-    public ?array $transports = null;
-}
-
-/** Request payload for Credential#list. */
-class CredentialListMatch
-{
-    public ?string $aaguid = null;
-    public ?string $attestation_type = null;
-    public ?bool $backup_eligible = null;
-    public ?bool $backup_state = null;
-    public ?string $created_at = null;
-    public ?string $id = null;
-    public ?string $last_used_at = null;
-    public ?bool $mfa_only = null;
-    public ?string $name = null;
-    public ?string $publickey = null;
-    public ?array $transports = null;
-}
-
 /** CredentialCreationOption entity data model. */
 class CredentialCreationOption
 {
@@ -171,8 +139,10 @@ class JsonWebKeyListMatch
 class Passcode
 {
     public ?string $code = null;
+    public ?string $created_at = null;
     public ?string $email_id = null;
     public ?string $id = null;
+    public ?int $ttl = null;
     public string $user_id;
 }
 
@@ -180,8 +150,10 @@ class Passcode
 class PasscodeCreateData
 {
     public ?string $code = null;
+    public ?string $created_at = null;
     public ?string $email_id = null;
     public ?string $id = null;
+    public ?int $ttl = null;
     public string $user_id;
 }
 
@@ -226,43 +198,34 @@ class SamlCreateData
 /** SessionManagement entity data model. */
 class SessionManagement
 {
-    public ?array $amr = null;
-    public ?array $audience = null;
-    public ?array $email = null;
-    public string $expiration;
-    public ?string $issued_at = null;
-    public ?string $issuer = null;
-    public string $session_id;
+    public array $claims;
+    public ?string $expiration_time = null;
+    public ?string $idle_expires_at = null;
+    public ?bool $is_valid = null;
     public string $session_token;
-    public mixed $subject;
+    public ?string $user_id = null;
 }
 
 /** Request payload for SessionManagement#load. */
 class SessionManagementLoadMatch
 {
-    public ?array $amr = null;
-    public ?array $audience = null;
-    public ?array $email = null;
-    public ?string $expiration = null;
-    public ?string $issued_at = null;
-    public ?string $issuer = null;
-    public ?string $session_id = null;
+    public ?array $claims = null;
+    public ?string $expiration_time = null;
+    public ?string $idle_expires_at = null;
+    public ?bool $is_valid = null;
     public ?string $session_token = null;
-    public mixed $subject = null;
+    public ?string $user_id = null;
 }
 
 /** Request payload for SessionManagement#create. */
 class SessionManagementCreateData
 {
-    public ?array $amr = null;
-    public ?array $audience = null;
-    public ?array $email = null;
-    public string $expiration;
-    public ?string $issued_at = null;
-    public ?string $issuer = null;
-    public string $session_id;
+    public array $claims;
+    public ?string $expiration_time = null;
+    public ?string $idle_expires_at = null;
+    public ?bool $is_valid = null;
     public string $session_token;
-    public mixed $subject;
+    public ?string $user_id = null;
 }
 
 /** Status entity data model. */
@@ -283,21 +246,21 @@ class ThirdParty
 /** Request payload for ThirdParty#load. */
 class ThirdPartyLoadMatch
 {
-    public ?string $code = null;
-    public ?string $error = null;
-    public ?string $error_description = null;
-    public string $state;
+    public string $provider;
+    public string $redirect_to;
 }
 
 /** Token entity data model. */
 class Token
 {
+    public ?string $user_id = null;
     public ?string $value = null;
 }
 
 /** Request payload for Token#create. */
 class TokenCreateData
 {
+    public ?string $user_id = null;
     public ?string $value = null;
 }
 
@@ -439,31 +402,85 @@ class UserManagementCreateData
 /** WebAuthn entity data model. */
 class WebAuthn
 {
+    public ?string $aaguid = null;
+    public ?string $attestation_type = null;
+    public ?bool $backup_eligible = null;
+    public ?bool $backup_state = null;
+    public ?string $created_at = null;
+    public ?string $credential_id = null;
     public ?string $id = null;
+    public ?string $last_used_at = null;
+    public ?bool $mfa_only = null;
     public ?string $name = null;
+    public ?string $publickey = null;
     public ?string $rawId = null;
     public ?array $response = null;
+    public ?array $transports = null;
     public ?string $type = null;
+    public ?string $user_id = null;
+}
+
+/** Request payload for WebAuthn#list. */
+class WebAuthnListMatch
+{
+    public ?string $aaguid = null;
+    public ?string $attestation_type = null;
+    public ?bool $backup_eligible = null;
+    public ?bool $backup_state = null;
+    public ?string $created_at = null;
+    public ?string $credential_id = null;
+    public ?string $id = null;
+    public ?string $last_used_at = null;
+    public ?bool $mfa_only = null;
+    public ?string $name = null;
+    public ?string $publickey = null;
+    public ?string $rawId = null;
+    public ?array $response = null;
+    public ?array $transports = null;
+    public ?string $type = null;
+    public ?string $user_id = null;
 }
 
 /** Request payload for WebAuthn#create. */
 class WebAuthnCreateData
 {
+    public ?string $aaguid = null;
+    public ?string $attestation_type = null;
+    public ?bool $backup_eligible = null;
+    public ?bool $backup_state = null;
+    public ?string $created_at = null;
+    public ?string $credential_id = null;
     public ?string $id = null;
+    public ?string $last_used_at = null;
+    public ?bool $mfa_only = null;
     public ?string $name = null;
+    public ?string $publickey = null;
     public ?string $rawId = null;
     public ?array $response = null;
+    public ?array $transports = null;
     public ?string $type = null;
+    public ?string $user_id = null;
 }
 
 /** Request payload for WebAuthn#update. */
 class WebAuthnUpdateData
 {
     public string $id;
+    public ?string $aaguid = null;
+    public ?string $attestation_type = null;
+    public ?bool $backup_eligible = null;
+    public ?bool $backup_state = null;
+    public ?string $created_at = null;
+    public ?string $credential_id = null;
+    public ?string $last_used_at = null;
+    public ?bool $mfa_only = null;
     public ?string $name = null;
+    public ?string $publickey = null;
     public ?string $rawId = null;
     public ?array $response = null;
+    public ?array $transports = null;
     public ?string $type = null;
+    public ?string $user_id = null;
 }
 
 /** Request payload for WebAuthn#remove. */

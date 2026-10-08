@@ -4,15 +4,9 @@
 #   guide.aontu
 
 guide: {
-  metrics: count: entity: 17
+  metrics: count: entity: 16
   metrics: count: path: 28
   metrics: count: method: 32
-
-  entity: credential: {
-    path: "/webauthn/credentials": {
-      op: list: method: *GET
-    }
-  }
 
   entity: credential_creation_option: {
     path: "/webauthn/registration/initialize": {
@@ -58,23 +52,19 @@ guide: {
   entity: passcode: {
     path: "/passcode/login/finalize": {
       op: create: method: *POST
-      op: create: transform: res: *("`body.id`")|top
     }
     path: "/passcode/login/initialize": {
       op: create: method: *POST
-      op: create: transform: res: *("`body.id`")|top
     }
   }
 
   entity: password: {
     path: "/password": {
       op: update: method: *PUT
-      op: update: transform: req: "password": *("`reqdata`")|top
     }
     path: "/password/login": {
       action: "login": {}
       op: create: method: *POST
-      op: create: transform: req: "password": *("`reqdata`")|top
     }
   }
 
@@ -90,16 +80,13 @@ guide: {
     path: "/saml/provider": {
       action: "provider": {}
       op: load: method: *GET
-      op: load: transform: res: *("`body.attribute_map`")|top
     }
   }
 
   entity: session_management: {
     path: "/sessions/validate": {
       op: create: method: *POST
-      op: create: transform: res: *("`body.claims`")|top
       op: load: method: *GET
-      op: load: transform: res: *("`body.claims`")|top
     }
   }
 
@@ -121,7 +108,6 @@ guide: {
   entity: token: {
     path: "/token": {
       op: create: method: *POST
-      op: create: transform: res: *("`body.user_id`")|top
     }
   }
 
@@ -148,13 +134,15 @@ guide: {
   }
 
   entity: web_authn: {
+    path: "/webauthn/credentials": {
+      op: list: method: *GET
+    }
     path: "/webauthn/credentials/{id}": {
       op: patch: method: *PATCH
       op: remove: method: *DELETE
     }
     path: "/webauthn/registration/finalize": {
       op: create: method: *POST
-      op: create: transform: res: *("`body.user_id`")|top
     }
   }
 

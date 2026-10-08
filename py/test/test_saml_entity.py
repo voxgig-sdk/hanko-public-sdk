@@ -9,9 +9,19 @@ import pytest
 from hankopublic_sdk.utility.voxgig_struct import voxgig_struct as vs
 from hankopublic_sdk import HankoPublicSDK
 from hankopublic_sdk.core import helpers
+from hankopublic_sdk.config import shared_config
+from hankopublic_sdk.feature.base_feature import HankoPublicBaseFeature
 
 _TEST_DIR = os.path.dirname(os.path.abspath(__file__))
 from test import runner
+
+
+
+# main.kit.test.live.strict is true (the default is true): a live
+# request that fails, or a live test missing an input it needs,
+# fails the test.
+# An account with no record for a test to read skips it either way.
+LIVE_STRICT = True
 
 
 class TestSamlEntity:
@@ -27,16 +37,11 @@ class TestSamlEntity:
         # multiple ops; skipping any one skips the whole flow (steps depend
         # on each other).
         _live = setup.get("live", False)
-        for _op in ["create", "load"]:
+        for _op in ["create"]:
             _skip, _reason = runner.is_control_skipped("entityOp", "saml." + _op, "live" if _live else "unit")
             if _skip:
                 pytest.skip(_reason or "skipped via sdk-test-control.json")
                 return
-        # The basic flow consumes synthetic IDs from the fixture. In live mode
-        # without an *_ENTID env override, those IDs hit the live API and 4xx.
-        if setup.get("synthetic_only"):
-            pytest.skip("live entity test uses synthetic IDs from fixture — "
-                        "set HANKO_PUBLIC_TEST_SAML_ENTID JSON to run live")
         client = setup["client"]
 
         # CREATE
@@ -47,18 +52,13 @@ class TestSamlEntity:
         saml_ref01_data = helpers.to_map(runner.entity_data(saml_ref01_ent.create(saml_ref01_data, None)))
         assert saml_ref01_data is not None
 
-        # LOAD
-        saml_ref01_match_dt0 = {}
-        saml_ref01_data_dt0_loaded = saml_ref01_ent.load(saml_ref01_match_dt0, None)
-        assert saml_ref01_data_dt0_loaded is not None
-
 
 
 def _saml_basic_setup(extra):
     runner.load_env_local()
 
     entity_data_file = os.path.join(_TEST_DIR, "../../.sdk/test/entity/saml/SamlTestData.json")
-    with open(entity_data_file, "r") as f:
+    with open(entity_data_file, "r", encoding="utf-8") as f:
         entity_data_source = f.read()
 
     entity_data = json.loads(entity_data_source)
@@ -79,9 +79,8 @@ def _saml_basic_setup(extra):
         }
     )
 
-    # Detect ENTID env override before envOverride consumes it. When live
-    # mode is on without a real override, the basic test runs against synthetic
-    # IDs from the fixture and 4xx's. We surface this so the test can skip.
+    # Whether *_ENTID supplied the idmap, read before env_override consumes
+    # it: without it, the ids a live flow binds are the fixture's synthetic ones.
     _entid_env_raw = os.environ.get(
         "HANKO_PUBLIC_TEST_SAML_ENTID")
     _idmap_overridden = _entid_env_raw is not None and _entid_env_raw.strip().startswith("{")

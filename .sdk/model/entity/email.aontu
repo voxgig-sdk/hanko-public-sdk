@@ -20,6 +20,7 @@ main: kit: entity: email: {
       t: "`$STRING`"
     }
     id: {
+      fo: "uuid4"
       h: "Id"
       n: "id"
       r: false
@@ -107,6 +108,9 @@ main: kit: entity: email: {
           }
         }
         {
+          bf: [
+            "address"
+          ]
           co: {
             id: "POST /emails"
             source: "openapi3"
@@ -137,6 +141,10 @@ main: kit: entity: email: {
           }
           m: "GET"
           o: "/emails"
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "emails"

@@ -14,6 +14,7 @@ type Utility = core.Utility
 type Feature = core.Feature
 type Entity = core.Entity
 type HankoPublicEntity = core.HankoPublicEntity
+type StreamItem = core.StreamItem
 type FetcherFunc = core.FetcherFunc
 type Spec = core.Spec
 type Result = core.Result
@@ -52,9 +53,6 @@ func init() {
 	}
 	core.NewTimeoutFeatureFunc = func() core.Feature {
 		return feature.NewTimeoutFeature()
-	}
-	core.NewCredentialEntityFunc = func(client *core.HankoPublicSDK, entopts map[string]any) core.HankoPublicEntity {
-		return entity.NewCredentialEntity(client, entopts)
 	}
 	core.NewCredentialCreationOptionEntityFunc = func(client *core.HankoPublicSDK, entopts map[string]any) core.HankoPublicEntity {
 		return entity.NewCredentialCreationOptionEntity(client, entopts)

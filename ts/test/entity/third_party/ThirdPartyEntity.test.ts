@@ -9,7 +9,7 @@ import { createLiveTransport } from '../../live-runner'
 import { runLiveEntity } from '../../live-entity'
 
 
-import { HankoPublicSDK, BaseFeature, stdutil } from '../../..'
+import { HankoPublicSDK, BaseFeature, config, stdutil } from '../../..'
 
 import {
   envOverride,
@@ -41,6 +41,18 @@ describe('ThirdPartyEntity', async () => {
   })
 
 
+  test('validate', async (t) => {
+    if (null == (config as any).feature?.validate) {
+      t.skip('feature not present in this SDK: validate')
+      return
+    }
+    const client = HankoPublicSDK.test(undefined, { feature: { validate: { active: true } } })
+    await assert.rejects(client.ThirdParty().load({"provider":1,"redirect_to":"x"} as any),
+      (err: any) => 'validate_failed' === err.code)
+  })
+
+
+
   test('basic', async (t) => {
 
     const live = 'TRUE' === process.env.HANKO_PUBLIC_TEST_LIVE
@@ -51,7 +63,7 @@ describe('ThirdPartyEntity', async () => {
     
     const setup = basicSetup()
     if (setup.live) {
-      return runLiveEntity(setup, {"active":true,"alias":{"field":{}},"fields":{},"name":"third_party","op":{"load":{"input":"data","name":"load","points":[{"a":true,"co":{"id":"GET /thirdparty/callback","source":"openapi3","version":2},"g":{"query":[{"a":true,"k":"query","n":"code","or":"code","r":false,"t":"`$STRING`","index$":0},{"a":true,"k":"query","n":"error","or":"error","r":false,"t":"`$STRING`","index$":1},{"a":true,"k":"query","n":"error_description","or":"error_description","r":false,"t":"`$STRING`","index$":2},{"a":true,"k":"query","n":"state","or":"state","r":true,"t":"`$STRING`","index$":3}]},"k":"http","m":"GET","o":"/thirdparty/callback","q":{"exist":["code","error","error_description","state"]},"r":{},"s":[{"lit":"thirdparty"},{"lit":"callback"}],"t":{"req":"`reqdata`","res":"`body`"},"index$":0},{"a":true,"co":{"id":"GET /thirdparty/auth","source":"openapi3","version":2},"g":{"query":[{"a":true,"k":"query","n":"provider","or":"provider","r":true,"t":"`$STRING`","index$":0},{"a":true,"k":"query","n":"redirect_to","or":"redirect_to","r":true,"t":"`$STRING`","index$":1}]},"k":"http","m":"GET","o":"/thirdparty/auth","q":{"exist":["provider","redirect_to"]},"r":{},"s":[{"lit":"thirdparty"},{"lit":"auth"}],"t":{"req":"`reqdata`","res":"`body`"},"index$":1}],"key$":"load"}},"relations":{"ancestors":[]},"key$":"third_party","name__orig":"third_party","Name":"ThirdParty","name_":"third_party","name-":"third-party","NAME":"THIRD_PARTY","index$":11}, {"active":true,"entity":"third_party","key$":"BasicThirdPartyFlow","kind":"basic","name":"BasicThirdPartyFlow","param":{},"step":[{"a":true,"d":{},"i":{"ref":"third_party_ref01","srcdatavar":"third_party_ref01_data","suffix":"_dt0"},"m":{},"o":"load","s":[],"v":[{"apply":"TextFieldMark","def":{"mark":"Mark01-third_party_ref01"}}],"index$":0}]}, 'ThirdParty', {"GET /thirdparty/callback":{"protocol":"http","parameters":[{"in":"query","name":"code","schema":{"type":"string"},"description":"The authorization code that can be exchanged for an access token and to retrieve user provider data\n","index$":0},{"in":"query","name":"state","required":true,"schema":{"type":"string"},"description":"The state","index$":1},{"in":"query","name":"error","schema":{"type":"string"},"description":"An error returned from the third party provider\n","index$":2},{"in":"query","name":"error_description","schema":{"type":"string"},"description":"The description of the error that occurred (if any)","index$":3}]},"GET /thirdparty/auth":{"protocol":"http","parameters":[{"in":"query","name":"provider","required":true,"schema":{"type":"string","enum":["google","github"]},"description":"The name of the third party provider to log in with. Only providers enabled in the\n[configuration](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config)\nvia the `thirdparty.providers` option can be used. Requesting an unsupported provider results in a\nredirect with error details in the location query.\n","index$":0},{"in":"query","name":"redirect_to","required":true,"schema":{"type":"string","format":"base64url"},"description":"Base64url encoded string representing the URL the\n[`/callback`](#tag/Third-Party/operation/thirdPartyCallback) eventually redirects to after successful login\nwith the third party provider. It must match one of the allowed redirect URLs set in the backend\n[configuration](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config)\nthrough the `third_party.allowed_redirect_urls`.\n","index$":1}]}})
+      return runLiveEntity(setup, {"active":true,"alias":{"field":{}},"fields":{},"name":"third_party","op":{"load":{"input":"data","name":"load","points":[{"a":true,"co":{"id":"GET /thirdparty/auth","source":"openapi3","version":2},"g":{"query":[{"a":true,"k":"query","n":"provider","or":"provider","r":true,"t":"`$STRING`","index$":0},{"a":true,"k":"query","n":"redirect_to","or":"redirect_to","r":true,"t":"`$STRING`","index$":1}]},"k":"http","m":"GET","o":"/thirdparty/auth","q":{"exist":["provider","redirect_to"]},"r":{},"s":[{"lit":"thirdparty"},{"lit":"auth"}],"t":{"req":"`reqdata`","res":"`body`"},"index$":0},{"a":true,"co":{"id":"GET /thirdparty/callback","source":"openapi3","version":2},"g":{"query":[{"a":true,"k":"query","n":"code","or":"code","r":false,"t":"`$STRING`","index$":0},{"a":true,"k":"query","n":"error","or":"error","r":false,"t":"`$STRING`","index$":1},{"a":true,"k":"query","n":"error_description","or":"error_description","r":false,"t":"`$STRING`","index$":2},{"a":true,"k":"query","n":"state","or":"state","r":true,"t":"`$STRING`","index$":3}]},"k":"http","m":"GET","o":"/thirdparty/callback","q":{"exist":["state"]},"r":{},"s":[{"lit":"thirdparty"},{"lit":"callback"}],"t":{"req":"`reqdata`","res":"`body`"},"index$":1}],"key$":"load"}},"relations":{"ancestors":[]},"key$":"third_party","name__orig":"third_party","Name":"ThirdParty","name_":"third_party","name-":"third-party","NAME":"THIRD_PARTY","index$":10}, {"active":true,"entity":"third_party","key$":"BasicThirdPartyFlow","kind":"basic","name":"BasicThirdPartyFlow","param":{},"step":[{"a":true,"d":{},"i":{"ref":"third_party_ref01","srcdatavar":"third_party_ref01_data","suffix":"_dt0"},"m":{},"o":"load","s":[],"v":[{"apply":"TextFieldMark","def":{"mark":"Mark01-third_party_ref01"}}],"index$":0}]}, 'ThirdParty', {"GET /thirdparty/auth":{"protocol":"http","parameters":[{"in":"query","name":"provider","required":true,"schema":{"type":"string","enum":["google","github"]},"description":"The name of the third party provider to log in with. Only providers enabled in the\n[configuration](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config)\nvia the `thirdparty.providers` option can be used. Requesting an unsupported provider results in a\nredirect with error details in the location query.\n","index$":0},{"in":"query","name":"redirect_to","required":true,"schema":{"type":"string","format":"base64url"},"description":"Base64url encoded string representing the URL the\n[`/callback`](#tag/Third-Party/operation/thirdPartyCallback) eventually redirects to after successful login\nwith the third party provider. It must match one of the allowed redirect URLs set in the backend\n[configuration](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config)\nthrough the `third_party.allowed_redirect_urls`.\n","index$":1}]},"GET /thirdparty/callback":{"protocol":"http","parameters":[{"in":"query","name":"code","schema":{"type":"string"},"description":"The authorization code that can be exchanged for an access token and to retrieve user provider data\n","index$":0},{"in":"query","name":"state","required":true,"schema":{"type":"string"},"description":"The state","index$":1},{"in":"query","name":"error","schema":{"type":"string"},"description":"An error returned from the third party provider\n","index$":2},{"in":"query","name":"error_description","schema":{"type":"string"},"description":"The description of the error that occurred (if any)","index$":3}]}}, { strict: LIVE_STRICT, t })
     }
     const client = setup.client
     const struct = setup.struct
@@ -72,6 +84,12 @@ describe('ThirdPartyEntity', async () => {
 })
 
 
+
+// main.kit.test.live.strict is true (the default is true): a live
+// request that fails, or a live test missing an input it needs,
+// fails the test.
+// An account with no record for a test to read skips it either way.
+const LIVE_STRICT = true
 
 function basicSetup(extra?: any) {
   // TODO: fix test def options

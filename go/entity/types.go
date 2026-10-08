@@ -12,25 +12,6 @@ import (
 	"github.com/voxgig-sdk/hanko-public-sdk/go/core"
 )
 
-// Credential is the typed data model for the credential entity.
-type Credential struct {
-}
-
-// CredentialListMatch is the typed request payload for Credential.ListTyped.
-type CredentialListMatch struct {
-	Aaguid *string `json:"aaguid,omitempty"`
-	AttestationType *string `json:"attestation_type,omitempty"`
-	BackupEligible *bool `json:"backup_eligible,omitempty"`
-	BackupState *bool `json:"backup_state,omitempty"`
-	CreatedAt *string `json:"created_at,omitempty"`
-	Id *string `json:"id,omitempty"`
-	LastUsedAt *string `json:"last_used_at,omitempty"`
-	MfaOnly *bool `json:"mfa_only,omitempty"`
-	Name *string `json:"name,omitempty"`
-	Publickey *string `json:"publickey,omitempty"`
-	Transports *[]any `json:"transports,omitempty"`
-}
-
 // CredentialCreationOption is the typed data model for the credential_creation_option entity.
 type CredentialCreationOption struct {
 }
@@ -121,8 +102,10 @@ type Passcode struct {
 // PasscodeCreateData is the typed request payload for Passcode.CreateTyped.
 type PasscodeCreateData struct {
 	Code *string `json:"code,omitempty"`
+	CreatedAt *string `json:"created_at,omitempty"`
 	EmailId *string `json:"email_id,omitempty"`
 	Id *string `json:"id,omitempty"`
+	Ttl *int `json:"ttl,omitempty"`
 	UserId string `json:"user_id"`
 }
 
@@ -162,28 +145,22 @@ type SessionManagement struct {
 
 // SessionManagementLoadMatch is the typed request payload for SessionManagement.LoadTyped.
 type SessionManagementLoadMatch struct {
-	Amr *[]any `json:"amr,omitempty"`
-	Audience *[]any `json:"audience,omitempty"`
-	Email *map[string]any `json:"email,omitempty"`
-	Expiration *string `json:"expiration,omitempty"`
-	IssuedAt *string `json:"issued_at,omitempty"`
-	Issuer *string `json:"issuer,omitempty"`
-	SessionId *string `json:"session_id,omitempty"`
+	Claims *map[string]any `json:"claims,omitempty"`
+	ExpirationTime *string `json:"expiration_time,omitempty"`
+	IdleExpiresAt *string `json:"idle_expires_at,omitempty"`
+	IsValid *bool `json:"is_valid,omitempty"`
 	SessionToken *string `json:"session_token,omitempty"`
-	Subject *any `json:"subject,omitempty"`
+	UserId *string `json:"user_id,omitempty"`
 }
 
 // SessionManagementCreateData is the typed request payload for SessionManagement.CreateTyped.
 type SessionManagementCreateData struct {
-	Amr *[]any `json:"amr,omitempty"`
-	Audience *[]any `json:"audience,omitempty"`
-	Email *map[string]any `json:"email,omitempty"`
-	Expiration string `json:"expiration"`
-	IssuedAt *string `json:"issued_at,omitempty"`
-	Issuer *string `json:"issuer,omitempty"`
-	SessionId string `json:"session_id"`
+	Claims map[string]any `json:"claims"`
+	ExpirationTime *string `json:"expiration_time,omitempty"`
+	IdleExpiresAt *string `json:"idle_expires_at,omitempty"`
+	IsValid *bool `json:"is_valid,omitempty"`
 	SessionToken string `json:"session_token"`
-	Subject any `json:"subject"`
+	UserId *string `json:"user_id,omitempty"`
 }
 
 // Status is the typed data model for the status entity.
@@ -200,10 +177,8 @@ type ThirdParty struct {
 
 // ThirdPartyLoadMatch is the typed request payload for ThirdParty.LoadTyped.
 type ThirdPartyLoadMatch struct {
-	Code *string `json:"code,omitempty"`
-	Error *string `json:"error,omitempty"`
-	ErrorDescription *string `json:"error_description,omitempty"`
-	State string `json:"state"`
+	Provider string `json:"provider"`
+	RedirectTo string `json:"redirect_to"`
 }
 
 // Token is the typed data model for the token entity.
@@ -212,6 +187,7 @@ type Token struct {
 
 // TokenCreateData is the typed request payload for Token.CreateTyped.
 type TokenCreateData struct {
+	UserId *string `json:"user_id,omitempty"`
 	Value *string `json:"value,omitempty"`
 }
 
@@ -314,22 +290,64 @@ type UserManagementCreateData struct {
 type WebAuthn struct {
 }
 
-// WebAuthnCreateData is the typed request payload for WebAuthn.CreateTyped.
-type WebAuthnCreateData struct {
+// WebAuthnListMatch is the typed request payload for WebAuthn.ListTyped.
+type WebAuthnListMatch struct {
+	Aaguid *string `json:"aaguid,omitempty"`
+	AttestationType *string `json:"attestation_type,omitempty"`
+	BackupEligible *bool `json:"backup_eligible,omitempty"`
+	BackupState *bool `json:"backup_state,omitempty"`
+	CreatedAt *string `json:"created_at,omitempty"`
+	CredentialId *string `json:"credential_id,omitempty"`
 	Id *string `json:"id,omitempty"`
+	LastUsedAt *string `json:"last_used_at,omitempty"`
+	MfaOnly *bool `json:"mfa_only,omitempty"`
 	Name *string `json:"name,omitempty"`
+	Publickey *string `json:"publickey,omitempty"`
 	RawId *string `json:"rawId,omitempty"`
 	Response *map[string]any `json:"response,omitempty"`
+	Transports *[]any `json:"transports,omitempty"`
 	Type *string `json:"type,omitempty"`
+	UserId *string `json:"user_id,omitempty"`
+}
+
+// WebAuthnCreateData is the typed request payload for WebAuthn.CreateTyped.
+type WebAuthnCreateData struct {
+	Aaguid *string `json:"aaguid,omitempty"`
+	AttestationType *string `json:"attestation_type,omitempty"`
+	BackupEligible *bool `json:"backup_eligible,omitempty"`
+	BackupState *bool `json:"backup_state,omitempty"`
+	CreatedAt *string `json:"created_at,omitempty"`
+	CredentialId *string `json:"credential_id,omitempty"`
+	Id *string `json:"id,omitempty"`
+	LastUsedAt *string `json:"last_used_at,omitempty"`
+	MfaOnly *bool `json:"mfa_only,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Publickey *string `json:"publickey,omitempty"`
+	RawId *string `json:"rawId,omitempty"`
+	Response *map[string]any `json:"response,omitempty"`
+	Transports *[]any `json:"transports,omitempty"`
+	Type *string `json:"type,omitempty"`
+	UserId *string `json:"user_id,omitempty"`
 }
 
 // WebAuthnUpdateData is the typed request payload for WebAuthn.UpdateTyped.
 type WebAuthnUpdateData struct {
 	Id string `json:"id"`
+	Aaguid *string `json:"aaguid,omitempty"`
+	AttestationType *string `json:"attestation_type,omitempty"`
+	BackupEligible *bool `json:"backup_eligible,omitempty"`
+	BackupState *bool `json:"backup_state,omitempty"`
+	CreatedAt *string `json:"created_at,omitempty"`
+	CredentialId *string `json:"credential_id,omitempty"`
+	LastUsedAt *string `json:"last_used_at,omitempty"`
+	MfaOnly *bool `json:"mfa_only,omitempty"`
 	Name *string `json:"name,omitempty"`
+	Publickey *string `json:"publickey,omitempty"`
 	RawId *string `json:"rawId,omitempty"`
 	Response *map[string]any `json:"response,omitempty"`
+	Transports *[]any `json:"transports,omitempty"`
 	Type *string `json:"type,omitempty"`
+	UserId *string `json:"user_id,omitempty"`
 }
 
 // WebAuthnRemoveMatch is the typed request payload for WebAuthn.RemoveTyped.

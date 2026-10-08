@@ -79,9 +79,15 @@ class CredentialRequestOptionEntity extends HankoPublicEntityBase_1.HankoPublicE
             return (ctx.result && ctx.result.ok) ? this : out;
         }
         catch (err) {
-            fres = featureHook(ctx, 'PreUnexpected');
-            if (fres instanceof Promise) {
-                await fres;
+            // What a hook throws here must not escape the cleaning below.
+            try {
+                fres = featureHook(ctx, 'PreUnexpected');
+                if (fres instanceof Promise) {
+                    await fres;
+                }
+            }
+            catch (hookerr) {
+                err = hookerr;
             }
             err = this._unexpected(ctx, err);
             if (err) {
@@ -89,7 +95,7 @@ class CredentialRequestOptionEntity extends HankoPublicEntityBase_1.HankoPublicE
             }
             else {
                 // Off-happy-path (throw disabled): typed as any so the method's
-                // Promise<CredentialRequestOption> return stays clean under strict null checks.
+                // Promise<CredentialRequestOptionEntity> return stays clean under strict null checks.
                 return undefined;
             }
         }

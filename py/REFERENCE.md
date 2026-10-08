@@ -42,10 +42,6 @@ client = HankoPublicSDK.test()
 
 ### Instance Methods
 
-#### `Credential(data=None)`
-
-Create a new `CredentialEntity` instance. Pass `None` for no initial data.
-
 #### `CredentialCreationOption(data=None)`
 
 Create a new `CredentialCreationOptionEntity` instance. Pass `None` for no initial data.
@@ -142,69 +138,6 @@ Prepare a fetch definition without sending. Returns the `fetchdef` and raises on
 
 ---
 
-## CredentialEntity
-
-```python
-credential = client.Credential()
-```
-
-### Fields
-
-| Field | Type | Required | Description |
-| --- | --- | --- | --- |
-| `aaguid` | `str` | No |  |
-| `attestation_type` | `str` | No |  |
-| `backup_eligible` | `bool` | No |  |
-| `backup_state` | `bool` | No |  |
-| `created_at` | `str` | No |  |
-| `id` | `str` | No |  |
-| `last_used_at` | `str` | No |  |
-| `mfa_only` | `bool` | No |  |
-| `name` | `str` | No |  |
-| `publickey` | `str` | No |  |
-| `transports` | `list` | No |  |
-
-### Operations
-
-#### `list(reqmatch=None, ctrl=None) -> list`
-
-List entities matching the given criteria. The match is optional — call `list()` with no argument to list all records. Returns a list and raises on error.
-
-```python
-results = client.Credential().list()
-for credential in results:
-    print(credential)
-```
-
-### Common Methods
-
-#### `data_get() -> dict`
-
-Get the entity data.
-
-#### `data_set(data)`
-
-Set the entity data.
-
-#### `match_get() -> dict`
-
-Get the entity match criteria.
-
-#### `match_set(match)`
-
-Set the entity match criteria.
-
-#### `make() -> Entity`
-
-Create a new `CredentialEntity` instance with the same options.
-
-#### `get_name() -> str`
-
-Return the entity name.
-
-
----
-
 ## CredentialCreationOptionEntity
 
 ```python
@@ -225,9 +158,9 @@ credential_creation_option = client.CredentialCreationOption()
 
 ### Operations
 
-#### `create(reqdata, ctrl=None) -> dict`
+#### `create(reqdata, ctrl=None) -> CredentialCreationOptionEntity`
 
-Create a new entity with the given data. Returns the created entity data and raises on error.
+Create a new entity with the given data. Returns the created entity and raises on error.
 
 ```python
 result = client.CredentialCreationOption().create({
@@ -282,9 +215,9 @@ credential_request_option = client.CredentialRequestOption()
 
 ### Operations
 
-#### `create(reqdata, ctrl=None) -> dict`
+#### `create(reqdata, ctrl=None) -> CredentialRequestOptionEntity`
 
-Create a new entity with the given data. Returns the created entity data and raises on error.
+Create a new entity with the given data. Returns the created entity and raises on error.
 
 ```python
 result = client.CredentialRequestOption().create({
@@ -350,9 +283,9 @@ email = client.Email()
 
 ### Operations
 
-#### `create(reqdata, ctrl=None) -> dict`
+#### `create(reqdata, ctrl=None) -> EmailEntity`
 
-Create a new entity with the given data. Returns the created entity data and raises on error.
+Create a new entity with the given data. Returns the created entity and raises on error.
 
 ```python
 result = client.Email().create({
@@ -360,19 +293,19 @@ result = client.Email().create({
 })
 ```
 
-#### `list(reqmatch=None, ctrl=None) -> list`
+#### `list(reqmatch=None, ctrl=None) -> list[EmailEntity]`
 
-List entities matching the given criteria. The match is optional — call `list()` with no argument to list all records. Returns a list and raises on error.
+List entities matching the given criteria. The match is optional — call `list()` with no argument to list all records. Returns a list of entities, one per record, and raises on error.
 
 ```python
 results = client.Email().list()
 for email in results:
-    print(email)
+    print(email.data_get())
 ```
 
-#### `remove(reqmatch, ctrl=None) -> dict`
+#### `remove(reqmatch, ctrl=None) -> EmailEntity`
 
-Remove the entity matching the given criteria. Raises on error.
+Remove the entity matching the given criteria. Returns the entity, marked as deleted, and raises on error.
 
 ```python
 result = client.Email().remove({"id": "id"})
@@ -423,9 +356,9 @@ hanko_configuration = client.HankoConfiguration()
 
 ### Operations
 
-#### `load(reqmatch, ctrl=None) -> dict`
+#### `load(reqmatch, ctrl=None) -> HankoConfigurationEntity`
 
-Load a single entity matching the given criteria. Returns the entity data and raises on error.
+Load a single entity matching the given criteria. Returns the entity, whose record `data_get()` reads, and raises on error.
 
 ```python
 result = client.HankoConfiguration().load()
@@ -479,14 +412,14 @@ json_web_key = client.JsonWebKey()
 
 ### Operations
 
-#### `list(reqmatch=None, ctrl=None) -> list`
+#### `list(reqmatch=None, ctrl=None) -> list[JsonWebKeyEntity]`
 
-List entities matching the given criteria. The match is optional — call `list()` with no argument to list all records. Returns a list and raises on error.
+List entities matching the given criteria. The match is optional — call `list()` with no argument to list all records. Returns a list of entities, one per record, and raises on error.
 
 ```python
 results = client.JsonWebKey().list()
 for json_web_key in results:
-    print(json_web_key)
+    print(json_web_key.data_get())
 ```
 
 ### Common Methods
@@ -529,15 +462,17 @@ passcode = client.Passcode()
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
 | `code` | `str` | No | The actual passcode from the email sent to the user during initialization, a string of 6 decimal digits |
+| `created_at` | `str` | No | Time of creation of the passcode |
 | `email_id` | `str` | No | The ID of the email address |
 | `id` | `str` | No | The ID of the passcode |
+| `ttl` | `int` | No | Lifespan of a passcode in seconds |
 | `user_id` | `str` | Yes | The ID of the user |
 
 ### Operations
 
-#### `create(reqdata, ctrl=None) -> dict`
+#### `create(reqdata, ctrl=None) -> PasscodeEntity`
 
-Create a new entity with the given data. Returns the created entity data and raises on error.
+Create a new entity with the given data. Returns the created entity and raises on error.
 
 ```python
 result = client.Passcode().create({
@@ -589,9 +524,9 @@ password = client.Password()
 
 ### Operations
 
-#### `create(reqdata, ctrl=None) -> dict`
+#### `create(reqdata, ctrl=None) -> PasswordEntity`
 
-Create a new entity with the given data. Returns the created entity data and raises on error.
+Create a new entity with the given data. Returns the created entity and raises on error.
 
 ```python
 result = client.Password().create({
@@ -600,9 +535,9 @@ result = client.Password().create({
 })
 ```
 
-#### `update(reqdata, ctrl=None) -> dict`
+#### `update(reqdata, ctrl=None) -> PasswordEntity`
 
-Update an existing entity. The data must include the entity `id`. Returns the updated entity data and raises on error.
+Update an existing entity. The data must include the entity `id`. Returns the updated entity and raises on error.
 
 ```python
 result = client.Password().update({
@@ -647,22 +582,20 @@ saml = client.Saml()
 
 ### Operations
 
-#### `create(reqdata, ctrl=None) -> dict`
+#### `create(reqdata, ctrl=None) -> SamlEntity`
 
-Create a new entity with the given data. Returns the created entity data and raises on error.
+Create a new entity with the given data. Returns the created entity and raises on error.
 
 ```python
 result = client.Saml().create({
 })
 ```
 
-#### `load(reqmatch, ctrl=None) -> dict`
+Declares a `application/x-www-form-urlencoded` body, which this SDK does not encode yet: it sends the data as JSON.
 
-Load a single entity matching the given criteria. Returns the entity data and raises on error.
+#### `load(reqmatch, ctrl=None) -> SamlEntity`
 
-```python
-result = client.Saml().load({"domain": "domain"})
-```
+Load a single entity matching the given criteria. Returns the entity, whose record `data_get()` reads, and raises on error.
 
 ### Common Methods
 
@@ -703,34 +636,29 @@ session_management = client.SessionManagement()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `amr` | `list` | No | Authentication Method References, JSON array of strings that are identifiers for authentication methods used in the authentication. |
-| `audience` | `list` | No | The intended audience of the token. |
-| `email` | `dict` | No | Data about the email address associated with the token's subject, if available. |
-| `expiration` | `str` | Yes | The timestamp indicating when the token will expire. |
-| `issued_at` | `str` | No | The timestamp indicating when the token was issued. |
-| `issuer` | `str` | No | The entity that issued the token. |
-| `session_id` | `str` | Yes | The unique identifier for the session associated with this token. |
+| `claims` | `dict` | Yes | The claims extracted from a JWT. |
+| `expiration_time` | `str` | No | Date-time indicating the expiration of the session. |
+| `idle_expires_at` | `str` | No | Timestamp (in UTC) indicating when the session will expire due to inactivity, assuming no further activity occurs before this time. |
+| `is_valid` | `bool` | No | Indicates whether the session is valid or not |
 | `session_token` | `str` | Yes | The session token (JWT) to validate |
-| `subject` | `Any` | Yes | The unique identifier of the token's subject. |
+| `user_id` | `str` | No | The ID of the user the session is associated with. |
 
 ### Operations
 
-#### `create(reqdata, ctrl=None) -> dict`
+#### `create(reqdata, ctrl=None) -> SessionManagementEntity`
 
-Create a new entity with the given data. Returns the created entity data and raises on error.
+Create a new entity with the given data. Returns the created entity and raises on error.
 
 ```python
 result = client.SessionManagement().create({
-    "expiration": "example_expiration",  # str
-    "session_id": "example_session_id",  # str
+    "claims": {},  # dict
     "session_token": "example_session_token",  # str
-    "subject": "example_subject",  # Any
 })
 ```
 
-#### `load(reqmatch, ctrl=None) -> dict`
+#### `load(reqmatch, ctrl=None) -> SessionManagementEntity`
 
-Load a single entity matching the given criteria. Returns the entity data and raises on error.
+Load a single entity matching the given criteria. Returns the entity, whose record `data_get()` reads, and raises on error.
 
 ```python
 result = client.SessionManagement().load()
@@ -773,9 +701,9 @@ status = client.Status()
 
 ### Operations
 
-#### `load(reqmatch, ctrl=None) -> dict`
+#### `load(reqmatch, ctrl=None) -> StatusEntity`
 
-Load a single entity matching the given criteria. Returns the entity data and raises on error.
+Load a single entity matching the given criteria. Returns the entity, whose record `data_get()` reads, and raises on error.
 
 ```python
 result = client.Status().load()
@@ -818,12 +746,12 @@ third_party = client.ThirdParty()
 
 ### Operations
 
-#### `load(reqmatch, ctrl=None) -> dict`
+#### `load(reqmatch, ctrl=None) -> ThirdPartyEntity`
 
-Load a single entity matching the given criteria. Returns the entity data and raises on error.
+Load a single entity matching the given criteria. Returns the entity, whose record `data_get()` reads, and raises on error.
 
 ```python
-result = client.ThirdParty().load({"state": "state"})
+result = client.ThirdParty().load({"provider": "provider", "redirect_to": "redirect_to"})
 ```
 
 ### Common Methods
@@ -865,13 +793,14 @@ token = client.Token()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
+| `user_id` | `str` | No | The ID of the user on whose behalf the token was exchanged. |
 | `value` | `str` | No |  |
 
 ### Operations
 
-#### `create(reqdata, ctrl=None) -> dict`
+#### `create(reqdata, ctrl=None) -> TokenEntity`
 
-Create a new entity with the given data. Returns the created entity data and raises on error.
+Create a new entity with the given data. Returns the created entity and raises on error.
 
 ```python
 result = client.Token().create({
@@ -963,26 +892,26 @@ user = client.User()
 
 ### Operations
 
-#### `create(reqdata, ctrl=None) -> dict`
+#### `create(reqdata, ctrl=None) -> UserEntity`
 
-Create a new entity with the given data. Returns the created entity data and raises on error.
+Create a new entity with the given data. Returns the created entity and raises on error.
 
 ```python
 result = client.User().create({
 })
 ```
 
-#### `load(reqmatch, ctrl=None) -> dict`
+#### `load(reqmatch, ctrl=None) -> UserEntity`
 
-Load a single entity matching the given criteria. Returns the entity data and raises on error.
+Load a single entity matching the given criteria. Returns the entity, whose record `data_get()` reads, and raises on error.
 
 ```python
 result = client.User().load({"id": "user_id"})
 ```
 
-#### `remove(reqmatch, ctrl=None) -> dict`
+#### `remove(reqmatch, ctrl=None) -> UserEntity`
 
-Remove the entity matching the given criteria. Raises on error.
+Remove the entity matching the given criteria. Returns the entity, marked as deleted, and raises on error.
 
 ```python
 result = client.User().remove({"id": "user_id"})
@@ -1044,23 +973,23 @@ user_management = client.UserManagement()
 
 ### Operations
 
-#### `create(reqdata, ctrl=None) -> dict`
+#### `create(reqdata, ctrl=None) -> UserManagementEntity`
 
-Create a new entity with the given data. Returns the created entity data and raises on error.
+Create a new entity with the given data. Returns the created entity and raises on error.
 
 ```python
 result = client.UserManagement().create({
 })
 ```
 
-#### `list(reqmatch=None, ctrl=None) -> list`
+#### `list(reqmatch=None, ctrl=None) -> list[UserManagementEntity]`
 
-List entities matching the given criteria. The match is optional — call `list()` with no argument to list all records. Returns a list and raises on error.
+List entities matching the given criteria. The match is optional — call `list()` with no argument to list all records. Returns a list of entities, one per record, and raises on error.
 
 ```python
 results = client.UserManagement().list()
 for user_management in results:
-    print(user_management)
+    print(user_management.data_get())
 ```
 
 ### Common Methods
@@ -1102,34 +1031,55 @@ web_authn = client.WebAuthn()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
+| `aaguid` | `str` | No |  |
+| `attestation_type` | `str` | No |  |
+| `backup_eligible` | `bool` | No |  |
+| `backup_state` | `bool` | No |  |
+| `created_at` | `str` | No |  |
+| `credential_id` | `str` | No | The ID of the created credential |
 | `id` | `str` | No |  |
+| `last_used_at` | `str` | No |  |
+| `mfa_only` | `bool` | No |  |
 | `name` | `str` | No | A new credential name. |
+| `publickey` | `str` | No |  |
 | `rawId` | `str` | No |  |
 | `response` | `dict` | No |  |
+| `transports` | `list` | No |  |
 | `type` | `str` | No |  |
+| `user_id` | `str` | No | The ID of the user on whose behalf a credential was created |
 
 ### Operations
 
-#### `create(reqdata, ctrl=None) -> dict`
+#### `create(reqdata, ctrl=None) -> WebAuthnEntity`
 
-Create a new entity with the given data. Returns the created entity data and raises on error.
+Create a new entity with the given data. Returns the created entity and raises on error.
 
 ```python
 result = client.WebAuthn().create({
 })
 ```
 
-#### `remove(reqmatch, ctrl=None) -> dict`
+#### `list(reqmatch=None, ctrl=None) -> list[WebAuthnEntity]`
 
-Remove the entity matching the given criteria. Raises on error.
+List entities matching the given criteria. The match is optional — call `list()` with no argument to list all records. Returns a list of entities, one per record, and raises on error.
+
+```python
+results = client.WebAuthn().list()
+for web_authn in results:
+    print(web_authn.data_get())
+```
+
+#### `remove(reqmatch, ctrl=None) -> WebAuthnEntity`
+
+Remove the entity matching the given criteria. Returns the entity, marked as deleted, and raises on error.
 
 ```python
 result = client.WebAuthn().remove({"id": "id"})
 ```
 
-#### `update(reqdata, ctrl=None) -> dict`
+#### `update(reqdata, ctrl=None) -> WebAuthnEntity`
 
-Update an existing entity. The data must include the entity `id`. Returns the updated entity data and raises on error.
+Update an existing entity. The data must include the entity `id`. Returns the updated entity and raises on error.
 
 ```python
 result = client.WebAuthn().update({
@@ -1186,9 +1136,9 @@ webauthn_login = client.WebauthnLogin()
 
 ### Operations
 
-#### `create(reqdata, ctrl=None) -> dict`
+#### `create(reqdata, ctrl=None) -> WebauthnLoginEntity`
 
-Create a new entity with the given data. Returns the created entity data and raises on error.
+Create a new entity with the given data. Returns the created entity and raises on error.
 
 ```python
 result = client.WebauthnLogin().create({
@@ -1514,6 +1464,7 @@ Timeout.
 | Option | Type |
 |---|---|
 | `clearTimer` | function |
+| `now` | function |
 | `setTimer` | function |
 
 These take no default: the feature behaves one way when you supply them and

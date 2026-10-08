@@ -9,7 +9,7 @@ import { createLiveTransport } from '../../live-runner'
 import { runLiveEntity } from '../../live-entity'
 
 
-import { HankoPublicSDK, BaseFeature, stdutil } from '../../..'
+import { HankoPublicSDK, BaseFeature, config, stdutil } from '../../..'
 
 import {
   envOverride,
@@ -41,6 +41,18 @@ describe('PasscodeEntity', async () => {
   })
 
 
+  test('validate', async (t) => {
+    if (null == (config as any).feature?.validate) {
+      t.skip('feature not present in this SDK: validate')
+      return
+    }
+    const client = HankoPublicSDK.test(undefined, { feature: { validate: { active: true } } })
+    await assert.rejects(client.Passcode().create({"code":1,"user_id":"x"} as any),
+      (err: any) => 'validate_failed' === err.code)
+  })
+
+
+
   test('basic', async (t) => {
 
     const live = 'TRUE' === process.env.HANKO_PUBLIC_TEST_LIVE
@@ -51,7 +63,7 @@ describe('PasscodeEntity', async () => {
     
     const setup = basicSetup()
     if (setup.live) {
-      return runLiveEntity(setup, {"active":true,"alias":{"field":{}},"fields":{"code":{"a":true,"h":"Code","n":"code","r":false,"sh":"The actual passcode from the email sent to the user during initialization, a string of 6 decimal digits","t":"`$STRING`","key$":"code","index$":0},"email_id":{"a":true,"h":"Email Id","n":"email_id","r":false,"sh":"The ID of the email address","t":"`$STRING`","key$":"email_id","index$":1},"id":{"a":true,"h":"Id","n":"id","r":false,"sh":"The ID of the passcode","t":"`$STRING`","key$":"id","index$":2},"user_id":{"a":true,"h":"User Id","n":"user_id","r":true,"sh":"The ID of the user","t":"`$STRING`","key$":"user_id","index$":3}},"id":{"field":"id","name":"id"},"name":"passcode","op":{"create":{"input":"data","name":"create","points":[{"a":true,"co":{"id":"POST /passcode/login/finalize","source":"openapi3","version":2},"g":{},"k":"http","m":"POST","o":"/passcode/login/finalize","q":{},"r":{},"s":[{"lit":"passcode"},{"lit":"login"},{"lit":"finalize"}],"t":{"req":"`reqdata`","res":"`body.id`"},"index$":0},{"a":true,"co":{"id":"POST /passcode/login/initialize","source":"openapi3","version":2},"g":{},"k":"http","m":"POST","o":"/passcode/login/initialize","q":{},"r":{},"s":[{"lit":"passcode"},{"lit":"login"},{"lit":"initialize"}],"t":{"req":"`reqdata`","res":"`body.id`"},"index$":1}],"key$":"create"}},"relations":{"ancestors":[]},"key$":"passcode","name__orig":"passcode","Name":"Passcode","name_":"passcode","name-":"passcode","NAME":"PASSCODE","index$":6}, {"active":true,"entity":"passcode","key$":"BasicPasscodeFlow","kind":"basic","name":"BasicPasscodeFlow","param":{},"step":[{"a":true,"d":{},"i":{"ref":"passcode_ref01"},"m":{},"o":"create","s":[],"v":[],"index$":0}]}, 'Passcode', {"POST /passcode/login/finalize":{"protocol":"http","requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{"id":{"description":"The ID of the passcode","allOf":[{"type":"string","format":"uuid4","example":"c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c","x-ref":"#/components/schemas/UUID4"}],"key$":"id"},"code":{"type":"string","minLength":6,"maxLength":6,"description":"The actual passcode from the email sent to the user during initialization,\na string of 6 decimal digits\n","example":"897481","key$":"code"}},"index$":1}}}},"parameters":[]},"POST /passcode/login/initialize":{"protocol":"http","requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{"user_id":{"description":"The ID of the user","allOf":[{"type":"string","format":"uuid4","example":"c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c","x-ref":"#/components/schemas/UUID4"}],"key$":"user_id"},"email_id":{"description":"The ID of the email address","allOf":[{"type":"string","format":"uuid4","example":"c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c","x-ref":"#/components/schemas/UUID4"}],"key$":"email_id"}},"required":["user_id"],"index$":1}}}},"parameters":[]}})
+      return runLiveEntity(setup, {"active":true,"alias":{"field":{}},"fields":{"code":{"a":true,"h":"Code","n":"code","r":false,"sh":"The actual passcode from the email sent to the user during initialization, a string of 6 decimal digits","t":"`$STRING`","key$":"code","index$":0},"created_at":{"a":true,"fo":"date-time","h":"Created At","n":"created_at","r":false,"sh":"Time of creation of the passcode","t":"`$STRING`","key$":"created_at","index$":1},"email_id":{"a":true,"fo":"uuid4","h":"Email Id","n":"email_id","r":false,"sh":"The ID of the email address","t":"`$STRING`","key$":"email_id","index$":2},"id":{"a":true,"fo":"uuid4","h":"Id","n":"id","r":false,"sh":"The ID of the passcode","t":"`$STRING`","key$":"id","index$":3},"ttl":{"a":true,"h":"Ttl","n":"ttl","r":false,"sh":"Lifespan of a passcode in seconds","t":"`$INTEGER`","key$":"ttl","index$":4},"user_id":{"a":true,"fo":"uuid4","h":"User Id","n":"user_id","r":true,"sh":"The ID of the user","t":"`$STRING`","key$":"user_id","index$":5}},"id":{"field":"id","name":"id"},"name":"passcode","op":{"create":{"input":"data","name":"create","points":[{"a":true,"bf":["code","id"],"co":{"id":"POST /passcode/login/finalize","source":"openapi3","version":2},"g":{},"k":"http","m":"POST","o":"/passcode/login/finalize","q":{},"r":{},"rs":{"kind":"json","media":"application/json"},"s":[{"lit":"passcode"},{"lit":"login"},{"lit":"finalize"}],"t":{"req":"`reqdata`","res":"`body`"},"index$":0},{"a":true,"bf":["email_id","user_id"],"co":{"id":"POST /passcode/login/initialize","source":"openapi3","version":2},"g":{},"k":"http","m":"POST","o":"/passcode/login/initialize","q":{},"r":{},"rs":{"kind":"json","media":"application/json"},"s":[{"lit":"passcode"},{"lit":"login"},{"lit":"initialize"}],"t":{"req":"`reqdata`","res":"`body`"},"index$":1}],"key$":"create"}},"relations":{"ancestors":[]},"key$":"passcode","name__orig":"passcode","Name":"Passcode","name_":"passcode","name-":"passcode","NAME":"PASSCODE","index$":5}, {"active":true,"entity":"passcode","key$":"BasicPasscodeFlow","kind":"basic","name":"BasicPasscodeFlow","param":{},"step":[{"a":true,"d":{},"i":{"ref":"passcode_ref01"},"m":{},"o":"create","s":[],"v":[],"index$":0}]}, 'Passcode', {"POST /passcode/login/finalize":{"protocol":"http","requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{"id":{"description":"The ID of the passcode","allOf":[{"type":"string","format":"uuid4","example":"c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c","x-ref":"#/components/schemas/UUID4"}],"key$":"id"},"code":{"type":"string","minLength":6,"maxLength":6,"description":"The actual passcode from the email sent to the user during initialization,\na string of 6 decimal digits\n","example":"897481","key$":"code"}},"index$":1}}}},"parameters":[]},"POST /passcode/login/initialize":{"protocol":"http","requestBody":{"content":{"application/json":{"schema":{"type":"object","properties":{"user_id":{"description":"The ID of the user","allOf":[{"type":"string","format":"uuid4","example":"c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c","x-ref":"#/components/schemas/UUID4"}],"key$":"user_id"},"email_id":{"description":"The ID of the email address","allOf":[{"type":"string","format":"uuid4","example":"c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c","x-ref":"#/components/schemas/UUID4"}],"key$":"email_id"}},"required":["user_id"],"index$":1}}}},"parameters":[]}}, { strict: LIVE_STRICT, t })
     }
     const client = setup.client
     const struct = setup.struct
@@ -72,6 +84,12 @@ describe('PasscodeEntity', async () => {
 })
 
 
+
+// main.kit.test.live.strict is true (the default is true): a live
+// request that fails, or a live test missing an input it needs,
+// fails the test.
+// An account with no record for a test to read skips it either way.
+const LIVE_STRICT = true
 
 function basicSetup(extra?: any) {
   // TODO: fix test def options

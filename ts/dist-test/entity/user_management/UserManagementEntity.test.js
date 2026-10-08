@@ -54,6 +54,53 @@ const utility_1 = require("../../utility");
         const ent = testsdk.UserManagement();
         (0, node_assert_1.default)(null != ent);
     });
+    class FailHook extends __1.BaseFeature {
+        name = 'failhook';
+        version = '0.0.1';
+        active = true;
+        unexpected = 0;
+        init() { }
+        PreSpec() { throw new Error('user_management hook failed'); }
+        PreUnexpected() { this.unexpected++; }
+    }
+    (0, node_test_1.test)('stream-error', async () => {
+        const offline = { net: { offline: true } };
+        await node_assert_1.default.rejects(async () => {
+            for await (const _item of __1.HankoPublicSDK.test(offline).UserManagement().stream('list')) { }
+        }, /offline/);
+        for await (const _item of __1.HankoPublicSDK.test(offline).UserManagement()
+            .stream('list', undefined, { ctrl: { throw: false } })) { }
+        if (null != __1.config.feature?.rbac) {
+            const denied = __1.HankoPublicSDK.test(undefined, { feature: { rbac: { active: true, deny: true } } });
+            await node_assert_1.default.rejects(async () => {
+                for await (const _item of denied.UserManagement().stream('list')) { }
+            }, (err) => 'rbac_denied' === err.code);
+        }
+    });
+    (0, node_test_1.test)('stream-ctrl', async () => {
+        const explain = {};
+        const ctrl = { explain };
+        for await (const _item of __1.HankoPublicSDK.test().UserManagement().stream('list', undefined, { ctrl })) { }
+        node_assert_1.default.deepStrictEqual(Object.keys(ctrl), ['explain']);
+        (0, node_assert_1.default)(explain === ctrl.explain && 0 < Object.keys(explain).length);
+    });
+    (0, node_test_1.test)('unexpected', async () => {
+        const hook = new FailHook();
+        const client = new __1.HankoPublicSDK({ feature: { test: { active: true } }, extend: [hook] });
+        await node_assert_1.default.rejects(client.UserManagement().list(), /hook failed/);
+        (0, node_assert_1.default)(0 < hook.unexpected);
+        const fired = hook.unexpected;
+        node_assert_1.default.strictEqual(await client.UserManagement().list(undefined, { throw: false }), undefined);
+        (0, node_assert_1.default)(fired < hook.unexpected);
+    });
+    (0, node_test_1.test)('validate', async (t) => {
+        if (null == __1.config.feature?.validate) {
+            t.skip('feature not present in this SDK: validate');
+            return;
+        }
+        const client = __1.HankoPublicSDK.test(undefined, { feature: { validate: { active: true } } });
+        await node_assert_1.default.rejects(client.UserManagement().list({ "created_at": 1 }), (err) => 'validate_failed' === err.code);
+    });
     (0, node_test_1.test)('basic', async (t) => {
         const live = 'TRUE' === process.env.HANKO_PUBLIC_TEST_LIVE;
         for (const op of ['create', 'list']) {
@@ -62,7 +109,7 @@ const utility_1 = require("../../utility");
         }
         const setup = basicSetup();
         if (setup.live) {
-            return (0, live_entity_1.runLiveEntity)(setup, { "active": true, "alias": { "field": {} }, "fields": { "created_at": { "a": true, "fo": "date-time", "h": "Created At", "n": "created_at", "r": false, "sh": "Time of creation of the the user", "t": "`$STRING`", "key$": "created_at", "index$": 0 }, "emails": { "a": true, "h": "Emails", "n": "emails", "r": false, "t": "`$ARRAY`", "key$": "emails", "index$": 1 }, "family_name": { "a": true, "h": "Family Name", "n": "family_name", "r": false, "t": "`$STRING`", "key$": "family_name", "index$": 2 }, "given_name": { "a": true, "h": "Given Name", "n": "given_name", "r": false, "t": "`$STRING`", "key$": "given_name", "index$": 3 }, "id": { "a": true, "de": true, "h": "Id", "n": "id", "r": false, "sh": "The ID of the user.", "t": "`$STRING`", "key$": "id", "index$": 4 }, "metadata": { "a": true, "h": "Metadata", "n": "metadata", "r": false, "sh": "The public and unsafe metadata of a user", "t": "`$OBJECT`", "key$": "metadata", "index$": 5 }, "mfa_config": { "a": true, "h": "Mfa Config", "n": "mfa_config", "r": false, "t": "`$OBJECT`", "key$": "mfa_config", "index$": 6 }, "name": { "a": true, "h": "Name", "n": "name", "r": false, "t": "`$STRING`", "key$": "name", "index$": 7 }, "passkeys": { "a": true, "h": "Passkeys", "n": "passkeys", "r": false, "t": "`$ARRAY`", "key$": "passkeys", "index$": 8 }, "picture": { "a": true, "fo": "uri", "h": "Picture", "n": "picture", "r": false, "t": "`$STRING`", "key$": "picture", "index$": 9 }, "security_keys": { "a": true, "h": "Security Keys", "n": "security_keys", "r": false, "t": "`$ARRAY`", "key$": "security_keys", "index$": 10 }, "updated_at": { "a": true, "fo": "date-time", "h": "Updated At", "n": "updated_at", "r": false, "sh": "Time of last update of the user", "t": "`$STRING`", "key$": "updated_at", "index$": 11 }, "user_id": { "a": true, "h": "User Id", "n": "user_id", "r": false, "sh": "The ID of the user", "t": "`$STRING`", "key$": "user_id", "index$": 12 }, "username": { "a": true, "h": "Username", "n": "username", "r": false, "sh": "The representation of a username of the user", "t": "`$OBJECT`", "key$": "username", "index$": 13 } }, "id": { "field": "id", "name": "id" }, "name": "user_management", "op": { "create": { "input": "data", "name": "create", "points": [{ "a": true, "co": { "id": "POST /logout", "source": "openapi3", "version": 2 }, "g": {}, "k": "http", "m": "POST", "o": "/logout", "q": {}, "r": {}, "s": [{ "lit": "logout" }], "t": { "req": "`reqdata`", "res": "`body`" }, "index$": 0 }], "key$": "create" }, "list": { "input": "data", "name": "list", "points": [{ "a": true, "co": { "id": "GET /me", "source": "openapi3", "version": 2 }, "g": {}, "k": "http", "m": "GET", "o": "/me", "q": {}, "r": {}, "s": [{ "lit": "me" }], "t": { "req": "`reqdata`", "res": "`body`" }, "index$": 0 }], "key$": "list" } }, "relations": { "ancestors": [] }, "key$": "user_management", "name__orig": "user_management", "Name": "UserManagement", "name_": "user_management", "name-": "user-management", "NAME": "USER_MANAGEMENT", "index$": 14 }, { "active": true, "entity": "user_management", "key$": "BasicUserManagementFlow", "kind": "basic", "name": "BasicUserManagementFlow", "param": {}, "step": [{ "a": true, "d": {}, "i": { "ref": "user_management_ref01" }, "m": {}, "o": "create", "s": [], "v": [], "index$": 0 }, { "a": true, "d": {}, "i": {}, "m": {}, "o": "list", "s": [], "v": [{ "apply": "ItemExists", "def": { "ref": "user_management_ref01" } }], "index$": 1 }] }, 'UserManagement', { "POST /logout": { "protocol": "http", "parameters": [] }, "GET /me": { "protocol": "http", "parameters": [] } });
+            return (0, live_entity_1.runLiveEntity)(setup, { "active": true, "alias": { "field": {} }, "fields": { "created_at": { "a": true, "fo": "date-time", "h": "Created At", "n": "created_at", "r": false, "sh": "Time of creation of the the user", "t": "`$STRING`", "key$": "created_at", "index$": 0 }, "emails": { "a": true, "h": "Emails", "n": "emails", "r": false, "t": "`$ARRAY`", "key$": "emails", "index$": 1 }, "family_name": { "a": true, "h": "Family Name", "n": "family_name", "r": false, "t": "`$STRING`", "key$": "family_name", "index$": 2 }, "given_name": { "a": true, "h": "Given Name", "n": "given_name", "r": false, "t": "`$STRING`", "key$": "given_name", "index$": 3 }, "id": { "a": true, "de": true, "fo": "uuid4", "h": "Id", "n": "id", "r": false, "sh": "The ID of the user.", "t": "`$STRING`", "key$": "id", "index$": 4 }, "metadata": { "a": true, "h": "Metadata", "n": "metadata", "r": false, "sh": "The public and unsafe metadata of a user", "t": "`$OBJECT`", "key$": "metadata", "index$": 5 }, "mfa_config": { "a": true, "h": "Mfa Config", "n": "mfa_config", "r": false, "t": "`$OBJECT`", "key$": "mfa_config", "index$": 6 }, "name": { "a": true, "h": "Name", "n": "name", "r": false, "t": "`$STRING`", "key$": "name", "index$": 7 }, "passkeys": { "a": true, "h": "Passkeys", "n": "passkeys", "r": false, "t": "`$ARRAY`", "key$": "passkeys", "index$": 8 }, "picture": { "a": true, "fo": "uri", "h": "Picture", "n": "picture", "r": false, "t": "`$STRING`", "key$": "picture", "index$": 9 }, "security_keys": { "a": true, "h": "Security Keys", "n": "security_keys", "r": false, "t": "`$ARRAY`", "key$": "security_keys", "index$": 10 }, "updated_at": { "a": true, "fo": "date-time", "h": "Updated At", "n": "updated_at", "r": false, "sh": "Time of last update of the user", "t": "`$STRING`", "key$": "updated_at", "index$": 11 }, "user_id": { "a": true, "fo": "uuid4", "h": "User Id", "n": "user_id", "r": false, "sh": "The ID of the user", "t": "`$STRING`", "key$": "user_id", "index$": 12 }, "username": { "a": true, "h": "Username", "n": "username", "r": false, "sh": "The representation of a username of the user", "t": "`$OBJECT`", "key$": "username", "index$": 13 } }, "id": { "field": "id", "name": "id" }, "name": "user_management", "op": { "create": { "input": "data", "name": "create", "points": [{ "a": true, "co": { "id": "POST /logout", "source": "openapi3", "version": 2 }, "g": {}, "k": "http", "m": "POST", "o": "/logout", "q": {}, "r": {}, "s": [{ "lit": "logout" }], "t": { "req": "`reqdata`", "res": "`body`" }, "index$": 0 }], "key$": "create" }, "list": { "input": "data", "name": "list", "points": [{ "a": true, "co": { "id": "GET /me", "source": "openapi3", "version": 2 }, "g": {}, "k": "http", "m": "GET", "o": "/me", "q": {}, "r": {}, "rs": { "kind": "json", "media": "application/json" }, "s": [{ "lit": "me" }], "t": { "req": "`reqdata`", "res": "`body`" }, "index$": 0 }], "key$": "list" } }, "relations": { "ancestors": [] }, "key$": "user_management", "name__orig": "user_management", "Name": "UserManagement", "name_": "user_management", "name-": "user-management", "NAME": "USER_MANAGEMENT", "index$": 13 }, { "active": true, "entity": "user_management", "key$": "BasicUserManagementFlow", "kind": "basic", "name": "BasicUserManagementFlow", "param": {}, "step": [{ "a": true, "d": {}, "i": { "ref": "user_management_ref01" }, "m": {}, "o": "create", "s": [], "v": [], "index$": 0 }, { "a": true, "d": {}, "i": {}, "m": {}, "o": "list", "s": [], "v": [{ "apply": "ItemExists", "def": { "ref": "user_management_ref01" } }], "index$": 1 }] }, 'UserManagement', { "POST /logout": { "protocol": "http", "parameters": [] }, "GET /me": { "protocol": "http", "parameters": [] } }, { strict: LIVE_STRICT, t });
         }
         const client = setup.client;
         const struct = setup.struct;
@@ -79,6 +126,11 @@ const utility_1 = require("../../utility");
         (0, node_assert_1.default)(!isempty(select(user_management_ref01_list, { id: user_management_ref01_data.id })));
     });
 });
+// main.kit.test.live.strict is true (the default is true): a live
+// request that fails, or a live test missing an input it needs,
+// fails the test.
+// An account with no record for a test to read skips it either way.
+const LIVE_STRICT = true;
 function basicSetup(extra) {
     // TODO: fix test def options
     const options = {}; // null

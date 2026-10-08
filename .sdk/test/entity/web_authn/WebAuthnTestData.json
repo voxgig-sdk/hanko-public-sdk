@@ -2,40 +2,89 @@
   "existing": {
     "web_authn": {
       "WEB_AUTHN00": {
+        "aaguid": "sa0",
+        "attestation_type": "sa1",
+        "backup_eligible": true,
+        "backup_state": false,
+        "created_at": "sa4",
+        "credential_id": "CREDENTIAL01",
         "id": "WEB_AUTHN00",
-        "name": "s33",
-        "rawId": "s34",
+        "last_used_at": "sa7",
+        "mfa_only": true,
+        "name": "sa9",
+        "publickey": "saa",
+        "rawId": "sab",
         "response": {},
-        "type": "s36"
+        "transports": [],
+        "type": "sae",
+        "user_id": "USER01"
       },
       "WEB_AUTHN01": {
+        "aaguid": "s140",
+        "attestation_type": "s141",
+        "backup_eligible": true,
+        "backup_state": false,
+        "created_at": "s144",
+        "credential_id": "CREDENTIAL01",
         "id": "WEB_AUTHN01",
-        "name": "s65",
-        "rawId": "s66",
+        "last_used_at": "s147",
+        "mfa_only": true,
+        "name": "s149",
+        "publickey": "s14a",
+        "rawId": "s14b",
         "response": {},
-        "type": "s68"
+        "transports": [],
+        "type": "s14e",
+        "user_id": "USER01"
       },
       "WEB_AUTHN02": {
+        "aaguid": "s1e0",
+        "attestation_type": "s1e1",
+        "backup_eligible": true,
+        "backup_state": false,
+        "created_at": "s1e4",
+        "credential_id": "CREDENTIAL01",
         "id": "WEB_AUTHN02",
-        "name": "s97",
-        "rawId": "s98",
+        "last_used_at": "s1e7",
+        "mfa_only": true,
+        "name": "s1e9",
+        "publickey": "s1ea",
+        "rawId": "s1eb",
         "response": {},
-        "type": "s9a"
+        "transports": [],
+        "type": "s1ee",
+        "user_id": "USER01"
       }
     }
   },
   "new": {
     "web_authn": {
       "web_authn_ref01": {
-        "name": "sc9",
-        "rawId": "sca",
+        "aaguid": "s280",
+        "attestation_type": "s281",
+        "backup_eligible": true,
+        "backup_state": false,
+        "created_at": "s284",
+        "credential_id": "CREDENTIAL01",
+        "last_used_at": "s287",
+        "mfa_only": true,
+        "name": "s289",
+        "publickey": "s28a",
+        "rawId": "s28b",
         "response": {},
-        "type": "scc"
+        "transports": [],
+        "type": "s28e",
+        "user_id": "USER01"
       }
     }
   },
   "requests": {
     "POST /webauthn/registration/finalize": {
+      "provenance": "operation-contract",
+      "version": 2,
+      "source": "openapi3"
+    },
+    "GET /webauthn/credentials": {
       "provenance": "operation-contract",
       "version": 2,
       "source": "openapi3"

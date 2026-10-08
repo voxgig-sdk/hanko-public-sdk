@@ -49,18 +49,6 @@ const client = HankoPublicSDK.test()
 
 ### Instance Methods
 
-#### `Credential(data?: object)`
-
-Create a new `Credential` entity instance.
-
-**Parameters:**
-
-| Name | Type | Description |
-| --- | --- | --- |
-| `data` | `object` | Initial entity data. |
-
-**Returns:** `CredentialEntity` instance.
-
 #### `CredentialCreationOption(data?: object)`
 
 Create a new `CredentialCreationOption` entity instance.
@@ -280,8 +268,10 @@ Make a direct HTTP request to any API endpoint.
 | `fetchargs.headers` | `object` | Request headers (merged with defaults). |
 | `fetchargs.body` | `any` | Request body (objects are JSON-serialized). |
 | `fetchargs.ctrl` | `object` | Control options (e.g. `{ explain: true }`). |
+| `fetchargs.ctrl.signal` | `AbortSignal` | Aborts the request in flight: `ok` is then `false` and `err.code` is `request_aborted`. |
 
-**Returns:** `Promise<{ ok, status, headers, data } | Error>`
+**Returns:** `Promise<{ ok, status, headers, data }>`. On a failure
+`ok` is `false` and `err` holds the error.
 
 #### `prepare(fetchargs?: object)`
 
@@ -296,65 +286,14 @@ Alias for `HankoPublicSDK.test()`.
 
 **Returns:** `HankoPublicSDK` instance in test mode.
 
+#### Cancelling a call
 
----
-
-## CredentialEntity
-
-```ts
-const credential = client.Credential()
-```
-
-### Fields
-
-| Field | Type | Required | Description |
-| --- | --- | --- | --- |
-| `aaguid` | `string` | No |  |
-| `attestation_type` | `string` | No |  |
-| `backup_eligible` | `boolean` | No |  |
-| `backup_state` | `boolean` | No |  |
-| `created_at` | `string` | No |  |
-| `id` | `string` | No |  |
-| `last_used_at` | `string` | No |  |
-| `mfa_only` | `boolean` | No |  |
-| `name` | `string` | No |  |
-| `publickey` | `string` | No |  |
-| `transports` | `any[]` | No |  |
-
-### Operations
-
-#### `list(match: object, ctrl?: object)`
-
-List entities matching the given criteria. Returns an array.
-
-```ts
-const results = await client.Credential().list()
-```
-
-### Common Methods
-
-#### `data(data?: object)`
-
-Get or set the entity data. When called with data, sets the entity's
-internal data and returns the current data. When called without
-arguments, returns a copy of the current data.
-
-#### `match(match?: object)`
-
-Get or set the entity match criteria. Works the same as `data()`.
-
-#### `make()`
-
-Create a new `CredentialEntity` instance with the same client and
-options.
-
-#### `client()`
-
-Return the parent `HankoPublicSDK` instance.
-
-#### `entopts()`
-
-Return a copy of the entity options.
+Every entity operation takes an optional `ctrl` object after its match or
+data, and an `AbortSignal` in `ctrl.signal` cancels the request in flight.
+The operation then rejects with an error whose `code` is
+`request_aborted` and whose `cause` is the signal's reason. A request
+whose signal has already aborted is not sent. `stream()` takes the signal
+as `callopts.signal`, and ends when it aborts.
 
 
 ---
@@ -381,7 +320,7 @@ const credential_creation_option = client.CredentialCreationOption()
 
 #### `create(data: object, ctrl?: object)`
 
-Create a new entity with the given data.
+Create a new entity with the given data. Resolves to the created entity.
 
 ```ts
 const result = await client.CredentialCreationOption().create({
@@ -437,7 +376,7 @@ const credential_request_option = client.CredentialRequestOption()
 
 #### `create(data: object, ctrl?: object)`
 
-Create a new entity with the given data.
+Create a new entity with the given data. Resolves to the created entity.
 
 ```ts
 const result = await client.CredentialRequestOption().create({
@@ -524,7 +463,7 @@ const result = await client.Email().create({
 
 #### `create(data: object, ctrl?: object)`
 
-Create a new entity with the given data.
+Create a new entity with the given data. Resolves to the created entity.
 
 ```ts
 const result = await client.Email().create({
@@ -534,7 +473,7 @@ const result = await client.Email().create({
 
 #### `list(match: object, ctrl?: object)`
 
-List entities matching the given criteria. Returns an array.
+List entities matching the given criteria. Resolves to an array of entities, one per record.
 
 ```ts
 const results = await client.Email().list()
@@ -542,7 +481,7 @@ const results = await client.Email().list()
 
 #### `remove(match: object, ctrl?: object)`
 
-Remove the entity matching the given criteria.
+Remove the entity matching the given criteria. Resolves to the entity, marked as deleted.
 
 ```ts
 const result = await client.Email().remove({ id: 'id' })
@@ -594,7 +533,7 @@ const hanko_configuration = client.HankoConfiguration()
 
 #### `load(match: object, ctrl?: object)`
 
-Load a single entity matching the given criteria.
+Load a single entity matching the given criteria. Resolves to the entity, whose record `data()` reads.
 
 ```ts
 const result = await client.HankoConfiguration().load()
@@ -649,7 +588,7 @@ const json_web_key = client.JsonWebKey()
 
 #### `list(match: object, ctrl?: object)`
 
-List entities matching the given criteria. Returns an array.
+List entities matching the given criteria. Resolves to an array of entities, one per record.
 
 ```ts
 const results = await client.JsonWebKey().list()
@@ -694,15 +633,17 @@ const passcode = client.Passcode()
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
 | `code` | `string` | No | The actual passcode from the email sent to the user during initialization, a string of 6 decimal digits |
+| `created_at` | `string` | No | Time of creation of the passcode |
 | `email_id` | `string` | No | The ID of the email address |
 | `id` | `string` | No | The ID of the passcode |
+| `ttl` | `number` | No | Lifespan of a passcode in seconds |
 | `user_id` | `string` | Yes | The ID of the user |
 
 ### Operations
 
 #### `create(data: object, ctrl?: object)`
 
-Create a new entity with the given data.
+Create a new entity with the given data. Resolves to the created entity.
 
 ```ts
 const result = await client.Passcode().create({
@@ -775,7 +716,7 @@ const result = await client.Password().create({
 
 #### `create(data: object, ctrl?: object)`
 
-Create a new entity with the given data.
+Create a new entity with the given data. Resolves to the created entity.
 
 ```ts
 const result = await client.Password().create({
@@ -786,7 +727,7 @@ const result = await client.Password().create({
 
 #### `update(data: object, ctrl?: object)`
 
-Update an existing entity. The data must include the entity `id`.
+Update an existing entity. The data must include the entity `id`. Resolves to the updated entity.
 
 ```ts
 const result = await client.Password().update({
@@ -854,20 +795,18 @@ const result = await client.Saml().create({
 
 #### `create(data: object, ctrl?: object)`
 
-Create a new entity with the given data.
+Create a new entity with the given data. Resolves to the created entity.
 
 ```ts
 const result = await client.Saml().create({
 })
 ```
 
+Declares a `application/x-www-form-urlencoded` body, which this SDK does not encode yet: it sends the data as JSON.
+
 #### `load(match: object, ctrl?: object)`
 
-Load a single entity matching the given criteria.
-
-```ts
-const result = await client.Saml().load({ domain: 'domain' })
-```
+Load a single entity matching the given criteria. Resolves to the entity, whose record `data()` reads.
 
 ### Common Methods
 
@@ -907,34 +846,29 @@ const session_management = client.SessionManagement()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `amr` | `any[]` | No | Authentication Method References, JSON array of strings that are identifiers for authentication methods used in the authentication. |
-| `audience` | `any[]` | No | The intended audience of the token. |
-| `email` | `Record<string, any>` | No | Data about the email address associated with the token's subject, if available. |
-| `expiration` | `string` | Yes | The timestamp indicating when the token will expire. |
-| `issued_at` | `string` | No | The timestamp indicating when the token was issued. |
-| `issuer` | `string` | No | The entity that issued the token. |
-| `session_id` | `string` | Yes | The unique identifier for the session associated with this token. |
+| `claims` | `Record<string, any>` | Yes | The claims extracted from a JWT. |
+| `expiration_time` | `string` | No | Date-time indicating the expiration of the session. |
+| `idle_expires_at` | `string` | No | Timestamp (in UTC) indicating when the session will expire due to inactivity, assuming no further activity occurs before this time. |
+| `is_valid` | `boolean` | No | Indicates whether the session is valid or not |
 | `session_token` | `string` | Yes | The session token (JWT) to validate |
-| `subject` | `any` | Yes | The unique identifier of the token's subject. |
+| `user_id` | `string` | No | The ID of the user the session is associated with. |
 
 ### Operations
 
 #### `create(data: object, ctrl?: object)`
 
-Create a new entity with the given data.
+Create a new entity with the given data. Resolves to the created entity.
 
 ```ts
 const result = await client.SessionManagement().create({
-  expiration: 'example_expiration',
-  session_id: 'example_session_id',
+  claims: {},
   session_token: 'example_session_token',
-  subject: 'example_subject',
 })
 ```
 
 #### `load(match: object, ctrl?: object)`
 
-Load a single entity matching the given criteria.
+Load a single entity matching the given criteria. Resolves to the entity, whose record `data()` reads.
 
 ```ts
 const result = await client.SessionManagement().load()
@@ -978,7 +912,7 @@ const status = client.Status()
 
 #### `load(match: object, ctrl?: object)`
 
-Load a single entity matching the given criteria.
+Load a single entity matching the given criteria. Resolves to the entity, whose record `data()` reads.
 
 ```ts
 const result = await client.Status().load()
@@ -1022,10 +956,10 @@ const third_party = client.ThirdParty()
 
 #### `load(match: object, ctrl?: object)`
 
-Load a single entity matching the given criteria.
+Load a single entity matching the given criteria. Resolves to the entity, whose record `data()` reads.
 
 ```ts
-const result = await client.ThirdParty().load({ state: 'state' })
+const result = await client.ThirdParty().load({ provider: 'provider', redirect_to: 'redirect_to' })
 ```
 
 ### Common Methods
@@ -1066,13 +1000,14 @@ const token = client.Token()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
+| `user_id` | `string` | No | The ID of the user on whose behalf the token was exchanged. |
 | `value` | `string` | No |  |
 
 ### Operations
 
 #### `create(data: object, ctrl?: object)`
 
-Create a new entity with the given data.
+Create a new entity with the given data. Resolves to the created entity.
 
 ```ts
 const result = await client.Token().create({
@@ -1165,7 +1100,7 @@ const user = client.User()
 
 #### `create(data: object, ctrl?: object)`
 
-Create a new entity with the given data.
+Create a new entity with the given data. Resolves to the created entity.
 
 ```ts
 const result = await client.User().create({
@@ -1174,7 +1109,7 @@ const result = await client.User().create({
 
 #### `load(match: object, ctrl?: object)`
 
-Load a single entity matching the given criteria.
+Load a single entity matching the given criteria. Resolves to the entity, whose record `data()` reads.
 
 ```ts
 const result = await client.User().load({ id: 'user_id' })
@@ -1182,7 +1117,7 @@ const result = await client.User().load({ id: 'user_id' })
 
 #### `remove(match: object, ctrl?: object)`
 
-Remove the entity matching the given criteria.
+Remove the entity matching the given criteria. Resolves to the entity, marked as deleted.
 
 ```ts
 const result = await client.User().remove({ id: 'user_id' })
@@ -1245,7 +1180,7 @@ const user_management = client.UserManagement()
 
 #### `create(data: object, ctrl?: object)`
 
-Create a new entity with the given data.
+Create a new entity with the given data. Resolves to the created entity.
 
 ```ts
 const result = await client.UserManagement().create({
@@ -1254,7 +1189,7 @@ const result = await client.UserManagement().create({
 
 #### `list(match: object, ctrl?: object)`
 
-List entities matching the given criteria. Returns an array.
+List entities matching the given criteria. Resolves to an array of entities, one per record.
 
 ```ts
 const results = await client.UserManagement().list()
@@ -1298,26 +1233,45 @@ const web_authn = client.WebAuthn()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
+| `aaguid` | `string` | No |  |
+| `attestation_type` | `string` | No |  |
+| `backup_eligible` | `boolean` | No |  |
+| `backup_state` | `boolean` | No |  |
+| `created_at` | `string` | No |  |
+| `credential_id` | `string` | No | The ID of the created credential |
 | `id` | `string` | No |  |
+| `last_used_at` | `string` | No |  |
+| `mfa_only` | `boolean` | No |  |
 | `name` | `string` | No | A new credential name. |
+| `publickey` | `string` | No |  |
 | `rawId` | `string` | No |  |
 | `response` | `Record<string, any>` | No |  |
+| `transports` | `any[]` | No |  |
 | `type` | `string` | No |  |
+| `user_id` | `string` | No | The ID of the user on whose behalf a credential was created |
 
 ### Operations
 
 #### `create(data: object, ctrl?: object)`
 
-Create a new entity with the given data.
+Create a new entity with the given data. Resolves to the created entity.
 
 ```ts
 const result = await client.WebAuthn().create({
 })
 ```
 
+#### `list(match: object, ctrl?: object)`
+
+List entities matching the given criteria. Resolves to an array of entities, one per record.
+
+```ts
+const results = await client.WebAuthn().list()
+```
+
 #### `remove(match: object, ctrl?: object)`
 
-Remove the entity matching the given criteria.
+Remove the entity matching the given criteria. Resolves to the entity, marked as deleted.
 
 ```ts
 const result = await client.WebAuthn().remove({ id: 'id' })
@@ -1325,7 +1279,7 @@ const result = await client.WebAuthn().remove({ id: 'id' })
 
 #### `update(data: object, ctrl?: object)`
 
-Update an existing entity. The data must include the entity `id`.
+Update an existing entity. The data must include the entity `id`. Resolves to the updated entity.
 
 ```ts
 const result = await client.WebAuthn().update({
@@ -1383,7 +1337,7 @@ const webauthn_login = client.WebauthnLogin()
 
 #### `create(data: object, ctrl?: object)`
 
-Create a new entity with the given data.
+Create a new entity with the given data. Resolves to the created entity.
 
 ```ts
 const result = await client.WebauthnLogin().create({
@@ -1708,6 +1662,7 @@ Timeout.
 | Option | Type |
 |---|---|
 | `clearTimer` | function |
+| `now` | function |
 | `setTimer` | function |
 
 These take no default: the feature behaves one way when you supply them and

@@ -77,8 +77,6 @@ func runOp(client *sdk.HankoPublicSDK, op string, query *eng.Value, entityAtom e
 // emits one `case "<name>":` per entity defined in the SDK model.
 func entityFor(client *sdk.HankoPublicSDK, name string) (sdk.HankoPublicEntity, error) {
 	switch strings.ToLower(name) {
-	case "credential":
-		return client.Credential(nil), nil
 	case "credential_creation_option":
 		return client.CredentialCreationOption(nil), nil
 	case "credential_request_option":

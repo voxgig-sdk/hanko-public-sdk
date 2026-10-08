@@ -11,6 +11,51 @@ main: kit: entity: third_party: {
       points: [
         {
           co: {
+            id: "GET /thirdparty/auth"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            query: [
+              {
+                k: "query"
+                n: "provider"
+                or: "provider"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "query"
+                n: "redirect_to"
+                or: "redirect_to"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/thirdparty/auth"
+          q: {
+            exist: [
+              "provider"
+              "redirect_to"
+            ]
+          }
+          s: [
+            {
+              lit: "thirdparty"
+            }
+            {
+              lit: "auth"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          co: {
             id: "GET /thirdparty/callback"
             source: "openapi3"
             version: 2
@@ -51,9 +96,6 @@ main: kit: entity: third_party: {
           o: "/thirdparty/callback"
           q: {
             exist: [
-              "code"
-              "error"
-              "error_description"
               "state"
             ]
           }
@@ -63,51 +105,6 @@ main: kit: entity: third_party: {
             }
             {
               lit: "callback"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
-        {
-          co: {
-            id: "GET /thirdparty/auth"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            query: [
-              {
-                k: "query"
-                n: "provider"
-                or: "provider"
-                r: true
-                t: "`$STRING`"
-              }
-              {
-                k: "query"
-                n: "redirect_to"
-                or: "redirect_to"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/thirdparty/auth"
-          q: {
-            exist: [
-              "provider"
-              "redirect_to"
-            ]
-          }
-          s: [
-            {
-              lit: "thirdparty"
-            }
-            {
-              lit: "auth"
             }
           ]
           t: {

@@ -33,6 +33,7 @@ main: kit: entity: user_management: {
     }
     id: {
       de: true
+      fo: "uuid4"
       h: "Id"
       n: "id"
       r: false
@@ -86,6 +87,7 @@ main: kit: entity: user_management: {
       t: "`$STRING`"
     }
     user_id: {
+      fo: "uuid4"
       h: "User Id"
       n: "user_id"
       r: false
@@ -142,6 +144,10 @@ main: kit: entity: user_management: {
           }
           m: "GET"
           o: "/me"
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "me"

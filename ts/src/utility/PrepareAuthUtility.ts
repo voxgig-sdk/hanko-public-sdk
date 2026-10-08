@@ -1,5 +1,6 @@
 
 import { Context, Spec } from '../types'
+import { cookieKeep } from './PrepareHeadersUtility'
 
 
 const CRED_name = 'hanko'
@@ -10,6 +11,12 @@ const OPTION_apikey = 'apikey'
 const OPTION_secret = 'secret'
 
 const NOTFOUND = '__NOTFOUND__'
+
+
+// The client's `auth.name` option, when set, replaces the name the API declares.
+function credName(name: any): string {
+  return 'string' === typeof name && '' !== name ? name : CRED_name
+}
 
 
 function prepareAuth(ctx: Context): Spec | Error {
@@ -29,22 +36,12 @@ function prepareAuth(ctx: Context): Spec | Error {
 
   const headers = spec.headers
 
-  function cookieSet(headers: any, value: any) {
+  function cookieSet(headers: any, name: string, value: any) {
     const existing = getprop(headers, COOKIE_header, '')
-    const kept: string[] = []
-
-    if ('string' === typeof existing && '' !== existing) {
-      for (const part of existing.split(';')) {
-        const piece = part.trim()
-        if ('' === piece || piece === CRED_name || piece.startsWith(CRED_name + '=')) {
-          continue
-        }
-        kept.push(piece)
-      }
-    }
+    const kept: string[] = 'string' === typeof existing ? cookieKeep(existing, [name]) : []
 
     if (null != value) {
-      kept.push(CRED_name + '=' + value)
+      kept.push(name + '=' + value)
     }
 
     if (0 === kept.length) {
@@ -59,19 +56,25 @@ function prepareAuth(ctx: Context): Spec | Error {
 
   // Public APIs that need no auth omit the options.auth block entirely.
   if (null == options.auth) {
-    cookieSet(headers, null)
+    cookieSet(headers, CRED_name, null)
     return spec
   }
 
   const prefix = options.auth.prefix
+  const name = credName(options.auth.name)
+
+  // A credential left under the declared name would travel beside the renamed one.
+  if (CRED_name !== name) {
+    cookieSet(headers, CRED_name, null)
+  }
 
   const apikey = getprop(options, OPTION_apikey, NOTFOUND)
 
   if (NOTFOUND === apikey || null == apikey || '' === apikey) {
-    cookieSet(headers, null)
+    cookieSet(headers, name, null)
   }
   else {
-    cookieSet(headers, apikey)
+    cookieSet(headers, name, apikey)
   }
 
   return spec

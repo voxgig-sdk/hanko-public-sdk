@@ -20,7 +20,7 @@ import (
 const prompt = "hanko-public"
 
 // entitiesHelp is the space-separated entity list shown by /help.
-const entitiesHelp = "credential credential_creation_option credential_request_option email hanko_configuration json_web_key passcode password saml session_management status third_party token user user_management web_authn webauthn_login"
+const entitiesHelp = "credential_creation_option credential_request_option email hanko_configuration json_web_key passcode password saml session_management status third_party token user user_management web_authn webauthn_login"
 
 func main() {
 	os.Exit(run(os.Args[1:], os.Stdin, os.Stdout, os.Stderr))

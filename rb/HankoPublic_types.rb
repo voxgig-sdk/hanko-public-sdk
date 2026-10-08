@@ -8,104 +8,6 @@
 # @voxgig/apidef VALID_CANON). Ruby types are unenforced; these YARD
 # annotations document the shapes. Do not edit by hand.
 
-# Credential entity data model.
-#
-# @!attribute [rw] aaguid
-#   @return [String, nil]
-#
-# @!attribute [rw] attestation_type
-#   @return [String, nil]
-#
-# @!attribute [rw] backup_eligible
-#   @return [Boolean, nil]
-#
-# @!attribute [rw] backup_state
-#   @return [Boolean, nil]
-#
-# @!attribute [rw] created_at
-#   @return [String, nil]
-#
-# @!attribute [rw] id
-#   @return [String, nil]
-#
-# @!attribute [rw] last_used_at
-#   @return [String, nil]
-#
-# @!attribute [rw] mfa_only
-#   @return [Boolean, nil]
-#
-# @!attribute [rw] name
-#   @return [String, nil]
-#
-# @!attribute [rw] publickey
-#   @return [String, nil]
-#
-# @!attribute [rw] transports
-#   @return [Array, nil]
-Credential = Struct.new(
-  :aaguid,
-  :attestation_type,
-  :backup_eligible,
-  :backup_state,
-  :created_at,
-  :id,
-  :last_used_at,
-  :mfa_only,
-  :name,
-  :publickey,
-  :transports,
-  keyword_init: true
-)
-
-# Request payload for Credential#list.
-#
-# @!attribute [rw] aaguid
-#   @return [String, nil]
-#
-# @!attribute [rw] attestation_type
-#   @return [String, nil]
-#
-# @!attribute [rw] backup_eligible
-#   @return [Boolean, nil]
-#
-# @!attribute [rw] backup_state
-#   @return [Boolean, nil]
-#
-# @!attribute [rw] created_at
-#   @return [String, nil]
-#
-# @!attribute [rw] id
-#   @return [String, nil]
-#
-# @!attribute [rw] last_used_at
-#   @return [String, nil]
-#
-# @!attribute [rw] mfa_only
-#   @return [Boolean, nil]
-#
-# @!attribute [rw] name
-#   @return [String, nil]
-#
-# @!attribute [rw] publickey
-#   @return [String, nil]
-#
-# @!attribute [rw] transports
-#   @return [Array, nil]
-CredentialListMatch = Struct.new(
-  :aaguid,
-  :attestation_type,
-  :backup_eligible,
-  :backup_state,
-  :created_at,
-  :id,
-  :last_used_at,
-  :mfa_only,
-  :name,
-  :publickey,
-  :transports,
-  keyword_init: true
-)
-
 # CredentialCreationOption entity data model.
 #
 # @!attribute [rw] attestation
@@ -423,18 +325,26 @@ JsonWebKeyListMatch = Struct.new(
 # @!attribute [rw] code
 #   @return [String, nil]
 #
+# @!attribute [rw] created_at
+#   @return [String, nil]
+#
 # @!attribute [rw] email_id
 #   @return [String, nil]
 #
 # @!attribute [rw] id
 #   @return [String, nil]
 #
+# @!attribute [rw] ttl
+#   @return [Integer, nil]
+#
 # @!attribute [rw] user_id
 #   @return [String]
 Passcode = Struct.new(
   :code,
+  :created_at,
   :email_id,
   :id,
+  :ttl,
   :user_id,
   keyword_init: true
 )
@@ -444,18 +354,26 @@ Passcode = Struct.new(
 # @!attribute [rw] code
 #   @return [String, nil]
 #
+# @!attribute [rw] created_at
+#   @return [String, nil]
+#
 # @!attribute [rw] email_id
 #   @return [String, nil]
 #
 # @!attribute [rw] id
 #   @return [String, nil]
 #
+# @!attribute [rw] ttl
+#   @return [Integer, nil]
+#
 # @!attribute [rw] user_id
 #   @return [String]
 PasscodeCreateData = Struct.new(
   :code,
+  :created_at,
   :email_id,
   :id,
+  :ttl,
   :user_id,
   keyword_init: true
 )
@@ -522,124 +440,88 @@ end
 
 # SessionManagement entity data model.
 #
-# @!attribute [rw] amr
-#   @return [Array, nil]
+# @!attribute [rw] claims
+#   @return [Hash]
 #
-# @!attribute [rw] audience
-#   @return [Array, nil]
-#
-# @!attribute [rw] email
-#   @return [Hash, nil]
-#
-# @!attribute [rw] expiration
-#   @return [String]
-#
-# @!attribute [rw] issued_at
+# @!attribute [rw] expiration_time
 #   @return [String, nil]
 #
-# @!attribute [rw] issuer
+# @!attribute [rw] idle_expires_at
 #   @return [String, nil]
 #
-# @!attribute [rw] session_id
-#   @return [String]
+# @!attribute [rw] is_valid
+#   @return [Boolean, nil]
 #
 # @!attribute [rw] session_token
 #   @return [String]
 #
-# @!attribute [rw] subject
-#   @return [Object]
+# @!attribute [rw] user_id
+#   @return [String, nil]
 SessionManagement = Struct.new(
-  :amr,
-  :audience,
-  :email,
-  :expiration,
-  :issued_at,
-  :issuer,
-  :session_id,
+  :claims,
+  :expiration_time,
+  :idle_expires_at,
+  :is_valid,
   :session_token,
-  :subject,
+  :user_id,
   keyword_init: true
 )
 
 # Request payload for SessionManagement#load.
 #
-# @!attribute [rw] amr
-#   @return [Array, nil]
-#
-# @!attribute [rw] audience
-#   @return [Array, nil]
-#
-# @!attribute [rw] email
+# @!attribute [rw] claims
 #   @return [Hash, nil]
 #
-# @!attribute [rw] expiration
+# @!attribute [rw] expiration_time
 #   @return [String, nil]
 #
-# @!attribute [rw] issued_at
+# @!attribute [rw] idle_expires_at
 #   @return [String, nil]
 #
-# @!attribute [rw] issuer
-#   @return [String, nil]
-#
-# @!attribute [rw] session_id
-#   @return [String, nil]
+# @!attribute [rw] is_valid
+#   @return [Boolean, nil]
 #
 # @!attribute [rw] session_token
 #   @return [String, nil]
 #
-# @!attribute [rw] subject
-#   @return [Object, nil]
+# @!attribute [rw] user_id
+#   @return [String, nil]
 SessionManagementLoadMatch = Struct.new(
-  :amr,
-  :audience,
-  :email,
-  :expiration,
-  :issued_at,
-  :issuer,
-  :session_id,
+  :claims,
+  :expiration_time,
+  :idle_expires_at,
+  :is_valid,
   :session_token,
-  :subject,
+  :user_id,
   keyword_init: true
 )
 
 # Request payload for SessionManagement#create.
 #
-# @!attribute [rw] amr
-#   @return [Array, nil]
+# @!attribute [rw] claims
+#   @return [Hash]
 #
-# @!attribute [rw] audience
-#   @return [Array, nil]
-#
-# @!attribute [rw] email
-#   @return [Hash, nil]
-#
-# @!attribute [rw] expiration
-#   @return [String]
-#
-# @!attribute [rw] issued_at
+# @!attribute [rw] expiration_time
 #   @return [String, nil]
 #
-# @!attribute [rw] issuer
+# @!attribute [rw] idle_expires_at
 #   @return [String, nil]
 #
-# @!attribute [rw] session_id
-#   @return [String]
+# @!attribute [rw] is_valid
+#   @return [Boolean, nil]
 #
 # @!attribute [rw] session_token
 #   @return [String]
 #
-# @!attribute [rw] subject
-#   @return [Object]
+# @!attribute [rw] user_id
+#   @return [String, nil]
 SessionManagementCreateData = Struct.new(
-  :amr,
-  :audience,
-  :email,
-  :expiration,
-  :issued_at,
-  :issuer,
-  :session_id,
+  :claims,
+  :expiration_time,
+  :idle_expires_at,
+  :is_valid,
   :session_token,
-  :subject,
+  :user_id,
   keyword_init: true
 )
 
@@ -657,39 +539,39 @@ end
 
 # Request payload for ThirdParty#load.
 #
-# @!attribute [rw] code
-#   @return [String, nil]
+# @!attribute [rw] provider
+#   @return [String]
 #
-# @!attribute [rw] error
-#   @return [String, nil]
-#
-# @!attribute [rw] error_description
-#   @return [String, nil]
-#
-# @!attribute [rw] state
+# @!attribute [rw] redirect_to
 #   @return [String]
 ThirdPartyLoadMatch = Struct.new(
-  :code,
-  :error,
-  :error_description,
-  :state,
+  :provider,
+  :redirect_to,
   keyword_init: true
 )
 
 # Token entity data model.
 #
+# @!attribute [rw] user_id
+#   @return [String, nil]
+#
 # @!attribute [rw] value
 #   @return [String, nil]
 Token = Struct.new(
+  :user_id,
   :value,
   keyword_init: true
 )
 
 # Request payload for Token#create.
 #
+# @!attribute [rw] user_id
+#   @return [String, nil]
+#
 # @!attribute [rw] value
 #   @return [String, nil]
 TokenCreateData = Struct.new(
+  :user_id,
   :value,
   keyword_init: true
 )
@@ -1131,10 +1013,37 @@ UserManagementCreateData = Struct.new(
 
 # WebAuthn entity data model.
 #
+# @!attribute [rw] aaguid
+#   @return [String, nil]
+#
+# @!attribute [rw] attestation_type
+#   @return [String, nil]
+#
+# @!attribute [rw] backup_eligible
+#   @return [Boolean, nil]
+#
+# @!attribute [rw] backup_state
+#   @return [Boolean, nil]
+#
+# @!attribute [rw] created_at
+#   @return [String, nil]
+#
+# @!attribute [rw] credential_id
+#   @return [String, nil]
+#
 # @!attribute [rw] id
 #   @return [String, nil]
 #
+# @!attribute [rw] last_used_at
+#   @return [String, nil]
+#
+# @!attribute [rw] mfa_only
+#   @return [Boolean, nil]
+#
 # @!attribute [rw] name
+#   @return [String, nil]
+#
+# @!attribute [rw] publickey
 #   @return [String, nil]
 #
 # @!attribute [rw] rawId
@@ -1143,23 +1052,136 @@ UserManagementCreateData = Struct.new(
 # @!attribute [rw] response
 #   @return [Hash, nil]
 #
+# @!attribute [rw] transports
+#   @return [Array, nil]
+#
 # @!attribute [rw] type
 #   @return [String, nil]
+#
+# @!attribute [rw] user_id
+#   @return [String, nil]
 WebAuthn = Struct.new(
+  :aaguid,
+  :attestation_type,
+  :backup_eligible,
+  :backup_state,
+  :created_at,
+  :credential_id,
   :id,
+  :last_used_at,
+  :mfa_only,
   :name,
+  :publickey,
   :rawId,
   :response,
+  :transports,
   :type,
+  :user_id,
+  keyword_init: true
+)
+
+# Request payload for WebAuthn#list.
+#
+# @!attribute [rw] aaguid
+#   @return [String, nil]
+#
+# @!attribute [rw] attestation_type
+#   @return [String, nil]
+#
+# @!attribute [rw] backup_eligible
+#   @return [Boolean, nil]
+#
+# @!attribute [rw] backup_state
+#   @return [Boolean, nil]
+#
+# @!attribute [rw] created_at
+#   @return [String, nil]
+#
+# @!attribute [rw] credential_id
+#   @return [String, nil]
+#
+# @!attribute [rw] id
+#   @return [String, nil]
+#
+# @!attribute [rw] last_used_at
+#   @return [String, nil]
+#
+# @!attribute [rw] mfa_only
+#   @return [Boolean, nil]
+#
+# @!attribute [rw] name
+#   @return [String, nil]
+#
+# @!attribute [rw] publickey
+#   @return [String, nil]
+#
+# @!attribute [rw] rawId
+#   @return [String, nil]
+#
+# @!attribute [rw] response
+#   @return [Hash, nil]
+#
+# @!attribute [rw] transports
+#   @return [Array, nil]
+#
+# @!attribute [rw] type
+#   @return [String, nil]
+#
+# @!attribute [rw] user_id
+#   @return [String, nil]
+WebAuthnListMatch = Struct.new(
+  :aaguid,
+  :attestation_type,
+  :backup_eligible,
+  :backup_state,
+  :created_at,
+  :credential_id,
+  :id,
+  :last_used_at,
+  :mfa_only,
+  :name,
+  :publickey,
+  :rawId,
+  :response,
+  :transports,
+  :type,
+  :user_id,
   keyword_init: true
 )
 
 # Request payload for WebAuthn#create.
 #
+# @!attribute [rw] aaguid
+#   @return [String, nil]
+#
+# @!attribute [rw] attestation_type
+#   @return [String, nil]
+#
+# @!attribute [rw] backup_eligible
+#   @return [Boolean, nil]
+#
+# @!attribute [rw] backup_state
+#   @return [Boolean, nil]
+#
+# @!attribute [rw] created_at
+#   @return [String, nil]
+#
+# @!attribute [rw] credential_id
+#   @return [String, nil]
+#
 # @!attribute [rw] id
 #   @return [String, nil]
 #
+# @!attribute [rw] last_used_at
+#   @return [String, nil]
+#
+# @!attribute [rw] mfa_only
+#   @return [Boolean, nil]
+#
 # @!attribute [rw] name
+#   @return [String, nil]
+#
+# @!attribute [rw] publickey
 #   @return [String, nil]
 #
 # @!attribute [rw] rawId
@@ -1168,14 +1190,31 @@ WebAuthn = Struct.new(
 # @!attribute [rw] response
 #   @return [Hash, nil]
 #
+# @!attribute [rw] transports
+#   @return [Array, nil]
+#
 # @!attribute [rw] type
 #   @return [String, nil]
+#
+# @!attribute [rw] user_id
+#   @return [String, nil]
 WebAuthnCreateData = Struct.new(
+  :aaguid,
+  :attestation_type,
+  :backup_eligible,
+  :backup_state,
+  :created_at,
+  :credential_id,
   :id,
+  :last_used_at,
+  :mfa_only,
   :name,
+  :publickey,
   :rawId,
   :response,
+  :transports,
   :type,
+  :user_id,
   keyword_init: true
 )
 
@@ -1184,7 +1223,34 @@ WebAuthnCreateData = Struct.new(
 # @!attribute [rw] id
 #   @return [String]
 #
+# @!attribute [rw] aaguid
+#   @return [String, nil]
+#
+# @!attribute [rw] attestation_type
+#   @return [String, nil]
+#
+# @!attribute [rw] backup_eligible
+#   @return [Boolean, nil]
+#
+# @!attribute [rw] backup_state
+#   @return [Boolean, nil]
+#
+# @!attribute [rw] created_at
+#   @return [String, nil]
+#
+# @!attribute [rw] credential_id
+#   @return [String, nil]
+#
+# @!attribute [rw] last_used_at
+#   @return [String, nil]
+#
+# @!attribute [rw] mfa_only
+#   @return [Boolean, nil]
+#
 # @!attribute [rw] name
+#   @return [String, nil]
+#
+# @!attribute [rw] publickey
 #   @return [String, nil]
 #
 # @!attribute [rw] rawId
@@ -1193,14 +1259,31 @@ WebAuthnCreateData = Struct.new(
 # @!attribute [rw] response
 #   @return [Hash, nil]
 #
+# @!attribute [rw] transports
+#   @return [Array, nil]
+#
 # @!attribute [rw] type
+#   @return [String, nil]
+#
+# @!attribute [rw] user_id
 #   @return [String, nil]
 WebAuthnUpdateData = Struct.new(
   :id,
+  :aaguid,
+  :attestation_type,
+  :backup_eligible,
+  :backup_state,
+  :created_at,
+  :credential_id,
+  :last_used_at,
+  :mfa_only,
   :name,
+  :publickey,
   :rawId,
   :response,
+  :transports,
   :type,
+  :user_id,
   keyword_init: true
 )
 

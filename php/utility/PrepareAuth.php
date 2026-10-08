@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 // HankoPublic SDK utility: prepare_auth
 
+require_once __DIR__ . '/PrepareHeaders.php';
+
 class HankoPublicPrepareAuth
 {
     private const COOKIE_AUTH = 'hanko';
@@ -10,24 +12,20 @@ class HankoPublicPrepareAuth
     private const OPTION_APIKEY = 'apikey';
     private const NOT_FOUND = '__NOTFOUND__';
 
-    private static function applyCookie(array &$headers, ?string $value): void
+    // The client's auth.name option, when set, replaces the name the API declares.
+    private static function authName(array $options): string
     {
-        $kept = [];
-        $existing = $headers[self::HEADER_COOKIE] ?? '';
+        $name = \Voxgig\Struct\Struct::getpath($options, 'auth.name');
+        return is_string($name) && '' !== $name ? $name : self::COOKIE_AUTH;
+    }
 
-        if (is_string($existing) && '' !== $existing) {
-            foreach (explode(';', $existing) as $part) {
-                $piece = trim($part);
-                if ('' === $piece || $piece === self::COOKIE_AUTH
-                    || str_starts_with($piece, self::COOKIE_AUTH . '=')) {
-                    continue;
-                }
-                $kept[] = $piece;
-            }
-        }
+    private static function applyCookie(array &$headers, string $name, ?string $value): void
+    {
+        $existing = $headers[self::HEADER_COOKIE] ?? '';
+        $kept = is_string($existing) ? HankoPublicPrepareHeaders::cookieKeep($existing, [$name]) : [];
 
         if (null !== $value) {
-            $kept[] = self::COOKIE_AUTH . '=' . $value;
+            $kept[] = $name . '=' . $value;
         }
 
         if ([] === $kept) {
@@ -49,8 +47,15 @@ class HankoPublicPrepareAuth
 
         // Public APIs that need no auth omit the options.auth block entirely.
         if (!isset($options['auth']) || $options['auth'] === null) {
-            self::applyCookie($headers, null);
+            self::applyCookie($headers, self::COOKIE_AUTH, null);
             return [$spec, null];
+        }
+
+        $name = self::authName($options);
+
+        // A credential left under the declared name would travel beside the renamed one.
+        if ($name !== self::COOKIE_AUTH) {
+            self::applyCookie($headers, self::COOKIE_AUTH, null);
         }
 
         $apikey = \Voxgig\Struct\Struct::getprop($options, self::OPTION_APIKEY, self::NOT_FOUND);
@@ -59,10 +64,10 @@ class HankoPublicPrepareAuth
             || $apikey === null;
 
         if ($missing) {
-            self::applyCookie($headers, null);
+            self::applyCookie($headers, $name, null);
         } else {
             // One `Cookie:` header holds every cookie, separated by '; '.
-            self::applyCookie($headers, is_string($apikey) ? $apikey : '');
+            self::applyCookie($headers, $name, is_string($apikey) ? $apikey : '');
         }
 
         return [$spec, null];

@@ -1,11 +1,24 @@
 {
   point: "warning"
-  note: "No paths defined for entity=create_user_response_object"
-  entm: {
-    name: "create_user_response_object"
-    orig: "CreateUserResponseObject"
-    path: {
-    }
-  }
+  note: "Points POST /passcode/login/finalize and POST /passcode/login/initialize on entity=passcode op=create have the same selector (exist: none), so only POST /passcode/login/finalize is ever chosen. An action or another entity in guide.aontu tells them apart."
+  entity: "passcode"
+  op: "create"
+  points: [
+    "POST /passcode/login/finalize"
+    "POST /passcode/login/initialize"
+  ]
+
+}
+
+
+{
+  point: "warning"
+  note: "Points POST /user and POST /users on entity=user op=create have the same selector (exist: none), so only POST /user is ever chosen. An action or another entity in guide.aontu tells them apart."
+  entity: "user"
+  op: "create"
+  points: [
+    "POST /user"
+    "POST /users"
+  ]
 
 }

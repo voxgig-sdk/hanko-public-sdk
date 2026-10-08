@@ -54,6 +54,14 @@ const utility_1 = require("../../utility");
         const ent = testsdk.CredentialRequestOption();
         (0, node_assert_1.default)(null != ent);
     });
+    (0, node_test_1.test)('validate', async (t) => {
+        if (null == __1.config.feature?.validate) {
+            t.skip('feature not present in this SDK: validate');
+            return;
+        }
+        const client = __1.HankoPublicSDK.test(undefined, { feature: { validate: { active: true } } });
+        await node_assert_1.default.rejects(client.CredentialRequestOption().create({ "challenge": 1 }), (err) => 'validate_failed' === err.code);
+    });
     (0, node_test_1.test)('basic', async (t) => {
         const live = 'TRUE' === process.env.HANKO_PUBLIC_TEST_LIVE;
         for (const op of ['create']) {
@@ -62,7 +70,7 @@ const utility_1 = require("../../utility");
         }
         const setup = basicSetup();
         if (setup.live) {
-            return (0, live_entity_1.runLiveEntity)(setup, { "active": true, "alias": { "field": {} }, "fields": { "allowCredentials": { "a": true, "h": "Allow Credentials", "n": "allowCredentials", "r": false, "t": "`$ARRAY`", "key$": "allowCredentials", "index$": 0 }, "challenge": { "a": true, "fo": "base64url", "h": "Challenge", "n": "challenge", "r": false, "t": "`$STRING`", "key$": "challenge", "index$": 1 }, "rpId": { "a": true, "h": "Rp Id", "n": "rpId", "r": false, "t": "`$STRING`", "key$": "rpId", "index$": 2 }, "timeout": { "a": true, "fo": "int64", "h": "Timeout", "n": "timeout", "r": false, "t": "`$INTEGER`", "key$": "timeout", "index$": 3 }, "userVerification": { "a": true, "h": "User Verification", "n": "userVerification", "r": false, "t": "`$STRING`", "key$": "userVerification", "index$": 4 }, "user_id": { "a": true, "h": "User Id", "n": "user_id", "r": false, "sh": "The ID of the user on whose behalf WebAuthn login should be performed", "t": "`$STRING`", "key$": "user_id", "index$": 5 } }, "name": "credential_request_option", "op": { "create": { "input": "data", "name": "create", "points": [{ "a": true, "co": { "id": "POST /webauthn/login/initialize", "source": "openapi3", "version": 2 }, "g": {}, "k": "http", "m": "POST", "o": "/webauthn/login/initialize", "q": {}, "r": {}, "s": [{ "lit": "webauthn" }, { "lit": "login" }, { "lit": "initialize" }], "t": { "req": "`reqdata`", "res": "`body.publicKey`" }, "index$": 0 }], "key$": "create" } }, "relations": { "ancestors": [] }, "key$": "credential_request_option", "name__orig": "credential_request_option", "Name": "CredentialRequestOption", "name_": "credential_request_option", "name-": "credential-request-option", "NAME": "CREDENTIAL_REQUEST_OPTION", "index$": 2 }, { "active": true, "entity": "credential_request_option", "key$": "BasicCredentialRequestOptionFlow", "kind": "basic", "name": "BasicCredentialRequestOptionFlow", "param": {}, "step": [{ "a": true, "d": {}, "i": { "ref": "credential_request_option_ref01" }, "m": {}, "o": "create", "s": [], "v": [], "index$": 0 }] }, 'CredentialRequestOption', { "POST /webauthn/login/initialize": { "protocol": "http", "requestBody": { "content": { "application/json": { "schema": { "type": "object", "properties": { "user_id": { "description": "The ID of the user on whose behalf WebAuthn login should be performed", "allOf": [{ "type": "string", "format": "uuid4", "example": "c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c", "x-ref": "#/components/schemas/UUID4" }], "key$": "user_id" } }, "index$": 1 } } } }, "parameters": [] } });
+            return (0, live_entity_1.runLiveEntity)(setup, { "active": true, "alias": { "field": {} }, "fields": { "allowCredentials": { "a": true, "h": "Allow Credentials", "n": "allowCredentials", "r": false, "t": "`$ARRAY`", "key$": "allowCredentials", "index$": 0 }, "challenge": { "a": true, "fo": "base64url", "h": "Challenge", "n": "challenge", "r": false, "t": "`$STRING`", "key$": "challenge", "index$": 1 }, "rpId": { "a": true, "h": "Rp Id", "n": "rpId", "r": false, "t": "`$STRING`", "key$": "rpId", "index$": 2 }, "timeout": { "a": true, "fo": "int64", "h": "Timeout", "n": "timeout", "r": false, "t": "`$INTEGER`", "key$": "timeout", "index$": 3 }, "userVerification": { "a": true, "h": "User Verification", "n": "userVerification", "r": false, "t": "`$STRING`", "key$": "userVerification", "index$": 4 }, "user_id": { "a": true, "fo": "uuid4", "h": "User Id", "n": "user_id", "r": false, "sh": "The ID of the user on whose behalf WebAuthn login should be performed", "t": "`$STRING`", "key$": "user_id", "index$": 5 } }, "name": "credential_request_option", "op": { "create": { "input": "data", "name": "create", "points": [{ "a": true, "bf": ["user_id"], "co": { "id": "POST /webauthn/login/initialize", "source": "openapi3", "version": 2 }, "g": {}, "k": "http", "m": "POST", "o": "/webauthn/login/initialize", "q": {}, "r": {}, "rs": { "kind": "json", "media": "application/json" }, "s": [{ "lit": "webauthn" }, { "lit": "login" }, { "lit": "initialize" }], "t": { "req": "`reqdata`", "res": "`body.publicKey`" }, "index$": 0 }], "key$": "create" } }, "relations": { "ancestors": [] }, "key$": "credential_request_option", "name__orig": "credential_request_option", "Name": "CredentialRequestOption", "name_": "credential_request_option", "name-": "credential-request-option", "NAME": "CREDENTIAL_REQUEST_OPTION", "index$": 1 }, { "active": true, "entity": "credential_request_option", "key$": "BasicCredentialRequestOptionFlow", "kind": "basic", "name": "BasicCredentialRequestOptionFlow", "param": {}, "step": [{ "a": true, "d": {}, "i": { "ref": "credential_request_option_ref01" }, "m": {}, "o": "create", "s": [], "v": [], "index$": 0 }] }, 'CredentialRequestOption', { "POST /webauthn/login/initialize": { "protocol": "http", "requestBody": { "content": { "application/json": { "schema": { "type": "object", "properties": { "user_id": { "description": "The ID of the user on whose behalf WebAuthn login should be performed", "allOf": [{ "type": "string", "format": "uuid4", "example": "c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c", "x-ref": "#/components/schemas/UUID4" }], "key$": "user_id" } }, "index$": 1 } } } }, "parameters": [] } }, { strict: LIVE_STRICT, t });
         }
         const client = setup.client;
         const struct = setup.struct;
@@ -75,6 +83,11 @@ const utility_1 = require("../../utility");
         (0, node_assert_1.default)(null != credential_request_option_ref01_data);
     });
 });
+// main.kit.test.live.strict is true (the default is true): a live
+// request that fails, or a live test missing an input it needs,
+// fails the test.
+// An account with no record for a test to read skips it either way.
+const LIVE_STRICT = true;
 function basicSetup(extra) {
     // TODO: fix test def options
     const options = {}; // null

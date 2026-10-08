@@ -1,4 +1,3 @@
-import { CredentialEntity } from './entity/CredentialEntity';
 import { CredentialCreationOptionEntity } from './entity/CredentialCreationOptionEntity';
 import { CredentialRequestOptionEntity } from './entity/CredentialRequestOptionEntity';
 import { EmailEntity } from './entity/EmailEntity';
@@ -23,6 +22,19 @@ import { HankoPublicEntityBase } from './HankoPublicEntityBase';
 import { Utility } from './utility/Utility';
 import { BaseFeature } from './feature/base/BaseFeature';
 declare const stdutil: Utility;
+type DirectResult = {
+    ok: false;
+    err: any;
+    status?: undefined;
+    headers?: undefined;
+    data?: undefined;
+} | {
+    ok: boolean;
+    status: number;
+    headers: any;
+    data: any;
+    err?: any;
+};
 declare class HankoPublicSDK {
     _mode: string;
     _options: any;
@@ -33,34 +45,9 @@ declare class HankoPublicSDK {
     options(): any;
     utility(): any;
     prepare(fetchargs?: any): Promise<any>;
-    direct(fetchargs?: any): Promise<Error | {
-        ok: boolean;
-        status: number;
-        headers: any;
-        data: any;
-        err?: undefined;
-    } | {
-        ok: boolean;
-        err: any;
-        status?: undefined;
-        headers?: undefined;
-        data?: undefined;
-    }>;
-    _rawRequest(fetchargs?: any): Promise<Error | {
-        ok: boolean;
-        status: number;
-        headers: any;
-        data: any;
-        err?: undefined;
-    } | {
-        ok: boolean;
-        err: any;
-        status?: undefined;
-        headers?: undefined;
-        data?: undefined;
-    }>;
+    direct(fetchargs?: any): Promise<DirectResult>;
+    _rawRequest(fetchargs?: any): Promise<DirectResult>;
     graphql(query: string, variables?: any, ctrl?: any): Promise<any>;
-    Credential(entopts?: Record<string, any>): CredentialEntity;
     CredentialCreationOption(entopts?: Record<string, any>): CredentialCreationOptionEntity;
     CredentialRequestOption(entopts?: Record<string, any>): CredentialRequestOptionEntity;
     Email(entopts?: Record<string, any>): EmailEntity;
@@ -87,3 +74,4 @@ declare class HankoPublicSDK {
 }
 declare const SDK: typeof HankoPublicSDK;
 export { stdutil, config, BaseFeature, HankoPublicEntityBase, HankoPublicSDK, SDK, };
+export type { DirectResult };

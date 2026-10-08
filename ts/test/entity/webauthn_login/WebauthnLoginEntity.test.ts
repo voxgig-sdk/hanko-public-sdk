@@ -9,7 +9,7 @@ import { createLiveTransport } from '../../live-runner'
 import { runLiveEntity } from '../../live-entity'
 
 
-import { HankoPublicSDK, BaseFeature, stdutil } from '../../..'
+import { HankoPublicSDK, BaseFeature, config, stdutil } from '../../..'
 
 import {
   envOverride,
@@ -41,6 +41,18 @@ describe('WebauthnLoginEntity', async () => {
   })
 
 
+  test('validate', async (t) => {
+    if (null == (config as any).feature?.validate) {
+      t.skip('feature not present in this SDK: validate')
+      return
+    }
+    const client = HankoPublicSDK.test(undefined, { feature: { validate: { active: true } } })
+    await assert.rejects(client.WebauthnLogin().create({"credential_id":1} as any),
+      (err: any) => 'validate_failed' === err.code)
+  })
+
+
+
   test('basic', async (t) => {
 
     const live = 'TRUE' === process.env.HANKO_PUBLIC_TEST_LIVE
@@ -51,7 +63,7 @@ describe('WebauthnLoginEntity', async () => {
     
     const setup = basicSetup()
     if (setup.live) {
-      return runLiveEntity(setup, {"active":true,"alias":{"field":{}},"fields":{"credential_id":{"a":true,"fo":"base64url","h":"Credential Id","n":"credential_id","r":false,"t":"`$STRING`","key$":"credential_id","index$":0},"id":{"a":true,"h":"Id","n":"id","r":false,"t":"`$STRING`","key$":"id","index$":1},"rawId":{"a":true,"h":"Raw Id","n":"rawId","r":false,"t":"`$STRING`","key$":"rawId","index$":2},"response":{"a":true,"h":"Response","n":"response","r":false,"t":"`$OBJECT`","key$":"response","index$":3},"type":{"a":true,"h":"Type","n":"type","r":false,"t":"`$STRING`","key$":"type","index$":4},"user_id":{"a":true,"fo":"uuid4","h":"User Id","n":"user_id","r":false,"t":"`$STRING`","key$":"user_id","index$":5}},"id":{"field":"id","name":"id"},"name":"webauthn_login","op":{"create":{"input":"data","name":"create","points":[{"a":true,"co":{"id":"POST /webauthn/login/finalize","source":"openapi3","version":2},"g":{},"k":"http","m":"POST","o":"/webauthn/login/finalize","q":{},"r":{},"s":[{"lit":"webauthn"},{"lit":"login"},{"lit":"finalize"}],"t":{"req":"`reqdata`","res":"`body`"},"index$":0}],"key$":"create"}},"relations":{"ancestors":[]},"key$":"webauthn_login","name__orig":"webauthn_login","Name":"WebauthnLogin","name_":"webauthn_login","name-":"webauthn-login","NAME":"WEBAUTHN_LOGIN","index$":16}, {"active":true,"entity":"webauthn_login","key$":"BasicWebauthnLoginFlow","kind":"basic","name":"BasicWebauthnLoginFlow","param":{},"step":[{"a":true,"d":{},"i":{"ref":"webauthn_login_ref01"},"m":{},"o":"create","s":[],"v":[],"index$":0}]}, 'WebauthnLogin', {"POST /webauthn/login/finalize":{"protocol":"http","requestBody":{"content":{"application/json":{"schema":{"description":"WebAuthn API response to a navigator.credentials.get() call","type":"object","properties":{"id":{"type":"string","example":"_18q6IjW09tiM4NSbsZjocUtGx00Muv5mN6LZCelCMDD...","key$":"id"},"rawId":{"type":"string","example":"_18q6IjW09tiM4NSbsZjocUtGx00Muv5mN6LZCelCMDD...","key$":"rawId"},"type":{"type":"string","enum":["public-key"],"example":"public-key","key$":"type"},"response":{"type":"object","properties":{"clientDataJson":{"type":"string","format":"base64url","example":"eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdl..."},"authenticatorData":{"type":"string","format":"base64url","example":"SZYN5YgOjGh0NBcPZHZgW4_krrmihjLHmVzzuoMdl2MF..."},"signature":{"type":"string","format":"base64url","example":"MEQCIHe2RXqh6dyZw1LNXgeTTxljCV_qK2ydQjp02CiF..."},"userHandle":{"type":"string","format":"base64url","example":"rpe_EkgaSEeZG0TwzZyZJw"}},"key$":"response"}},"x-ref":"#/components/schemas/PublicKeyCredentialAssertionResponse","index$":1}}}},"parameters":[]}})
+      return runLiveEntity(setup, {"active":true,"alias":{"field":{}},"fields":{"credential_id":{"a":true,"fo":"base64url","h":"Credential Id","n":"credential_id","r":false,"t":"`$STRING`","key$":"credential_id","index$":0},"id":{"a":true,"h":"Id","n":"id","r":false,"t":"`$STRING`","key$":"id","index$":1},"rawId":{"a":true,"h":"Raw Id","n":"rawId","r":false,"t":"`$STRING`","key$":"rawId","index$":2},"response":{"a":true,"h":"Response","n":"response","r":false,"t":"`$OBJECT`","key$":"response","index$":3},"type":{"a":true,"h":"Type","n":"type","r":false,"t":"`$STRING`","key$":"type","index$":4},"user_id":{"a":true,"fo":"uuid4","h":"User Id","n":"user_id","r":false,"t":"`$STRING`","key$":"user_id","index$":5}},"id":{"field":"id","name":"id"},"name":"webauthn_login","op":{"create":{"input":"data","name":"create","points":[{"a":true,"bf":["id","rawId","response","type"],"co":{"id":"POST /webauthn/login/finalize","source":"openapi3","version":2},"g":{},"k":"http","m":"POST","o":"/webauthn/login/finalize","q":{},"r":{},"rs":{"kind":"json","media":"application/json"},"s":[{"lit":"webauthn"},{"lit":"login"},{"lit":"finalize"}],"t":{"req":"`reqdata`","res":"`body`"},"index$":0}],"key$":"create"}},"relations":{"ancestors":[]},"key$":"webauthn_login","name__orig":"webauthn_login","Name":"WebauthnLogin","name_":"webauthn_login","name-":"webauthn-login","NAME":"WEBAUTHN_LOGIN","index$":15}, {"active":true,"entity":"webauthn_login","key$":"BasicWebauthnLoginFlow","kind":"basic","name":"BasicWebauthnLoginFlow","param":{},"step":[{"a":true,"d":{},"i":{"ref":"webauthn_login_ref01"},"m":{},"o":"create","s":[],"v":[],"index$":0}]}, 'WebauthnLogin', {"POST /webauthn/login/finalize":{"protocol":"http","requestBody":{"content":{"application/json":{"schema":{"description":"WebAuthn API response to a navigator.credentials.get() call","type":"object","properties":{"id":{"type":"string","example":"_18q6IjW09tiM4NSbsZjocUtGx00Muv5mN6LZCelCMDD...","key$":"id"},"rawId":{"type":"string","example":"_18q6IjW09tiM4NSbsZjocUtGx00Muv5mN6LZCelCMDD...","key$":"rawId"},"type":{"type":"string","enum":["public-key"],"example":"public-key","key$":"type"},"response":{"type":"object","properties":{"clientDataJson":{"type":"string","format":"base64url","example":"eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdl..."},"authenticatorData":{"type":"string","format":"base64url","example":"SZYN5YgOjGh0NBcPZHZgW4_krrmihjLHmVzzuoMdl2MF..."},"signature":{"type":"string","format":"base64url","example":"MEQCIHe2RXqh6dyZw1LNXgeTTxljCV_qK2ydQjp02CiF..."},"userHandle":{"type":"string","format":"base64url","example":"rpe_EkgaSEeZG0TwzZyZJw"}},"key$":"response"}},"x-ref":"#/components/schemas/PublicKeyCredentialAssertionResponse","index$":1}}}},"parameters":[]}}, { strict: LIVE_STRICT, t })
     }
     const client = setup.client
     const struct = setup.struct
@@ -72,6 +84,12 @@ describe('WebauthnLoginEntity', async () => {
 })
 
 
+
+// main.kit.test.live.strict is true (the default is true): a live
+// request that fails, or a live test missing an input it needs,
+// fails the test.
+// An account with no record for a test to read skips it either way.
+const LIVE_STRICT = true
 
 function basicSetup(extra?: any) {
   // TODO: fix test def options

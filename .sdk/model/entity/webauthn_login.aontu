@@ -56,6 +56,12 @@ main: kit: entity: webauthn_login: {
       name: "create"
       points: [
         {
+          bf: [
+            "id"
+            "rawId"
+            "response"
+            "type"
+          ]
           co: {
             id: "POST /webauthn/login/finalize"
             source: "openapi3"
@@ -63,6 +69,10 @@ main: kit: entity: webauthn_login: {
           }
           m: "POST"
           o: "/webauthn/login/finalize"
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "webauthn"

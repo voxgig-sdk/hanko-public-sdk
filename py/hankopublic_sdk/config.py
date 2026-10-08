@@ -166,6 +166,7 @@ def make_config():
         },
         "optspec": {
           "clearTimer": "`$FUNCTION`",
+          "now": "`$FUNCTION`",
           "setTimer": "`$FUNCTION`",
         },
         "strict": False,
@@ -186,7 +187,6 @@ def make_config():
         "content-type": "application/json",
       },
             "entity": {
-                "credential": {},
                 "credential_creation_option": {},
                 "credential_request_option": {},
                 "email": {},
@@ -206,109 +206,6 @@ def make_config():
             },
         },
         "entity": {
-      "credential": {
-        "fields": [
-          {
-            "name": "aaguid",
-            "title": "Aaguid",
-            "type": "`$STRING`",
-            "format": "uuid",
-          },
-          {
-            "name": "attestation_type",
-            "title": "Attestation Type",
-            "type": "`$STRING`",
-          },
-          {
-            "name": "backup_eligible",
-            "title": "Backup Eligible",
-            "type": "`$BOOLEAN`",
-          },
-          {
-            "name": "backup_state",
-            "title": "Backup State",
-            "type": "`$BOOLEAN`",
-          },
-          {
-            "name": "created_at",
-            "title": "Created At",
-            "type": "`$STRING`",
-            "format": "date-time",
-          },
-          {
-            "name": "id",
-            "title": "Id",
-            "type": "`$STRING`",
-            "format": "uuid",
-          },
-          {
-            "name": "last_used_at",
-            "title": "Last Used At",
-            "type": "`$STRING`",
-            "format": "date-time",
-          },
-          {
-            "name": "mfa_only",
-            "title": "Mfa Only",
-            "type": "`$BOOLEAN`",
-          },
-          {
-            "name": "name",
-            "title": "Name",
-            "type": "`$STRING`",
-          },
-          {
-            "name": "publickey",
-            "title": "Publickey",
-            "type": "`$STRING`",
-          },
-          {
-            "name": "transports",
-            "title": "Transports",
-            "type": "`$ARRAY`",
-          },
-        ],
-        "id": {
-          "field": "id",
-          "name": "id",
-        },
-        "name": "credential",
-        "op": {
-          "list": {
-            "input": "data",
-            "name": "list",
-            "points": [
-              {
-                "kind": "http",
-                "method": "GET",
-                "orig": "/webauthn/credentials",
-                "segments": [
-                  {
-                    "lit": "webauthn",
-                  },
-                  {
-                    "lit": "credentials",
-                  },
-                ],
-                "parts": [
-                  "webauthn",
-                  "credentials",
-                ],
-                "rename": {},
-                "transform": {
-                  "req": "`reqdata`",
-                  "res": "`body`",
-                },
-                "args": {},
-                "select": {},
-              },
-            ],
-          },
-        },
-        "relations": {
-          "ancestors": [],
-        },
-      },
       "credential_creation_option": {
         "fields": [
           {
@@ -382,6 +279,10 @@ def make_config():
                 },
                 "args": {},
                 "select": {},
+                "response": {
+                  "kind": "json",
+                  "media": "application/json",
+                },
               },
             ],
           },
@@ -424,6 +325,7 @@ def make_config():
             "title": "User Id",
             "type": "`$STRING`",
             "short": "The ID of the user on whose behalf WebAuthn login should be performed",
+            "format": "uuid4",
           },
         ],
         "name": "credential_request_option",
@@ -459,6 +361,10 @@ def make_config():
                 },
                 "args": {},
                 "select": {},
+                "response": {
+                  "kind": "json",
+                  "media": "application/json",
+                },
               },
             ],
           },
@@ -487,6 +393,7 @@ def make_config():
             "title": "Id",
             "type": "`$STRING`",
             "short": "The ID of the email address",
+            "format": "uuid4",
           },
           {
             "name": "identities",
@@ -610,6 +517,10 @@ def make_config():
                 },
                 "args": {},
                 "select": {},
+                "response": {
+                  "kind": "json",
+                  "media": "application/json",
+                },
               },
             ],
           },
@@ -713,6 +624,10 @@ def make_config():
                 },
                 "args": {},
                 "select": {},
+                "response": {
+                  "kind": "json",
+                  "media": "application/json",
+                },
               },
             ],
           },
@@ -785,6 +700,10 @@ def make_config():
                 },
                 "args": {},
                 "select": {},
+                "response": {
+                  "kind": "json",
+                  "media": "application/json",
+                },
               },
             ],
           },
@@ -802,16 +721,31 @@ def make_config():
             "short": "The actual passcode from the email sent to the user during initialization, a string of 6 decimal digits",
           },
           {
+            "name": "created_at",
+            "title": "Created At",
+            "type": "`$STRING`",
+            "short": "Time of creation of the passcode",
+            "format": "date-time",
+          },
+          {
             "name": "email_id",
             "title": "Email Id",
             "type": "`$STRING`",
             "short": "The ID of the email address",
+            "format": "uuid4",
           },
           {
             "name": "id",
             "title": "Id",
             "type": "`$STRING`",
             "short": "The ID of the passcode",
+            "format": "uuid4",
+          },
+          {
+            "name": "ttl",
+            "title": "Ttl",
+            "type": "`$INTEGER`",
+            "short": "Lifespan of a passcode in seconds",
           },
           {
             "name": "user_id",
@@ -819,6 +753,7 @@ def make_config():
             "type": "`$STRING`",
             "req": True,
             "short": "The ID of the user",
+            "format": "uuid4",
           },
         ],
         "id": {
@@ -854,10 +789,14 @@ def make_config():
                 "rename": {},
                 "transform": {
                   "req": "`reqdata`",
-                  "res": "`body.id`",
+                  "res": "`body`",
                 },
                 "args": {},
                 "select": {},
+                "response": {
+                  "kind": "json",
+                  "media": "application/json",
+                },
               },
               {
                 "kind": "http",
@@ -882,10 +821,14 @@ def make_config():
                 "rename": {},
                 "transform": {
                   "req": "`reqdata`",
-                  "res": "`body.id`",
+                  "res": "`body`",
                 },
                 "args": {},
                 "select": {},
+                "response": {
+                  "kind": "json",
+                  "media": "application/json",
+                },
               },
             ],
           },
@@ -909,6 +852,7 @@ def make_config():
             "type": "`$STRING`",
             "req": True,
             "short": "The ID of the user to create/set a password for",
+            "format": "uuid4",
           },
         ],
         "name": "password",
@@ -935,9 +879,7 @@ def make_config():
                 ],
                 "rename": {},
                 "transform": {
-                  "req": {
-                    "password": "`reqdata`",
-                  },
+                  "req": "`reqdata`",
                   "res": "`body`",
                 },
                 "args": {},
@@ -965,9 +907,7 @@ def make_config():
                 ],
                 "rename": {},
                 "transform": {
-                  "req": {
-                    "password": "`reqdata`",
-                  },
+                  "req": "`reqdata`",
                   "res": "`body`",
                 },
                 "args": {},
@@ -1012,6 +952,18 @@ def make_config():
                 "args": {},
                 "select": {
                   "$action": "callback",
+                },
+                "body": {
+                  "fields": [
+                    {
+                      "name": "RelayState",
+                    },
+                    {
+                      "name": "SAMLResponse",
+                    },
+                  ],
+                  "kind": "form",
+                  "media": "application/x-www-form-urlencoded",
                 },
               },
             ],
@@ -1061,9 +1013,13 @@ def make_config():
                 "select": {
                   "$action": "metadata",
                   "exist": [
-                    "cert_only",
                     "domain",
                   ],
+                },
+                "response": {
+                  "binary": True,
+                  "kind": "raw",
+                  "media": "application/octet-stream",
                 },
               },
               {
@@ -1085,7 +1041,7 @@ def make_config():
                 "rename": {},
                 "transform": {
                   "req": "`reqdata`",
-                  "res": "`body.attribute_map`",
+                  "res": "`body`",
                 },
                 "args": {
                   "query": [
@@ -1104,6 +1060,10 @@ def make_config():
                     "domain",
                   ],
                 },
+                "response": {
+                  "kind": "json",
+                  "media": "application/json",
+                },
               },
             ],
           },
@@ -1115,50 +1075,32 @@ def make_config():
       "session_management": {
         "fields": [
           {
-            "name": "amr",
-            "title": "Amr",
-            "type": "`$ARRAY`",
-            "short": "Authentication Method References, JSON array of strings that are identifiers for authentication methods used in the authentication.",
-          },
-          {
-            "name": "audience",
-            "title": "Audience",
-            "type": "`$ARRAY`",
-            "short": "The intended audience of the token.",
-          },
-          {
-            "name": "email",
-            "title": "Email",
+            "name": "claims",
+            "title": "Claims",
             "type": "`$OBJECT`",
-            "short": "Data about the email address associated with the token's subject, if available.",
+            "req": True,
+            "short": "The claims extracted from a JWT.",
           },
           {
-            "name": "expiration",
-            "title": "Expiration",
+            "name": "expiration_time",
+            "title": "Expiration Time",
             "type": "`$STRING`",
-            "req": True,
-            "short": "The timestamp indicating when the token will expire.",
+            "short": "Date-time indicating the expiration of the session.",
+            "deprecated": True,
             "format": "date-time",
           },
           {
-            "name": "issued_at",
-            "title": "Issued At",
+            "name": "idle_expires_at",
+            "title": "Idle Expires At",
             "type": "`$STRING`",
-            "short": "The timestamp indicating when the token was issued.",
+            "short": "Timestamp (in UTC) indicating when the session will expire due to inactivity, assuming no further activity occurs before this time.",
             "format": "date-time",
           },
           {
-            "name": "issuer",
-            "title": "Issuer",
-            "type": "`$STRING`",
-            "short": "The entity that issued the token.",
-          },
-          {
-            "name": "session_id",
-            "title": "Session Id",
-            "type": "`$STRING`",
-            "req": True,
-            "short": "The unique identifier for the session associated with this token.",
+            "name": "is_valid",
+            "title": "Is Valid",
+            "type": "`$BOOLEAN`",
+            "short": "Indicates whether the session is valid or not",
           },
           {
             "name": "session_token",
@@ -1169,11 +1111,12 @@ def make_config():
             "format": "JWT",
           },
           {
-            "name": "subject",
-            "title": "Subject",
-            "type": "`$ANY`",
-            "req": True,
-            "short": "The unique identifier of the token's subject.",
+            "name": "user_id",
+            "title": "User Id",
+            "type": "`$STRING`",
+            "short": "The ID of the user the session is associated with.",
+            "deprecated": True,
+            "format": "uuid4",
           },
         ],
         "name": "session_management",
@@ -1201,10 +1144,14 @@ def make_config():
                 "rename": {},
                 "transform": {
                   "req": "`reqdata`",
-                  "res": "`body.claims`",
+                  "res": "`body`",
                 },
                 "args": {},
                 "select": {},
+                "response": {
+                  "kind": "json",
+                  "media": "application/json",
+                },
               },
             ],
           },
@@ -1231,10 +1178,14 @@ def make_config():
                 "rename": {},
                 "transform": {
                   "req": "`reqdata`",
-                  "res": "`body.claims`",
+                  "res": "`body`",
                 },
                 "args": {},
                 "select": {},
+                "response": {
+                  "kind": "json",
+                  "media": "application/json",
+                },
               },
             ],
           },
@@ -1264,6 +1215,10 @@ def make_config():
                 },
                 "args": {},
                 "select": {},
+                "response": {
+                  "kind": "raw",
+                  "media": "text/html",
+                },
               },
             ],
           },
@@ -1280,6 +1235,52 @@ def make_config():
             "input": "data",
             "name": "load",
             "points": [
+              {
+                "kind": "http",
+                "method": "GET",
+                "orig": "/thirdparty/auth",
+                "segments": [
+                  {
+                    "lit": "thirdparty",
+                  },
+                  {
+                    "lit": "auth",
+                  },
+                ],
+                "parts": [
+                  "thirdparty",
+                  "auth",
+                ],
+                "rename": {},
+                "transform": {
+                  "req": "`reqdata`",
+                  "res": "`body`",
+                },
+                "args": {
+                  "query": [
+                    {
+                      "name": "provider",
+                      "orig": "provider",
+                      "type": "`$STRING`",
+                      "kind": "query",
+                      "reqd": True,
+                    },
+                    {
+                      "name": "redirect_to",
+                      "orig": "redirect_to",
+                      "type": "`$STRING`",
+                      "kind": "query",
+                      "reqd": True,
+                    },
+                  ],
+                },
+                "select": {
+                  "exist": [
+                    "provider",
+                    "redirect_to",
+                  ],
+                },
+              },
               {
                 "kind": "http",
                 "method": "GET",
@@ -1332,56 +1333,7 @@ def make_config():
                 },
                 "select": {
                   "exist": [
-                    "code",
-                    "error",
-                    "error_description",
                     "state",
-                  ],
-                },
-              },
-              {
-                "kind": "http",
-                "method": "GET",
-                "orig": "/thirdparty/auth",
-                "segments": [
-                  {
-                    "lit": "thirdparty",
-                  },
-                  {
-                    "lit": "auth",
-                  },
-                ],
-                "parts": [
-                  "thirdparty",
-                  "auth",
-                ],
-                "rename": {},
-                "transform": {
-                  "req": "`reqdata`",
-                  "res": "`body`",
-                },
-                "args": {
-                  "query": [
-                    {
-                      "name": "provider",
-                      "orig": "provider",
-                      "type": "`$STRING`",
-                      "kind": "query",
-                      "reqd": True,
-                    },
-                    {
-                      "name": "redirect_to",
-                      "orig": "redirect_to",
-                      "type": "`$STRING`",
-                      "kind": "query",
-                      "reqd": True,
-                    },
-                  ],
-                },
-                "select": {
-                  "exist": [
-                    "provider",
-                    "redirect_to",
                   ],
                 },
               },
@@ -1394,6 +1346,13 @@ def make_config():
       },
       "token": {
         "fields": [
+          {
+            "name": "user_id",
+            "title": "User Id",
+            "type": "`$STRING`",
+            "short": "The ID of the user on whose behalf the token was exchanged.",
+            "format": "uuid4",
+          },
           {
             "name": "value",
             "title": "Value",
@@ -1422,10 +1381,14 @@ def make_config():
                 "rename": {},
                 "transform": {
                   "req": "`reqdata`",
-                  "res": "`body.user_id`",
+                  "res": "`body`",
                 },
                 "args": {},
                 "select": {},
+                "response": {
+                  "kind": "json",
+                  "media": "application/json",
+                },
               },
             ],
           },
@@ -1535,6 +1498,7 @@ def make_config():
             "title": "User Id",
             "type": "`$STRING`",
             "short": "The ID of the user",
+            "format": "uuid4",
           },
           {
             "name": "username",
@@ -1583,6 +1547,10 @@ def make_config():
                 },
                 "args": {},
                 "select": {},
+                "response": {
+                  "kind": "json",
+                  "media": "application/json",
+                },
               },
               {
                 "kind": "http",
@@ -1603,6 +1571,10 @@ def make_config():
                 },
                 "args": {},
                 "select": {},
+                "response": {
+                  "kind": "json",
+                  "media": "application/json",
+                },
               },
             ],
           },
@@ -1647,6 +1619,10 @@ def make_config():
                   "exist": [
                     "id",
                   ],
+                },
+                "response": {
+                  "kind": "json",
+                  "media": "application/json",
                 },
               },
             ],
@@ -1712,6 +1688,7 @@ def make_config():
             "type": "`$STRING`",
             "short": "The ID of the user.",
             "deprecated": True,
+            "format": "uuid4",
           },
           {
             "name": "metadata",
@@ -1757,6 +1734,7 @@ def make_config():
             "title": "User Id",
             "type": "`$STRING`",
             "short": "The ID of the user",
+            "format": "uuid4",
           },
           {
             "name": "username",
@@ -1820,6 +1798,10 @@ def make_config():
                 },
                 "args": {},
                 "select": {},
+                "response": {
+                  "kind": "json",
+                  "media": "application/json",
+                },
               },
             ],
           },
@@ -1831,15 +1813,66 @@ def make_config():
       "web_authn": {
         "fields": [
           {
+            "name": "aaguid",
+            "title": "Aaguid",
+            "type": "`$STRING`",
+            "format": "uuid",
+          },
+          {
+            "name": "attestation_type",
+            "title": "Attestation Type",
+            "type": "`$STRING`",
+          },
+          {
+            "name": "backup_eligible",
+            "title": "Backup Eligible",
+            "type": "`$BOOLEAN`",
+          },
+          {
+            "name": "backup_state",
+            "title": "Backup State",
+            "type": "`$BOOLEAN`",
+          },
+          {
+            "name": "created_at",
+            "title": "Created At",
+            "type": "`$STRING`",
+            "format": "date-time",
+          },
+          {
+            "name": "credential_id",
+            "title": "Credential Id",
+            "type": "`$STRING`",
+            "short": "The ID of the created credential",
+            "format": "base64",
+          },
+          {
             "name": "id",
             "title": "Id",
             "type": "`$STRING`",
+            "format": "uuid",
+          },
+          {
+            "name": "last_used_at",
+            "title": "Last Used At",
+            "type": "`$STRING`",
+            "format": "date-time",
+          },
+          {
+            "name": "mfa_only",
+            "title": "Mfa Only",
+            "type": "`$BOOLEAN`",
           },
           {
             "name": "name",
             "title": "Name",
             "type": "`$STRING`",
             "short": "A new credential name.",
+          },
+          {
+            "name": "publickey",
+            "title": "Publickey",
+            "type": "`$STRING`",
           },
           {
             "name": "rawId",
@@ -1852,9 +1885,21 @@ def make_config():
             "type": "`$OBJECT`",
           },
           {
+            "name": "transports",
+            "title": "Transports",
+            "type": "`$ARRAY`",
+          },
+          {
             "name": "type",
             "title": "Type",
             "type": "`$STRING`",
+          },
+          {
+            "name": "user_id",
+            "title": "User Id",
+            "type": "`$STRING`",
+            "short": "The ID of the user on whose behalf a credential was created",
+            "format": "uuid4",
           },
         ],
         "id": {
@@ -1890,10 +1935,48 @@ def make_config():
                 "rename": {},
                 "transform": {
                   "req": "`reqdata`",
-                  "res": "`body.user_id`",
+                  "res": "`body`",
                 },
                 "args": {},
                 "select": {},
+                "response": {
+                  "kind": "json",
+                  "media": "application/json",
+                },
+              },
+            ],
+          },
+          "list": {
+            "input": "data",
+            "name": "list",
+            "points": [
+              {
+                "kind": "http",
+                "method": "GET",
+                "orig": "/webauthn/credentials",
+                "segments": [
+                  {
+                    "lit": "webauthn",
+                  },
+                  {
+                    "lit": "credentials",
+                  },
+                ],
+                "parts": [
+                  "webauthn",
+                  "credentials",
+                ],
+                "rename": {},
+                "transform": {
+                  "req": "`reqdata`",
+                  "res": "`body`",
+                },
+                "args": {},
+                "select": {},
+                "response": {
+                  "kind": "json",
+                  "media": "application/json",
+                },
               },
             ],
           },
@@ -2072,6 +2155,10 @@ def make_config():
                 },
                 "args": {},
                 "select": {},
+                "response": {
+                  "kind": "json",
+                  "media": "application/json",
+                },
               },
             ],
           },

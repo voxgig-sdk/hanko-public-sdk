@@ -5,56 +5,36 @@ main: kit: entity: session_management: {
   alias: field: {}
 
   fields: {
-    amr: {
-      h: "Amr"
-      n: "amr"
-      r: false
-      sh: "Authentication Method References, JSON array of strings that are identifiers for authentication methods used in the authentication."
-      t: "`$ARRAY`"
-    }
-    audience: {
-      h: "Audience"
-      n: "audience"
-      r: false
-      sh: "The intended audience of the token."
-      t: "`$ARRAY`"
-    }
-    email: {
-      h: "Email"
-      n: "email"
-      r: false
-      sh: "Data about the email address associated with the token's subject, if available."
+    claims: {
+      h: "Claims"
+      n: "claims"
+      r: true
+      sh: "The claims extracted from a JWT."
       t: "`$OBJECT`"
     }
-    expiration: {
+    expiration_time: {
+      de: true
       fo: "date-time"
-      h: "Expiration"
-      n: "expiration"
-      r: true
-      sh: "The timestamp indicating when the token will expire."
+      h: "Expiration Time"
+      n: "expiration_time"
+      r: false
+      sh: "Date-time indicating the expiration of the session."
       t: "`$STRING`"
     }
-    issued_at: {
+    idle_expires_at: {
       fo: "date-time"
-      h: "Issued At"
-      n: "issued_at"
+      h: "Idle Expires At"
+      n: "idle_expires_at"
       r: false
-      sh: "The timestamp indicating when the token was issued."
+      sh: "Timestamp (in UTC) indicating when the session will expire due to inactivity, assuming no further activity occurs before this time."
       t: "`$STRING`"
     }
-    issuer: {
-      h: "Issuer"
-      n: "issuer"
+    is_valid: {
+      h: "Is Valid"
+      n: "is_valid"
       r: false
-      sh: "The entity that issued the token."
-      t: "`$STRING`"
-    }
-    session_id: {
-      h: "Session Id"
-      n: "session_id"
-      r: true
-      sh: "The unique identifier for the session associated with this token."
-      t: "`$STRING`"
+      sh: "Indicates whether the session is valid or not"
+      t: "`$BOOLEAN`"
     }
     session_token: {
       fo: "JWT"
@@ -64,12 +44,14 @@ main: kit: entity: session_management: {
       sh: "The session token (JWT) to validate"
       t: "`$STRING`"
     }
-    subject: {
-      h: "Subject"
-      n: "subject"
-      r: true
-      sh: "The unique identifier of the token's subject."
-      t: "`$ANY`"
+    user_id: {
+      de: true
+      fo: "uuid4"
+      h: "User Id"
+      n: "user_id"
+      r: false
+      sh: "The ID of the user the session is associated with."
+      t: "`$STRING`"
     }
   }
 
@@ -79,6 +61,9 @@ main: kit: entity: session_management: {
       name: "create"
       points: [
         {
+          bf: [
+            "session_token"
+          ]
           co: {
             id: "POST /sessions/validate"
             source: "openapi3"
@@ -86,6 +71,10 @@ main: kit: entity: session_management: {
           }
           m: "POST"
           o: "/sessions/validate"
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "sessions"
@@ -96,7 +85,7 @@ main: kit: entity: session_management: {
           ]
           t: {
             req: "`reqdata`"
-            res: "`body.claims`"
+            res: "`body`"
           }
         }
       ]
@@ -112,6 +101,10 @@ main: kit: entity: session_management: {
           }
           m: "GET"
           o: "/sessions/validate"
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "sessions"
@@ -122,7 +115,7 @@ main: kit: entity: session_management: {
           ]
           t: {
             req: "`reqdata`"
-            res: "`body.claims`"
+            res: "`body`"
           }
         }
       ]

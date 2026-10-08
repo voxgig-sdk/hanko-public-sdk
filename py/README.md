@@ -4,7 +4,7 @@
 
 The Python SDK for the HankoPublic API — an entity-oriented client following Pythonic conventions.
 
-The SDK exposes the API as capitalised, semantic **Entities** — for example `client.Credential()` — each
+The SDK exposes the API as capitalised, semantic **Entities** — for example `client.CredentialCreationOption()` — each
 carrying a small, uniform set of operations (`list`, `load`, `create`, `update`, `remove`) instead of raw URL
 paths and query strings. You work with named resources and verbs, which
 keeps the cognitive load low.
@@ -15,7 +15,7 @@ keeps the cognitive load low.
 
 ## Install
 This package is not yet published to PyPI. Install it from the GitHub
-release tag (`py/vX.Y.Z`, see [Releases](https://github.com/voxgig-sdk/hanko-public-sdk/releases)) or
+release tag (`py/vX.Y.Z`, see [Tags](https://github.com/voxgig-sdk/hanko-public-sdk/tags)) or
 from a source checkout:
 
 ```bash
@@ -26,7 +26,7 @@ pip install -e .
 ## Tutorial: your first API call
 
 This tutorial walks through creating a client, listing entities, and
-loading a specific record.
+loading a specific record. The client sends the API key as the `hanko` cookie.
 
 ### 1. Create a client
 
@@ -42,18 +42,12 @@ client = HankoPublicSDK({
 })
 ```
 
-### 2. List credential records
-
-`list()` returns a `list` of records (each a `dict`) and raises on
-error — iterate it directly.
+### 4. Create, update, and remove
 
 ```python
-try:
-    credentials = client.Credential().list()
-    for credential in credentials:
-        print(credential)
-except Exception as err:
-    print(f"list failed: {err}")
+# Create — returns the ENTITY (call data_get() for the record)
+created = client.CredentialCreationOption().create({"attestation": "example_attestation", "authenticatorSelection": {}})
+
 ```
 
 
@@ -64,7 +58,7 @@ Entity operations raise on failure, so wrap them in `try` / `except`:
 ```python
 try:
     jsonwebkeys = client.JsonWebKey().list()
-    print(jsonwebkeys)
+    print([item.data_get() for item in jsonwebkeys])
 except Exception as err:
     print(f"list failed: {err}")
 ```
@@ -130,10 +124,9 @@ Create a mock client for unit testing — no server required:
 ```python
 client = HankoPublicSDK.test()
 
-# Entity ops return the ENTITY and raises on error;
-# call data_get() for the record.
+# Entity ops return the entity, and list one per record; they raise on error.
 jsonwebkey = client.JsonWebKey().list()
-# jsonwebkey contains the mock response record
+# data_get() on an entity reads its mock response record
 ```
 
 ### Use a custom fetch function
@@ -211,7 +204,6 @@ Creates a test-mode client with mock transport. Both arguments may be `None`.
 | `get_utility` | `() -> Utility` | Copy of the SDK utility object. |
 | `prepare` | `(fetchargs) -> dict` | Build an HTTP request definition without sending. Raises on error. |
 | `direct` | `(fetchargs) -> dict` | Build and send an HTTP request. Returns a result dict (branch on `ok`). |
-| `Credential` | `(data) -> CredentialEntity` | Create a Credential entity instance. |
 | `CredentialCreationOption` | `(data) -> CredentialCreationOptionEntity` | Create a CredentialCreationOption entity instance. |
 | `CredentialRequestOption` | `(data) -> CredentialRequestOptionEntity` | Create a CredentialRequestOption entity instance. |
 | `Email` | `(data) -> EmailEntity` | Create an Email entity instance. |
@@ -235,11 +227,11 @@ All entities share the same interface.
 
 | Method | Signature | Description |
 | --- | --- | --- |
-| `load` | `(reqmatch, ctrl) -> any` | Load a single entity by match criteria. Raises on error. |
-| `list` | `(reqmatch, ctrl) -> list` | List entities matching the criteria. Raises on error. |
-| `create` | `(reqdata, ctrl) -> any` | Create a new entity. Raises on error. |
-| `update` | `(reqdata, ctrl) -> any` | Update an existing entity. Raises on error. |
-| `remove` | `(reqmatch, ctrl) -> any` | Remove an entity. Raises on error. |
+| `load` | `(reqmatch, ctrl) -> any` | Load a single entity by match criteria, and return it. Raises on error. |
+| `list` | `(reqmatch, ctrl) -> list` | List entities matching the criteria, one per record. Raises on error. |
+| `create` | `(reqdata, ctrl) -> any` | Create a new entity, and return it. Raises on error. |
+| `update` | `(reqdata, ctrl) -> any` | Update an existing entity, and return it. Raises on error. |
+| `remove` | `(reqmatch, ctrl) -> any` | Remove an entity, and return it marked as deleted. Raises on error. |
 | `data_get` | `() -> dict` | Get entity data. |
 | `data_set` | `(data)` | Set entity data. |
 | `match_get` | `() -> dict` | Get entity match criteria. |
@@ -249,9 +241,9 @@ All entities share the same interface.
 
 ### Result shape
 
-Entity operations return the ENTITY (call data_get() for the record) (a `dict` for single-entity
-ops, a `list` for `list`) and raise on error. Wrap calls in
-`try`/`except` to handle failures.
+Entity operations return the entity, and `list` a `list` of entities, one
+per record; an entity's `data_get()` reads its record (a `dict`). They raise
+on error, so wrap calls in `try`/`except` to handle failures.
 
 The `direct()` escape hatch never raises — it returns a result `dict`
 you branch on via `result["ok"]`:
@@ -266,26 +258,6 @@ you branch on via `result["ok"]`:
 On error, `ok` is `False` and `err` contains the error value.
 
 ### Entities
-
-#### Credential
-
-| Field | Description |
-| --- | --- |
-| `aaguid` |  |
-| `attestation_type` |  |
-| `backup_eligible` |  |
-| `backup_state` |  |
-| `created_at` |  |
-| `id` |  |
-| `last_used_at` |  |
-| `mfa_only` |  |
-| `name` |  |
-| `publickey` |  |
-| `transports` |  |
-
-Operations: List.
-
-API path: `/webauthn/credentials`
 
 #### CredentialCreationOption
 
@@ -365,8 +337,10 @@ API path: `/.well-known/jwks.json`
 | Field | Description |
 | --- | --- |
 | `code` | The actual passcode from the email sent to the user during initialization, a string of 6 decimal digits |
+| `created_at` | Time of creation of the passcode |
 | `email_id` | The ID of the email address |
 | `id` | The ID of the passcode |
+| `ttl` | Lifespan of a passcode in seconds |
 | `user_id` | The ID of the user |
 
 Operations: Create.
@@ -397,15 +371,12 @@ API path: `/saml/callback`
 
 | Field | Description |
 | --- | --- |
-| `amr` | Authentication Method References, JSON array of strings that are identifiers for authentication methods used in the authentication. |
-| `audience` | The intended audience of the token. |
-| `email` | Data about the email address associated with the token's subject, if available. |
-| `expiration` | The timestamp indicating when the token will expire. |
-| `issued_at` | The timestamp indicating when the token was issued. |
-| `issuer` | The entity that issued the token. |
-| `session_id` | The unique identifier for the session associated with this token. |
+| `claims` | The claims extracted from a JWT. |
+| `expiration_time` | Date-time indicating the expiration of the session. |
+| `idle_expires_at` | Timestamp (in UTC) indicating when the session will expire due to inactivity, assuming no further activity occurs before this time. |
+| `is_valid` | Indicates whether the session is valid or not |
 | `session_token` | The session token (JWT) to validate |
-| `subject` | The unique identifier of the token's subject. |
+| `user_id` | The ID of the user the session is associated with. |
 
 Operations: Create, Load.
 
@@ -427,12 +398,13 @@ API path: `/`
 
 Operations: Load.
 
-API path: `/thirdparty/callback`
+API path: `/thirdparty/auth`
 
 #### Token
 
 | Field | Description |
 | --- | --- |
+| `user_id` | The ID of the user on whose behalf the token was exchanged. |
 | `value` |  |
 
 Operations: Create.
@@ -494,13 +466,24 @@ API path: `/logout`
 
 | Field | Description |
 | --- | --- |
+| `aaguid` |  |
+| `attestation_type` |  |
+| `backup_eligible` |  |
+| `backup_state` |  |
+| `created_at` |  |
+| `credential_id` | The ID of the created credential |
 | `id` |  |
+| `last_used_at` |  |
+| `mfa_only` |  |
 | `name` | A new credential name. |
+| `publickey` |  |
 | `rawId` |  |
 | `response` |  |
+| `transports` |  |
 | `type` |  |
+| `user_id` | The ID of the user on whose behalf a credential was created |
 
-Operations: Create, Remove, Update.
+Operations: Create, List, Remove, Update.
 
 API path: `/webauthn/registration/finalize`
 
@@ -522,39 +505,6 @@ API path: `/webauthn/login/finalize`
 
 
 ## Entities
-
-
-### Credential
-
-Create an instance: `credential = client.Credential()`
-
-#### Operations
-
-| Method | Description |
-| --- | --- |
-| `list()` | List entities, optionally matching the given criteria. |
-
-#### Fields
-
-| Field | Type | Description |
-| --- | --- | --- |
-| `aaguid` | `str` |  |
-| `attestation_type` | `str` |  |
-| `backup_eligible` | `bool` |  |
-| `backup_state` | `bool` |  |
-| `created_at` | `str` |  |
-| `id` | `str` |  |
-| `last_used_at` | `str` |  |
-| `mfa_only` | `bool` |  |
-| `name` | `str` |  |
-| `publickey` | `str` |  |
-| `transports` | `list` |  |
-
-#### Example: List
-
-```python
-credentials = client.Credential().list()
-```
 
 
 ### CredentialCreationOption
@@ -722,8 +672,10 @@ Create an instance: `passcode = client.Passcode()`
 | Field | Type | Description |
 | --- | --- | --- |
 | `code` | `str` | The actual passcode from the email sent to the user during initialization, a string of 6 decimal digits |
+| `created_at` | `str` | Time of creation of the passcode |
 | `email_id` | `str` | The ID of the email address |
 | `id` | `str` | The ID of the passcode |
+| `ttl` | `int` | Lifespan of a passcode in seconds |
 | `user_id` | `str` | The ID of the user |
 
 #### Example: Create
@@ -774,12 +726,6 @@ Create an instance: `saml = client.Saml()`
 | `create(data)` | Create a new entity with the given data. |
 | `load(match)` | Load a single entity by match criteria. |
 
-#### Example: Load
-
-```python
-saml = client.Saml().load({"domain": "domain"})
-```
-
 #### Example: Create
 
 ```python
@@ -803,15 +749,12 @@ Create an instance: `session_management = client.SessionManagement()`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `amr` | `list` | Authentication Method References, JSON array of strings that are identifiers for authentication methods used in the authentication. |
-| `audience` | `list` | The intended audience of the token. |
-| `email` | `dict` | Data about the email address associated with the token's subject, if available. |
-| `expiration` | `str` | The timestamp indicating when the token will expire. |
-| `issued_at` | `str` | The timestamp indicating when the token was issued. |
-| `issuer` | `str` | The entity that issued the token. |
-| `session_id` | `str` | The unique identifier for the session associated with this token. |
+| `claims` | `dict` | The claims extracted from a JWT. |
+| `expiration_time` | `str` | Date-time indicating the expiration of the session. |
+| `idle_expires_at` | `str` | Timestamp (in UTC) indicating when the session will expire due to inactivity, assuming no further activity occurs before this time. |
+| `is_valid` | `bool` | Indicates whether the session is valid or not |
 | `session_token` | `str` | The session token (JWT) to validate |
-| `subject` | `Any` | The unique identifier of the token's subject. |
+| `user_id` | `str` | The ID of the user the session is associated with. |
 
 #### Example: Load
 
@@ -823,10 +766,8 @@ session_management = client.SessionManagement().load()
 
 ```python
 session_management = client.SessionManagement().create({
-    "expiration": "example_expiration",  # str
-    "session_id": "example_session_id",  # str
+    "claims": {},  # dict
     "session_token": "example_session_token",  # str
-    "subject": "example_subject",  # Any
 })
 ```
 
@@ -861,7 +802,7 @@ Create an instance: `third_party = client.ThirdParty()`
 #### Example: Load
 
 ```python
-third_party = client.ThirdParty().load({"state": "state"})
+third_party = client.ThirdParty().load({"provider": "provider", "redirect_to": "redirect_to"})
 ```
 
 
@@ -879,6 +820,7 @@ Create an instance: `token = client.Token()`
 
 | Field | Type | Description |
 | --- | --- | --- |
+| `user_id` | `str` | The ID of the user on whose behalf the token was exchanged. |
 | `value` | `str` |  |
 
 #### Example: Create
@@ -992,6 +934,7 @@ Create an instance: `web_authn = client.WebAuthn()`
 | Method | Description |
 | --- | --- |
 | `create(data)` | Create a new entity with the given data. |
+| `list()` | List entities, optionally matching the given criteria. |
 | `remove(match)` | Remove the matching entity. |
 | `update(data)` | Update an existing entity. |
 
@@ -999,11 +942,28 @@ Create an instance: `web_authn = client.WebAuthn()`
 
 | Field | Type | Description |
 | --- | --- | --- |
+| `aaguid` | `str` |  |
+| `attestation_type` | `str` |  |
+| `backup_eligible` | `bool` |  |
+| `backup_state` | `bool` |  |
+| `created_at` | `str` |  |
+| `credential_id` | `str` | The ID of the created credential |
 | `id` | `str` |  |
+| `last_used_at` | `str` |  |
+| `mfa_only` | `bool` |  |
 | `name` | `str` | A new credential name. |
+| `publickey` | `str` |  |
 | `rawId` | `str` |  |
 | `response` | `dict` |  |
+| `transports` | `list` |  |
 | `type` | `str` |  |
+| `user_id` | `str` | The ID of the user on whose behalf a credential was created |
+
+#### Example: List
+
+```python
+web_authns = client.WebAuthn().list()
+```
 
 #### Example: Create
 

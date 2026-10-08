@@ -51,6 +51,17 @@ for public endpoints via the \`server.public.cors\` options.
         url: "https://www.gnu.org/licenses/agpl-3.0.txt"
       }
       security: {
+        alternatives: [
+          [
+            {
+              in: "header"
+              name: "Authorization"
+              prefix: "Bearer"
+              scheme: "BearerTokenAuth"
+              type: "http"
+            }
+          ]
+        ]
         in: "cookie"
         name: "hanko"
         prefix: ""

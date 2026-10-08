@@ -1,6 +1,5 @@
 # Entity Models
 
-@"./credential.aontu"
 @"./credential_creation_option.aontu"
 @"./credential_request_option.aontu"
 @"./email.aontu"

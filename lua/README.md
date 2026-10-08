@@ -4,7 +4,7 @@
 
 The Lua SDK for the HankoPublic API — an entity-oriented client using Lua conventions.
 
-It exposes the API as capitalised, semantic **Entities** — e.g. `client:Credential()` — each with the same small set of operations (`list`, `load`, `create`, `update`, `remove`) instead of raw URL paths and query strings. You call meaning, not endpoints, which keeps the cognitive load low.
+It exposes the API as capitalised, semantic **Entities** — e.g. `client:CredentialCreationOption()` — each with the same small set of operations (`list`, `load`, `create`, `update`, `remove`) instead of raw URL paths and query strings. You call meaning, not endpoints, which keeps the cognitive load low.
 
 > Other languages, the CLI, and MCP server live alongside this one — see
 > the [top-level README](../README.md).
@@ -12,7 +12,7 @@ It exposes the API as capitalised, semantic **Entities** — e.g. `client:Creden
 
 ## Install
 This package is not yet published to LuaRocks. Install it from the
-GitHub release tag (`lua/vX.Y.Z`, see [Releases](https://github.com/voxgig-sdk/hanko-public-sdk/releases)),
+GitHub release tag (`lua/vX.Y.Z`, see [Tags](https://github.com/voxgig-sdk/hanko-public-sdk/tags)),
 or add the source directory to your `LUA_PATH`:
 
 ```bash
@@ -23,7 +23,7 @@ export LUA_PATH="path/to/lua/?.lua;path/to/lua/?/init.lua;;"
 ## Tutorial: your first API call
 
 This tutorial walks through creating a client, listing entities, and
-loading a specific record.
+loading a specific record. The client sends the API key as the `hanko` cookie.
 
 ### 1. Create a client
 
@@ -35,18 +35,13 @@ local client = sdk.new({
 })
 ```
 
-### 2. List credential records
-
-Entity operations return `(value, err)`. For `list`, `value` is the
-array of records itself — iterate it directly (there is no wrapper).
+### 4. Create, update, and remove
 
 ```lua
-local credentials, err = client:Credential():list()
+-- Create
+local created, err = client:CredentialCreationOption():create({ attestation = "example_attestation", authenticatorSelection = {} })
 if err then error(err) end
 
-for _, item in ipairs(credentials) do
-  print(item["id"])
-end
 ```
 
 
@@ -115,7 +110,7 @@ Create a mock client for unit testing — no server required:
 local client = sdk.test()
 
 local result, err = client:JsonWebKey():list()
--- result is the returned data; err is set on failure
+-- result is an array of entities, one per mock record; err is set on failure
 ```
 
 ### Use a custom fetch function
@@ -195,7 +190,6 @@ Creates a test-mode client with mock transport. Both arguments may be `nil`.
 | `get_utility` | `() -> Utility` | Copy of the SDK utility object. |
 | `prepare` | `(fetchargs) -> table, err` | Build an HTTP request definition without sending. |
 | `direct` | `(fetchargs) -> table, err` | Build and send an HTTP request. |
-| `Credential` | `(data) -> CredentialEntity` | Create a Credential entity instance. |
 | `CredentialCreationOption` | `(data) -> CredentialCreationOptionEntity` | Create a CredentialCreationOption entity instance. |
 | `CredentialRequestOption` | `(data) -> CredentialRequestOptionEntity` | Create a CredentialRequestOption entity instance. |
 | `Email` | `(data) -> EmailEntity` | Create an Email entity instance. |
@@ -219,11 +213,11 @@ All entities share the same interface.
 
 | Method | Signature | Description |
 | --- | --- | --- |
-| `load` | `(reqmatch, ctrl) -> any, err` | Load a single entity by match criteria. |
-| `list` | `(reqmatch, ctrl) -> any, err` | List entities matching the criteria. |
-| `create` | `(reqdata, ctrl) -> any, err` | Create a new entity. |
-| `update` | `(reqdata, ctrl) -> any, err` | Update an existing entity. |
-| `remove` | `(reqmatch, ctrl) -> any, err` | Remove an entity. |
+| `load` | `(reqmatch, ctrl) -> any, err` | Load a single entity by match criteria, and return it. |
+| `list` | `(reqmatch, ctrl) -> any, err` | List entities matching the criteria, one per record. |
+| `create` | `(reqdata, ctrl) -> any, err` | Create a new entity, and return it. |
+| `update` | `(reqdata, ctrl) -> any, err` | Update an existing entity, and return it. |
+| `remove` | `(reqmatch, ctrl) -> any, err` | Remove an entity, and return it marked as deleted. |
 | `data_get` | `() -> table` | Get entity data. |
 | `data_set` | `(data)` | Set entity data. |
 | `match_get` | `() -> table` | Get entity match criteria. |
@@ -233,44 +227,24 @@ All entities share the same interface.
 
 ### Result shape
 
-Entity operations return `(value, err)`. The `value` is the operation's
-data **directly** — there is no wrapper:
+Entity operations return `(value, err)`. The `value` is the entity
+itself — there is no wrapper:
 
 | Operation | `value` |
 | --- | --- |
-| `load` / `create` / `update` / `remove` | the entity record (a `table`) |
-| `list` | an array (`table`) of entity records |
+| `load` / `create` / `update` / `remove` | the entity, whose `data_get()` reads its record (a `table`) |
+| `list` | an array (`table`) of entities, one per record |
 
 Check `err` first (it is non-`nil` on failure), then use `value`:
 
     local hanko_configuration, err = client:HankoConfiguration():load()
     if err then error(err) end
-    -- hanko_configuration is the loaded record
+    -- hanko_configuration is the loaded entity
 
 Only `direct()` returns a response envelope — a `table` with `ok`,
 `status`, `headers`, and `data` keys.
 
 ### Entities
-
-#### Credential
-
-| Field | Description |
-| --- | --- |
-| `aaguid` |  |
-| `attestation_type` |  |
-| `backup_eligible` |  |
-| `backup_state` |  |
-| `created_at` |  |
-| `id` |  |
-| `last_used_at` |  |
-| `mfa_only` |  |
-| `name` |  |
-| `publickey` |  |
-| `transports` |  |
-
-Operations: List.
-
-API path: `/webauthn/credentials`
 
 #### CredentialCreationOption
 
@@ -350,8 +324,10 @@ API path: `/.well-known/jwks.json`
 | Field | Description |
 | --- | --- |
 | `code` | The actual passcode from the email sent to the user during initialization, a string of 6 decimal digits |
+| `created_at` | Time of creation of the passcode |
 | `email_id` | The ID of the email address |
 | `id` | The ID of the passcode |
+| `ttl` | Lifespan of a passcode in seconds |
 | `user_id` | The ID of the user |
 
 Operations: Create.
@@ -382,15 +358,12 @@ API path: `/saml/callback`
 
 | Field | Description |
 | --- | --- |
-| `amr` | Authentication Method References, JSON array of strings that are identifiers for authentication methods used in the authentication. |
-| `audience` | The intended audience of the token. |
-| `email` | Data about the email address associated with the token's subject, if available. |
-| `expiration` | The timestamp indicating when the token will expire. |
-| `issued_at` | The timestamp indicating when the token was issued. |
-| `issuer` | The entity that issued the token. |
-| `session_id` | The unique identifier for the session associated with this token. |
+| `claims` | The claims extracted from a JWT. |
+| `expiration_time` | Date-time indicating the expiration of the session. |
+| `idle_expires_at` | Timestamp (in UTC) indicating when the session will expire due to inactivity, assuming no further activity occurs before this time. |
+| `is_valid` | Indicates whether the session is valid or not |
 | `session_token` | The session token (JWT) to validate |
-| `subject` | The unique identifier of the token's subject. |
+| `user_id` | The ID of the user the session is associated with. |
 
 Operations: Create, Load.
 
@@ -412,12 +385,13 @@ API path: `/`
 
 Operations: Load.
 
-API path: `/thirdparty/callback`
+API path: `/thirdparty/auth`
 
 #### Token
 
 | Field | Description |
 | --- | --- |
+| `user_id` | The ID of the user on whose behalf the token was exchanged. |
 | `value` |  |
 
 Operations: Create.
@@ -479,13 +453,24 @@ API path: `/logout`
 
 | Field | Description |
 | --- | --- |
+| `aaguid` |  |
+| `attestation_type` |  |
+| `backup_eligible` |  |
+| `backup_state` |  |
+| `created_at` |  |
+| `credential_id` | The ID of the created credential |
 | `id` |  |
+| `last_used_at` |  |
+| `mfa_only` |  |
 | `name` | A new credential name. |
+| `publickey` |  |
 | `rawId` |  |
 | `response` |  |
+| `transports` |  |
 | `type` |  |
+| `user_id` | The ID of the user on whose behalf a credential was created |
 
-Operations: Create, Remove, Update.
+Operations: Create, List, Remove, Update.
 
 API path: `/webauthn/registration/finalize`
 
@@ -507,39 +492,6 @@ API path: `/webauthn/login/finalize`
 
 
 ## Entities
-
-
-### Credential
-
-Create an instance: `local credential = client:Credential(nil)`
-
-#### Operations
-
-| Method | Description |
-| --- | --- |
-| `list(match)` | List entities matching the criteria. |
-
-#### Fields
-
-| Field | Type | Description |
-| --- | --- | --- |
-| `aaguid` | `string` |  |
-| `attestation_type` | `string` |  |
-| `backup_eligible` | `boolean` |  |
-| `backup_state` | `boolean` |  |
-| `created_at` | `string` |  |
-| `id` | `string` |  |
-| `last_used_at` | `string` |  |
-| `mfa_only` | `boolean` |  |
-| `name` | `string` |  |
-| `publickey` | `string` |  |
-| `transports` | `table` |  |
-
-#### Example: List
-
-```lua
-local credentials, err = client:Credential():list()
-```
 
 
 ### CredentialCreationOption
@@ -707,8 +659,10 @@ Create an instance: `local passcode = client:Passcode(nil)`
 | Field | Type | Description |
 | --- | --- | --- |
 | `code` | `string` | The actual passcode from the email sent to the user during initialization, a string of 6 decimal digits |
+| `created_at` | `string` | Time of creation of the passcode |
 | `email_id` | `string` | The ID of the email address |
 | `id` | `string` | The ID of the passcode |
+| `ttl` | `number` | Lifespan of a passcode in seconds |
 | `user_id` | `string` | The ID of the user |
 
 #### Example: Create
@@ -759,12 +713,6 @@ Create an instance: `local saml = client:Saml(nil)`
 | `create(data)` | Create a new entity with the given data. |
 | `load(match)` | Load a single entity by match criteria. |
 
-#### Example: Load
-
-```lua
-local saml, err = client:Saml():load({ domain = "domain" })
-```
-
 #### Example: Create
 
 ```lua
@@ -788,15 +736,12 @@ Create an instance: `local session_management = client:SessionManagement(nil)`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `amr` | `table` | Authentication Method References, JSON array of strings that are identifiers for authentication methods used in the authentication. |
-| `audience` | `table` | The intended audience of the token. |
-| `email` | `table` | Data about the email address associated with the token's subject, if available. |
-| `expiration` | `string` | The timestamp indicating when the token will expire. |
-| `issued_at` | `string` | The timestamp indicating when the token was issued. |
-| `issuer` | `string` | The entity that issued the token. |
-| `session_id` | `string` | The unique identifier for the session associated with this token. |
+| `claims` | `table` | The claims extracted from a JWT. |
+| `expiration_time` | `string` | Date-time indicating the expiration of the session. |
+| `idle_expires_at` | `string` | Timestamp (in UTC) indicating when the session will expire due to inactivity, assuming no further activity occurs before this time. |
+| `is_valid` | `boolean` | Indicates whether the session is valid or not |
 | `session_token` | `string` | The session token (JWT) to validate |
-| `subject` | `any` | The unique identifier of the token's subject. |
+| `user_id` | `string` | The ID of the user the session is associated with. |
 
 #### Example: Load
 
@@ -808,10 +753,8 @@ local session_management, err = client:SessionManagement():load()
 
 ```lua
 local session_management, err = client:SessionManagement():create({
-  expiration = "example_expiration", -- string
-  session_id = "example_session_id", -- string
+  claims = {}, -- table
   session_token = "example_session_token", -- string
-  subject = "example_subject", -- any
 })
 ```
 
@@ -846,7 +789,7 @@ Create an instance: `local third_party = client:ThirdParty(nil)`
 #### Example: Load
 
 ```lua
-local third_party, err = client:ThirdParty():load({ state = "state" })
+local third_party, err = client:ThirdParty():load({ provider = "provider", redirect_to = "redirect_to" })
 ```
 
 
@@ -864,6 +807,7 @@ Create an instance: `local token = client:Token(nil)`
 
 | Field | Type | Description |
 | --- | --- | --- |
+| `user_id` | `string` | The ID of the user on whose behalf the token was exchanged. |
 | `value` | `string` |  |
 
 #### Example: Create
@@ -977,6 +921,7 @@ Create an instance: `local web_authn = client:WebAuthn(nil)`
 | Method | Description |
 | --- | --- |
 | `create(data)` | Create a new entity with the given data. |
+| `list(match)` | List entities matching the criteria. |
 | `remove(match)` | Remove the matching entity. |
 | `update(data)` | Update an existing entity. |
 
@@ -984,11 +929,28 @@ Create an instance: `local web_authn = client:WebAuthn(nil)`
 
 | Field | Type | Description |
 | --- | --- | --- |
+| `aaguid` | `string` |  |
+| `attestation_type` | `string` |  |
+| `backup_eligible` | `boolean` |  |
+| `backup_state` | `boolean` |  |
+| `created_at` | `string` |  |
+| `credential_id` | `string` | The ID of the created credential |
 | `id` | `string` |  |
+| `last_used_at` | `string` |  |
+| `mfa_only` | `boolean` |  |
 | `name` | `string` | A new credential name. |
+| `publickey` | `string` |  |
 | `rawId` | `string` |  |
 | `response` | `table` |  |
+| `transports` | `table` |  |
 | `type` | `string` |  |
+| `user_id` | `string` | The ID of the user on whose behalf a credential was created |
+
+#### Example: List
+
+```lua
+local web_authns, err = client:WebAuthn():list()
+```
 
 #### Example: Create
 

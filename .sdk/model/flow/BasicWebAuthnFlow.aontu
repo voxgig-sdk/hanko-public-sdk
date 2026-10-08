@@ -15,11 +15,23 @@ main: kit: flow: BasicWebAuthnFlow:
     }
 
     {
+      o: "list",
+      v: [
+        {
+          apply: "ItemExists",
+          def: {
+            ref: "web_authn_ref01"
+          }
+        }
+      ]
+    }
+
+    {
       i: {
         ref: "web_authn_ref01",
         srcdatavar: "web_authn_ref01_data",
         suffix: "_up0",
-        textfield: "name"
+        textfield: "aaguid"
       }
 
       o: "update",
@@ -44,6 +56,22 @@ main: kit: flow: BasicWebAuthnFlow:
       }
 
       o: "remove"
+    }
+
+    {
+      i: {
+        suffix: "_rt0"
+      }
+
+      o: "list",
+      v: [
+        {
+          apply: "ItemNotExists",
+          def: {
+            ref: "web_authn_ref01"
+          }
+        }
+      ]
     }
   ],
   "key$": "BasicWebAuthnFlow"

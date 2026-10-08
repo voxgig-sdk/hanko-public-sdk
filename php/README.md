@@ -4,7 +4,7 @@
 
 The PHP SDK for the HankoPublic API — an entity-oriented client using PHP conventions.
 
-The SDK exposes the API as capitalised, semantic **Entities** — for example `$client->Credential()` — with named operations (`list`/`load`/`create`/`update`/`remove`) instead of raw URL paths and query strings. Working with resources and verbs keeps call sites self-describing and reduces cognitive load.
+The SDK exposes the API as capitalised, semantic **Entities** — for example `$client->CredentialCreationOption()` — with named operations (`list`/`load`/`create`/`update`/`remove`) instead of raw URL paths and query strings. Working with resources and verbs keeps call sites self-describing and reduces cognitive load.
 
 > Other languages, the CLI, and MCP server live alongside this one — see
 > the [top-level README](../README.md).
@@ -12,15 +12,20 @@ The SDK exposes the API as capitalised, semantic **Entities** — for example `$
 
 ## Install
 This package is not yet published to Packagist. Install it from the
-GitHub release tag (`php/vX.Y.Z`):
+GitHub release tag (`php/vX.Y.Z`, see [Tags](https://github.com/voxgig-sdk/hanko-public-sdk/tags)), or
+from a clone as a Composer path repository:
 
-- Releases: [https://github.com/voxgig-sdk/hanko-public-sdk/releases](https://github.com/voxgig-sdk/hanko-public-sdk/releases)
+```bash
+git clone https://github.com/voxgig-sdk/hanko-public-sdk
+composer config repositories.hanko-public-sdk path ./hanko-public-sdk/php
+composer require voxgig-sdk/hanko-public-sdk:@dev
+```
 
 
 ## Tutorial: your first API call
 
 This tutorial walks through creating a client, listing entities, and
-loading a specific record.
+loading a specific record. The client sends the API key as the `hanko` cookie.
 
 ### 1. Create a client
 
@@ -33,19 +38,12 @@ $client = new HankoPublicSDK([
 ]);
 ```
 
-### 2. List credential records
+### 4. Create, update, and remove
 
 ```php
-try {
-    // list() returns entity instances; data_get() reads each record.
-    $credentials = $client->Credential()->list();
-    foreach ($credentials as $record) {
-        $item = $record->data_get();
-        echo $item["id"] . " " . $item["aaguid"] . "\n";
-    }
-} catch (\Throwable $err) {
-    echo "Error: " . $err->getMessage();
-}
+// create() returns the ENTITY — call data_get() for the created CredentialCreationOption record.
+$created = $client->CredentialCreationOption()->create(["attestation" => "example_attestation", "authenticatorSelection" => []]);
+
 ```
 
 
@@ -215,7 +213,6 @@ Creates a test-mode client with mock transport. Both arguments may be `null`.
 | `get_utility` | `(): Utility` | Copy of the SDK utility object. |
 | `prepare` | `(array $fetchargs): array` | Build an HTTP request definition without sending. |
 | `direct` | `(array $fetchargs): array` | Build and send an HTTP request. |
-| `Credential` | `($data): CredentialEntity` | Create a Credential entity instance. |
 | `CredentialCreationOption` | `($data): CredentialCreationOptionEntity` | Create a CredentialCreationOption entity instance. |
 | `CredentialRequestOption` | `($data): CredentialRequestOptionEntity` | Create a CredentialRequestOption entity instance. |
 | `Email` | `($data): EmailEntity` | Create an Email entity instance. |
@@ -239,11 +236,11 @@ All entities share the same interface.
 
 | Method | Signature | Description |
 | --- | --- | --- |
-| `load` | `($reqmatch, $ctrl): array` | Load a single entity by match criteria. |
-| `list` | `(?array $reqmatch = null, $ctrl): array` | List entities matching the criteria (call with no argument to list all). |
-| `create` | `($reqdata, $ctrl): array` | Create a new entity. |
-| `update` | `($reqdata, $ctrl): array` | Update an existing entity. |
-| `remove` | `($reqmatch, $ctrl): array` | Remove an entity. |
+| `load` | `($reqmatch, $ctrl): mixed` | Load a single entity by match criteria, and return it. |
+| `list` | `(?array $reqmatch = null, $ctrl): mixed` | List entities matching the criteria (call with no argument to list all), one per record. |
+| `create` | `($reqdata, $ctrl): mixed` | Create a new entity, and return it. |
+| `update` | `($reqdata, $ctrl): mixed` | Update an existing entity, and return it. |
+| `remove` | `($reqmatch, $ctrl): mixed` | Remove an entity, and return it marked as deleted. |
 | `data_get` | `(): array` | Get entity data. |
 | `data_set` | `($data): void` | Set entity data. |
 | `match_get` | `(): array` | Get entity match criteria. |
@@ -253,9 +250,9 @@ All entities share the same interface.
 
 ### Result shape
 
-Entity operations return the ENTITY (call data_get() for the record) (an `array` for single-entity
-ops, a `list` for `list`) and throw on error. Wrap calls in
-`try`/`catch` to handle failures.
+Entity operations return the entity, and `list` an `array` of entities, one
+per record; an entity's `data_get()` reads its record (an `array`). They
+throw on error, so wrap calls in `try`/`catch` to handle failures.
 
 The `direct()` escape hatch never throws — it returns a result `array`
 you branch on via `$result["ok"]`:
@@ -270,26 +267,6 @@ you branch on via `$result["ok"]`:
 On error, `ok` is `false` and `$err` contains the error value.
 
 ### Entities
-
-#### Credential
-
-| Field | Description |
-| --- | --- |
-| `aaguid` |  |
-| `attestation_type` |  |
-| `backup_eligible` |  |
-| `backup_state` |  |
-| `created_at` |  |
-| `id` |  |
-| `last_used_at` |  |
-| `mfa_only` |  |
-| `name` |  |
-| `publickey` |  |
-| `transports` |  |
-
-Operations: List.
-
-API path: `/webauthn/credentials`
 
 #### CredentialCreationOption
 
@@ -369,8 +346,10 @@ API path: `/.well-known/jwks.json`
 | Field | Description |
 | --- | --- |
 | `code` | The actual passcode from the email sent to the user during initialization, a string of 6 decimal digits |
+| `created_at` | Time of creation of the passcode |
 | `email_id` | The ID of the email address |
 | `id` | The ID of the passcode |
+| `ttl` | Lifespan of a passcode in seconds |
 | `user_id` | The ID of the user |
 
 Operations: Create.
@@ -401,15 +380,12 @@ API path: `/saml/callback`
 
 | Field | Description |
 | --- | --- |
-| `amr` | Authentication Method References, JSON array of strings that are identifiers for authentication methods used in the authentication. |
-| `audience` | The intended audience of the token. |
-| `email` | Data about the email address associated with the token's subject, if available. |
-| `expiration` | The timestamp indicating when the token will expire. |
-| `issued_at` | The timestamp indicating when the token was issued. |
-| `issuer` | The entity that issued the token. |
-| `session_id` | The unique identifier for the session associated with this token. |
+| `claims` | The claims extracted from a JWT. |
+| `expiration_time` | Date-time indicating the expiration of the session. |
+| `idle_expires_at` | Timestamp (in UTC) indicating when the session will expire due to inactivity, assuming no further activity occurs before this time. |
+| `is_valid` | Indicates whether the session is valid or not |
 | `session_token` | The session token (JWT) to validate |
-| `subject` | The unique identifier of the token's subject. |
+| `user_id` | The ID of the user the session is associated with. |
 
 Operations: Create, Load.
 
@@ -431,12 +407,13 @@ API path: `/`
 
 Operations: Load.
 
-API path: `/thirdparty/callback`
+API path: `/thirdparty/auth`
 
 #### Token
 
 | Field | Description |
 | --- | --- |
+| `user_id` | The ID of the user on whose behalf the token was exchanged. |
 | `value` |  |
 
 Operations: Create.
@@ -498,13 +475,24 @@ API path: `/logout`
 
 | Field | Description |
 | --- | --- |
+| `aaguid` |  |
+| `attestation_type` |  |
+| `backup_eligible` |  |
+| `backup_state` |  |
+| `created_at` |  |
+| `credential_id` | The ID of the created credential |
 | `id` |  |
+| `last_used_at` |  |
+| `mfa_only` |  |
 | `name` | A new credential name. |
+| `publickey` |  |
 | `rawId` |  |
 | `response` |  |
+| `transports` |  |
 | `type` |  |
+| `user_id` | The ID of the user on whose behalf a credential was created |
 
-Operations: Create, Remove, Update.
+Operations: Create, List, Remove, Update.
 
 API path: `/webauthn/registration/finalize`
 
@@ -526,40 +514,6 @@ API path: `/webauthn/login/finalize`
 
 
 ## Entities
-
-
-### Credential
-
-Create an instance: `$credential = $client->Credential();`
-
-#### Operations
-
-| Method | Description |
-| --- | --- |
-| `list(match)` | List entities matching the criteria. |
-
-#### Fields
-
-| Field | Type | Description |
-| --- | --- | --- |
-| `aaguid` | `string` |  |
-| `attestation_type` | `string` |  |
-| `backup_eligible` | `bool` |  |
-| `backup_state` | `bool` |  |
-| `created_at` | `string` |  |
-| `id` | `string` |  |
-| `last_used_at` | `string` |  |
-| `mfa_only` | `bool` |  |
-| `name` | `string` |  |
-| `publickey` | `string` |  |
-| `transports` | `array` |  |
-
-#### Example: List
-
-```php
-// list() returns an array of Credential records (throws on error).
-$credentials = $client->Credential()->list();
-```
 
 
 ### CredentialCreationOption
@@ -647,7 +601,7 @@ Create an instance: `$email = $client->Email();`
 #### Example: List
 
 ```php
-// list() returns an array of Email records (throws on error).
+// list() returns an array of Email entities, one per record (throws on error).
 $emails = $client->Email()->list();
 ```
 
@@ -710,7 +664,7 @@ Create an instance: `$json_web_key = $client->JsonWebKey();`
 #### Example: List
 
 ```php
-// list() returns an array of JsonWebKey records (throws on error).
+// list() returns an array of JsonWebKey entities, one per record (throws on error).
 $json_web_keys = $client->JsonWebKey()->list();
 ```
 
@@ -730,8 +684,10 @@ Create an instance: `$passcode = $client->Passcode();`
 | Field | Type | Description |
 | --- | --- | --- |
 | `code` | `string` | The actual passcode from the email sent to the user during initialization, a string of 6 decimal digits |
+| `created_at` | `string` | Time of creation of the passcode |
 | `email_id` | `string` | The ID of the email address |
 | `id` | `string` | The ID of the passcode |
+| `ttl` | `int` | Lifespan of a passcode in seconds |
 | `user_id` | `string` | The ID of the user |
 
 #### Example: Create
@@ -782,13 +738,6 @@ Create an instance: `$saml = $client->Saml();`
 | `create(data)` | Create a new entity with the given data. |
 | `load(match)` | Load a single entity by match criteria. |
 
-#### Example: Load
-
-```php
-// load() returns the ENTITY — call data_get() for the Saml record (throws on error).
-$saml = $client->Saml()->load(["domain" => "domain"]);
-```
-
 #### Example: Create
 
 ```php
@@ -812,15 +761,12 @@ Create an instance: `$session_management = $client->SessionManagement();`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `amr` | `array` | Authentication Method References, JSON array of strings that are identifiers for authentication methods used in the authentication. |
-| `audience` | `array` | The intended audience of the token. |
-| `email` | `array` | Data about the email address associated with the token's subject, if available. |
-| `expiration` | `string` | The timestamp indicating when the token will expire. |
-| `issued_at` | `string` | The timestamp indicating when the token was issued. |
-| `issuer` | `string` | The entity that issued the token. |
-| `session_id` | `string` | The unique identifier for the session associated with this token. |
+| `claims` | `array` | The claims extracted from a JWT. |
+| `expiration_time` | `string` | Date-time indicating the expiration of the session. |
+| `idle_expires_at` | `string` | Timestamp (in UTC) indicating when the session will expire due to inactivity, assuming no further activity occurs before this time. |
+| `is_valid` | `bool` | Indicates whether the session is valid or not |
 | `session_token` | `string` | The session token (JWT) to validate |
-| `subject` | `mixed` | The unique identifier of the token's subject. |
+| `user_id` | `string` | The ID of the user the session is associated with. |
 
 #### Example: Load
 
@@ -833,10 +779,8 @@ $session_management = $client->SessionManagement()->load();
 
 ```php
 $session_management = $client->SessionManagement()->create([
-    "expiration" => null, // string
-    "session_id" => null, // string
+    "claims" => null, // array
     "session_token" => null, // string
-    "subject" => null, // mixed
 ]);
 ```
 
@@ -873,7 +817,7 @@ Create an instance: `$third_party = $client->ThirdParty();`
 
 ```php
 // load() returns the ENTITY — call data_get() for the ThirdParty record (throws on error).
-$third_party = $client->ThirdParty()->load(["state" => "state"]);
+$third_party = $client->ThirdParty()->load(["provider" => "provider", "redirect_to" => "redirect_to"]);
 ```
 
 
@@ -891,6 +835,7 @@ Create an instance: `$token = $client->Token();`
 
 | Field | Type | Description |
 | --- | --- | --- |
+| `user_id` | `string` | The ID of the user on whose behalf the token was exchanged. |
 | `value` | `string` |  |
 
 #### Example: Create
@@ -985,7 +930,7 @@ Create an instance: `$user_management = $client->UserManagement();`
 #### Example: List
 
 ```php
-// list() returns an array of UserManagement records (throws on error).
+// list() returns an array of UserManagement entities, one per record (throws on error).
 $user_managements = $client->UserManagement()->list();
 ```
 
@@ -1006,6 +951,7 @@ Create an instance: `$web_authn = $client->WebAuthn();`
 | Method | Description |
 | --- | --- |
 | `create(data)` | Create a new entity with the given data. |
+| `list(match)` | List entities matching the criteria. |
 | `remove(match)` | Remove the matching entity. |
 | `update(data)` | Update an existing entity. |
 
@@ -1013,11 +959,29 @@ Create an instance: `$web_authn = $client->WebAuthn();`
 
 | Field | Type | Description |
 | --- | --- | --- |
+| `aaguid` | `string` |  |
+| `attestation_type` | `string` |  |
+| `backup_eligible` | `bool` |  |
+| `backup_state` | `bool` |  |
+| `created_at` | `string` |  |
+| `credential_id` | `string` | The ID of the created credential |
 | `id` | `string` |  |
+| `last_used_at` | `string` |  |
+| `mfa_only` | `bool` |  |
 | `name` | `string` | A new credential name. |
+| `publickey` | `string` |  |
 | `rawId` | `string` |  |
 | `response` | `array` |  |
+| `transports` | `array` |  |
 | `type` | `string` |  |
+| `user_id` | `string` | The ID of the user on whose behalf a credential was created |
+
+#### Example: List
+
+```php
+// list() returns an array of WebAuthn entities, one per record (throws on error).
+$web_authns = $client->WebAuthn()->list();
+```
 
 #### Example: Create
 

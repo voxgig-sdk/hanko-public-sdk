@@ -42,10 +42,6 @@ client = HankoPublicSDK.test
 
 ### Instance Methods
 
-#### `Credential(data = nil)`
-
-Create a new `Credential` entity instance. Pass `nil` for no initial data.
-
 #### `CredentialCreationOption(data = nil)`
 
 Create a new `CredentialCreationOption` entity instance. Pass `nil` for no initial data.
@@ -148,68 +144,6 @@ same parameters as `direct()`. Raises on error.
 
 ---
 
-## CredentialEntity
-
-```ruby
-credential = client.Credential
-```
-
-### Fields
-
-| Field | Type | Required | Description |
-| --- | --- | --- | --- |
-| `aaguid` | `String` | No |  |
-| `attestation_type` | `String` | No |  |
-| `backup_eligible` | `Boolean` | No |  |
-| `backup_state` | `Boolean` | No |  |
-| `created_at` | `String` | No |  |
-| `id` | `String` | No |  |
-| `last_used_at` | `String` | No |  |
-| `mfa_only` | `Boolean` | No |  |
-| `name` | `String` | No |  |
-| `publickey` | `String` | No |  |
-| `transports` | `Array` | No |  |
-
-### Operations
-
-#### `list(reqmatch = nil, ctrl = nil) -> Array`
-
-List entities matching the given criteria (call with no argument to list all). Returns an array. Raises on error.
-
-```ruby
-results = client.Credential.list
-```
-
-### Common Methods
-
-#### `data_get -> Hash`
-
-Get the entity data. Returns a copy of the current data.
-
-#### `data_set(data)`
-
-Set the entity data.
-
-#### `match_get -> Hash`
-
-Get the entity match criteria.
-
-#### `match_set(match)`
-
-Set the entity match criteria.
-
-#### `make -> Entity`
-
-Create a new `CredentialEntity` instance with the same client and
-options.
-
-#### `get_name -> String`
-
-Return the entity name.
-
-
----
-
 ## CredentialCreationOptionEntity
 
 ```ruby
@@ -232,7 +166,7 @@ credential_creation_option = client.CredentialCreationOption
 
 #### `create(reqdata, ctrl = nil) -> result`
 
-Create a new entity with the given data. Raises on error.
+Create a new entity with the given data. Returns the created entity and raises on error.
 
 ```ruby
 result = client.CredentialCreationOption.create({
@@ -290,7 +224,7 @@ credential_request_option = client.CredentialRequestOption
 
 #### `create(reqdata, ctrl = nil) -> result`
 
-Create a new entity with the given data. Raises on error.
+Create a new entity with the given data. Returns the created entity and raises on error.
 
 ```ruby
 result = client.CredentialRequestOption.create({
@@ -359,7 +293,7 @@ email = client.Email
 
 #### `create(reqdata, ctrl = nil) -> result`
 
-Create a new entity with the given data. Raises on error.
+Create a new entity with the given data. Returns the created entity and raises on error.
 
 ```ruby
 result = client.Email.create({
@@ -369,15 +303,16 @@ result = client.Email.create({
 
 #### `list(reqmatch = nil, ctrl = nil) -> Array`
 
-List entities matching the given criteria (call with no argument to list all). Returns an array. Raises on error.
+List entities matching the given criteria (call with no argument to list all). Returns an array of entities, one per record; `data_get` reads each record. Raises on error.
 
 ```ruby
 results = client.Email.list
+results.each { |item| puts item.data_get }
 ```
 
 #### `remove(reqmatch, ctrl = nil) -> result`
 
-Remove the entity matching the given criteria. Raises on error.
+Remove the entity matching the given criteria. Returns the entity, marked as deleted, and raises on error.
 
 ```ruby
 result = client.Email.remove({ "id" => "id" })
@@ -431,7 +366,7 @@ hanko_configuration = client.HankoConfiguration
 
 #### `load(reqmatch, ctrl = nil) -> result`
 
-Load a single entity matching the given criteria. Raises on error.
+Load a single entity matching the given criteria. Returns the entity, whose record `data_get` reads, and raises on error.
 
 ```ruby
 result = client.HankoConfiguration.load()
@@ -488,10 +423,11 @@ json_web_key = client.JsonWebKey
 
 #### `list(reqmatch = nil, ctrl = nil) -> Array`
 
-List entities matching the given criteria (call with no argument to list all). Returns an array. Raises on error.
+List entities matching the given criteria (call with no argument to list all). Returns an array of entities, one per record; `data_get` reads each record. Raises on error.
 
 ```ruby
 results = client.JsonWebKey.list
+results.each { |item| puts item.data_get }
 ```
 
 ### Common Methods
@@ -535,15 +471,17 @@ passcode = client.Passcode
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
 | `code` | `String` | No | The actual passcode from the email sent to the user during initialization, a string of 6 decimal digits |
+| `created_at` | `String` | No | Time of creation of the passcode |
 | `email_id` | `String` | No | The ID of the email address |
 | `id` | `String` | No | The ID of the passcode |
+| `ttl` | `Integer` | No | Lifespan of a passcode in seconds |
 | `user_id` | `String` | Yes | The ID of the user |
 
 ### Operations
 
 #### `create(reqdata, ctrl = nil) -> result`
 
-Create a new entity with the given data. Raises on error.
+Create a new entity with the given data. Returns the created entity and raises on error.
 
 ```ruby
 result = client.Passcode.create({
@@ -598,7 +536,7 @@ password = client.Password
 
 #### `create(reqdata, ctrl = nil) -> result`
 
-Create a new entity with the given data. Raises on error.
+Create a new entity with the given data. Returns the created entity and raises on error.
 
 ```ruby
 result = client.Password.create({
@@ -609,7 +547,7 @@ result = client.Password.create({
 
 #### `update(reqdata, ctrl = nil) -> result`
 
-Update an existing entity. The data must include the entity `id`. Raises on error.
+Update an existing entity. The data must include the entity `id`. Returns the updated entity and raises on error.
 
 ```ruby
 result = client.Password.update({
@@ -657,20 +595,18 @@ saml = client.Saml
 
 #### `create(reqdata, ctrl = nil) -> result`
 
-Create a new entity with the given data. Raises on error.
+Create a new entity with the given data. Returns the created entity and raises on error.
 
 ```ruby
 result = client.Saml.create({
 })
 ```
 
+Declares a `application/x-www-form-urlencoded` body, which this SDK does not encode yet: it sends the data as JSON.
+
 #### `load(reqmatch, ctrl = nil) -> result`
 
-Load a single entity matching the given criteria. Raises on error.
-
-```ruby
-result = client.Saml.load({ "domain" => "domain" })
-```
+Load a single entity matching the given criteria. Returns the entity, whose record `data_get` reads, and raises on error.
 
 ### Common Methods
 
@@ -712,34 +648,29 @@ session_management = client.SessionManagement
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `amr` | `Array` | No | Authentication Method References, JSON array of strings that are identifiers for authentication methods used in the authentication. |
-| `audience` | `Array` | No | The intended audience of the token. |
-| `email` | `Hash` | No | Data about the email address associated with the token's subject, if available. |
-| `expiration` | `String` | Yes | The timestamp indicating when the token will expire. |
-| `issued_at` | `String` | No | The timestamp indicating when the token was issued. |
-| `issuer` | `String` | No | The entity that issued the token. |
-| `session_id` | `String` | Yes | The unique identifier for the session associated with this token. |
+| `claims` | `Hash` | Yes | The claims extracted from a JWT. |
+| `expiration_time` | `String` | No | Date-time indicating the expiration of the session. |
+| `idle_expires_at` | `String` | No | Timestamp (in UTC) indicating when the session will expire due to inactivity, assuming no further activity occurs before this time. |
+| `is_valid` | `Boolean` | No | Indicates whether the session is valid or not |
 | `session_token` | `String` | Yes | The session token (JWT) to validate |
-| `subject` | `Object` | Yes | The unique identifier of the token's subject. |
+| `user_id` | `String` | No | The ID of the user the session is associated with. |
 
 ### Operations
 
 #### `create(reqdata, ctrl = nil) -> result`
 
-Create a new entity with the given data. Raises on error.
+Create a new entity with the given data. Returns the created entity and raises on error.
 
 ```ruby
 result = client.SessionManagement.create({
-  "expiration" => "example_expiration", # String
-  "session_id" => "example_session_id", # String
+  "claims" => {}, # Hash
   "session_token" => "example_session_token", # String
-  "subject" => "example_subject", # Object
 })
 ```
 
 #### `load(reqmatch, ctrl = nil) -> result`
 
-Load a single entity matching the given criteria. Raises on error.
+Load a single entity matching the given criteria. Returns the entity, whose record `data_get` reads, and raises on error.
 
 ```ruby
 result = client.SessionManagement.load()
@@ -785,7 +716,7 @@ status = client.Status
 
 #### `load(reqmatch, ctrl = nil) -> result`
 
-Load a single entity matching the given criteria. Raises on error.
+Load a single entity matching the given criteria. Returns the entity, whose record `data_get` reads, and raises on error.
 
 ```ruby
 result = client.Status.load()
@@ -831,10 +762,10 @@ third_party = client.ThirdParty
 
 #### `load(reqmatch, ctrl = nil) -> result`
 
-Load a single entity matching the given criteria. Raises on error.
+Load a single entity matching the given criteria. Returns the entity, whose record `data_get` reads, and raises on error.
 
 ```ruby
-result = client.ThirdParty.load({ "state" => "state" })
+result = client.ThirdParty.load({ "provider" => "provider", "redirect_to" => "redirect_to" })
 ```
 
 ### Common Methods
@@ -877,13 +808,14 @@ token = client.Token
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
+| `user_id` | `String` | No | The ID of the user on whose behalf the token was exchanged. |
 | `value` | `String` | No |  |
 
 ### Operations
 
 #### `create(reqdata, ctrl = nil) -> result`
 
-Create a new entity with the given data. Raises on error.
+Create a new entity with the given data. Returns the created entity and raises on error.
 
 ```ruby
 result = client.Token.create({
@@ -978,7 +910,7 @@ user = client.User
 
 #### `create(reqdata, ctrl = nil) -> result`
 
-Create a new entity with the given data. Raises on error.
+Create a new entity with the given data. Returns the created entity and raises on error.
 
 ```ruby
 result = client.User.create({
@@ -987,7 +919,7 @@ result = client.User.create({
 
 #### `load(reqmatch, ctrl = nil) -> result`
 
-Load a single entity matching the given criteria. Raises on error.
+Load a single entity matching the given criteria. Returns the entity, whose record `data_get` reads, and raises on error.
 
 ```ruby
 result = client.User.load({ "id" => "user_id" })
@@ -995,7 +927,7 @@ result = client.User.load({ "id" => "user_id" })
 
 #### `remove(reqmatch, ctrl = nil) -> result`
 
-Remove the entity matching the given criteria. Raises on error.
+Remove the entity matching the given criteria. Returns the entity, marked as deleted, and raises on error.
 
 ```ruby
 result = client.User.remove({ "id" => "user_id" })
@@ -1060,7 +992,7 @@ user_management = client.UserManagement
 
 #### `create(reqdata, ctrl = nil) -> result`
 
-Create a new entity with the given data. Raises on error.
+Create a new entity with the given data. Returns the created entity and raises on error.
 
 ```ruby
 result = client.UserManagement.create({
@@ -1069,10 +1001,11 @@ result = client.UserManagement.create({
 
 #### `list(reqmatch = nil, ctrl = nil) -> Array`
 
-List entities matching the given criteria (call with no argument to list all). Returns an array. Raises on error.
+List entities matching the given criteria (call with no argument to list all). Returns an array of entities, one per record; `data_get` reads each record. Raises on error.
 
 ```ruby
 results = client.UserManagement.list
+results.each { |item| puts item.data_get }
 ```
 
 ### Common Methods
@@ -1115,26 +1048,46 @@ web_authn = client.WebAuthn
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
+| `aaguid` | `String` | No |  |
+| `attestation_type` | `String` | No |  |
+| `backup_eligible` | `Boolean` | No |  |
+| `backup_state` | `Boolean` | No |  |
+| `created_at` | `String` | No |  |
+| `credential_id` | `String` | No | The ID of the created credential |
 | `id` | `String` | No |  |
+| `last_used_at` | `String` | No |  |
+| `mfa_only` | `Boolean` | No |  |
 | `name` | `String` | No | A new credential name. |
+| `publickey` | `String` | No |  |
 | `rawId` | `String` | No |  |
 | `response` | `Hash` | No |  |
+| `transports` | `Array` | No |  |
 | `type` | `String` | No |  |
+| `user_id` | `String` | No | The ID of the user on whose behalf a credential was created |
 
 ### Operations
 
 #### `create(reqdata, ctrl = nil) -> result`
 
-Create a new entity with the given data. Raises on error.
+Create a new entity with the given data. Returns the created entity and raises on error.
 
 ```ruby
 result = client.WebAuthn.create({
 })
 ```
 
+#### `list(reqmatch = nil, ctrl = nil) -> Array`
+
+List entities matching the given criteria (call with no argument to list all). Returns an array of entities, one per record; `data_get` reads each record. Raises on error.
+
+```ruby
+results = client.WebAuthn.list
+results.each { |item| puts item.data_get }
+```
+
 #### `remove(reqmatch, ctrl = nil) -> result`
 
-Remove the entity matching the given criteria. Raises on error.
+Remove the entity matching the given criteria. Returns the entity, marked as deleted, and raises on error.
 
 ```ruby
 result = client.WebAuthn.remove({ "id" => "id" })
@@ -1142,7 +1095,7 @@ result = client.WebAuthn.remove({ "id" => "id" })
 
 #### `update(reqdata, ctrl = nil) -> result`
 
-Update an existing entity. The data must include the entity `id`. Raises on error.
+Update an existing entity. The data must include the entity `id`. Returns the updated entity and raises on error.
 
 ```ruby
 result = client.WebAuthn.update({
@@ -1202,7 +1155,7 @@ webauthn_login = client.WebauthnLogin
 
 #### `create(reqdata, ctrl = nil) -> result`
 
-Create a new entity with the given data. Raises on error.
+Create a new entity with the given data. Returns the created entity and raises on error.
 
 ```ruby
 result = client.WebauthnLogin.create({
@@ -1529,6 +1482,7 @@ Timeout.
 | Option | Type |
 |---|---|
 | `clearTimer` | function |
+| `now` | function |
 | `setTimer` | function |
 
 These take no default: the feature behaves one way when you supply them and

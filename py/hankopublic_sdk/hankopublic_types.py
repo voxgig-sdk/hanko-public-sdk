@@ -16,34 +16,6 @@ from __future__ import annotations
 from typing import TypedDict, Any
 
 
-class Credential(TypedDict, total=False):
-    aaguid: str
-    attestation_type: str
-    backup_eligible: bool
-    backup_state: bool
-    created_at: str
-    id: str
-    last_used_at: str
-    mfa_only: bool
-    name: str
-    publickey: str
-    transports: list
-
-
-class CredentialListMatch(TypedDict, total=False):
-    aaguid: str
-    attestation_type: str
-    backup_eligible: bool
-    backup_state: bool
-    created_at: str
-    id: str
-    last_used_at: str
-    mfa_only: bool
-    name: str
-    publickey: str
-    transports: list
-
-
 class CredentialCreationOption(TypedDict, total=False):
     attestation: str
     authenticatorSelection: dict
@@ -155,8 +127,10 @@ class PasscodeRequired(TypedDict):
 
 class Passcode(PasscodeRequired, total=False):
     code: str
+    created_at: str
     email_id: str
     id: str
+    ttl: int
 
 
 class PasscodeCreateDataRequired(TypedDict):
@@ -165,8 +139,10 @@ class PasscodeCreateDataRequired(TypedDict):
 
 class PasscodeCreateData(PasscodeCreateDataRequired, total=False):
     code: str
+    created_at: str
     email_id: str
     id: str
+    ttl: int
 
 
 class Password(TypedDict):
@@ -201,45 +177,36 @@ class SamlCreateData(TypedDict):
 
 
 class SessionManagementRequired(TypedDict):
-    expiration: str
-    session_id: str
+    claims: dict
     session_token: str
-    subject: Any
 
 
 class SessionManagement(SessionManagementRequired, total=False):
-    amr: list
-    audience: list
-    email: dict
-    issued_at: str
-    issuer: str
+    expiration_time: str
+    idle_expires_at: str
+    is_valid: bool
+    user_id: str
 
 
 class SessionManagementLoadMatch(TypedDict, total=False):
-    amr: list
-    audience: list
-    email: dict
-    expiration: str
-    issued_at: str
-    issuer: str
-    session_id: str
+    claims: dict
+    expiration_time: str
+    idle_expires_at: str
+    is_valid: bool
     session_token: str
-    subject: Any
+    user_id: str
 
 
 class SessionManagementCreateDataRequired(TypedDict):
-    expiration: str
-    session_id: str
+    claims: dict
     session_token: str
-    subject: Any
 
 
 class SessionManagementCreateData(SessionManagementCreateDataRequired, total=False):
-    amr: list
-    audience: list
-    email: dict
-    issued_at: str
-    issuer: str
+    expiration_time: str
+    idle_expires_at: str
+    is_valid: bool
+    user_id: str
 
 
 class Status(TypedDict):
@@ -254,21 +221,18 @@ class ThirdParty(TypedDict):
     pass
 
 
-class ThirdPartyLoadMatchRequired(TypedDict):
-    state: str
-
-
-class ThirdPartyLoadMatch(ThirdPartyLoadMatchRequired, total=False):
-    code: str
-    error: str
-    error_description: str
+class ThirdPartyLoadMatch(TypedDict):
+    provider: str
+    redirect_to: str
 
 
 class Token(TypedDict, total=False):
+    user_id: str
     value: str
 
 
 class TokenCreateData(TypedDict, total=False):
+    user_id: str
     value: str
 
 
@@ -397,19 +361,60 @@ class UserManagementCreateData(TypedDict, total=False):
 
 
 class WebAuthn(TypedDict, total=False):
+    aaguid: str
+    attestation_type: str
+    backup_eligible: bool
+    backup_state: bool
+    created_at: str
+    credential_id: str
     id: str
+    last_used_at: str
+    mfa_only: bool
     name: str
+    publickey: str
     rawId: str
     response: dict
+    transports: list
     type: str
+    user_id: str
+
+
+class WebAuthnListMatch(TypedDict, total=False):
+    aaguid: str
+    attestation_type: str
+    backup_eligible: bool
+    backup_state: bool
+    created_at: str
+    credential_id: str
+    id: str
+    last_used_at: str
+    mfa_only: bool
+    name: str
+    publickey: str
+    rawId: str
+    response: dict
+    transports: list
+    type: str
+    user_id: str
 
 
 class WebAuthnCreateData(TypedDict, total=False):
+    aaguid: str
+    attestation_type: str
+    backup_eligible: bool
+    backup_state: bool
+    created_at: str
+    credential_id: str
     id: str
+    last_used_at: str
+    mfa_only: bool
     name: str
+    publickey: str
     rawId: str
     response: dict
+    transports: list
     type: str
+    user_id: str
 
 
 class WebAuthnUpdateDataRequired(TypedDict):
@@ -417,10 +422,21 @@ class WebAuthnUpdateDataRequired(TypedDict):
 
 
 class WebAuthnUpdateData(WebAuthnUpdateDataRequired, total=False):
+    aaguid: str
+    attestation_type: str
+    backup_eligible: bool
+    backup_state: bool
+    created_at: str
+    credential_id: str
+    last_used_at: str
+    mfa_only: bool
     name: str
+    publickey: str
     rawId: str
     response: dict
+    transports: list
     type: str
+    user_id: str
 
 
 class WebAuthnRemoveMatch(TypedDict):

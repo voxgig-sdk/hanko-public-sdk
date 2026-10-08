@@ -11,6 +11,12 @@ use Voxgig\Struct\Struct as Vs;
 
 class SamlEntityTest extends TestCase
 {
+    // main.kit.test.live.strict is true (the default is true): a live
+    // request that fails, or a live test missing an input it needs,
+    // fails the test.
+    // An account with no record for a test to read skips it either way.
+    private const LIVE_STRICT = true;
+
     public function test_create_instance(): void
     {
         $testsdk = HankoPublicSDK::test(null, null);
@@ -23,18 +29,12 @@ class SamlEntityTest extends TestCase
         $setup = saml_basic_setup(null);
         // Per-op sdk-test-control.json skip.
         $_live = !empty($setup["live"]);
-        foreach (["create", "load"] as $_op) {
+        foreach (["create"] as $_op) {
             [$_shouldSkip, $_reason] = Runner::is_control_skipped("entityOp", "saml." . $_op, $_live ? "live" : "unit");
             if ($_shouldSkip) {
                 $this->markTestSkipped($_reason ?? "skipped via sdk-test-control.json");
                 return;
             }
-        }
-        // The basic flow consumes synthetic IDs from the fixture. In live mode
-        // without an *_ENTID env override, those IDs hit the live API and 4xx.
-        if (!empty($setup["synthetic_only"])) {
-            $this->markTestSkipped("live entity test uses synthetic IDs from fixture — set HANKO_PUBLIC_TEST_SAML_ENTID JSON to run live");
-            return;
         }
         $client = $setup["client"];
 
@@ -46,11 +46,6 @@ class SamlEntityTest extends TestCase
         $saml_ref01_data_result = $saml_ref01_ent->create($saml_ref01_data, null);
         $saml_ref01_data = Helpers::to_map(is_object($saml_ref01_data_result) && method_exists($saml_ref01_data_result, 'data_get') ? $saml_ref01_data_result->data_get() : $saml_ref01_data_result);
         $this->assertNotNull($saml_ref01_data);
-
-        // LOAD
-        $saml_ref01_match_dt0 = [];
-        $saml_ref01_data_dt0_loaded = $saml_ref01_ent->load($saml_ref01_match_dt0, null);
-        $this->assertNotNull($saml_ref01_data_dt0_loaded);
 
     }
 }
@@ -74,9 +69,8 @@ function saml_basic_setup($extra)
         $idmap[$k] = strtoupper($k);
     }
 
-    // Detect ENTID env override before envOverride consumes it. When live
-    // mode is on without a real override, the basic test runs against synthetic
-    // IDs from the fixture and 4xx's. Surface this so the test can skip.
+    // Whether *_ENTID supplied the idmap, read before env_override consumes
+    // it: without it, the ids a live flow binds are the fixture's synthetic ones.
     $entid_env_raw = getenv("HANKO_PUBLIC_TEST_SAML_ENTID");
     $idmap_overridden = $entid_env_raw !== false && str_starts_with(trim($entid_env_raw), "{");
 

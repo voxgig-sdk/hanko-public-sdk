@@ -12,20 +12,24 @@ Learn more about Voxgig SDKs at [voxgig.com/sdk](https://voxgig.com/sdk/).
 
 > TypeScript, Python, PHP, Golang, Ruby, Lua SDKs, a CLI with an interactive REPL, and an MCP server for AI agents — all generated from one OpenAPI spec by [@voxgig/sdkgen](https://github.com/voxgig/sdkgen).
 
-> **Features:** `undefined`, `undefined`, `undefined`, `undefined`, `undefined`, `undefined`, `undefined`, `undefined` — opt-in,
+> **Features:** `debug`, `idempotency`, `metrics`, `paging`, `ratelimit`, `retry`, `test`, `timeout` — opt-in,
 > inactive until switched on, and configured per client. See the Features
 > section of any SDK README below for what each one does.
 
 ## Entities, not endpoints
 
-This SDK exposes the API as **17 semantic entities** that you
+This SDK exposes the API as **16 semantic entities** that you
 call directly, instead of assembling URL paths and query strings. See the [Entities](#entities) table below for the full list. Entities are
 **Capitalised** to mark them as the primary surface, each with the operations they
 support (`list`, `load`, `create`, `update`, `remove`):
 
 ```ts
 const client = new HankoPublicSDK()
-const items = await client.Credential().list()
+const credentialcreationoption = await client.CredentialCreationOption().create({
+  attestation: 'example',
+  authenticatorSelection: {},
+  challenge: 'example',
+})
 ```
 
 Thinking in entities keeps the mental model small — for people and AI agents alike —
@@ -50,9 +54,8 @@ const client = HankoPublicSDK.test({
   },
 })
 const jsonwebkeys = await client.JsonWebKey().list()
-// jsonwebkeys is an array of JsonWebKey entities, populated with mock data
-// — call jsonwebkeys[0].data() for the record itself
-console.log(jsonwebkeys)
+// jsonwebkeys is an array of JsonWebKey entities, one per mock record
+console.log(jsonwebkeys.map((jsonwebkey) => jsonwebkey.data()))
 ```
 
 ### Python
@@ -60,7 +63,7 @@ console.log(jsonwebkeys)
 ```python
 client = HankoPublicSDK.test()
 jsonwebkeys = client.JsonWebKey().list()
-print(jsonwebkeys)
+print([item.data_get() for item in jsonwebkeys])
 ```
 
 ### PHP
@@ -68,7 +71,7 @@ print(jsonwebkeys)
 ```php
 // Seed fixture data so offline calls resolve without a live server.
 $client = HankoPublicSDK::test([
-    "entity" => ["jsonwebkey" => ["test01" => []]],
+    "entity" => ["json_web_key" => ["test01" => []]],
 ]);
 $jsonwebkeys = $client->JsonWebKey()->list();
 ```
@@ -87,7 +90,7 @@ result, err := client.JsonWebKey(nil).List(
 ```ruby
 # Seed fixture data so offline calls resolve without a live server.
 client = HankoPublicSDK.test({
-  "entity" => { "jsonwebkey" => { "test01" => {} } },
+  "entity" => { "json_web_key" => { "test01" => {} } },
 })
 jsonwebkeys = client.JsonWebKey.list()
 ```
@@ -103,14 +106,14 @@ local results, err = client:JsonWebKey():list()
 
 | Language | Package | Install |
 | --- | --- | --- |
-| TypeScript | `@voxgig-sdk/hanko-public-sdk` | publish pending — [install from git tag](https://github.com/voxgig-sdk/hanko-public-sdk/tags) |
-| Python | `voxgig-sdk-hanko-public-sdk` | publish pending — [install from git tag](https://github.com/voxgig-sdk/hanko-public-sdk/tags) |
-| PHP | `voxgig-sdk/hanko-public-sdk` | publish pending — [install from git tag](https://github.com/voxgig-sdk/hanko-public-sdk/tags) |
+| TypeScript | `@voxgig-sdk/hanko-public-sdk` | publish pending — [install from source](ts/README.md#install) |
+| Python | `voxgig-sdk-hanko-public-sdk` | publish pending — [install from source](py/README.md#install) |
+| PHP | `voxgig-sdk/hanko-public-sdk` | publish pending — [install from source](php/README.md#install) |
 | Golang | `github.com/voxgig-sdk/hanko-public-sdk/go` | `go get github.com/voxgig-sdk/hanko-public-sdk/go@latest` |
-| Ruby | `voxgig-sdk-hanko-public-sdk` | publish pending — [install from git tag](https://github.com/voxgig-sdk/hanko-public-sdk/tags) |
-| Lua | `voxgig-sdk-hanko-public-sdk` | publish pending — [install from git tag](https://github.com/voxgig-sdk/hanko-public-sdk/tags) |
-| Go CLI | `github.com/voxgig-sdk/hanko-public-sdk/go-cli` | `go install github.com/voxgig-sdk/hanko-public-sdk/go-cli/cmd/hanko-public@latest` |
-| Go MCP server | `github.com/voxgig-sdk/hanko-public-sdk/go-mcp` | `go get github.com/voxgig-sdk/hanko-public-sdk/go-mcp@latest` |
+| Ruby | `voxgig-sdk-hanko-public-sdk` | publish pending — [install from source](rb/README.md#install) |
+| Lua | `voxgig-sdk-hanko-public-sdk` | publish pending — [install from source](lua/README.md#install) |
+| Go CLI | `github.com/voxgig-sdk/hanko-public-sdk/go-cli` | build from source — [go-cli/README.md](go-cli/README.md) |
+| Go MCP server | `github.com/voxgig-sdk/hanko-public-sdk/go-mcp` | build from source — [go-mcp/README.md](go-mcp/README.md) |
 
 ## Quickstart
 
@@ -127,12 +130,9 @@ const client = new HankoPublicSDK({
   },
 })
 
-// List all credentials (returns CredentialEntity[] — .data() for the record)
-const credentials = await client.Credential().list()
-for (const credential of credentials) {
-  console.log(credential)
-}
 ```
+
+The client sends the API key as the `hanko` cookie.
 
 See the [TypeScript README](ts/README.md) for the full guide.
 
@@ -146,9 +146,10 @@ See the [TypeScript README](ts/README.md) for the full guide.
 
 ## Use it from an AI agent (MCP)
 
-The generated MCP server exposes every operation in this SDK as an
-[MCP](https://modelcontextprotocol.io) tool that Claude, Cursor or Cline
-can call directly. Build and register it:
+The generated MCP server exposes this SDK's list and load operations as
+[MCP](https://modelcontextprotocol.io) tools that Claude, Cursor or Cline
+can call directly. It only reads: create, update, patch and remove become tools when the SDK's model sets
+`main: kit: target: 'go-mcp': tool: write: true`. Build and register it:
 
 ```bash
 cd go-mcp && go build -o hanko-public-mcp .
@@ -168,11 +169,10 @@ Then add it to your agent's MCP config (Claude Desktop, Cursor, etc.):
 
 ## Entities
 
-The API exposes 17 entities:
+The API exposes 16 entities:
 
 | Entity | Description | API path |
 | --- | --- | --- |
-| **Credential** | The Credential entity (list). | `/webauthn/credentials` |
 | **CredentialCreationOption** | The CredentialCreationOption entity (create). | `/webauthn/registration/initialize` |
 | **CredentialRequestOption** | The CredentialRequestOption entity (create). | `/webauthn/login/initialize` |
 | **Email** | The Email entity (create, list, remove). | `/emails` |
@@ -183,11 +183,11 @@ The API exposes 17 entities:
 | **Saml** | The Saml entity (create, load). | `/saml/metadata` |
 | **SessionManagement** | The SessionManagement entity (create, load). | `/sessions/validate` |
 | **Status** | The Status entity (load). | `/` |
-| **ThirdParty** | The ThirdParty entity (load). | `/thirdparty/callback` |
+| **ThirdParty** | The ThirdParty entity (load). | `/thirdparty/auth` |
 | **Token** | The Token entity (create). | `/token` |
 | **User** | The User entity (create, load, remove). | `/users/{id}` |
 | **UserManagement** | The UserManagement entity (create, list). | `/me` |
-| **WebAuthn** | The WebAuthn entity (create, remove, update). | `/webauthn/registration/finalize` |
+| **WebAuthn** | The WebAuthn entity (create, list, remove, update). | `/webauthn/credentials` |
 | **WebauthnLogin** | The WebauthnLogin entity (create). | `/webauthn/login/finalize` |
 
 The operations available across these entities are **load**, **list**, **create**, **update**, **remove** — see each entity's
@@ -208,10 +208,6 @@ client = HankoPublicSDK({
     },
 })
 
-# List all credentials (returns a list, raises on error)
-credentials = client.Credential().list()
-for credential in credentials:
-    print(credential)
 ```
 
 ### PHP
@@ -224,9 +220,6 @@ $client = new HankoPublicSDK([
     "apikey" => getenv("HANKO_PUBLIC_APIKEY"),
 ]);
 
-// List all credentials (returns an array; throws on error)
-$credentials = $client->Credential()->list();
-print_r(array_map(fn($item) => $item->data_get(), $credentials));
 ```
 
 ### Golang
@@ -241,12 +234,6 @@ client := sdk.NewHankoPublicSDK(map[string]any{
     },
 })
 
-// List all credentials
-credentials, err := client.Credential(nil).List(nil, nil)
-if err != nil {
-    panic(err)
-}
-fmt.Println(credentials)
 ```
 
 ### Ruby
@@ -258,9 +245,6 @@ client = HankoPublicSDK.new({
   "apikey" => ENV["HANKO_PUBLIC_APIKEY"],
 })
 
-# List all credentials (returns an Array; raises on error)
-credentials = client.Credential.list
-puts credentials
 ```
 
 ### Lua
@@ -272,9 +256,6 @@ local client = sdk.new({
   apikey = os.getenv("HANKO_PUBLIC_APIKEY"),
 })
 
--- List all credentials
-local credentials, err = client:Credential():list()
-print(credentials)
 ```
 
 ## Direct and prepare
@@ -300,10 +281,9 @@ const result = await client.direct({
   method: 'GET',
   params: { id: 'example' },
 })
-if (result instanceof Error) {
-  throw result
+if (result.ok) {
+  console.log(result.data)
 }
-console.log(result.data)
 ```
 
 **Python:**
@@ -401,10 +381,12 @@ customizable without forking any upstream tool:
 - **Templates** (`.sdk/tm/`) and **components** (`.sdk/src/cmp/`) are
   the two layers of generation, copied into this repo: templates are the
   literal per-language source, components generate the API-shaped parts.
-- **Regeneration merges.** By default, newly generated content is
-  three-way merged into existing files, so generator updates and local
-  edits usually converge without manual conflict handling. A project can
-  opt for plain overwrite instead.
+- **Regeneration overwrites.** Each run rewrites every generated file from
+  the model, the templates and the components, so an edit made to
+  generated output is lost. Say what this project needs in its own model
+  (`.sdk/model/sdk.aontu`), or extend a target with a component of its
+  own in `.sdk/src/cmp/<target>/`, registered with `registerComponent`,
+  which `voxgig-sdkgen doctor` reports as an addition rather than drift.
 - **Custom features and entire custom targets** arrive through sdkgen
   packages (`voxgig-sdkgen package add`), on the same rails as the
   bundled languages, and `voxgig-sdkgen doctor` reports any drift from

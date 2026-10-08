@@ -33,6 +33,8 @@ require_relative 'transform_response'
 
 HankoPublicUtility.registrar = ->(u) {
   u.clean = HankoPublicUtilities::Clean
+  u.clean_add = HankoPublicUtilities::CleanAdd
+  u.clean_explain = HankoPublicUtilities::CleanExplain
   u.done = HankoPublicUtilities::Done
   u.make_error = HankoPublicUtilities::MakeError
   u.feature_add = HankoPublicUtilities::FeatureAdd

@@ -20,6 +20,18 @@ main: kit: entity: saml: {
           q: {
             "$action": "callback"
           }
+          rb: {
+            fields: [
+              {
+                name: "RelayState"
+              }
+              {
+                name: "SAMLResponse"
+              }
+            ]
+            kind: "form"
+            media: "application/x-www-form-urlencoded"
+          }
           s: [
             {
               lit: "saml"
@@ -67,9 +79,13 @@ main: kit: entity: saml: {
           q: {
             "$action": "metadata"
             exist: [
-              "cert_only"
               "domain"
             ]
+          }
+          rs: {
+            binary: true
+            kind: "raw"
+            media: "application/octet-stream"
           }
           s: [
             {
@@ -109,6 +125,10 @@ main: kit: entity: saml: {
               "domain"
             ]
           }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "saml"
@@ -119,7 +139,7 @@ main: kit: entity: saml: {
           ]
           t: {
             req: "`reqdata`"
-            res: "`body.attribute_map`"
+            res: "`body`"
           }
         }
       ]

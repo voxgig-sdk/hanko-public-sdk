@@ -41,10 +41,6 @@ local client = sdk.test()
 
 ### Instance Methods
 
-#### `Credential(data)`
-
-Create a new `Credential` entity instance. Pass `nil` for no initial data.
-
 #### `CredentialCreationOption(data)`
 
 Create a new `CredentialCreationOption` entity instance. Pass `nil` for no initial data.
@@ -145,68 +141,6 @@ same parameters as `direct()`.
 
 ---
 
-## CredentialEntity
-
-```lua
-local credential = client:Credential(nil)
-```
-
-### Fields
-
-| Field | Type | Required | Description |
-| --- | --- | --- | --- |
-| `aaguid` | `string` | No |  |
-| `attestation_type` | `string` | No |  |
-| `backup_eligible` | `boolean` | No |  |
-| `backup_state` | `boolean` | No |  |
-| `created_at` | `string` | No |  |
-| `id` | `string` | No |  |
-| `last_used_at` | `string` | No |  |
-| `mfa_only` | `boolean` | No |  |
-| `name` | `string` | No |  |
-| `publickey` | `string` | No |  |
-| `transports` | `table` | No |  |
-
-### Operations
-
-#### `list(reqmatch, ctrl) -> any, err`
-
-List entities matching the given criteria. Returns an array.
-
-```lua
-local results, err = client:Credential():list()
-```
-
-### Common Methods
-
-#### `data_get() -> table`
-
-Get the entity data. Returns a copy of the current data.
-
-#### `data_set(data)`
-
-Set the entity data.
-
-#### `match_get() -> table`
-
-Get the entity match criteria.
-
-#### `match_set(match)`
-
-Set the entity match criteria.
-
-#### `make() -> Entity`
-
-Create a new `CredentialEntity` instance with the same client and
-options.
-
-#### `get_name() -> string`
-
-Return the entity name.
-
-
----
-
 ## CredentialCreationOptionEntity
 
 ```lua
@@ -229,7 +163,7 @@ local credential_creation_option = client:CredentialCreationOption(nil)
 
 #### `create(reqdata, ctrl) -> any, err`
 
-Create a new entity with the given data.
+Create a new entity with the given data. Returns the created entity, or `nil` and an error on failure.
 
 ```lua
 local result, err = client:CredentialCreationOption():create({
@@ -287,7 +221,7 @@ local credential_request_option = client:CredentialRequestOption(nil)
 
 #### `create(reqdata, ctrl) -> any, err`
 
-Create a new entity with the given data.
+Create a new entity with the given data. Returns the created entity, or `nil` and an error on failure.
 
 ```lua
 local result, err = client:CredentialRequestOption():create({
@@ -356,7 +290,7 @@ local email = client:Email(nil)
 
 #### `create(reqdata, ctrl) -> any, err`
 
-Create a new entity with the given data.
+Create a new entity with the given data. Returns the created entity, or `nil` and an error on failure.
 
 ```lua
 local result, err = client:Email():create({
@@ -366,7 +300,7 @@ local result, err = client:Email():create({
 
 #### `list(reqmatch, ctrl) -> any, err`
 
-List entities matching the given criteria. Returns an array.
+List entities matching the given criteria. Returns an array of entities, one per record, or `nil` and an error on failure.
 
 ```lua
 local results, err = client:Email():list()
@@ -374,7 +308,7 @@ local results, err = client:Email():list()
 
 #### `remove(reqmatch, ctrl) -> any, err`
 
-Remove the entity matching the given criteria.
+Remove the entity matching the given criteria. Returns the entity, marked as deleted, or `nil` and an error on failure.
 
 ```lua
 local result, err = client:Email():remove({ id = "id" })
@@ -428,7 +362,7 @@ local hanko_configuration = client:HankoConfiguration(nil)
 
 #### `load(reqmatch, ctrl) -> any, err`
 
-Load a single entity matching the given criteria.
+Load a single entity matching the given criteria. Returns the entity, whose record `data_get()` reads, or `nil` and an error on failure.
 
 ```lua
 local result, err = client:HankoConfiguration():load()
@@ -485,7 +419,7 @@ local json_web_key = client:JsonWebKey(nil)
 
 #### `list(reqmatch, ctrl) -> any, err`
 
-List entities matching the given criteria. Returns an array.
+List entities matching the given criteria. Returns an array of entities, one per record, or `nil` and an error on failure.
 
 ```lua
 local results, err = client:JsonWebKey():list()
@@ -532,15 +466,17 @@ local passcode = client:Passcode(nil)
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
 | `code` | `string` | No | The actual passcode from the email sent to the user during initialization, a string of 6 decimal digits |
+| `created_at` | `string` | No | Time of creation of the passcode |
 | `email_id` | `string` | No | The ID of the email address |
 | `id` | `string` | No | The ID of the passcode |
+| `ttl` | `number` | No | Lifespan of a passcode in seconds |
 | `user_id` | `string` | Yes | The ID of the user |
 
 ### Operations
 
 #### `create(reqdata, ctrl) -> any, err`
 
-Create a new entity with the given data.
+Create a new entity with the given data. Returns the created entity, or `nil` and an error on failure.
 
 ```lua
 local result, err = client:Passcode():create({
@@ -595,7 +531,7 @@ local password = client:Password(nil)
 
 #### `create(reqdata, ctrl) -> any, err`
 
-Create a new entity with the given data.
+Create a new entity with the given data. Returns the created entity, or `nil` and an error on failure.
 
 ```lua
 local result, err = client:Password():create({
@@ -606,7 +542,7 @@ local result, err = client:Password():create({
 
 #### `update(reqdata, ctrl) -> any, err`
 
-Update an existing entity. The data must include the entity `id`.
+Update an existing entity. The data must include the entity `id`. Returns the updated entity, or `nil` and an error on failure.
 
 ```lua
 local result, err = client:Password():update({
@@ -654,20 +590,18 @@ local saml = client:Saml(nil)
 
 #### `create(reqdata, ctrl) -> any, err`
 
-Create a new entity with the given data.
+Create a new entity with the given data. Returns the created entity, or `nil` and an error on failure.
 
 ```lua
 local result, err = client:Saml():create({
 })
 ```
 
+Declares a `application/x-www-form-urlencoded` body, which this SDK does not encode yet: it sends the data as JSON.
+
 #### `load(reqmatch, ctrl) -> any, err`
 
-Load a single entity matching the given criteria.
-
-```lua
-local result, err = client:Saml():load({ domain = "domain" })
-```
+Load a single entity matching the given criteria. Returns the entity, whose record `data_get()` reads, or `nil` and an error on failure.
 
 ### Common Methods
 
@@ -709,34 +643,29 @@ local session_management = client:SessionManagement(nil)
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `amr` | `table` | No | Authentication Method References, JSON array of strings that are identifiers for authentication methods used in the authentication. |
-| `audience` | `table` | No | The intended audience of the token. |
-| `email` | `table` | No | Data about the email address associated with the token's subject, if available. |
-| `expiration` | `string` | Yes | The timestamp indicating when the token will expire. |
-| `issued_at` | `string` | No | The timestamp indicating when the token was issued. |
-| `issuer` | `string` | No | The entity that issued the token. |
-| `session_id` | `string` | Yes | The unique identifier for the session associated with this token. |
+| `claims` | `table` | Yes | The claims extracted from a JWT. |
+| `expiration_time` | `string` | No | Date-time indicating the expiration of the session. |
+| `idle_expires_at` | `string` | No | Timestamp (in UTC) indicating when the session will expire due to inactivity, assuming no further activity occurs before this time. |
+| `is_valid` | `boolean` | No | Indicates whether the session is valid or not |
 | `session_token` | `string` | Yes | The session token (JWT) to validate |
-| `subject` | `any` | Yes | The unique identifier of the token's subject. |
+| `user_id` | `string` | No | The ID of the user the session is associated with. |
 
 ### Operations
 
 #### `create(reqdata, ctrl) -> any, err`
 
-Create a new entity with the given data.
+Create a new entity with the given data. Returns the created entity, or `nil` and an error on failure.
 
 ```lua
 local result, err = client:SessionManagement():create({
-  expiration = --[[ string ]],
-  session_id = --[[ string ]],
+  claims = --[[ table ]],
   session_token = --[[ string ]],
-  subject = --[[ any ]],
 })
 ```
 
 #### `load(reqmatch, ctrl) -> any, err`
 
-Load a single entity matching the given criteria.
+Load a single entity matching the given criteria. Returns the entity, whose record `data_get()` reads, or `nil` and an error on failure.
 
 ```lua
 local result, err = client:SessionManagement():load()
@@ -782,7 +711,7 @@ local status = client:Status(nil)
 
 #### `load(reqmatch, ctrl) -> any, err`
 
-Load a single entity matching the given criteria.
+Load a single entity matching the given criteria. Returns the entity, whose record `data_get()` reads, or `nil` and an error on failure.
 
 ```lua
 local result, err = client:Status():load()
@@ -828,10 +757,10 @@ local third_party = client:ThirdParty(nil)
 
 #### `load(reqmatch, ctrl) -> any, err`
 
-Load a single entity matching the given criteria.
+Load a single entity matching the given criteria. Returns the entity, whose record `data_get()` reads, or `nil` and an error on failure.
 
 ```lua
-local result, err = client:ThirdParty():load({ state = "state" })
+local result, err = client:ThirdParty():load({ provider = "provider", redirect_to = "redirect_to" })
 ```
 
 ### Common Methods
@@ -874,13 +803,14 @@ local token = client:Token(nil)
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
+| `user_id` | `string` | No | The ID of the user on whose behalf the token was exchanged. |
 | `value` | `string` | No |  |
 
 ### Operations
 
 #### `create(reqdata, ctrl) -> any, err`
 
-Create a new entity with the given data.
+Create a new entity with the given data. Returns the created entity, or `nil` and an error on failure.
 
 ```lua
 local result, err = client:Token():create({
@@ -975,7 +905,7 @@ local user = client:User(nil)
 
 #### `create(reqdata, ctrl) -> any, err`
 
-Create a new entity with the given data.
+Create a new entity with the given data. Returns the created entity, or `nil` and an error on failure.
 
 ```lua
 local result, err = client:User():create({
@@ -984,7 +914,7 @@ local result, err = client:User():create({
 
 #### `load(reqmatch, ctrl) -> any, err`
 
-Load a single entity matching the given criteria.
+Load a single entity matching the given criteria. Returns the entity, whose record `data_get()` reads, or `nil` and an error on failure.
 
 ```lua
 local result, err = client:User():load({ id = "user_id" })
@@ -992,7 +922,7 @@ local result, err = client:User():load({ id = "user_id" })
 
 #### `remove(reqmatch, ctrl) -> any, err`
 
-Remove the entity matching the given criteria.
+Remove the entity matching the given criteria. Returns the entity, marked as deleted, or `nil` and an error on failure.
 
 ```lua
 local result, err = client:User():remove({ id = "user_id" })
@@ -1057,7 +987,7 @@ local user_management = client:UserManagement(nil)
 
 #### `create(reqdata, ctrl) -> any, err`
 
-Create a new entity with the given data.
+Create a new entity with the given data. Returns the created entity, or `nil` and an error on failure.
 
 ```lua
 local result, err = client:UserManagement():create({
@@ -1066,7 +996,7 @@ local result, err = client:UserManagement():create({
 
 #### `list(reqmatch, ctrl) -> any, err`
 
-List entities matching the given criteria. Returns an array.
+List entities matching the given criteria. Returns an array of entities, one per record, or `nil` and an error on failure.
 
 ```lua
 local results, err = client:UserManagement():list()
@@ -1112,26 +1042,45 @@ local web_authn = client:WebAuthn(nil)
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
+| `aaguid` | `string` | No |  |
+| `attestation_type` | `string` | No |  |
+| `backup_eligible` | `boolean` | No |  |
+| `backup_state` | `boolean` | No |  |
+| `created_at` | `string` | No |  |
+| `credential_id` | `string` | No | The ID of the created credential |
 | `id` | `string` | No |  |
+| `last_used_at` | `string` | No |  |
+| `mfa_only` | `boolean` | No |  |
 | `name` | `string` | No | A new credential name. |
+| `publickey` | `string` | No |  |
 | `rawId` | `string` | No |  |
 | `response` | `table` | No |  |
+| `transports` | `table` | No |  |
 | `type` | `string` | No |  |
+| `user_id` | `string` | No | The ID of the user on whose behalf a credential was created |
 
 ### Operations
 
 #### `create(reqdata, ctrl) -> any, err`
 
-Create a new entity with the given data.
+Create a new entity with the given data. Returns the created entity, or `nil` and an error on failure.
 
 ```lua
 local result, err = client:WebAuthn():create({
 })
 ```
 
+#### `list(reqmatch, ctrl) -> any, err`
+
+List entities matching the given criteria. Returns an array of entities, one per record, or `nil` and an error on failure.
+
+```lua
+local results, err = client:WebAuthn():list()
+```
+
 #### `remove(reqmatch, ctrl) -> any, err`
 
-Remove the entity matching the given criteria.
+Remove the entity matching the given criteria. Returns the entity, marked as deleted, or `nil` and an error on failure.
 
 ```lua
 local result, err = client:WebAuthn():remove({ id = "id" })
@@ -1139,7 +1088,7 @@ local result, err = client:WebAuthn():remove({ id = "id" })
 
 #### `update(reqdata, ctrl) -> any, err`
 
-Update an existing entity. The data must include the entity `id`.
+Update an existing entity. The data must include the entity `id`. Returns the updated entity, or `nil` and an error on failure.
 
 ```lua
 local result, err = client:WebAuthn():update({
@@ -1199,7 +1148,7 @@ local webauthn_login = client:WebauthnLogin(nil)
 
 #### `create(reqdata, ctrl) -> any, err`
 
-Create a new entity with the given data.
+Create a new entity with the given data. Returns the created entity, or `nil` and an error on failure.
 
 ```lua
 local result, err = client:WebauthnLogin():create({
@@ -1526,6 +1475,7 @@ Timeout.
 | Option | Type |
 |---|---|
 | `clearTimer` | function |
+| `now` | function |
 | `setTimer` | function |
 
 These take no default: the feature behaves one way when you supply them and

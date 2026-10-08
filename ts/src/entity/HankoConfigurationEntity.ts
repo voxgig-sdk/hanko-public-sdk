@@ -132,9 +132,15 @@ class HankoConfigurationEntity extends HankoPublicEntityBase<HankoConfiguration>
       return (ctx.result && ctx.result.ok) ? this : out
     }
     catch (err: any) {
+      // What a hook throws here must not escape the cleaning below.
+      try {
 
-      fres = featureHook(ctx, 'PreUnexpected')
-      if (fres instanceof Promise) { await fres }
+        fres = featureHook(ctx, 'PreUnexpected')
+        if (fres instanceof Promise) { await fres }
+      }
+      catch (hookerr: any) {
+        err = hookerr
+      }
 
       err = this._unexpected(ctx, err)
 
@@ -143,11 +149,12 @@ class HankoConfigurationEntity extends HankoPublicEntityBase<HankoConfiguration>
       }
       else {
         // Off-happy-path (throw disabled): typed as any so the method's
-        // Promise<HankoConfiguration> return stays clean under strict null checks.
+        // Promise<HankoConfigurationEntity> return stays clean under strict null checks.
         return undefined as any
       }
     }
   }
+
 
 
 
