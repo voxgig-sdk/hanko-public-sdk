@@ -22,7 +22,7 @@ var cleanAuth = struct {
 	where      string
 	name       string
 	basic      bool
-}{false, "cookie", "hanko", false}
+}{false, "header", "authorization", false}
 
 var cleanCanary = map[string]string{
 	"apikey": "CANARY-APIKEY-k9x2m7q4p1",

@@ -50,6 +50,7 @@ func TestStatusEntity(t *testing.T) {
 			}
 		}
 		client := setup.client
+		_ = client
 
 		// Bootstrap entity data from existing test data (no create step in flow).
 		statusRef01DataRaw := vs.Items(core.ToMapAny(vs.GetPath(setup.data, "existing.status")))

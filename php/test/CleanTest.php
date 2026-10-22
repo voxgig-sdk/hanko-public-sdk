@@ -19,8 +19,8 @@ class CleanTest extends TestCase
     // built.
     private const AUTH = [
         'suppressed' => false,
-        'where' => 'cookie',
-        'name' => 'hanko',
+        'where' => 'header',
+        'name' => 'authorization',
         'basic' => false,
     ];
 

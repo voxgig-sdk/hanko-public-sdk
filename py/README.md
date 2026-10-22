@@ -4,8 +4,8 @@
 
 The Python SDK for the HankoPublic API — an entity-oriented client following Pythonic conventions.
 
-The SDK exposes the API as capitalised, semantic **Entities** — for example `client.CredentialCreationOption()` — each
-carrying a small, uniform set of operations (`list`, `load`, `create`, `update`, `remove`) instead of raw URL
+The SDK exposes the API as capitalised, semantic **Entities** — for example `client.JsonWebKey()` — each
+carrying a small, uniform set of operations (`list`, `load`, `create`) instead of raw URL
 paths and query strings. You work with named resources and verbs, which
 keeps the cognitive load low.
 
@@ -26,7 +26,7 @@ pip install -e .
 ## Tutorial: your first API call
 
 This tutorial walks through creating a client, listing entities, and
-loading a specific record. The client sends the API key as the `hanko` cookie.
+loading a specific record.
 
 ### 1. Create a client
 
@@ -42,12 +42,18 @@ client = HankoPublicSDK({
 })
 ```
 
-### 4. Create, update, and remove
+### 2. List jsonwebkey records
+
+`list()` returns a `list` of entities, one per record, and raises on
+error; an entity's `data_get()` reads its record (a `dict`).
 
 ```python
-# Create — returns the ENTITY (call data_get() for the record)
-created = client.CredentialCreationOption().create({"attestation": "example_attestation", "authenticatorSelection": {}})
-
+try:
+    jsonwebkeys = client.JsonWebKey().list()
+    for jsonwebkey in jsonwebkeys:
+        print(jsonwebkey.data_get())
+except Exception as err:
+    print(f"list failed: {err}")
 ```
 
 
@@ -204,22 +210,13 @@ Creates a test-mode client with mock transport. Both arguments may be `None`.
 | `get_utility` | `() -> Utility` | Copy of the SDK utility object. |
 | `prepare` | `(fetchargs) -> dict` | Build an HTTP request definition without sending. Raises on error. |
 | `direct` | `(fetchargs) -> dict` | Build and send an HTTP request. Returns a result dict (branch on `ok`). |
-| `CredentialCreationOption` | `(data) -> CredentialCreationOptionEntity` | Create a CredentialCreationOption entity instance. |
-| `CredentialRequestOption` | `(data) -> CredentialRequestOptionEntity` | Create a CredentialRequestOption entity instance. |
-| `Email` | `(data) -> EmailEntity` | Create an Email entity instance. |
-| `HankoConfiguration` | `(data) -> HankoConfigurationEntity` | Create a HankoConfiguration entity instance. |
 | `JsonWebKey` | `(data) -> JsonWebKeyEntity` | Create a JsonWebKey entity instance. |
-| `Passcode` | `(data) -> PasscodeEntity` | Create a Passcode entity instance. |
-| `Password` | `(data) -> PasswordEntity` | Create a Password entity instance. |
+| `OrganizationManagement` | `(data) -> OrganizationManagementEntity` | Create an OrganizationManagement entity instance. |
 | `Saml` | `(data) -> SamlEntity` | Create a Saml entity instance. |
 | `SessionManagement` | `(data) -> SessionManagementEntity` | Create a SessionManagement entity instance. |
 | `Status` | `(data) -> StatusEntity` | Create a Status entity instance. |
 | `ThirdParty` | `(data) -> ThirdPartyEntity` | Create a ThirdParty entity instance. |
-| `Token` | `(data) -> TokenEntity` | Create a Token entity instance. |
-| `User` | `(data) -> UserEntity` | Create an User entity instance. |
 | `UserManagement` | `(data) -> UserManagementEntity` | Create an UserManagement entity instance. |
-| `WebAuthn` | `(data) -> WebAuthnEntity` | Create a WebAuthn entity instance. |
-| `WebauthnLogin` | `(data) -> WebauthnLoginEntity` | Create a WebauthnLogin entity instance. |
 
 ### Entity interface
 
@@ -230,8 +227,6 @@ All entities share the same interface.
 | `load` | `(reqmatch, ctrl) -> any` | Load a single entity by match criteria, and return it. Raises on error. |
 | `list` | `(reqmatch, ctrl) -> list` | List entities matching the criteria, one per record. Raises on error. |
 | `create` | `(reqdata, ctrl) -> any` | Create a new entity, and return it. Raises on error. |
-| `update` | `(reqdata, ctrl) -> any` | Update an existing entity, and return it. Raises on error. |
-| `remove` | `(reqmatch, ctrl) -> any` | Remove an entity, and return it marked as deleted. Raises on error. |
 | `data_get` | `() -> dict` | Get entity data. |
 | `data_set` | `(data)` | Set entity data. |
 | `match_get` | `() -> dict` | Get entity match criteria. |
@@ -259,64 +254,6 @@ On error, `ok` is `False` and `err` contains the error value.
 
 ### Entities
 
-#### CredentialCreationOption
-
-| Field | Description |
-| --- | --- |
-| `attestation` |  |
-| `authenticatorSelection` |  |
-| `challenge` |  |
-| `pubKeyCredParams` |  |
-| `rp` |  |
-| `timeout` |  |
-| `user` |  |
-
-Operations: Create.
-
-API path: `/webauthn/registration/initialize`
-
-#### CredentialRequestOption
-
-| Field | Description |
-| --- | --- |
-| `allowCredentials` |  |
-| `challenge` |  |
-| `rpId` |  |
-| `timeout` |  |
-| `userVerification` |  |
-| `user_id` | The ID of the user on whose behalf WebAuthn login should be performed |
-
-Operations: Create.
-
-API path: `/webauthn/login/initialize`
-
-#### Email
-
-| Field | Description |
-| --- | --- |
-| `address` | The email address |
-| `id` | The ID of the email address |
-| `identities` |  |
-| `identity` |  |
-| `is_primary` | Indicates it's the primary email address. |
-| `is_verified` | Indicated the email has been verified. |
-
-Operations: Create, List, Remove.
-
-API path: `/emails/{id}/set_primary`
-
-#### HankoConfiguration
-
-| Field | Description |
-| --- | --- |
-| `account` | Controls the behavior regarding user account. |
-| `emails` | Controls the behavior regarding email addresses. |
-| `password` | Configuration options concerning passwords |
-
-Operations: Load.
-
-API path: `/.well-known/config`
-
 #### JsonWebKey
 
 | Field | Description |
@@ -332,31 +269,17 @@ Operations: List.
 
 API path: `/.well-known/jwks.json`
 
-#### Passcode
+#### OrganizationManagement
 
 | Field | Description |
 | --- | --- |
-| `code` | The actual passcode from the email sent to the user during initialization, a string of 6 decimal digits |
-| `created_at` | Time of creation of the passcode |
-| `email_id` | The ID of the email address |
-| `id` | The ID of the passcode |
-| `ttl` | Lifespan of a passcode in seconds |
-| `user_id` | The ID of the user |
+| `has_role` |  |
+| `organization_id` | The ID of the organization to check |
+| `roles` | IDs or slugs of roles to check for. |
 
 Operations: Create.
 
-API path: `/passcode/login/finalize`
-
-#### Password
-
-| Field | Description |
-| --- | --- |
-| `password` | The actual password, its `minLength` defaults to 8 but can be [configured](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config) through the `password.min_password_length` option. |
-| `user_id` | The ID of the user to create/set a password for |
-
-Operations: Create, Update.
-
-API path: `/password/login`
+API path: `/organizations/roles/check`
 
 #### Saml
 
@@ -373,12 +296,16 @@ API path: `/saml/callback`
 | --- | --- |
 | `claims` | The claims extracted from a JWT. |
 | `expiration_time` | Date-time indicating the expiration of the session. |
+| `id` | The ID of the organization |
 | `idle_expires_at` | Timestamp (in UTC) indicating when the session will expire due to inactivity, assuming no further activity occurs before this time. |
 | `is_valid` | Indicates whether the session is valid or not |
+| `name` | The name of the organization |
+| `organizations` | The organizations the user belongs to, and the role slugs they hold within each. |
+| `roles` | The slugs of the roles the user holds within this organization |
 | `session_token` | The session token (JWT) to validate |
 | `user_id` | The ID of the user the session is associated with. |
 
-Operations: Create, Load.
+Operations: Create, List.
 
 API path: `/sessions/validate`
 
@@ -398,46 +325,7 @@ API path: `/`
 
 Operations: Load.
 
-API path: `/thirdparty/auth`
-
-#### Token
-
-| Field | Description |
-| --- | --- |
-| `user_id` | The ID of the user on whose behalf the token was exchanged. |
-| `value` |  |
-
-Operations: Create.
-
-API path: `/token`
-
-#### User
-
-| Field | Description |
-| --- | --- |
-| `created_at` | Time of creation of the the user |
-| `email` | The email address of the user |
-| `email_id` | The ID of the newly created email address |
-| `emails` |  |
-| `family_name` |  |
-| `given_name` |  |
-| `has_webauthn_credential` |  |
-| `id` | The ID of the user. |
-| `metadata` | The public and unsafe metadata of a user |
-| `mfa_config` |  |
-| `name` |  |
-| `passkeys` |  |
-| `picture` |  |
-| `security_keys` |  |
-| `updated_at` | Time of last update of the user |
-| `user_id` | The ID of the user |
-| `username` | The username of the user |
-| `verified` |  |
-| `webauthn_credentials` | A list of WebAuthn credentials |
-
-Operations: Create, Load, Remove.
-
-API path: `/user`
+API path: `/thirdparty/callback`
 
 #### UserManagement
 
@@ -462,171 +350,9 @@ Operations: Create, List.
 
 API path: `/logout`
 
-#### WebAuthn
-
-| Field | Description |
-| --- | --- |
-| `aaguid` |  |
-| `attestation_type` |  |
-| `backup_eligible` |  |
-| `backup_state` |  |
-| `created_at` |  |
-| `credential_id` | The ID of the created credential |
-| `id` |  |
-| `last_used_at` |  |
-| `mfa_only` |  |
-| `name` | A new credential name. |
-| `publickey` |  |
-| `rawId` |  |
-| `response` |  |
-| `transports` |  |
-| `type` |  |
-| `user_id` | The ID of the user on whose behalf a credential was created |
-
-Operations: Create, List, Remove, Update.
-
-API path: `/webauthn/registration/finalize`
-
-#### WebauthnLogin
-
-| Field | Description |
-| --- | --- |
-| `credential_id` |  |
-| `id` |  |
-| `rawId` |  |
-| `response` |  |
-| `type` |  |
-| `user_id` |  |
-
-Operations: Create.
-
-API path: `/webauthn/login/finalize`
-
 
 
 ## Entities
-
-
-### CredentialCreationOption
-
-Create an instance: `credential_creation_option = client.CredentialCreationOption()`
-
-#### Operations
-
-| Method | Description |
-| --- | --- |
-| `create(data)` | Create a new entity with the given data. |
-
-#### Fields
-
-| Field | Type | Description |
-| --- | --- | --- |
-| `attestation` | `str` |  |
-| `authenticatorSelection` | `dict` |  |
-| `challenge` | `str` |  |
-| `pubKeyCredParams` | `list` |  |
-| `rp` | `dict` |  |
-| `timeout` | `int` |  |
-| `user` | `dict` |  |
-
-#### Example: Create
-
-```python
-credential_creation_option = client.CredentialCreationOption().create({
-})
-```
-
-
-### CredentialRequestOption
-
-Create an instance: `credential_request_option = client.CredentialRequestOption()`
-
-#### Operations
-
-| Method | Description |
-| --- | --- |
-| `create(data)` | Create a new entity with the given data. |
-
-#### Fields
-
-| Field | Type | Description |
-| --- | --- | --- |
-| `allowCredentials` | `list` |  |
-| `challenge` | `str` |  |
-| `rpId` | `str` |  |
-| `timeout` | `int` |  |
-| `userVerification` | `str` |  |
-| `user_id` | `str` | The ID of the user on whose behalf WebAuthn login should be performed |
-
-#### Example: Create
-
-```python
-credential_request_option = client.CredentialRequestOption().create({
-})
-```
-
-
-### Email
-
-Create an instance: `email = client.Email()`
-
-#### Operations
-
-| Method | Description |
-| --- | --- |
-| `create(data)` | Create a new entity with the given data. |
-| `list()` | List entities, optionally matching the given criteria. |
-| `remove(match)` | Remove the matching entity. |
-
-#### Fields
-
-| Field | Type | Description |
-| --- | --- | --- |
-| `address` | `str` | The email address |
-| `id` | `str` | The ID of the email address |
-| `identities` | `Any` |  |
-| `identity` | `Any` |  |
-| `is_primary` | `bool` | Indicates it's the primary email address. |
-| `is_verified` | `bool` | Indicated the email has been verified. |
-
-#### Example: List
-
-```python
-emails = client.Email().list()
-```
-
-#### Example: Create
-
-```python
-email = client.Email().create({
-    "address": "example_address",  # str
-})
-```
-
-
-### HankoConfiguration
-
-Create an instance: `hanko_configuration = client.HankoConfiguration()`
-
-#### Operations
-
-| Method | Description |
-| --- | --- |
-| `load(match)` | Load a single entity by match criteria. |
-
-#### Fields
-
-| Field | Type | Description |
-| --- | --- | --- |
-| `account` | `dict` | Controls the behavior regarding user account. |
-| `emails` | `dict` | Controls the behavior regarding email addresses. |
-| `password` | `dict` | Configuration options concerning passwords |
-
-#### Example: Load
-
-```python
-hanko_configuration = client.HankoConfiguration().load()
-```
 
 
 ### JsonWebKey
@@ -657,9 +383,9 @@ json_web_keys = client.JsonWebKey().list()
 ```
 
 
-### Passcode
+### OrganizationManagement
 
-Create an instance: `passcode = client.Passcode()`
+Create an instance: `organization_management = client.OrganizationManagement()`
 
 #### Operations
 
@@ -671,46 +397,16 @@ Create an instance: `passcode = client.Passcode()`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `code` | `str` | The actual passcode from the email sent to the user during initialization, a string of 6 decimal digits |
-| `created_at` | `str` | Time of creation of the passcode |
-| `email_id` | `str` | The ID of the email address |
-| `id` | `str` | The ID of the passcode |
-| `ttl` | `int` | Lifespan of a passcode in seconds |
-| `user_id` | `str` | The ID of the user |
+| `has_role` | `bool` |  |
+| `organization_id` | `str` | The ID of the organization to check |
+| `roles` | `list` | IDs or slugs of roles to check for. |
 
 #### Example: Create
 
 ```python
-passcode = client.Passcode().create({
-    "user_id": "example_user_id",  # str
-})
-```
-
-
-### Password
-
-Create an instance: `password = client.Password()`
-
-#### Operations
-
-| Method | Description |
-| --- | --- |
-| `create(data)` | Create a new entity with the given data. |
-| `update(data)` | Update an existing entity. |
-
-#### Fields
-
-| Field | Type | Description |
-| --- | --- | --- |
-| `password` | `str` | The actual password, its `minLength` defaults to 8 but can be [configured](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config) through the `password.min_password_length` option. |
-| `user_id` | `str` | The ID of the user to create/set a password for |
-
-#### Example: Create
-
-```python
-password = client.Password().create({
-    "password": "example_password",  # str
-    "user_id": "example_user_id",  # str
+organization_management = client.OrganizationManagement().create({
+    "organization_id": "example_organization_id",  # str
+    "roles": [],  # list
 })
 ```
 
@@ -725,6 +421,12 @@ Create an instance: `saml = client.Saml()`
 | --- | --- |
 | `create(data)` | Create a new entity with the given data. |
 | `load(match)` | Load a single entity by match criteria. |
+
+#### Example: Load
+
+```python
+saml = client.Saml().load({"domain": "domain"})
+```
 
 #### Example: Create
 
@@ -743,7 +445,7 @@ Create an instance: `session_management = client.SessionManagement()`
 | Method | Description |
 | --- | --- |
 | `create(data)` | Create a new entity with the given data. |
-| `load(match)` | Load a single entity by match criteria. |
+| `list()` | List entities, optionally matching the given criteria. |
 
 #### Fields
 
@@ -751,22 +453,25 @@ Create an instance: `session_management = client.SessionManagement()`
 | --- | --- | --- |
 | `claims` | `dict` | The claims extracted from a JWT. |
 | `expiration_time` | `str` | Date-time indicating the expiration of the session. |
+| `id` | `str` | The ID of the organization |
 | `idle_expires_at` | `str` | Timestamp (in UTC) indicating when the session will expire due to inactivity, assuming no further activity occurs before this time. |
 | `is_valid` | `bool` | Indicates whether the session is valid or not |
+| `name` | `str` | The name of the organization |
+| `organizations` | `list` | The organizations the user belongs to, and the role slugs they hold within each. |
+| `roles` | `list` | The slugs of the roles the user holds within this organization |
 | `session_token` | `str` | The session token (JWT) to validate |
 | `user_id` | `str` | The ID of the user the session is associated with. |
 
-#### Example: Load
+#### Example: List
 
 ```python
-session_management = client.SessionManagement().load()
+session_managements = client.SessionManagement().list()
 ```
 
 #### Example: Create
 
 ```python
 session_management = client.SessionManagement().create({
-    "claims": {},  # dict
     "session_token": "example_session_token",  # str
 })
 ```
@@ -802,82 +507,7 @@ Create an instance: `third_party = client.ThirdParty()`
 #### Example: Load
 
 ```python
-third_party = client.ThirdParty().load({"provider": "provider", "redirect_to": "redirect_to"})
-```
-
-
-### Token
-
-Create an instance: `token = client.Token()`
-
-#### Operations
-
-| Method | Description |
-| --- | --- |
-| `create(data)` | Create a new entity with the given data. |
-
-#### Fields
-
-| Field | Type | Description |
-| --- | --- | --- |
-| `user_id` | `str` | The ID of the user on whose behalf the token was exchanged. |
-| `value` | `str` |  |
-
-#### Example: Create
-
-```python
-token = client.Token().create({
-})
-```
-
-
-### User
-
-Create an instance: `user = client.User()`
-
-#### Operations
-
-| Method | Description |
-| --- | --- |
-| `create(data)` | Create a new entity with the given data. |
-| `load(match)` | Load a single entity by match criteria. |
-| `remove(match)` | Remove the matching entity. |
-
-#### Fields
-
-| Field | Type | Description |
-| --- | --- | --- |
-| `created_at` | `str` | Time of creation of the the user |
-| `email` | `str` | The email address of the user |
-| `email_id` | `str` | The ID of the newly created email address |
-| `emails` | `list` |  |
-| `family_name` | `str` |  |
-| `given_name` | `str` |  |
-| `has_webauthn_credential` | `bool` |  |
-| `id` | `str` | The ID of the user. |
-| `metadata` | `dict` | The public and unsafe metadata of a user |
-| `mfa_config` | `dict` |  |
-| `name` | `str` |  |
-| `passkeys` | `list` |  |
-| `picture` | `str` |  |
-| `security_keys` | `list` |  |
-| `updated_at` | `str` | Time of last update of the user |
-| `user_id` | `str` | The ID of the user |
-| `username` | `str` | The username of the user |
-| `verified` | `bool` |  |
-| `webauthn_credentials` | `list` | A list of WebAuthn credentials |
-
-#### Example: Load
-
-```python
-user = client.User().load({"id": "user_id"})
-```
-
-#### Example: Create
-
-```python
-user = client.User().create({
-})
+third_party = client.ThirdParty().load({"state": "state"})
 ```
 
 
@@ -924,86 +554,9 @@ user_management = client.UserManagement().create({
 })
 ```
 
-
-### WebAuthn
-
-Create an instance: `web_authn = client.WebAuthn()`
-
-#### Operations
-
-| Method | Description |
-| --- | --- |
-| `create(data)` | Create a new entity with the given data. |
-| `list()` | List entities, optionally matching the given criteria. |
-| `remove(match)` | Remove the matching entity. |
-| `update(data)` | Update an existing entity. |
-
-#### Fields
-
-| Field | Type | Description |
-| --- | --- | --- |
-| `aaguid` | `str` |  |
-| `attestation_type` | `str` |  |
-| `backup_eligible` | `bool` |  |
-| `backup_state` | `bool` |  |
-| `created_at` | `str` |  |
-| `credential_id` | `str` | The ID of the created credential |
-| `id` | `str` |  |
-| `last_used_at` | `str` |  |
-| `mfa_only` | `bool` |  |
-| `name` | `str` | A new credential name. |
-| `publickey` | `str` |  |
-| `rawId` | `str` |  |
-| `response` | `dict` |  |
-| `transports` | `list` |  |
-| `type` | `str` |  |
-| `user_id` | `str` | The ID of the user on whose behalf a credential was created |
-
-#### Example: List
-
-```python
-web_authns = client.WebAuthn().list()
-```
-
-#### Example: Create
-
-```python
-web_authn = client.WebAuthn().create({
-})
-```
-
-
-### WebauthnLogin
-
-Create an instance: `webauthn_login = client.WebauthnLogin()`
-
-#### Operations
-
-| Method | Description |
-| --- | --- |
-| `create(data)` | Create a new entity with the given data. |
-
-#### Fields
-
-| Field | Type | Description |
-| --- | --- | --- |
-| `credential_id` | `str` |  |
-| `id` | `str` |  |
-| `rawId` | `str` |  |
-| `response` | `dict` |  |
-| `type` | `str` |  |
-| `user_id` | `str` |  |
-
-#### Example: Create
-
-```python
-webauthn_login = client.WebauthnLogin().create({
-})
-```
-
 ## Features
 
-This SDK ships 8 optional features. Each is **inactive until you
+This SDK ships 9 optional features. Each is **inactive until you
 switch it on**, so an SDK you have not configured behaves exactly as if none of
 them existed — no retries, no cache, no logging, no measurable overhead.
 
@@ -1018,10 +571,11 @@ above:
 | [`paging`](#paging) | Paging |
 | [`ratelimit`](#ratelimit) | Rate limiting |
 | [`retry`](#retry) | Retry |
+| [`secrets`](#secrets) | Secrets |
 | [`test`](#test) | Test transport |
 | [`timeout`](#timeout) | Timeout |
 
-> **Order matters for `ratelimit`, `retry`, `timeout`.** These wrap the
+> **Order matters for `ratelimit`, `retry`, `secrets`, `timeout`.** These wrap the
 > transport, so each one wraps whatever is already installed: the order you
 > activate them in IS the nesting order. Activating them as an ordered list
 > rather than a map is what fixes that order.
@@ -1112,6 +666,24 @@ Set `feature.retry.active` to enable it, then override any of the options above.
 transport features decides what it sees. A feature activated later wraps one
 activated earlier.
 
+### secrets
+
+Secrets.
+
+| Option | Default |
+|---|---|
+| `active` | `false` |
+| `cache` | `true` |
+| `exchange` | `{active: false, method: 'POST', path: 'auth/token', refresh: '', request: 'refresh_token', response: 'access_token', retries: 1, statuses: [401]}` |
+| `name` | `'apikey'` |
+| `providers` | `[]` |
+
+Set `feature.secrets.active` to enable it, then override any of the options above.
+
+`secrets` wraps the transport, so its position among the other
+transport features decides what it sees. A feature activated later wraps one
+activated earlier.
+
 ### test
 
 Test transport.
@@ -1182,6 +754,7 @@ The SDK ships with built-in features:
 - **PagingFeature**: Paging
 - **RatelimitFeature**: Rate limiting
 - **RetryFeature**: Retry
+- **SecretsFeature**: Secrets
 - **TestFeature**: Test transport
 - **TimeoutFeature**: Timeout
 

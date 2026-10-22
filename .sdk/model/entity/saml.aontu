@@ -100,48 +100,6 @@ main: kit: entity: saml: {
             res: "`body`"
           }
         }
-        {
-          co: {
-            id: "GET /saml/provider"
-            source: "openapi3"
-            version: 2
-          }
-          g: {
-            query: [
-              {
-                k: "query"
-                n: "domain"
-                or: "domain"
-                r: true
-                t: "`$STRING`"
-              }
-            ]
-          }
-          m: "GET"
-          o: "/saml/provider"
-          q: {
-            "$action": "provider"
-            exist: [
-              "domain"
-            ]
-          }
-          rs: {
-            kind: "json"
-            media: "application/json"
-          }
-          s: [
-            {
-              lit: "saml"
-            }
-            {
-              lit: "provider"
-            }
-          ]
-          t: {
-            req: "`reqdata`"
-            res: "`body`"
-          }
-        }
       ]
     }
   }

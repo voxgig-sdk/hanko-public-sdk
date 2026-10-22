@@ -375,78 +375,6 @@ class HankoPublicSDK implements \JsonSerializable
     }
 
 
-    private $_credential_creation_option = null;
-
-    // Canonical facade: $client->CredentialCreationOption()->list() / ->load(["id" => ...]).
-    // PHP method names are case-insensitive, so lowercase $client->credential_creation_option()
-    // resolves here too.
-    public function CredentialCreationOption($data = null)
-    {
-        require_once __DIR__ . '/entity/credential_creation_option_entity.php';
-        if ($data === null) {
-            if ($this->_credential_creation_option === null) {
-                $this->_credential_creation_option = new CredentialCreationOptionEntity($this, null);
-            }
-            return $this->_credential_creation_option;
-        }
-        return new CredentialCreationOptionEntity($this, $data);
-    }
-
-
-    private $_credential_request_option = null;
-
-    // Canonical facade: $client->CredentialRequestOption()->list() / ->load(["id" => ...]).
-    // PHP method names are case-insensitive, so lowercase $client->credential_request_option()
-    // resolves here too.
-    public function CredentialRequestOption($data = null)
-    {
-        require_once __DIR__ . '/entity/credential_request_option_entity.php';
-        if ($data === null) {
-            if ($this->_credential_request_option === null) {
-                $this->_credential_request_option = new CredentialRequestOptionEntity($this, null);
-            }
-            return $this->_credential_request_option;
-        }
-        return new CredentialRequestOptionEntity($this, $data);
-    }
-
-
-    private $_email = null;
-
-    // Canonical facade: $client->Email()->list() / ->load(["id" => ...]).
-    // PHP method names are case-insensitive, so lowercase $client->email()
-    // resolves here too.
-    public function Email($data = null)
-    {
-        require_once __DIR__ . '/entity/email_entity.php';
-        if ($data === null) {
-            if ($this->_email === null) {
-                $this->_email = new EmailEntity($this, null);
-            }
-            return $this->_email;
-        }
-        return new EmailEntity($this, $data);
-    }
-
-
-    private $_hanko_configuration = null;
-
-    // Canonical facade: $client->HankoConfiguration()->list() / ->load(["id" => ...]).
-    // PHP method names are case-insensitive, so lowercase $client->hanko_configuration()
-    // resolves here too.
-    public function HankoConfiguration($data = null)
-    {
-        require_once __DIR__ . '/entity/hanko_configuration_entity.php';
-        if ($data === null) {
-            if ($this->_hanko_configuration === null) {
-                $this->_hanko_configuration = new HankoConfigurationEntity($this, null);
-            }
-            return $this->_hanko_configuration;
-        }
-        return new HankoConfigurationEntity($this, $data);
-    }
-
-
     private $_json_web_key = null;
 
     // Canonical facade: $client->JsonWebKey()->list() / ->load(["id" => ...]).
@@ -465,39 +393,21 @@ class HankoPublicSDK implements \JsonSerializable
     }
 
 
-    private $_passcode = null;
+    private $_organization_management = null;
 
-    // Canonical facade: $client->Passcode()->list() / ->load(["id" => ...]).
-    // PHP method names are case-insensitive, so lowercase $client->passcode()
+    // Canonical facade: $client->OrganizationManagement()->list() / ->load(["id" => ...]).
+    // PHP method names are case-insensitive, so lowercase $client->organization_management()
     // resolves here too.
-    public function Passcode($data = null)
+    public function OrganizationManagement($data = null)
     {
-        require_once __DIR__ . '/entity/passcode_entity.php';
+        require_once __DIR__ . '/entity/organization_management_entity.php';
         if ($data === null) {
-            if ($this->_passcode === null) {
-                $this->_passcode = new PasscodeEntity($this, null);
+            if ($this->_organization_management === null) {
+                $this->_organization_management = new OrganizationManagementEntity($this, null);
             }
-            return $this->_passcode;
+            return $this->_organization_management;
         }
-        return new PasscodeEntity($this, $data);
-    }
-
-
-    private $_password = null;
-
-    // Canonical facade: $client->Password()->list() / ->load(["id" => ...]).
-    // PHP method names are case-insensitive, so lowercase $client->password()
-    // resolves here too.
-    public function Password($data = null)
-    {
-        require_once __DIR__ . '/entity/password_entity.php';
-        if ($data === null) {
-            if ($this->_password === null) {
-                $this->_password = new PasswordEntity($this, null);
-            }
-            return $this->_password;
-        }
-        return new PasswordEntity($this, $data);
+        return new OrganizationManagementEntity($this, $data);
     }
 
 
@@ -573,42 +483,6 @@ class HankoPublicSDK implements \JsonSerializable
     }
 
 
-    private $_token = null;
-
-    // Canonical facade: $client->Token()->list() / ->load(["id" => ...]).
-    // PHP method names are case-insensitive, so lowercase $client->token()
-    // resolves here too.
-    public function Token($data = null)
-    {
-        require_once __DIR__ . '/entity/token_entity.php';
-        if ($data === null) {
-            if ($this->_token === null) {
-                $this->_token = new TokenEntity($this, null);
-            }
-            return $this->_token;
-        }
-        return new TokenEntity($this, $data);
-    }
-
-
-    private $_user = null;
-
-    // Canonical facade: $client->User()->list() / ->load(["id" => ...]).
-    // PHP method names are case-insensitive, so lowercase $client->user()
-    // resolves here too.
-    public function User($data = null)
-    {
-        require_once __DIR__ . '/entity/user_entity.php';
-        if ($data === null) {
-            if ($this->_user === null) {
-                $this->_user = new UserEntity($this, null);
-            }
-            return $this->_user;
-        }
-        return new UserEntity($this, $data);
-    }
-
-
     private $_user_management = null;
 
     // Canonical facade: $client->UserManagement()->list() / ->load(["id" => ...]).
@@ -624,42 +498,6 @@ class HankoPublicSDK implements \JsonSerializable
             return $this->_user_management;
         }
         return new UserManagementEntity($this, $data);
-    }
-
-
-    private $_web_authn = null;
-
-    // Canonical facade: $client->WebAuthn()->list() / ->load(["id" => ...]).
-    // PHP method names are case-insensitive, so lowercase $client->web_authn()
-    // resolves here too.
-    public function WebAuthn($data = null)
-    {
-        require_once __DIR__ . '/entity/web_authn_entity.php';
-        if ($data === null) {
-            if ($this->_web_authn === null) {
-                $this->_web_authn = new WebAuthnEntity($this, null);
-            }
-            return $this->_web_authn;
-        }
-        return new WebAuthnEntity($this, $data);
-    }
-
-
-    private $_webauthn_login = null;
-
-    // Canonical facade: $client->WebauthnLogin()->list() / ->load(["id" => ...]).
-    // PHP method names are case-insensitive, so lowercase $client->webauthn_login()
-    // resolves here too.
-    public function WebauthnLogin($data = null)
-    {
-        require_once __DIR__ . '/entity/webauthn_login_entity.php';
-        if ($data === null) {
-            if ($this->_webauthn_login === null) {
-                $this->_webauthn_login = new WebauthnLoginEntity($this, null);
-            }
-            return $this->_webauthn_login;
-        }
-        return new WebauthnLoginEntity($this, $data);
     }
 
 

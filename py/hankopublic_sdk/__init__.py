@@ -116,6 +116,10 @@ class HankoPublicSDK:
     def get_root_ctx(self):
         return self._rootctx
 
+    def secrets(self):
+        _s = getattr(self, "_secrets", None)
+        return None if _s is None else _s.sekreto()
+
     def prepare(self, fetchargs=None):
         utility = self._utility
 
@@ -130,6 +134,9 @@ class HankoPublicSDK:
             "opname": "prepare",
             "ctrl": ctrl,
         }, self._rootctx)
+
+        if getattr(self, "_secrets", None) is not None:
+            self._secrets.resolve()
 
         options = self.options
 
@@ -341,46 +348,16 @@ class HankoPublicSDK:
         return res
 
 
-    def CredentialCreationOption(self, data=None) -> "CredentialCreationOptionEntity":
-        """Entity factory: client.CredentialCreationOption().list() / client.CredentialCreationOption().load({"id": ...})."""
-        from hankopublic_sdk.entity.credential_creation_option_entity import CredentialCreationOptionEntity
-        return CredentialCreationOptionEntity(self, data)
-
-
-    def CredentialRequestOption(self, data=None) -> "CredentialRequestOptionEntity":
-        """Entity factory: client.CredentialRequestOption().list() / client.CredentialRequestOption().load({"id": ...})."""
-        from hankopublic_sdk.entity.credential_request_option_entity import CredentialRequestOptionEntity
-        return CredentialRequestOptionEntity(self, data)
-
-
-    def Email(self, data=None) -> "EmailEntity":
-        """Entity factory: client.Email().list() / client.Email().load({"id": ...})."""
-        from hankopublic_sdk.entity.email_entity import EmailEntity
-        return EmailEntity(self, data)
-
-
-    def HankoConfiguration(self, data=None) -> "HankoConfigurationEntity":
-        """Entity factory: client.HankoConfiguration().list() / client.HankoConfiguration().load({"id": ...})."""
-        from hankopublic_sdk.entity.hanko_configuration_entity import HankoConfigurationEntity
-        return HankoConfigurationEntity(self, data)
-
-
     def JsonWebKey(self, data=None) -> "JsonWebKeyEntity":
         """Entity factory: client.JsonWebKey().list() / client.JsonWebKey().load({"id": ...})."""
         from hankopublic_sdk.entity.json_web_key_entity import JsonWebKeyEntity
         return JsonWebKeyEntity(self, data)
 
 
-    def Passcode(self, data=None) -> "PasscodeEntity":
-        """Entity factory: client.Passcode().list() / client.Passcode().load({"id": ...})."""
-        from hankopublic_sdk.entity.passcode_entity import PasscodeEntity
-        return PasscodeEntity(self, data)
-
-
-    def Password(self, data=None) -> "PasswordEntity":
-        """Entity factory: client.Password().list() / client.Password().load({"id": ...})."""
-        from hankopublic_sdk.entity.password_entity import PasswordEntity
-        return PasswordEntity(self, data)
+    def OrganizationManagement(self, data=None) -> "OrganizationManagementEntity":
+        """Entity factory: client.OrganizationManagement().list() / client.OrganizationManagement().load({"id": ...})."""
+        from hankopublic_sdk.entity.organization_management_entity import OrganizationManagementEntity
+        return OrganizationManagementEntity(self, data)
 
 
     def Saml(self, data=None) -> "SamlEntity":
@@ -407,34 +384,10 @@ class HankoPublicSDK:
         return ThirdPartyEntity(self, data)
 
 
-    def Token(self, data=None) -> "TokenEntity":
-        """Entity factory: client.Token().list() / client.Token().load({"id": ...})."""
-        from hankopublic_sdk.entity.token_entity import TokenEntity
-        return TokenEntity(self, data)
-
-
-    def User(self, data=None) -> "UserEntity":
-        """Entity factory: client.User().list() / client.User().load({"id": ...})."""
-        from hankopublic_sdk.entity.user_entity import UserEntity
-        return UserEntity(self, data)
-
-
     def UserManagement(self, data=None) -> "UserManagementEntity":
         """Entity factory: client.UserManagement().list() / client.UserManagement().load({"id": ...})."""
         from hankopublic_sdk.entity.user_management_entity import UserManagementEntity
         return UserManagementEntity(self, data)
-
-
-    def WebAuthn(self, data=None) -> "WebAuthnEntity":
-        """Entity factory: client.WebAuthn().list() / client.WebAuthn().load({"id": ...})."""
-        from hankopublic_sdk.entity.web_authn_entity import WebAuthnEntity
-        return WebAuthnEntity(self, data)
-
-
-    def WebauthnLogin(self, data=None) -> "WebauthnLoginEntity":
-        """Entity factory: client.WebauthnLogin().list() / client.WebauthnLogin().load({"id": ...})."""
-        from hankopublic_sdk.entity.webauthn_login_entity import WebauthnLoginEntity
-        return WebauthnLoginEntity(self, data)
 
 
 
@@ -464,19 +417,10 @@ class HankoPublicSDK:
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from hankopublic_sdk.entity.credential_creation_option_entity import CredentialCreationOptionEntity
-    from hankopublic_sdk.entity.credential_request_option_entity import CredentialRequestOptionEntity
-    from hankopublic_sdk.entity.email_entity import EmailEntity
-    from hankopublic_sdk.entity.hanko_configuration_entity import HankoConfigurationEntity
     from hankopublic_sdk.entity.json_web_key_entity import JsonWebKeyEntity
-    from hankopublic_sdk.entity.passcode_entity import PasscodeEntity
-    from hankopublic_sdk.entity.password_entity import PasswordEntity
+    from hankopublic_sdk.entity.organization_management_entity import OrganizationManagementEntity
     from hankopublic_sdk.entity.saml_entity import SamlEntity
     from hankopublic_sdk.entity.session_management_entity import SessionManagementEntity
     from hankopublic_sdk.entity.status_entity import StatusEntity
     from hankopublic_sdk.entity.third_party_entity import ThirdPartyEntity
-    from hankopublic_sdk.entity.token_entity import TokenEntity
-    from hankopublic_sdk.entity.user_entity import UserEntity
     from hankopublic_sdk.entity.user_management_entity import UserManagementEntity
-    from hankopublic_sdk.entity.web_authn_entity import WebAuthnEntity
-    from hankopublic_sdk.entity.webauthn_login_entity import WebauthnLoginEntity

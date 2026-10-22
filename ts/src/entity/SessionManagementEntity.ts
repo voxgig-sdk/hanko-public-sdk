@@ -16,7 +16,7 @@ import type {
 
 import type {
   SessionManagement,
-  SessionManagementLoadMatch,
+  SessionManagementListMatch,
   SessionManagementCreateData,
 } from '../HankoPublicTypes'
 
@@ -36,7 +36,8 @@ class SessionManagementEntity extends HankoPublicEntityBase<SessionManagement> {
 
 
 
-  async load(this: any, reqmatch?: SessionManagementLoadMatch, ctrl?: Control): Promise<SessionManagementEntity> {
+
+  async list(this: any, reqmatch?: SessionManagementListMatch, ctrl?: Control): Promise<SessionManagementEntity[]> {
 
     const utility = this._utility
 
@@ -56,7 +57,7 @@ class SessionManagementEntity extends HankoPublicEntityBase<SessionManagement> {
     let fres: Promise<any> | undefined = undefined
 
     let ctx: Context = makeContext({
-      opname: 'load',
+      opname: 'list',
       ctrl,
       match: this._match,
       data: this._data,
@@ -122,22 +123,19 @@ class SessionManagementEntity extends HankoPublicEntityBase<SessionManagement> {
         if (null != ctx.result.resmatch) {
           this._match = ctx.result.resmatch
         }
-
-        if (null != ctx.result.resdata) {
-          this._data = ctx.result.resdata
-        }
       }
 
-      const out = done(ctx)
-
-      return (ctx.result && ctx.result.ok) ? this : out
+      return done(ctx)
     }
     catch (err: any) {
       // What a hook throws here must not escape the cleaning below.
       try {
+        // Once per operation: makeError fires it for its own error.
+        if (!ctx.unexpectedFired) {
 
-        fres = featureHook(ctx, 'PreUnexpected')
-        if (fres instanceof Promise) { await fres }
+          fres = featureHook(ctx, 'PreUnexpected')
+          if (fres instanceof Promise) { await fres }
+        }
       }
       catch (hookerr: any) {
         err = hookerr
@@ -150,12 +148,11 @@ class SessionManagementEntity extends HankoPublicEntityBase<SessionManagement> {
       }
       else {
         // Off-happy-path (throw disabled): typed as any so the method's
-        // Promise<SessionManagementEntity> return stays clean under strict null checks.
+        // Promise<SessionManagementEntity[]> return stays clean under strict null checks.
         return undefined as any
       }
     }
   }
-
 
 
 
@@ -253,9 +250,12 @@ class SessionManagementEntity extends HankoPublicEntityBase<SessionManagement> {
     catch (err: any) {
       // What a hook throws here must not escape the cleaning below.
       try {
+        // Once per operation: makeError fires it for its own error.
+        if (!ctx.unexpectedFired) {
 
-        fres = featureHook(ctx, 'PreUnexpected')
-        if (fres instanceof Promise) { await fres }
+          fres = featureHook(ctx, 'PreUnexpected')
+          if (fres instanceof Promise) { await fres }
+        }
       }
       catch (hookerr: any) {
         err = hookerr

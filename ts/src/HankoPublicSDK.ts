@@ -1,21 +1,12 @@
 // HankoPublic Ts SDK
 
-import { CredentialCreationOptionEntity } from './entity/CredentialCreationOptionEntity'
-import { CredentialRequestOptionEntity } from './entity/CredentialRequestOptionEntity'
-import { EmailEntity } from './entity/EmailEntity'
-import { HankoConfigurationEntity } from './entity/HankoConfigurationEntity'
 import { JsonWebKeyEntity } from './entity/JsonWebKeyEntity'
-import { PasscodeEntity } from './entity/PasscodeEntity'
-import { PasswordEntity } from './entity/PasswordEntity'
+import { OrganizationManagementEntity } from './entity/OrganizationManagementEntity'
 import { SamlEntity } from './entity/SamlEntity'
 import { SessionManagementEntity } from './entity/SessionManagementEntity'
 import { StatusEntity } from './entity/StatusEntity'
 import { ThirdPartyEntity } from './entity/ThirdPartyEntity'
-import { TokenEntity } from './entity/TokenEntity'
-import { UserEntity } from './entity/UserEntity'
 import { UserManagementEntity } from './entity/UserManagementEntity'
-import { WebAuthnEntity } from './entity/WebAuthnEntity'
-import { WebauthnLoginEntity } from './entity/WebauthnLoginEntity'
 
 export type * from './HankoPublicTypes'
 
@@ -33,6 +24,7 @@ import { allowed } from './utility/PrepareMethodUtility'
 
 
 import { BaseFeature } from './feature/base/BaseFeature'
+import * as sekreto from './feature/secrets/sekreto'
 
 
 
@@ -52,7 +44,8 @@ class HankoPublicSDK {
   _utility = new Utility()
   _features: Feature[]
   _rootctx: Context
-  
+  _secrets?: any
+
 
   constructor(options?: any) {
 
@@ -132,6 +125,10 @@ class HankoPublicSDK {
   }
 
   
+secrets() {
+  return this._secrets && this._secrets.sekreto()
+}
+
 
 
   async prepare(fetchargs?: any) {
@@ -184,6 +181,15 @@ class HankoPublicSDK {
     }
 
     
+if (null != this._secrets) {
+  try {
+    await this._secrets.resolve()
+  }
+  catch (err: any) {
+    return err instanceof Error ? err : new Error(String(err))
+  }
+}
+
 
     const authResult = prepareAuth(ctx)
     if (authResult instanceof Error) {
@@ -334,42 +340,6 @@ class HankoPublicSDK {
 
 
 
-  // Entity access: `client.CredentialCreationOption().list()` / `client.CredentialCreationOption().load({ id })`.
-  // The argument is the entity OPTIONS object (passed to the entity
-  // constructor as entopts), not initial entity data.
-  CredentialCreationOption(entopts?: Record<string, any>) {
-    const self = this
-    return new CredentialCreationOptionEntity(self, entopts)
-  }
-
-
-  // Entity access: `client.CredentialRequestOption().list()` / `client.CredentialRequestOption().load({ id })`.
-  // The argument is the entity OPTIONS object (passed to the entity
-  // constructor as entopts), not initial entity data.
-  CredentialRequestOption(entopts?: Record<string, any>) {
-    const self = this
-    return new CredentialRequestOptionEntity(self, entopts)
-  }
-
-
-  // Entity access: `client.Email().list()` / `client.Email().load({ id })`.
-  // The argument is the entity OPTIONS object (passed to the entity
-  // constructor as entopts), not initial entity data.
-  Email(entopts?: Record<string, any>) {
-    const self = this
-    return new EmailEntity(self, entopts)
-  }
-
-
-  // Entity access: `client.HankoConfiguration().list()` / `client.HankoConfiguration().load({ id })`.
-  // The argument is the entity OPTIONS object (passed to the entity
-  // constructor as entopts), not initial entity data.
-  HankoConfiguration(entopts?: Record<string, any>) {
-    const self = this
-    return new HankoConfigurationEntity(self, entopts)
-  }
-
-
   // Entity access: `client.JsonWebKey().list()` / `client.JsonWebKey().load({ id })`.
   // The argument is the entity OPTIONS object (passed to the entity
   // constructor as entopts), not initial entity data.
@@ -379,21 +349,12 @@ class HankoPublicSDK {
   }
 
 
-  // Entity access: `client.Passcode().list()` / `client.Passcode().load({ id })`.
+  // Entity access: `client.OrganizationManagement().list()` / `client.OrganizationManagement().load({ id })`.
   // The argument is the entity OPTIONS object (passed to the entity
   // constructor as entopts), not initial entity data.
-  Passcode(entopts?: Record<string, any>) {
+  OrganizationManagement(entopts?: Record<string, any>) {
     const self = this
-    return new PasscodeEntity(self, entopts)
-  }
-
-
-  // Entity access: `client.Password().list()` / `client.Password().load({ id })`.
-  // The argument is the entity OPTIONS object (passed to the entity
-  // constructor as entopts), not initial entity data.
-  Password(entopts?: Record<string, any>) {
-    const self = this
-    return new PasswordEntity(self, entopts)
+    return new OrganizationManagementEntity(self, entopts)
   }
 
 
@@ -433,48 +394,12 @@ class HankoPublicSDK {
   }
 
 
-  // Entity access: `client.Token().list()` / `client.Token().load({ id })`.
-  // The argument is the entity OPTIONS object (passed to the entity
-  // constructor as entopts), not initial entity data.
-  Token(entopts?: Record<string, any>) {
-    const self = this
-    return new TokenEntity(self, entopts)
-  }
-
-
-  // Entity access: `client.User().list()` / `client.User().load({ id })`.
-  // The argument is the entity OPTIONS object (passed to the entity
-  // constructor as entopts), not initial entity data.
-  User(entopts?: Record<string, any>) {
-    const self = this
-    return new UserEntity(self, entopts)
-  }
-
-
   // Entity access: `client.UserManagement().list()` / `client.UserManagement().load({ id })`.
   // The argument is the entity OPTIONS object (passed to the entity
   // constructor as entopts), not initial entity data.
   UserManagement(entopts?: Record<string, any>) {
     const self = this
     return new UserManagementEntity(self, entopts)
-  }
-
-
-  // Entity access: `client.WebAuthn().list()` / `client.WebAuthn().load({ id })`.
-  // The argument is the entity OPTIONS object (passed to the entity
-  // constructor as entopts), not initial entity data.
-  WebAuthn(entopts?: Record<string, any>) {
-    const self = this
-    return new WebAuthnEntity(self, entopts)
-  }
-
-
-  // Entity access: `client.WebauthnLogin().list()` / `client.WebauthnLogin().load({ id })`.
-  // The argument is the entity OPTIONS object (passed to the entity
-  // constructor as entopts), not initial entity data.
-  WebauthnLogin(entopts?: Record<string, any>) {
-    const self = this
-    return new WebauthnLoginEntity(self, entopts)
   }
 
 
@@ -527,7 +452,8 @@ const SDK = HankoPublicSDK
 export {
   stdutil,
   config,
-  
+  sekreto,
+
 
   BaseFeature,
   HankoPublicEntityBase,

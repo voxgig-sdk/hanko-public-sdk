@@ -48,33 +48,13 @@ client := sdk.TestSDK(testopts, sdkopts)
 
 ### Instance Methods
 
-#### `CredentialCreationOption(data map[string]any) HankoPublicEntity`
-
-Create a new `CredentialCreationOption` entity instance. Pass `nil` for no initial data.
-
-#### `CredentialRequestOption(data map[string]any) HankoPublicEntity`
-
-Create a new `CredentialRequestOption` entity instance. Pass `nil` for no initial data.
-
-#### `Email(data map[string]any) HankoPublicEntity`
-
-Create a new `Email` entity instance. Pass `nil` for no initial data.
-
-#### `HankoConfiguration(data map[string]any) HankoPublicEntity`
-
-Create a new `HankoConfiguration` entity instance. Pass `nil` for no initial data.
-
 #### `JsonWebKey(data map[string]any) HankoPublicEntity`
 
 Create a new `JsonWebKey` entity instance. Pass `nil` for no initial data.
 
-#### `Passcode(data map[string]any) HankoPublicEntity`
+#### `OrganizationManagement(data map[string]any) HankoPublicEntity`
 
-Create a new `Passcode` entity instance. Pass `nil` for no initial data.
-
-#### `Password(data map[string]any) HankoPublicEntity`
-
-Create a new `Password` entity instance. Pass `nil` for no initial data.
+Create a new `OrganizationManagement` entity instance. Pass `nil` for no initial data.
 
 #### `Saml(data map[string]any) HankoPublicEntity`
 
@@ -92,25 +72,9 @@ Create a new `Status` entity instance. Pass `nil` for no initial data.
 
 Create a new `ThirdParty` entity instance. Pass `nil` for no initial data.
 
-#### `Token(data map[string]any) HankoPublicEntity`
-
-Create a new `Token` entity instance. Pass `nil` for no initial data.
-
-#### `User(data map[string]any) HankoPublicEntity`
-
-Create a new `User` entity instance. Pass `nil` for no initial data.
-
 #### `UserManagement(data map[string]any) HankoPublicEntity`
 
 Create a new `UserManagement` entity instance. Pass `nil` for no initial data.
-
-#### `WebAuthn(data map[string]any) HankoPublicEntity`
-
-Create a new `WebAuthn` entity instance. Pass `nil` for no initial data.
-
-#### `WebauthnLogin(data map[string]any) HankoPublicEntity`
-
-Create a new `WebauthnLogin` entity instance. Pass `nil` for no initial data.
 
 #### `OptionsMap() map[string]any`
 
@@ -144,301 +108,6 @@ Prepare a fetch definition without sending the request. Accepts the
 same parameters as `Direct()`.
 
 **Returns:** `(map[string]any, error)`
-
-
----
-
-## CredentialCreationOptionEntity
-
-```go
-credentialCreationOption := client.CredentialCreationOption(nil)
-fmt.Println(credentialCreationOption.GetName()) // "credential_creation_option"
-```
-
-### Fields
-
-| Field | Type | Required | Description |
-| --- | --- | --- | --- |
-| `attestation` | `string` | No |  |
-| `authenticatorSelection` | `map[string]any` | No |  |
-| `challenge` | `string` | No |  |
-| `pubKeyCredParams` | `[]any` | No |  |
-| `rp` | `map[string]any` | No |  |
-| `timeout` | `int` | No |  |
-| `user` | `map[string]any` | No |  |
-
-### Operations
-
-#### `Create(reqdata, ctrl map[string]any) (any, error)`
-
-Create a new entity with the given data. Returns the created entity; `err` is non-nil on failure.
-
-```go
-result, err := client.CredentialCreationOption(nil).Create(map[string]any{
-}, nil)
-if err != nil {
-    panic(err)
-}
-fmt.Println(result.(sdk.Entity).Data())
-```
-
-### Common Methods
-
-#### `Data(args ...any) any`
-
-Get or set the entity data. When called with data, sets the entity's
-internal data and returns the current data. When called without
-arguments, returns a copy of the current data.
-
-#### `Match(args ...any) any`
-
-Get or set the entity match criteria. Works the same as `Data()`.
-
-#### `Make() Entity`
-
-Create a new `CredentialCreationOptionEntity` instance with the same client and
-options.
-
-#### `Stream(action string, args map[string]any, callopts map[string]any) <-chan StreamItem`
-
-Run an operation through the pipeline and send its result items on the
-returned channel, which closes when the stream ends. A `StreamItem` holds
-one item in `Item`, or in `Err` the error that ended the stream: the
-error the operation itself would return, sent as the last value. Under
-`throw: false` in `callopts["ctrl"]`, no error is sent.
-
-#### `GetName() string`
-
-Return the entity name.
-
-
----
-
-## CredentialRequestOptionEntity
-
-```go
-credentialRequestOption := client.CredentialRequestOption(nil)
-fmt.Println(credentialRequestOption.GetName()) // "credential_request_option"
-```
-
-### Fields
-
-| Field | Type | Required | Description |
-| --- | --- | --- | --- |
-| `allowCredentials` | `[]any` | No |  |
-| `challenge` | `string` | No |  |
-| `rpId` | `string` | No |  |
-| `timeout` | `int` | No |  |
-| `userVerification` | `string` | No |  |
-| `user_id` | `string` | No | The ID of the user on whose behalf WebAuthn login should be performed |
-
-### Operations
-
-#### `Create(reqdata, ctrl map[string]any) (any, error)`
-
-Create a new entity with the given data. Returns the created entity; `err` is non-nil on failure.
-
-```go
-result, err := client.CredentialRequestOption(nil).Create(map[string]any{
-}, nil)
-if err != nil {
-    panic(err)
-}
-fmt.Println(result.(sdk.Entity).Data())
-```
-
-### Common Methods
-
-#### `Data(args ...any) any`
-
-Get or set the entity data. When called with data, sets the entity's
-internal data and returns the current data. When called without
-arguments, returns a copy of the current data.
-
-#### `Match(args ...any) any`
-
-Get or set the entity match criteria. Works the same as `Data()`.
-
-#### `Make() Entity`
-
-Create a new `CredentialRequestOptionEntity` instance with the same client and
-options.
-
-#### `Stream(action string, args map[string]any, callopts map[string]any) <-chan StreamItem`
-
-Run an operation through the pipeline and send its result items on the
-returned channel, which closes when the stream ends. A `StreamItem` holds
-one item in `Item`, or in `Err` the error that ended the stream: the
-error the operation itself would return, sent as the last value. Under
-`throw: false` in `callopts["ctrl"]`, no error is sent.
-
-#### `GetName() string`
-
-Return the entity name.
-
-
----
-
-## EmailEntity
-
-```go
-email := client.Email(nil)
-fmt.Println(email.GetName()) // "email"
-```
-
-### Fields
-
-| Field | Type | Required | Description |
-| --- | --- | --- | --- |
-| `address` | `string` | Yes | The email address |
-| `id` | `string` | No | The ID of the email address |
-| `identities` | `any` | No |  |
-| `identity` | `any` | No |  |
-| `is_primary` | `bool` | No | Indicates it's the primary email address. |
-| `is_verified` | `bool` | No | Indicated the email has been verified. |
-
-### Field Usage by Operation
-
-| Field | list | create | remove |
-| --- | --- | --- | --- |
-| `address` | Yes | - | - |
-| `id` | - | - | - |
-| `identities` | - | - | - |
-| `identity` | - | - | - |
-| `is_primary` | - | - | - |
-| `is_verified` | - | - | - |
-
-### Operations
-
-#### `List(reqmatch, ctrl map[string]any) (any, error)`
-
-List entities matching the given criteria. Returns a `[]any` of entities, one per record; `err` is non-nil on failure.
-
-```go
-results, err := client.Email(nil).List(nil, nil)
-if err != nil {
-    panic(err)
-}
-for _, item := range results.([]any) {
-    fmt.Println(item.(sdk.Entity).Data())
-}
-```
-
-#### `Create(reqdata, ctrl map[string]any) (any, error)`
-
-Create a new entity with the given data. Returns the created entity; `err` is non-nil on failure.
-
-```go
-result, err := client.Email(nil).Create(map[string]any{
-    "address": "example_address",
-}, nil)
-if err != nil {
-    panic(err)
-}
-fmt.Println(result.(sdk.Entity).Data())
-```
-
-#### `Remove(reqmatch, ctrl map[string]any) (any, error)`
-
-Remove the entity matching the given criteria. Returns the entity, marked as deleted; `err` is non-nil on failure.
-
-```go
-result, err := client.Email(nil).Remove(map[string]any{"id": "id"}, nil)
-if err != nil {
-    panic(err)
-}
-fmt.Println(result.(sdk.Entity).Data())
-```
-
-### Common Methods
-
-#### `Data(args ...any) any`
-
-Get or set the entity data. When called with data, sets the entity's
-internal data and returns the current data. When called without
-arguments, returns a copy of the current data.
-
-#### `Match(args ...any) any`
-
-Get or set the entity match criteria. Works the same as `Data()`.
-
-#### `Make() Entity`
-
-Create a new `EmailEntity` instance with the same client and
-options.
-
-#### `Stream(action string, args map[string]any, callopts map[string]any) <-chan StreamItem`
-
-Run an operation through the pipeline and send its result items on the
-returned channel, which closes when the stream ends. A `StreamItem` holds
-one item in `Item`, or in `Err` the error that ended the stream: the
-error the operation itself would return, sent as the last value. Under
-`throw: false` in `callopts["ctrl"]`, no error is sent.
-
-#### `GetName() string`
-
-Return the entity name.
-
-
----
-
-## HankoConfigurationEntity
-
-```go
-hankoConfiguration := client.HankoConfiguration(nil)
-fmt.Println(hankoConfiguration.GetName()) // "hanko_configuration"
-```
-
-### Fields
-
-| Field | Type | Required | Description |
-| --- | --- | --- | --- |
-| `account` | `map[string]any` | No | Controls the behavior regarding user account. |
-| `emails` | `map[string]any` | No | Controls the behavior regarding email addresses. |
-| `password` | `map[string]any` | No | Configuration options concerning passwords |
-
-### Operations
-
-#### `Load(reqmatch, ctrl map[string]any) (any, error)`
-
-Load a single entity matching the given criteria. Returns the entity, whose record `Data()` reads; `err` is non-nil on failure.
-
-```go
-result, err := client.HankoConfiguration(nil).Load(nil, nil)
-if err != nil {
-    panic(err)
-}
-fmt.Println(result.(sdk.Entity).Data())
-```
-
-### Common Methods
-
-#### `Data(args ...any) any`
-
-Get or set the entity data. When called with data, sets the entity's
-internal data and returns the current data. When called without
-arguments, returns a copy of the current data.
-
-#### `Match(args ...any) any`
-
-Get or set the entity match criteria. Works the same as `Data()`.
-
-#### `Make() Entity`
-
-Create a new `HankoConfigurationEntity` instance with the same client and
-options.
-
-#### `Stream(action string, args map[string]any, callopts map[string]any) <-chan StreamItem`
-
-Run an operation through the pipeline and send its result items on the
-returned channel, which closes when the stream ends. A `StreamItem` holds
-one item in `Item`, or in `Err` the error that ended the stream: the
-error the operation itself would return, sent as the last value. Under
-`throw: false` in `callopts["ctrl"]`, no error is sent.
-
-#### `GetName() string`
-
-Return the entity name.
 
 
 ---
@@ -509,23 +178,20 @@ Return the entity name.
 
 ---
 
-## PasscodeEntity
+## OrganizationManagementEntity
 
 ```go
-passcode := client.Passcode(nil)
-fmt.Println(passcode.GetName()) // "passcode"
+organizationManagement := client.OrganizationManagement(nil)
+fmt.Println(organizationManagement.GetName()) // "organization_management"
 ```
 
 ### Fields
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `code` | `string` | No | The actual passcode from the email sent to the user during initialization, a string of 6 decimal digits |
-| `created_at` | `string` | No | Time of creation of the passcode |
-| `email_id` | `string` | No | The ID of the email address |
-| `id` | `string` | No | The ID of the passcode |
-| `ttl` | `int` | No | Lifespan of a passcode in seconds |
-| `user_id` | `string` | Yes | The ID of the user |
+| `has_role` | `bool` | Yes |  |
+| `organization_id` | `string` | Yes | The ID of the organization to check |
+| `roles` | `[]any` | Yes | IDs or slugs of roles to check for. |
 
 ### Operations
 
@@ -534,8 +200,9 @@ fmt.Println(passcode.GetName()) // "passcode"
 Create a new entity with the given data. Returns the created entity; `err` is non-nil on failure.
 
 ```go
-result, err := client.Passcode(nil).Create(map[string]any{
-    "user_id": "example_user_id",
+result, err := client.OrganizationManagement(nil).Create(map[string]any{
+    "organization_id": "example_organization_id",
+    "roles": []any{},
 }, nil)
 if err != nil {
     panic(err)
@@ -557,84 +224,7 @@ Get or set the entity match criteria. Works the same as `Data()`.
 
 #### `Make() Entity`
 
-Create a new `PasscodeEntity` instance with the same client and
-options.
-
-#### `Stream(action string, args map[string]any, callopts map[string]any) <-chan StreamItem`
-
-Run an operation through the pipeline and send its result items on the
-returned channel, which closes when the stream ends. A `StreamItem` holds
-one item in `Item`, or in `Err` the error that ended the stream: the
-error the operation itself would return, sent as the last value. Under
-`throw: false` in `callopts["ctrl"]`, no error is sent.
-
-#### `GetName() string`
-
-Return the entity name.
-
-
----
-
-## PasswordEntity
-
-```go
-password := client.Password(nil)
-fmt.Println(password.GetName()) // "password"
-```
-
-### Fields
-
-| Field | Type | Required | Description |
-| --- | --- | --- | --- |
-| `password` | `string` | Yes | The actual password, its `minLength` defaults to 8 but can be [configured](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config) through the `password.min_password_length` option. |
-| `user_id` | `string` | Yes | The ID of the user to create/set a password for |
-
-### Operations
-
-#### `Create(reqdata, ctrl map[string]any) (any, error)`
-
-Create a new entity with the given data. Returns the created entity; `err` is non-nil on failure.
-
-```go
-result, err := client.Password(nil).Create(map[string]any{
-    "password": "example_password",
-    "user_id": "example_user_id",
-}, nil)
-if err != nil {
-    panic(err)
-}
-fmt.Println(result.(sdk.Entity).Data())
-```
-
-#### `Update(reqdata, ctrl map[string]any) (any, error)`
-
-Update an existing entity. The data must include the entity `id`. Returns the updated entity; `err` is non-nil on failure.
-
-```go
-result, err := client.Password(nil).Update(map[string]any{
-    // Fields to update
-}, nil)
-if err != nil {
-    panic(err)
-}
-fmt.Println(result.(sdk.Entity).Data())
-```
-
-### Common Methods
-
-#### `Data(args ...any) any`
-
-Get or set the entity data. When called with data, sets the entity's
-internal data and returns the current data. When called without
-arguments, returns a copy of the current data.
-
-#### `Match(args ...any) any`
-
-Get or set the entity match criteria. Works the same as `Data()`.
-
-#### `Make() Entity`
-
-Create a new `PasswordEntity` instance with the same client and
+Create a new `OrganizationManagementEntity` instance with the same client and
 options.
 
 #### `Stream(action string, args map[string]any, callopts map[string]any) <-chan StreamItem`
@@ -660,6 +250,18 @@ fmt.Println(saml.GetName()) // "saml"
 ```
 
 ### Operations
+
+#### `Load(reqmatch, ctrl map[string]any) (any, error)`
+
+Load a single entity matching the given criteria. Returns the entity, whose record `Data()` reads; `err` is non-nil on failure.
+
+```go
+result, err := client.Saml(nil).Load(map[string]any{"domain": "domain"}, nil)
+if err != nil {
+    panic(err)
+}
+fmt.Println(result.(sdk.Entity).Data())
+```
 
 #### `Create(reqdata, ctrl map[string]any) (any, error)`
 
@@ -721,23 +323,29 @@ fmt.Println(sessionManagement.GetName()) // "session_management"
 | --- | --- | --- | --- |
 | `claims` | `map[string]any` | Yes | The claims extracted from a JWT. |
 | `expiration_time` | `string` | No | Date-time indicating the expiration of the session. |
+| `id` | `string` | Yes | The ID of the organization |
 | `idle_expires_at` | `string` | No | Timestamp (in UTC) indicating when the session will expire due to inactivity, assuming no further activity occurs before this time. |
 | `is_valid` | `bool` | No | Indicates whether the session is valid or not |
+| `name` | `string` | Yes | The name of the organization |
+| `organizations` | `[]any` | No | The organizations the user belongs to, and the role slugs they hold within each. |
+| `roles` | `[]any` | Yes | The slugs of the roles the user holds within this organization |
 | `session_token` | `string` | Yes | The session token (JWT) to validate |
 | `user_id` | `string` | No | The ID of the user the session is associated with. |
 
 ### Operations
 
-#### `Load(reqmatch, ctrl map[string]any) (any, error)`
+#### `List(reqmatch, ctrl map[string]any) (any, error)`
 
-Load a single entity matching the given criteria. Returns the entity, whose record `Data()` reads; `err` is non-nil on failure.
+List entities matching the given criteria. Returns a `[]any` of entities, one per record; `err` is non-nil on failure.
 
 ```go
-result, err := client.SessionManagement(nil).Load(nil, nil)
+results, err := client.SessionManagement(nil).List(nil, nil)
 if err != nil {
     panic(err)
 }
-fmt.Println(result.(sdk.Entity).Data())
+for _, item := range results.([]any) {
+    fmt.Println(item.(sdk.Entity).Data())
+}
 ```
 
 #### `Create(reqdata, ctrl map[string]any) (any, error)`
@@ -746,7 +354,6 @@ Create a new entity with the given data. Returns the created entity; `err` is no
 
 ```go
 result, err := client.SessionManagement(nil).Create(map[string]any{
-    "claims": map[string]any{},
     "session_token": "example_session_token",
 }, nil)
 if err != nil {
@@ -854,7 +461,7 @@ fmt.Println(thirdParty.GetName()) // "third_party"
 Load a single entity matching the given criteria. Returns the entity, whose record `Data()` reads; `err` is non-nil on failure.
 
 ```go
-result, err := client.ThirdParty(nil).Load(map[string]any{"provider": "provider", "redirect_to": "redirect_to"}, nil)
+result, err := client.ThirdParty(nil).Load(map[string]any{"state": "state"}, nil)
 if err != nil {
     panic(err)
 }
@@ -876,193 +483,6 @@ Get or set the entity match criteria. Works the same as `Data()`.
 #### `Make() Entity`
 
 Create a new `ThirdPartyEntity` instance with the same client and
-options.
-
-#### `Stream(action string, args map[string]any, callopts map[string]any) <-chan StreamItem`
-
-Run an operation through the pipeline and send its result items on the
-returned channel, which closes when the stream ends. A `StreamItem` holds
-one item in `Item`, or in `Err` the error that ended the stream: the
-error the operation itself would return, sent as the last value. Under
-`throw: false` in `callopts["ctrl"]`, no error is sent.
-
-#### `GetName() string`
-
-Return the entity name.
-
-
----
-
-## TokenEntity
-
-```go
-token := client.Token(nil)
-fmt.Println(token.GetName()) // "token"
-```
-
-### Fields
-
-| Field | Type | Required | Description |
-| --- | --- | --- | --- |
-| `user_id` | `string` | No | The ID of the user on whose behalf the token was exchanged. |
-| `value` | `string` | No |  |
-
-### Operations
-
-#### `Create(reqdata, ctrl map[string]any) (any, error)`
-
-Create a new entity with the given data. Returns the created entity; `err` is non-nil on failure.
-
-```go
-result, err := client.Token(nil).Create(map[string]any{
-}, nil)
-if err != nil {
-    panic(err)
-}
-fmt.Println(result.(sdk.Entity).Data())
-```
-
-### Common Methods
-
-#### `Data(args ...any) any`
-
-Get or set the entity data. When called with data, sets the entity's
-internal data and returns the current data. When called without
-arguments, returns a copy of the current data.
-
-#### `Match(args ...any) any`
-
-Get or set the entity match criteria. Works the same as `Data()`.
-
-#### `Make() Entity`
-
-Create a new `TokenEntity` instance with the same client and
-options.
-
-#### `Stream(action string, args map[string]any, callopts map[string]any) <-chan StreamItem`
-
-Run an operation through the pipeline and send its result items on the
-returned channel, which closes when the stream ends. A `StreamItem` holds
-one item in `Item`, or in `Err` the error that ended the stream: the
-error the operation itself would return, sent as the last value. Under
-`throw: false` in `callopts["ctrl"]`, no error is sent.
-
-#### `GetName() string`
-
-Return the entity name.
-
-
----
-
-## UserEntity
-
-```go
-user := client.User(nil)
-fmt.Println(user.GetName()) // "user"
-```
-
-### Fields
-
-| Field | Type | Required | Description |
-| --- | --- | --- | --- |
-| `created_at` | `string` | No | Time of creation of the the user |
-| `email` | `string` | No | The email address of the user |
-| `email_id` | `string` | No | The ID of the newly created email address |
-| `emails` | `[]any` | No |  |
-| `family_name` | `string` | No |  |
-| `given_name` | `string` | No |  |
-| `has_webauthn_credential` | `bool` | No |  |
-| `id` | `string` | No | The ID of the user. |
-| `metadata` | `map[string]any` | No | The public and unsafe metadata of a user |
-| `mfa_config` | `map[string]any` | No |  |
-| `name` | `string` | No |  |
-| `passkeys` | `[]any` | No |  |
-| `picture` | `string` | No |  |
-| `security_keys` | `[]any` | No |  |
-| `updated_at` | `string` | No | Time of last update of the user |
-| `user_id` | `string` | No | The ID of the user |
-| `username` | `string` | No | The username of the user |
-| `verified` | `bool` | No |  |
-| `webauthn_credentials` | `[]any` | No | A list of WebAuthn credentials |
-
-### Field Usage by Operation
-
-| Field | load | create | remove |
-| --- | --- | --- | --- |
-| `created_at` | - | - | - |
-| `email` | - | Yes | - |
-| `email_id` | - | - | - |
-| `emails` | - | - | - |
-| `family_name` | - | - | - |
-| `given_name` | - | - | - |
-| `has_webauthn_credential` | - | - | - |
-| `id` | - | - | - |
-| `metadata` | - | - | - |
-| `mfa_config` | - | - | - |
-| `name` | - | - | - |
-| `passkeys` | - | - | - |
-| `picture` | - | - | - |
-| `security_keys` | - | - | - |
-| `updated_at` | - | - | - |
-| `user_id` | - | - | - |
-| `username` | - | - | - |
-| `verified` | - | - | - |
-| `webauthn_credentials` | - | - | - |
-
-### Operations
-
-#### `Load(reqmatch, ctrl map[string]any) (any, error)`
-
-Load a single entity matching the given criteria. Returns the entity, whose record `Data()` reads; `err` is non-nil on failure.
-
-```go
-result, err := client.User(nil).Load(map[string]any{"id": "user_id"}, nil)
-if err != nil {
-    panic(err)
-}
-fmt.Println(result.(sdk.Entity).Data())
-```
-
-#### `Create(reqdata, ctrl map[string]any) (any, error)`
-
-Create a new entity with the given data. Returns the created entity; `err` is non-nil on failure.
-
-```go
-result, err := client.User(nil).Create(map[string]any{
-}, nil)
-if err != nil {
-    panic(err)
-}
-fmt.Println(result.(sdk.Entity).Data())
-```
-
-#### `Remove(reqmatch, ctrl map[string]any) (any, error)`
-
-Remove the entity matching the given criteria. Returns the entity, marked as deleted; `err` is non-nil on failure.
-
-```go
-result, err := client.User(nil).Remove(map[string]any{"id": "user_id"}, nil)
-if err != nil {
-    panic(err)
-}
-fmt.Println(result.(sdk.Entity).Data())
-```
-
-### Common Methods
-
-#### `Data(args ...any) any`
-
-Get or set the entity data. When called with data, sets the entity's
-internal data and returns the current data. When called without
-arguments, returns a copy of the current data.
-
-#### `Match(args ...any) any`
-
-Get or set the entity match criteria. Works the same as `Data()`.
-
-#### `Make() Entity`
-
-Create a new `UserEntity` instance with the same client and
 options.
 
 #### `Stream(action string, args map[string]any, callopts map[string]any) <-chan StreamItem`
@@ -1167,187 +587,6 @@ Return the entity name.
 
 ---
 
-## WebAuthnEntity
-
-```go
-webAuthn := client.WebAuthn(nil)
-fmt.Println(webAuthn.GetName()) // "web_authn"
-```
-
-### Fields
-
-| Field | Type | Required | Description |
-| --- | --- | --- | --- |
-| `aaguid` | `string` | No |  |
-| `attestation_type` | `string` | No |  |
-| `backup_eligible` | `bool` | No |  |
-| `backup_state` | `bool` | No |  |
-| `created_at` | `string` | No |  |
-| `credential_id` | `string` | No | The ID of the created credential |
-| `id` | `string` | No |  |
-| `last_used_at` | `string` | No |  |
-| `mfa_only` | `bool` | No |  |
-| `name` | `string` | No | A new credential name. |
-| `publickey` | `string` | No |  |
-| `rawId` | `string` | No |  |
-| `response` | `map[string]any` | No |  |
-| `transports` | `[]any` | No |  |
-| `type` | `string` | No |  |
-| `user_id` | `string` | No | The ID of the user on whose behalf a credential was created |
-
-### Operations
-
-#### `List(reqmatch, ctrl map[string]any) (any, error)`
-
-List entities matching the given criteria. Returns a `[]any` of entities, one per record; `err` is non-nil on failure.
-
-```go
-results, err := client.WebAuthn(nil).List(nil, nil)
-if err != nil {
-    panic(err)
-}
-for _, item := range results.([]any) {
-    fmt.Println(item.(sdk.Entity).Data())
-}
-```
-
-#### `Create(reqdata, ctrl map[string]any) (any, error)`
-
-Create a new entity with the given data. Returns the created entity; `err` is non-nil on failure.
-
-```go
-result, err := client.WebAuthn(nil).Create(map[string]any{
-}, nil)
-if err != nil {
-    panic(err)
-}
-fmt.Println(result.(sdk.Entity).Data())
-```
-
-#### `Update(reqdata, ctrl map[string]any) (any, error)`
-
-Update an existing entity. The data must include the entity `id`. Returns the updated entity; `err` is non-nil on failure.
-
-```go
-result, err := client.WebAuthn(nil).Update(map[string]any{
-    "id": "id",
-    // Fields to update
-}, nil)
-if err != nil {
-    panic(err)
-}
-fmt.Println(result.(sdk.Entity).Data())
-```
-
-#### `Remove(reqmatch, ctrl map[string]any) (any, error)`
-
-Remove the entity matching the given criteria. Returns the entity, marked as deleted; `err` is non-nil on failure.
-
-```go
-result, err := client.WebAuthn(nil).Remove(map[string]any{"id": "id"}, nil)
-if err != nil {
-    panic(err)
-}
-fmt.Println(result.(sdk.Entity).Data())
-```
-
-### Common Methods
-
-#### `Data(args ...any) any`
-
-Get or set the entity data. When called with data, sets the entity's
-internal data and returns the current data. When called without
-arguments, returns a copy of the current data.
-
-#### `Match(args ...any) any`
-
-Get or set the entity match criteria. Works the same as `Data()`.
-
-#### `Make() Entity`
-
-Create a new `WebAuthnEntity` instance with the same client and
-options.
-
-#### `Stream(action string, args map[string]any, callopts map[string]any) <-chan StreamItem`
-
-Run an operation through the pipeline and send its result items on the
-returned channel, which closes when the stream ends. A `StreamItem` holds
-one item in `Item`, or in `Err` the error that ended the stream: the
-error the operation itself would return, sent as the last value. Under
-`throw: false` in `callopts["ctrl"]`, no error is sent.
-
-#### `GetName() string`
-
-Return the entity name.
-
-
----
-
-## WebauthnLoginEntity
-
-```go
-webauthnLogin := client.WebauthnLogin(nil)
-fmt.Println(webauthnLogin.GetName()) // "webauthn_login"
-```
-
-### Fields
-
-| Field | Type | Required | Description |
-| --- | --- | --- | --- |
-| `credential_id` | `string` | No |  |
-| `id` | `string` | No |  |
-| `rawId` | `string` | No |  |
-| `response` | `map[string]any` | No |  |
-| `type` | `string` | No |  |
-| `user_id` | `string` | No |  |
-
-### Operations
-
-#### `Create(reqdata, ctrl map[string]any) (any, error)`
-
-Create a new entity with the given data. Returns the created entity; `err` is non-nil on failure.
-
-```go
-result, err := client.WebauthnLogin(nil).Create(map[string]any{
-}, nil)
-if err != nil {
-    panic(err)
-}
-fmt.Println(result.(sdk.Entity).Data())
-```
-
-### Common Methods
-
-#### `Data(args ...any) any`
-
-Get or set the entity data. When called with data, sets the entity's
-internal data and returns the current data. When called without
-arguments, returns a copy of the current data.
-
-#### `Match(args ...any) any`
-
-Get or set the entity match criteria. Works the same as `Data()`.
-
-#### `Make() Entity`
-
-Create a new `WebauthnLoginEntity` instance with the same client and
-options.
-
-#### `Stream(action string, args map[string]any, callopts map[string]any) <-chan StreamItem`
-
-Run an operation through the pipeline and send its result items on the
-returned channel, which closes when the stream ends. A `StreamItem` holds
-one item in `Item`, or in `Err` the error that ended the stream: the
-error the operation itself would return, sent as the last value. Under
-`throw: false` in `callopts["ctrl"]`, no error is sent.
-
-#### `GetName() string`
-
-Return the entity name.
-
-
----
-
 ## Features
 
 | Feature | Version | Description |
@@ -1358,6 +597,7 @@ Return the entity name.
 | `paging` | 0.0.1 | Paging |
 | `ratelimit` | 0.0.1 | Rate limiting |
 | `retry` | 0.0.1 | Retry |
+| `secrets` | 0.1.0 | Secrets |
 | `test` | 0.0.1 | Test transport |
 | `timeout` | 0.0.1 | Timeout |
 
@@ -1373,6 +613,7 @@ client := sdk.NewHankoPublicSDK(map[string]any{
         "paging": map[string]any{"active": true},
         "ratelimit": map[string]any{"active": true},
         "retry": map[string]any{"active": true},
+        "secrets": map[string]any{"active": true},
         "test": map[string]any{"active": true},
         "timeout": map[string]any{"active": true},
     },
@@ -1391,7 +632,7 @@ transport, and the order you list them in is the order they nest.
 
 #### Ordering
 
-`ratelimit`, `retry`, `timeout` wrap the transport. Each
+`ratelimit`, `retry`, `secrets`, `timeout` wrap the transport. Each
 wraps whatever is already installed, so **activation order is nesting order**:
 a feature activated later sits OUTSIDE one activated earlier, and sees the call
 first.
@@ -1585,6 +826,31 @@ another when you do not.
 **Usage**
 
 Set `feature.retry.active` to true in the client options, and override any option above in the same entry. Every option keeps
+its default unless you name it.
+
+**Considerations**
+
+- Wraps the transport: its place in the activation order decides what it
+  sees. See [Ordering](#ordering) above.
+- Inactive by default: leaving it out costs nothing at runtime.
+
+#### `secrets`
+
+Secrets.
+
+**Configuration**
+
+| Option | Default |
+|---|---|
+| `active` | `false` |
+| `cache` | `true` |
+| `exchange` | `{active: false, method: 'POST', path: 'auth/token', refresh: '', request: 'refresh_token', response: 'access_token', retries: 1, statuses: [401]}` |
+| `name` | `'apikey'` |
+| `providers` | `[]` |
+
+**Usage**
+
+Set `feature.secrets.active` to true in the client options, and override any option above in the same entry. Every option keeps
 its default unless you name it.
 
 **Considerations**

@@ -38,7 +38,7 @@ func TestThirdPartyEntity(t *testing.T) {
 		client := sdk.TestSDK(nil, map[string]any{
 			"feature": map[string]any{"validate": map[string]any{"active": true}},
 		})
-		_, err := client.ThirdParty(nil).Load(map[string]any{"provider": 1, "redirect_to": "x"}, nil)
+		_, err := client.ThirdParty(nil).Load(map[string]any{"code": 1, "state": "x"}, nil)
 		if sdkerr, ok := err.(*core.HankoPublicError); !ok || "validate_failed" != sdkerr.Code {
 			t.Fatalf("expected validate_failed, got %v", err)
 		}
@@ -63,6 +63,7 @@ func TestThirdPartyEntity(t *testing.T) {
 			}
 		}
 		client := setup.client
+		_ = client
 
 		// Bootstrap entity data from existing test data (no create step in flow).
 		thirdPartyRef01DataRaw := vs.Items(core.ToMapAny(vs.GetPath(setup.data, "existing.third_party")))

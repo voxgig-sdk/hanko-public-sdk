@@ -33,7 +33,7 @@ const utility_1 = require("../../utility");
         const params = {};
         const query = {};
         const result = await client.direct({
-            path: 'thirdparty/auth',
+            path: 'thirdparty/callback',
             method: 'GET',
             params,
             query,

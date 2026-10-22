@@ -25,7 +25,7 @@ class ThirdPartyEntityTest < Minitest::Test
     end
     client = HankoPublicSDK.test(nil, { "feature" => { "validate" => { "active" => true } } })
     err = assert_raises(StandardError) do
-      client.ThirdParty(nil).load({ "provider" => 1, "redirect_to" => "x" }, nil)
+      client.ThirdParty(nil).load({ "code" => 1, "state" => "x" }, nil)
     end
     assert_equal "validate_failed", err.code
   end

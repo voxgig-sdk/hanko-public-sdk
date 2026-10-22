@@ -7,6 +7,7 @@ from hankopublic_sdk.feature.metrics_feature import HankoPublicMetricsFeature
 from hankopublic_sdk.feature.paging_feature import HankoPublicPagingFeature
 from hankopublic_sdk.feature.ratelimit_feature import HankoPublicRatelimitFeature
 from hankopublic_sdk.feature.retry_feature import HankoPublicRetryFeature
+from hankopublic_sdk.feature.secrets_feature import HankoPublicSecretsFeature
 from hankopublic_sdk.feature.test_feature import HankoPublicTestFeature
 from hankopublic_sdk.feature.timeout_feature import HankoPublicTimeoutFeature
 
@@ -19,6 +20,7 @@ _FEATURES = {
     "paging": lambda: HankoPublicPagingFeature(),
     "ratelimit": lambda: HankoPublicRatelimitFeature(),
     "retry": lambda: HankoPublicRetryFeature(),
+    "secrets": lambda: HankoPublicSecretsFeature(),
     "test": lambda: HankoPublicTestFeature(),
     "timeout": lambda: HankoPublicTimeoutFeature(),
 }

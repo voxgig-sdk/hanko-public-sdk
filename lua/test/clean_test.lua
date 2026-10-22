@@ -14,8 +14,8 @@ local BaseFeature = require("feature.base_feature")
 -- Generated: the credential's wire placement is fixed when the SDK is built.
 local AUTH = {
   suppressed = false,
-  where = "cookie",
-  name = "hanko",
+  where = "header",
+  name = "authorization",
   basic = false,
 }
 

@@ -54,23 +54,62 @@ const utility_1 = require("../../utility");
         const ent = testsdk.SessionManagement();
         (0, node_assert_1.default)(null != ent);
     });
+    class FailHook extends __1.BaseFeature {
+        name = 'failhook';
+        version = '0.0.1';
+        active = true;
+        unexpected = 0;
+        init() { }
+        PreSpec() { throw new Error('session_management hook failed'); }
+        PreUnexpected() { this.unexpected++; }
+    }
+    (0, node_test_1.test)('stream-error', async () => {
+        const offline = { net: { offline: true } };
+        await node_assert_1.default.rejects(async () => {
+            for await (const _item of __1.HankoPublicSDK.test(offline).SessionManagement().stream('list')) { }
+        }, /offline/);
+        for await (const _item of __1.HankoPublicSDK.test(offline).SessionManagement()
+            .stream('list', undefined, { ctrl: { throw: false } })) { }
+        if (null != __1.config.feature?.rbac) {
+            const denied = __1.HankoPublicSDK.test(undefined, { feature: { rbac: { active: true, deny: true } } });
+            await node_assert_1.default.rejects(async () => {
+                for await (const _item of denied.SessionManagement().stream('list')) { }
+            }, (err) => 'rbac_denied' === err.code);
+        }
+    });
+    (0, node_test_1.test)('stream-ctrl', async () => {
+        const explain = {};
+        const ctrl = { explain };
+        for await (const _item of __1.HankoPublicSDK.test().SessionManagement().stream('list', undefined, { ctrl })) { }
+        node_assert_1.default.deepStrictEqual(Object.keys(ctrl), ['explain']);
+        (0, node_assert_1.default)(explain === ctrl.explain && 0 < Object.keys(explain).length);
+    });
+    (0, node_test_1.test)('unexpected', async () => {
+        const hook = new FailHook();
+        const client = new __1.HankoPublicSDK({ feature: { test: { active: true } }, extend: [hook] });
+        await node_assert_1.default.rejects(client.SessionManagement().list(), /hook failed/);
+        (0, node_assert_1.default)(0 < hook.unexpected);
+        const fired = hook.unexpected;
+        node_assert_1.default.strictEqual(await client.SessionManagement().list(undefined, { throw: false }), undefined);
+        (0, node_assert_1.default)(fired < hook.unexpected);
+    });
     (0, node_test_1.test)('validate', async (t) => {
         if (null == __1.config.feature?.validate) {
             t.skip('feature not present in this SDK: validate');
             return;
         }
         const client = __1.HankoPublicSDK.test(undefined, { feature: { validate: { active: true } } });
-        await node_assert_1.default.rejects(client.SessionManagement().load({ "expiration_time": 1 }), (err) => 'validate_failed' === err.code);
+        await node_assert_1.default.rejects(client.SessionManagement().list({ "expiration_time": 1 }), (err) => 'validate_failed' === err.code);
     });
     (0, node_test_1.test)('basic', async (t) => {
         const live = 'TRUE' === process.env.HANKO_PUBLIC_TEST_LIVE;
-        for (const op of ['create', 'load']) {
+        for (const op of ['create', 'list']) {
             if (!live && (0, utility_1.maybeSkipControl)(t, 'entityOp', 'session_management.' + op, live))
                 return;
         }
         const setup = basicSetup();
         if (setup.live) {
-            return (0, live_entity_1.runLiveEntity)(setup, { "active": true, "alias": { "field": {} }, "fields": { "claims": { "a": true, "h": "Claims", "n": "claims", "r": true, "sh": "The claims extracted from a JWT.", "t": "`$OBJECT`", "key$": "claims", "index$": 0 }, "expiration_time": { "a": true, "de": true, "fo": "date-time", "h": "Expiration Time", "n": "expiration_time", "r": false, "sh": "Date-time indicating the expiration of the session.", "t": "`$STRING`", "key$": "expiration_time", "index$": 1 }, "idle_expires_at": { "a": true, "fo": "date-time", "h": "Idle Expires At", "n": "idle_expires_at", "r": false, "sh": "Timestamp (in UTC) indicating when the session will expire due to inactivity, assuming no further activity occurs before this time.", "t": "`$STRING`", "key$": "idle_expires_at", "index$": 2 }, "is_valid": { "a": true, "h": "Is Valid", "n": "is_valid", "r": false, "sh": "Indicates whether the session is valid or not", "t": "`$BOOLEAN`", "key$": "is_valid", "index$": 3 }, "session_token": { "a": true, "fo": "JWT", "h": "Session Token", "n": "session_token", "r": true, "sh": "The session token (JWT) to validate", "t": "`$STRING`", "key$": "session_token", "index$": 4 }, "user_id": { "a": true, "de": true, "fo": "uuid4", "h": "User Id", "n": "user_id", "r": false, "sh": "The ID of the user the session is associated with.", "t": "`$STRING`", "key$": "user_id", "index$": 5 } }, "name": "session_management", "op": { "create": { "input": "data", "name": "create", "points": [{ "a": true, "bf": ["session_token"], "co": { "id": "POST /sessions/validate", "source": "openapi3", "version": 2 }, "g": {}, "k": "http", "m": "POST", "o": "/sessions/validate", "q": {}, "r": {}, "rs": { "kind": "json", "media": "application/json" }, "s": [{ "lit": "sessions" }, { "lit": "validate" }], "t": { "req": "`reqdata`", "res": "`body`" }, "index$": 0 }], "key$": "create" }, "load": { "input": "data", "name": "load", "points": [{ "a": true, "co": { "id": "GET /sessions/validate", "source": "openapi3", "version": 2 }, "g": {}, "k": "http", "m": "GET", "o": "/sessions/validate", "q": {}, "r": {}, "rs": { "kind": "json", "media": "application/json" }, "s": [{ "lit": "sessions" }, { "lit": "validate" }], "t": { "req": "`reqdata`", "res": "`body`" }, "index$": 0 }], "key$": "load" } }, "relations": { "ancestors": [] }, "key$": "session_management", "name__orig": "session_management", "Name": "SessionManagement", "name_": "session_management", "name-": "session-management", "NAME": "SESSION_MANAGEMENT", "index$": 8 }, { "active": true, "entity": "session_management", "key$": "BasicSessionManagementFlow", "kind": "basic", "name": "BasicSessionManagementFlow", "param": {}, "step": [{ "a": true, "d": {}, "i": { "ref": "session_management_ref01" }, "m": {}, "o": "create", "s": [], "v": [], "index$": 0 }, { "a": true, "d": {}, "i": { "ref": "session_management_ref01", "srcdatavar": "session_management_ref01_data", "suffix": "_dt0" }, "m": {}, "o": "load", "s": [], "v": [{ "apply": "TextFieldMark", "def": { "mark": "Mark01-session_management_ref01" } }], "index$": 1 }] }, 'SessionManagement', { "POST /sessions/validate": { "protocol": "http", "requestBody": { "content": { "application/json": { "schema": { "properties": { "session_token": { "description": "The session token (JWT) to validate", "type": "string", "format": "JWT", "key$": "session_token" } }, "required": ["session_token"], "index$": 1 } } } }, "parameters": [] }, "GET /sessions/validate": { "protocol": "http", "parameters": [] } }, { strict: LIVE_STRICT, t });
+            return (0, live_entity_1.runLiveEntity)(setup, { "active": true, "alias": { "field": {} }, "fields": { "claims": { "a": true, "h": "Claims", "n": "claims", "r": true, "sh": "The claims extracted from a JWT.", "t": "`$OBJECT`", "key$": "claims", "index$": 0 }, "expiration_time": { "a": true, "de": true, "fo": "date-time", "h": "Expiration Time", "n": "expiration_time", "r": false, "sh": "Date-time indicating the expiration of the session.", "t": "`$STRING`", "key$": "expiration_time", "index$": 1 }, "id": { "a": true, "fo": "uuid4", "h": "Id", "n": "id", "r": true, "sh": "The ID of the organization", "t": "`$STRING`", "key$": "id", "index$": 2 }, "idle_expires_at": { "a": true, "fo": "date-time", "h": "Idle Expires At", "n": "idle_expires_at", "r": false, "sh": "Timestamp (in UTC) indicating when the session will expire due to inactivity, assuming no further activity occurs before this time.", "t": "`$STRING`", "key$": "idle_expires_at", "index$": 3 }, "is_valid": { "a": true, "h": "Is Valid", "n": "is_valid", "r": false, "sh": "Indicates whether the session is valid or not", "t": "`$BOOLEAN`", "key$": "is_valid", "index$": 4 }, "name": { "a": true, "h": "Name", "n": "name", "r": true, "sh": "The name of the organization", "t": "`$STRING`", "key$": "name", "index$": 5 }, "organizations": { "a": true, "h": "Organizations", "n": "organizations", "r": false, "sh": "The organizations the user belongs to, and the role slugs they hold within each.", "t": "`$ARRAY`", "key$": "organizations", "index$": 6 }, "roles": { "a": true, "h": "Roles", "n": "roles", "r": true, "sh": "The slugs of the roles the user holds within this organization", "t": "`$ARRAY`", "key$": "roles", "index$": 7 }, "session_token": { "a": true, "fo": "JWT", "h": "Session Token", "n": "session_token", "r": true, "sh": "The session token (JWT) to validate", "t": "`$STRING`", "key$": "session_token", "index$": 8 }, "user_id": { "a": true, "de": true, "fo": "uuid4", "h": "User Id", "n": "user_id", "r": false, "sh": "The ID of the user the session is associated with.", "t": "`$STRING`", "key$": "user_id", "index$": 9 } }, "id": { "field": "id", "name": "id" }, "name": "session_management", "op": { "create": { "input": "data", "name": "create", "points": [{ "a": true, "bf": ["session_token"], "co": { "id": "POST /sessions/validate", "source": "openapi3", "version": 2 }, "g": {}, "k": "http", "m": "POST", "o": "/sessions/validate", "q": {}, "r": {}, "rs": { "kind": "json", "media": "application/json" }, "s": [{ "lit": "sessions" }, { "lit": "validate" }], "t": { "req": "`reqdata`", "res": "`body`" }, "index$": 0 }], "key$": "create" }, "list": { "input": "data", "name": "list", "points": [{ "a": true, "co": { "id": "GET /sessions/validate", "source": "openapi3", "version": 2 }, "g": {}, "k": "http", "m": "GET", "o": "/sessions/validate", "q": {}, "r": {}, "rs": { "kind": "json", "media": "application/json" }, "s": [{ "lit": "sessions" }, { "lit": "validate" }], "t": { "req": "`reqdata`", "res": "`body`" }, "index$": 0 }], "key$": "list" } }, "relations": { "ancestors": [] }, "key$": "session_management", "name__orig": "session_management", "Name": "SessionManagement", "name_": "session_management", "name-": "session-management", "NAME": "SESSION_MANAGEMENT", "index$": 3 }, { "active": true, "entity": "session_management", "key$": "BasicSessionManagementFlow", "kind": "basic", "name": "BasicSessionManagementFlow", "param": {}, "step": [{ "a": true, "d": {}, "i": { "ref": "session_management_ref01" }, "m": {}, "o": "create", "s": [], "v": [], "index$": 0 }, { "a": true, "d": {}, "i": {}, "m": {}, "o": "list", "s": [], "v": [{ "apply": "ItemExists", "def": { "ref": "session_management_ref01" } }], "index$": 1 }] }, 'SessionManagement', { "POST /sessions/validate": { "protocol": "http", "requestBody": { "content": { "application/json": { "schema": { "properties": { "session_token": { "description": "The session token (JWT) to validate", "type": "string", "format": "JWT", "key$": "session_token" } }, "required": ["session_token"], "index$": 1 } } } }, "parameters": [] }, "GET /sessions/validate": { "protocol": "http", "parameters": [] } }, { strict: LIVE_STRICT, t });
         }
         const client = setup.client;
         const struct = setup.struct;
@@ -80,11 +119,11 @@ const utility_1 = require("../../utility");
         const session_management_ref01_ent = client.SessionManagement();
         let session_management_ref01_data = setup.data.new.session_management['session_management_ref01'];
         session_management_ref01_data = (await session_management_ref01_ent.create(session_management_ref01_data)).data();
-        (0, node_assert_1.default)(null != session_management_ref01_data);
-        // LOAD
-        const session_management_ref01_match_dt0 = {};
-        const session_management_ref01_data_dt0 = (await session_management_ref01_ent.load(session_management_ref01_match_dt0)).data();
-        (0, node_assert_1.default)(null != session_management_ref01_data_dt0);
+        (0, node_assert_1.default)(null != session_management_ref01_data.id);
+        // LIST
+        const session_management_ref01_match = {};
+        const session_management_ref01_list = (await session_management_ref01_ent.list(session_management_ref01_match)).map((e) => e.data());
+        (0, node_assert_1.default)(!isempty(select(session_management_ref01_list, { id: session_management_ref01_data.id })));
     });
 });
 // main.kit.test.live.strict is true (the default is true): a live

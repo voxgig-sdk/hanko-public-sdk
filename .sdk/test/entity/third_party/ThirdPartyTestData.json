@@ -18,11 +18,6 @@
     }
   },
   "requests": {
-    "GET /thirdparty/auth": {
-      "provenance": "operation-contract",
-      "version": 2,
-      "source": "openapi3"
-    },
     "GET /thirdparty/callback": {
       "provenance": "operation-contract",
       "version": 2,

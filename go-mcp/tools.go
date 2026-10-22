@@ -13,13 +13,13 @@ import (
 
 // ListArgs is what an agent sends to hanko-public_list.
 type ListArgs struct {
-	Entity string         `json:"entity" jsonschema:"one of: email | json_web_key | user_management | web_authn"`
+	Entity string         `json:"entity" jsonschema:"one of: json_web_key | session_management | user_management"`
 	Query  map[string]any `json:"query,omitempty" jsonschema:"optional filter map; omit it for the first page"`
 }
 
 // LoadArgs is what an agent sends to hanko-public_load.
 type LoadArgs struct {
-	Entity string         `json:"entity" jsonschema:"one of: hanko_configuration | session_management | status | third_party | user"`
+	Entity string         `json:"entity" jsonschema:"one of: saml | status | third_party"`
 	Query  map[string]any `json:"query" jsonschema:"match map naming the record, such as {\"id\":1}"`
 }
 
@@ -28,7 +28,7 @@ func registerTools(server *mcp.Server, client *sdk.HankoPublicSDK) {
 		Name:        "hanko-public_list",
 		Description: "List records from HankoPublic. Args: entity, query (optional filter map; omit it for the first page). Returns the first page of records as JSON.",
 		Annotations: &mcp.ToolAnnotations{ReadOnlyHint: true},
-		InputSchema: entitySchema[ListArgs]("email", "json_web_key", "user_management", "web_authn"),
+		InputSchema: entitySchema[ListArgs]("json_web_key", "session_management", "user_management"),
 	}, func(ctx context.Context, req *mcp.CallToolRequest, args ListArgs) (*mcp.CallToolResult, any, error) {
 		return runOp(ctx, client, "list", args.Entity, args.Query)
 	})
@@ -36,7 +36,7 @@ func registerTools(server *mcp.Server, client *sdk.HankoPublicSDK) {
 		Name:        "hanko-public_load",
 		Description: "Load one record from HankoPublic. Args: entity, query (match map naming the record, such as {\"id\":1}). Returns the record as JSON.",
 		Annotations: &mcp.ToolAnnotations{ReadOnlyHint: true},
-		InputSchema: entitySchema[LoadArgs]("hanko_configuration", "session_management", "status", "third_party", "user"),
+		InputSchema: entitySchema[LoadArgs]("saml", "status", "third_party"),
 	}, func(ctx context.Context, req *mcp.CallToolRequest, args LoadArgs) (*mcp.CallToolResult, any, error) {
 		return runOp(ctx, client, "load", args.Entity, args.Query)
 	})
@@ -103,20 +103,10 @@ func runOp(_ context.Context, client *sdk.HankoPublicSDK, op string, entity stri
 // emits one `case "<name>":` per entity defined in the SDK model.
 func entityFor(client *sdk.HankoPublicSDK, name string) (sdk.HankoPublicEntity, error) {
 	switch strings.ToLower(name) {
-	case "credential_creation_option":
-		return client.CredentialCreationOption(nil), nil
-	case "credential_request_option":
-		return client.CredentialRequestOption(nil), nil
-	case "email":
-		return client.Email(nil), nil
-	case "hanko_configuration":
-		return client.HankoConfiguration(nil), nil
 	case "json_web_key":
 		return client.JsonWebKey(nil), nil
-	case "passcode":
-		return client.Passcode(nil), nil
-	case "password":
-		return client.Password(nil), nil
+	case "organization_management":
+		return client.OrganizationManagement(nil), nil
 	case "saml":
 		return client.Saml(nil), nil
 	case "session_management":
@@ -125,16 +115,8 @@ func entityFor(client *sdk.HankoPublicSDK, name string) (sdk.HankoPublicEntity, 
 		return client.Status(nil), nil
 	case "third_party":
 		return client.ThirdParty(nil), nil
-	case "token":
-		return client.Token(nil), nil
-	case "user":
-		return client.User(nil), nil
 	case "user_management":
 		return client.UserManagement(nil), nil
-	case "web_authn":
-		return client.WebAuthn(nil), nil
-	case "webauthn_login":
-		return client.WebauthnLogin(nil), nil
 	}
 	return nil, fmt.Errorf("unknown entity %q", name)
 }

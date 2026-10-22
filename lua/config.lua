@@ -119,6 +119,29 @@ local function make_config()
         ["strict"] = false,
         ["transport"] = "wrap",
       },
+      ["secrets"] = {
+        ["options"] = {
+          ["active"] = false,
+          ["cache"] = true,
+          ["exchange"] = {
+            ["active"] = false,
+            ["method"] = "POST",
+            ["path"] = "auth/token",
+            ["refresh"] = "",
+            ["request"] = "refresh_token",
+            ["response"] = "access_token",
+            ["retries"] = 1,
+            ["statuses"] = {
+              401,
+            },
+          },
+          ["name"] = "apikey",
+          ["providers"] = {},
+        },
+        ["optspec"] = {},
+        ["strict"] = false,
+        ["transport"] = "wrap",
+      },
       ["test"] = {
         ["options"] = {
           ["active"] = false,
@@ -150,463 +173,22 @@ local function make_config()
         ["tenant_id"] = "",
       },
       auth = {
-        prefix = "",
-        ["in"] = "cookie",
-        name = "hanko",
+        prefix = "Bearer",
       },
       headers = {
         ["content-type"] = "application/json",
       },
       entity = {
-        ["credential_creation_option"] = {},
-        ["credential_request_option"] = {},
-        ["email"] = {},
-        ["hanko_configuration"] = {},
         ["json_web_key"] = {},
-        ["passcode"] = {},
-        ["password"] = {},
+        ["organization_management"] = {},
         ["saml"] = {},
         ["session_management"] = {},
         ["status"] = {},
         ["third_party"] = {},
-        ["token"] = {},
-        ["user"] = {},
         ["user_management"] = {},
-        ["web_authn"] = {},
-        ["webauthn_login"] = {},
       },
     },
     entity = {
-      ["credential_creation_option"] = {
-        ["fields"] = {
-          {
-            ["name"] = "attestation",
-            ["title"] = "Attestation",
-            ["type"] = "`$STRING`",
-          },
-          {
-            ["name"] = "authenticatorSelection",
-            ["title"] = "Authenticator Selection",
-            ["type"] = "`$OBJECT`",
-          },
-          {
-            ["name"] = "challenge",
-            ["title"] = "Challenge",
-            ["type"] = "`$STRING`",
-            ["format"] = "base64url",
-          },
-          {
-            ["name"] = "pubKeyCredParams",
-            ["title"] = "Pub Key Cred Params",
-            ["type"] = "`$ARRAY`",
-          },
-          {
-            ["name"] = "rp",
-            ["title"] = "Rp",
-            ["type"] = "`$OBJECT`",
-          },
-          {
-            ["name"] = "timeout",
-            ["title"] = "Timeout",
-            ["type"] = "`$INTEGER`",
-            ["format"] = "int64",
-          },
-          {
-            ["name"] = "user",
-            ["title"] = "User",
-            ["type"] = "`$OBJECT`",
-          },
-        },
-        ["name"] = "credential_creation_option",
-        ["op"] = {
-          ["create"] = {
-            ["input"] = "data",
-            ["name"] = "create",
-            ["points"] = {
-              {
-                ["kind"] = "http",
-                ["method"] = "POST",
-                ["orig"] = "/webauthn/registration/initialize",
-                ["segments"] = {
-                  {
-                    ["lit"] = "webauthn",
-                  },
-                  {
-                    ["lit"] = "registration",
-                  },
-                  {
-                    ["lit"] = "initialize",
-                  },
-                },
-                ["parts"] = {
-                  "webauthn",
-                  "registration",
-                  "initialize",
-                },
-                ["rename"] = {},
-                ["transform"] = {
-                  ["req"] = "`reqdata`",
-                  ["res"] = "`body.publicKey`",
-                },
-                ["args"] = {},
-                ["select"] = {},
-                ["response"] = {
-                  ["kind"] = "json",
-                  ["media"] = "application/json",
-                },
-              },
-            },
-          },
-        },
-        ["relations"] = {
-          ["ancestors"] = {},
-        },
-      },
-      ["credential_request_option"] = {
-        ["fields"] = {
-          {
-            ["name"] = "allowCredentials",
-            ["title"] = "Allow Credentials",
-            ["type"] = "`$ARRAY`",
-          },
-          {
-            ["name"] = "challenge",
-            ["title"] = "Challenge",
-            ["type"] = "`$STRING`",
-            ["format"] = "base64url",
-          },
-          {
-            ["name"] = "rpId",
-            ["title"] = "Rp Id",
-            ["type"] = "`$STRING`",
-          },
-          {
-            ["name"] = "timeout",
-            ["title"] = "Timeout",
-            ["type"] = "`$INTEGER`",
-            ["format"] = "int64",
-          },
-          {
-            ["name"] = "userVerification",
-            ["title"] = "User Verification",
-            ["type"] = "`$STRING`",
-          },
-          {
-            ["name"] = "user_id",
-            ["title"] = "User Id",
-            ["type"] = "`$STRING`",
-            ["short"] = "The ID of the user on whose behalf WebAuthn login should be performed",
-            ["format"] = "uuid4",
-          },
-        },
-        ["name"] = "credential_request_option",
-        ["op"] = {
-          ["create"] = {
-            ["input"] = "data",
-            ["name"] = "create",
-            ["points"] = {
-              {
-                ["kind"] = "http",
-                ["method"] = "POST",
-                ["orig"] = "/webauthn/login/initialize",
-                ["segments"] = {
-                  {
-                    ["lit"] = "webauthn",
-                  },
-                  {
-                    ["lit"] = "login",
-                  },
-                  {
-                    ["lit"] = "initialize",
-                  },
-                },
-                ["parts"] = {
-                  "webauthn",
-                  "login",
-                  "initialize",
-                },
-                ["rename"] = {},
-                ["transform"] = {
-                  ["req"] = "`reqdata`",
-                  ["res"] = "`body.publicKey`",
-                },
-                ["args"] = {},
-                ["select"] = {},
-                ["response"] = {
-                  ["kind"] = "json",
-                  ["media"] = "application/json",
-                },
-              },
-            },
-          },
-        },
-        ["relations"] = {
-          ["ancestors"] = {},
-        },
-      },
-      ["email"] = {
-        ["fields"] = {
-          {
-            ["name"] = "address",
-            ["title"] = "Address",
-            ["type"] = "`$STRING`",
-            ["req"] = true,
-            ["op"] = {
-              ["list"] = {
-                ["type"] = "`$STRING`",
-              },
-            },
-            ["short"] = "The email address",
-            ["format"] = "email",
-          },
-          {
-            ["name"] = "id",
-            ["title"] = "Id",
-            ["type"] = "`$STRING`",
-            ["short"] = "The ID of the email address",
-            ["format"] = "uuid4",
-          },
-          {
-            ["name"] = "identities",
-            ["title"] = "Identities",
-            ["type"] = "`$ANY`",
-          },
-          {
-            ["name"] = "identity",
-            ["title"] = "Identity",
-            ["type"] = "`$ANY`",
-          },
-          {
-            ["name"] = "is_primary",
-            ["title"] = "Is Primary",
-            ["type"] = "`$BOOLEAN`",
-            ["short"] = "Indicates it's the primary email address.",
-          },
-          {
-            ["name"] = "is_verified",
-            ["title"] = "Is Verified",
-            ["type"] = "`$BOOLEAN`",
-            ["short"] = "Indicated the email has been verified.",
-          },
-        },
-        ["id"] = {
-          ["field"] = "id",
-          ["name"] = "id",
-        },
-        ["name"] = "email",
-        ["op"] = {
-          ["create"] = {
-            ["input"] = "data",
-            ["name"] = "create",
-            ["points"] = {
-              {
-                ["kind"] = "http",
-                ["method"] = "POST",
-                ["orig"] = "/emails/{id}/set_primary",
-                ["segments"] = {
-                  {
-                    ["lit"] = "emails",
-                  },
-                  {
-                    ["var"] = "id",
-                  },
-                  {
-                    ["lit"] = "set_primary",
-                  },
-                },
-                ["parts"] = {
-                  "emails",
-                  "{id}",
-                  "set_primary",
-                },
-                ["rename"] = {},
-                ["transform"] = {
-                  ["req"] = "`reqdata`",
-                  ["res"] = "`body`",
-                },
-                ["args"] = {
-                  ["params"] = {
-                    {
-                      ["name"] = "id",
-                      ["orig"] = "id",
-                      ["type"] = "`$STRING`",
-                      ["kind"] = "param",
-                      ["reqd"] = true,
-                      ["example"] = "c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c",
-                    },
-                  },
-                },
-                ["select"] = {
-                  ["$action"] = "set_primary",
-                  ["exist"] = {
-                    "id",
-                  },
-                },
-              },
-              {
-                ["kind"] = "http",
-                ["method"] = "POST",
-                ["orig"] = "/emails",
-                ["segments"] = {
-                  {
-                    ["lit"] = "emails",
-                  },
-                },
-                ["parts"] = {
-                  "emails",
-                },
-                ["rename"] = {},
-                ["transform"] = {
-                  ["req"] = "`reqdata`",
-                  ["res"] = "`body`",
-                },
-                ["args"] = {},
-                ["select"] = {},
-              },
-            },
-          },
-          ["list"] = {
-            ["input"] = "data",
-            ["name"] = "list",
-            ["points"] = {
-              {
-                ["kind"] = "http",
-                ["method"] = "GET",
-                ["orig"] = "/emails",
-                ["segments"] = {
-                  {
-                    ["lit"] = "emails",
-                  },
-                },
-                ["parts"] = {
-                  "emails",
-                },
-                ["rename"] = {},
-                ["transform"] = {
-                  ["req"] = "`reqdata`",
-                  ["res"] = "`body`",
-                },
-                ["args"] = {},
-                ["select"] = {},
-                ["response"] = {
-                  ["kind"] = "json",
-                  ["media"] = "application/json",
-                },
-              },
-            },
-          },
-          ["remove"] = {
-            ["input"] = "data",
-            ["name"] = "remove",
-            ["points"] = {
-              {
-                ["kind"] = "http",
-                ["method"] = "DELETE",
-                ["orig"] = "/emails/{id}",
-                ["segments"] = {
-                  {
-                    ["lit"] = "emails",
-                  },
-                  {
-                    ["var"] = "id",
-                  },
-                },
-                ["parts"] = {
-                  "emails",
-                  "{id}",
-                },
-                ["rename"] = {},
-                ["transform"] = {
-                  ["req"] = "`reqdata`",
-                  ["res"] = "`body`",
-                },
-                ["args"] = {
-                  ["params"] = {
-                    {
-                      ["name"] = "id",
-                      ["orig"] = "id",
-                      ["type"] = "`$STRING`",
-                      ["kind"] = "param",
-                      ["reqd"] = true,
-                      ["example"] = "c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c",
-                    },
-                  },
-                },
-                ["select"] = {
-                  ["exist"] = {
-                    "id",
-                  },
-                },
-              },
-            },
-          },
-        },
-        ["relations"] = {
-          ["ancestors"] = {},
-        },
-      },
-      ["hanko_configuration"] = {
-        ["fields"] = {
-          {
-            ["name"] = "account",
-            ["title"] = "Account",
-            ["type"] = "`$OBJECT`",
-            ["short"] = "Controls the behavior regarding user account.",
-          },
-          {
-            ["name"] = "emails",
-            ["title"] = "Emails",
-            ["type"] = "`$OBJECT`",
-            ["short"] = "Controls the behavior regarding email addresses.",
-          },
-          {
-            ["name"] = "password",
-            ["title"] = "Password",
-            ["type"] = "`$OBJECT`",
-            ["short"] = "Configuration options concerning passwords",
-          },
-        },
-        ["name"] = "hanko_configuration",
-        ["op"] = {
-          ["load"] = {
-            ["input"] = "data",
-            ["name"] = "load",
-            ["points"] = {
-              {
-                ["kind"] = "http",
-                ["method"] = "GET",
-                ["orig"] = "/.well-known/config",
-                ["segments"] = {
-                  {
-                    ["lit"] = ".well-known",
-                  },
-                  {
-                    ["lit"] = "config",
-                  },
-                },
-                ["parts"] = {
-                  ".well-known",
-                  "config",
-                },
-                ["rename"] = {},
-                ["transform"] = {
-                  ["req"] = "`reqdata`",
-                  ["res"] = "`body`",
-                },
-                ["args"] = {},
-                ["select"] = {},
-                ["response"] = {
-                  ["kind"] = "json",
-                  ["media"] = "application/json",
-                },
-              },
-            },
-          },
-        },
-        ["relations"] = {
-          ["ancestors"] = {},
-        },
-      },
       ["json_web_key"] = {
         ["fields"] = {
           {
@@ -683,55 +265,31 @@ local function make_config()
           ["ancestors"] = {},
         },
       },
-      ["passcode"] = {
+      ["organization_management"] = {
         ["fields"] = {
           {
-            ["name"] = "code",
-            ["title"] = "Code",
-            ["type"] = "`$STRING`",
-            ["short"] = "The actual passcode from the email sent to the user during initialization, a string of 6 decimal digits",
+            ["name"] = "has_role",
+            ["title"] = "Has Role",
+            ["type"] = "`$BOOLEAN`",
+            ["req"] = true,
           },
           {
-            ["name"] = "created_at",
-            ["title"] = "Created At",
-            ["type"] = "`$STRING`",
-            ["short"] = "Time of creation of the passcode",
-            ["format"] = "date-time",
-          },
-          {
-            ["name"] = "email_id",
-            ["title"] = "Email Id",
-            ["type"] = "`$STRING`",
-            ["short"] = "The ID of the email address",
-            ["format"] = "uuid4",
-          },
-          {
-            ["name"] = "id",
-            ["title"] = "Id",
-            ["type"] = "`$STRING`",
-            ["short"] = "The ID of the passcode",
-            ["format"] = "uuid4",
-          },
-          {
-            ["name"] = "ttl",
-            ["title"] = "Ttl",
-            ["type"] = "`$INTEGER`",
-            ["short"] = "Lifespan of a passcode in seconds",
-          },
-          {
-            ["name"] = "user_id",
-            ["title"] = "User Id",
+            ["name"] = "organization_id",
+            ["title"] = "Organization Id",
             ["type"] = "`$STRING`",
             ["req"] = true,
-            ["short"] = "The ID of the user",
+            ["short"] = "The ID of the organization to check",
             ["format"] = "uuid4",
           },
+          {
+            ["name"] = "roles",
+            ["title"] = "Roles",
+            ["type"] = "`$ARRAY`",
+            ["req"] = true,
+            ["short"] = "IDs or slugs of roles to check for.",
+          },
         },
-        ["id"] = {
-          ["field"] = "id",
-          ["name"] = "id",
-        },
-        ["name"] = "passcode",
+        ["name"] = "organization_management",
         ["op"] = {
           ["create"] = {
             ["input"] = "data",
@@ -740,22 +298,22 @@ local function make_config()
               {
                 ["kind"] = "http",
                 ["method"] = "POST",
-                ["orig"] = "/passcode/login/finalize",
+                ["orig"] = "/organizations/roles/check",
                 ["segments"] = {
                   {
-                    ["lit"] = "passcode",
+                    ["lit"] = "organizations",
                   },
                   {
-                    ["lit"] = "login",
+                    ["lit"] = "roles",
                   },
                   {
-                    ["lit"] = "finalize",
+                    ["lit"] = "check",
                   },
                 },
                 ["parts"] = {
-                  "passcode",
-                  "login",
-                  "finalize",
+                  "organizations",
+                  "roles",
+                  "check",
                 },
                 ["rename"] = {},
                 ["transform"] = {
@@ -768,121 +326,6 @@ local function make_config()
                   ["kind"] = "json",
                   ["media"] = "application/json",
                 },
-              },
-              {
-                ["kind"] = "http",
-                ["method"] = "POST",
-                ["orig"] = "/passcode/login/initialize",
-                ["segments"] = {
-                  {
-                    ["lit"] = "passcode",
-                  },
-                  {
-                    ["lit"] = "login",
-                  },
-                  {
-                    ["lit"] = "initialize",
-                  },
-                },
-                ["parts"] = {
-                  "passcode",
-                  "login",
-                  "initialize",
-                },
-                ["rename"] = {},
-                ["transform"] = {
-                  ["req"] = "`reqdata`",
-                  ["res"] = "`body`",
-                },
-                ["args"] = {},
-                ["select"] = {},
-                ["response"] = {
-                  ["kind"] = "json",
-                  ["media"] = "application/json",
-                },
-              },
-            },
-          },
-        },
-        ["relations"] = {
-          ["ancestors"] = {},
-        },
-      },
-      ["password"] = {
-        ["fields"] = {
-          {
-            ["name"] = "password",
-            ["title"] = "Password",
-            ["type"] = "`$STRING`",
-            ["req"] = true,
-            ["short"] = "The actual password, its `minLength` defaults to 8 but can be [configured](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config) through the `password.min_password_length` option.",
-          },
-          {
-            ["name"] = "user_id",
-            ["title"] = "User Id",
-            ["type"] = "`$STRING`",
-            ["req"] = true,
-            ["short"] = "The ID of the user to create/set a password for",
-            ["format"] = "uuid4",
-          },
-        },
-        ["name"] = "password",
-        ["op"] = {
-          ["create"] = {
-            ["input"] = "data",
-            ["name"] = "create",
-            ["points"] = {
-              {
-                ["kind"] = "http",
-                ["method"] = "POST",
-                ["orig"] = "/password/login",
-                ["segments"] = {
-                  {
-                    ["lit"] = "password",
-                  },
-                  {
-                    ["lit"] = "login",
-                  },
-                },
-                ["parts"] = {
-                  "password",
-                  "login",
-                },
-                ["rename"] = {},
-                ["transform"] = {
-                  ["req"] = "`reqdata`",
-                  ["res"] = "`body`",
-                },
-                ["args"] = {},
-                ["select"] = {
-                  ["$action"] = "login",
-                },
-              },
-            },
-          },
-          ["update"] = {
-            ["input"] = "data",
-            ["name"] = "update",
-            ["points"] = {
-              {
-                ["kind"] = "http",
-                ["method"] = "PUT",
-                ["orig"] = "/password",
-                ["segments"] = {
-                  {
-                    ["lit"] = "password",
-                  },
-                },
-                ["parts"] = {
-                  "password",
-                },
-                ["rename"] = {},
-                ["transform"] = {
-                  ["req"] = "`reqdata`",
-                  ["res"] = "`body`",
-                },
-                ["args"] = {},
-                ["select"] = {},
               },
             },
           },
@@ -993,49 +436,6 @@ local function make_config()
                   ["media"] = "application/octet-stream",
                 },
               },
-              {
-                ["kind"] = "http",
-                ["method"] = "GET",
-                ["orig"] = "/saml/provider",
-                ["segments"] = {
-                  {
-                    ["lit"] = "saml",
-                  },
-                  {
-                    ["lit"] = "provider",
-                  },
-                },
-                ["parts"] = {
-                  "saml",
-                  "provider",
-                },
-                ["rename"] = {},
-                ["transform"] = {
-                  ["req"] = "`reqdata`",
-                  ["res"] = "`body`",
-                },
-                ["args"] = {
-                  ["query"] = {
-                    {
-                      ["name"] = "domain",
-                      ["orig"] = "domain",
-                      ["type"] = "`$STRING`",
-                      ["kind"] = "query",
-                      ["reqd"] = true,
-                    },
-                  },
-                },
-                ["select"] = {
-                  ["$action"] = "provider",
-                  ["exist"] = {
-                    "domain",
-                  },
-                },
-                ["response"] = {
-                  ["kind"] = "json",
-                  ["media"] = "application/json",
-                },
-              },
             },
           },
         },
@@ -1061,6 +461,14 @@ local function make_config()
             ["format"] = "date-time",
           },
           {
+            ["name"] = "id",
+            ["title"] = "Id",
+            ["type"] = "`$STRING`",
+            ["req"] = true,
+            ["short"] = "The ID of the organization",
+            ["format"] = "uuid4",
+          },
+          {
             ["name"] = "idle_expires_at",
             ["title"] = "Idle Expires At",
             ["type"] = "`$STRING`",
@@ -1072,6 +480,26 @@ local function make_config()
             ["title"] = "Is Valid",
             ["type"] = "`$BOOLEAN`",
             ["short"] = "Indicates whether the session is valid or not",
+          },
+          {
+            ["name"] = "name",
+            ["title"] = "Name",
+            ["type"] = "`$STRING`",
+            ["req"] = true,
+            ["short"] = "The name of the organization",
+          },
+          {
+            ["name"] = "organizations",
+            ["title"] = "Organizations",
+            ["type"] = "`$ARRAY`",
+            ["short"] = "The organizations the user belongs to, and the role slugs they hold within each.",
+          },
+          {
+            ["name"] = "roles",
+            ["title"] = "Roles",
+            ["type"] = "`$ARRAY`",
+            ["req"] = true,
+            ["short"] = "The slugs of the roles the user holds within this organization",
           },
           {
             ["name"] = "session_token",
@@ -1089,6 +517,10 @@ local function make_config()
             ["deprecated"] = true,
             ["format"] = "uuid4",
           },
+        },
+        ["id"] = {
+          ["field"] = "id",
+          ["name"] = "id",
         },
         ["name"] = "session_management",
         ["op"] = {
@@ -1126,9 +558,9 @@ local function make_config()
               },
             },
           },
-          ["load"] = {
+          ["list"] = {
             ["input"] = "data",
-            ["name"] = "load",
+            ["name"] = "list",
             ["points"] = {
               {
                 ["kind"] = "http",
@@ -1209,52 +641,6 @@ local function make_config()
               {
                 ["kind"] = "http",
                 ["method"] = "GET",
-                ["orig"] = "/thirdparty/auth",
-                ["segments"] = {
-                  {
-                    ["lit"] = "thirdparty",
-                  },
-                  {
-                    ["lit"] = "auth",
-                  },
-                },
-                ["parts"] = {
-                  "thirdparty",
-                  "auth",
-                },
-                ["rename"] = {},
-                ["transform"] = {
-                  ["req"] = "`reqdata`",
-                  ["res"] = "`body`",
-                },
-                ["args"] = {
-                  ["query"] = {
-                    {
-                      ["name"] = "provider",
-                      ["orig"] = "provider",
-                      ["type"] = "`$STRING`",
-                      ["kind"] = "query",
-                      ["reqd"] = true,
-                    },
-                    {
-                      ["name"] = "redirect_to",
-                      ["orig"] = "redirect_to",
-                      ["type"] = "`$STRING`",
-                      ["kind"] = "query",
-                      ["reqd"] = true,
-                    },
-                  },
-                },
-                ["select"] = {
-                  ["exist"] = {
-                    "provider",
-                    "redirect_to",
-                  },
-                },
-              },
-              {
-                ["kind"] = "http",
-                ["method"] = "GET",
                 ["orig"] = "/thirdparty/callback",
                 ["segments"] = {
                   {
@@ -1307,320 +693,6 @@ local function make_config()
                     "state",
                   },
                 },
-              },
-            },
-          },
-        },
-        ["relations"] = {
-          ["ancestors"] = {},
-        },
-      },
-      ["token"] = {
-        ["fields"] = {
-          {
-            ["name"] = "user_id",
-            ["title"] = "User Id",
-            ["type"] = "`$STRING`",
-            ["short"] = "The ID of the user on whose behalf the token was exchanged.",
-            ["format"] = "uuid4",
-          },
-          {
-            ["name"] = "value",
-            ["title"] = "Value",
-            ["type"] = "`$STRING`",
-            ["format"] = "base64url",
-          },
-        },
-        ["name"] = "token",
-        ["op"] = {
-          ["create"] = {
-            ["input"] = "data",
-            ["name"] = "create",
-            ["points"] = {
-              {
-                ["kind"] = "http",
-                ["method"] = "POST",
-                ["orig"] = "/token",
-                ["segments"] = {
-                  {
-                    ["lit"] = "token",
-                  },
-                },
-                ["parts"] = {
-                  "token",
-                },
-                ["rename"] = {},
-                ["transform"] = {
-                  ["req"] = "`reqdata`",
-                  ["res"] = "`body`",
-                },
-                ["args"] = {},
-                ["select"] = {},
-                ["response"] = {
-                  ["kind"] = "json",
-                  ["media"] = "application/json",
-                },
-              },
-            },
-          },
-        },
-        ["relations"] = {
-          ["ancestors"] = {},
-        },
-      },
-      ["user"] = {
-        ["fields"] = {
-          {
-            ["name"] = "created_at",
-            ["title"] = "Created At",
-            ["type"] = "`$STRING`",
-            ["short"] = "Time of creation of the the user",
-            ["format"] = "date-time",
-          },
-          {
-            ["name"] = "email",
-            ["title"] = "Email",
-            ["type"] = "`$STRING`",
-            ["op"] = {
-              ["create"] = {
-                ["req"] = true,
-                ["type"] = "`$STRING`",
-              },
-            },
-            ["short"] = "The email address of the user",
-            ["format"] = "email",
-          },
-          {
-            ["name"] = "email_id",
-            ["title"] = "Email Id",
-            ["type"] = "`$STRING`",
-            ["short"] = "The ID of the newly created email address",
-            ["format"] = "uuid4",
-          },
-          {
-            ["name"] = "emails",
-            ["title"] = "Emails",
-            ["type"] = "`$ARRAY`",
-          },
-          {
-            ["name"] = "family_name",
-            ["title"] = "Family Name",
-            ["type"] = "`$STRING`",
-          },
-          {
-            ["name"] = "given_name",
-            ["title"] = "Given Name",
-            ["type"] = "`$STRING`",
-          },
-          {
-            ["name"] = "has_webauthn_credential",
-            ["title"] = "Has Webauthn Credential",
-            ["type"] = "`$BOOLEAN`",
-          },
-          {
-            ["name"] = "id",
-            ["title"] = "Id",
-            ["type"] = "`$STRING`",
-            ["short"] = "The ID of the user.",
-            ["deprecated"] = true,
-            ["format"] = "uuid4",
-          },
-          {
-            ["name"] = "metadata",
-            ["title"] = "Metadata",
-            ["type"] = "`$OBJECT`",
-            ["short"] = "The public and unsafe metadata of a user",
-          },
-          {
-            ["name"] = "mfa_config",
-            ["title"] = "Mfa Config",
-            ["type"] = "`$OBJECT`",
-          },
-          {
-            ["name"] = "name",
-            ["title"] = "Name",
-            ["type"] = "`$STRING`",
-          },
-          {
-            ["name"] = "passkeys",
-            ["title"] = "Passkeys",
-            ["type"] = "`$ARRAY`",
-          },
-          {
-            ["name"] = "picture",
-            ["title"] = "Picture",
-            ["type"] = "`$STRING`",
-            ["format"] = "uri",
-          },
-          {
-            ["name"] = "security_keys",
-            ["title"] = "Security Keys",
-            ["type"] = "`$ARRAY`",
-          },
-          {
-            ["name"] = "updated_at",
-            ["title"] = "Updated At",
-            ["type"] = "`$STRING`",
-            ["short"] = "Time of last update of the user",
-            ["format"] = "date-time",
-          },
-          {
-            ["name"] = "user_id",
-            ["title"] = "User Id",
-            ["type"] = "`$STRING`",
-            ["short"] = "The ID of the user",
-            ["format"] = "uuid4",
-          },
-          {
-            ["name"] = "username",
-            ["title"] = "Username",
-            ["type"] = "`$STRING`",
-            ["short"] = "The username of the user",
-          },
-          {
-            ["name"] = "verified",
-            ["title"] = "Verified",
-            ["type"] = "`$BOOLEAN`",
-          },
-          {
-            ["name"] = "webauthn_credentials",
-            ["title"] = "Webauthn Credentials",
-            ["type"] = "`$ARRAY`",
-            ["short"] = "A list of WebAuthn credentials",
-          },
-        },
-        ["id"] = {
-          ["field"] = "id",
-          ["name"] = "id",
-        },
-        ["name"] = "user",
-        ["op"] = {
-          ["create"] = {
-            ["input"] = "data",
-            ["name"] = "create",
-            ["points"] = {
-              {
-                ["kind"] = "http",
-                ["method"] = "POST",
-                ["orig"] = "/user",
-                ["segments"] = {
-                  {
-                    ["lit"] = "user",
-                  },
-                },
-                ["parts"] = {
-                  "user",
-                },
-                ["rename"] = {},
-                ["transform"] = {
-                  ["req"] = "`reqdata`",
-                  ["res"] = "`body`",
-                },
-                ["args"] = {},
-                ["select"] = {},
-                ["response"] = {
-                  ["kind"] = "json",
-                  ["media"] = "application/json",
-                },
-              },
-              {
-                ["kind"] = "http",
-                ["method"] = "POST",
-                ["orig"] = "/users",
-                ["segments"] = {
-                  {
-                    ["lit"] = "users",
-                  },
-                },
-                ["parts"] = {
-                  "users",
-                },
-                ["rename"] = {},
-                ["transform"] = {
-                  ["req"] = "`reqdata`",
-                  ["res"] = "`body`",
-                },
-                ["args"] = {},
-                ["select"] = {},
-                ["response"] = {
-                  ["kind"] = "json",
-                  ["media"] = "application/json",
-                },
-              },
-            },
-          },
-          ["load"] = {
-            ["input"] = "data",
-            ["name"] = "load",
-            ["points"] = {
-              {
-                ["kind"] = "http",
-                ["method"] = "GET",
-                ["orig"] = "/users/{id}",
-                ["segments"] = {
-                  {
-                    ["lit"] = "users",
-                  },
-                  {
-                    ["var"] = "id",
-                  },
-                },
-                ["parts"] = {
-                  "users",
-                  "{id}",
-                },
-                ["rename"] = {},
-                ["transform"] = {
-                  ["req"] = "`reqdata`",
-                  ["res"] = "`body`",
-                },
-                ["args"] = {
-                  ["params"] = {
-                    {
-                      ["name"] = "id",
-                      ["orig"] = "id",
-                      ["type"] = "`$STRING`",
-                      ["kind"] = "param",
-                      ["reqd"] = true,
-                      ["example"] = "c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c",
-                    },
-                  },
-                },
-                ["select"] = {
-                  ["exist"] = {
-                    "id",
-                  },
-                },
-                ["response"] = {
-                  ["kind"] = "json",
-                  ["media"] = "application/json",
-                },
-              },
-            },
-          },
-          ["remove"] = {
-            ["input"] = "data",
-            ["name"] = "remove",
-            ["points"] = {
-              {
-                ["kind"] = "http",
-                ["method"] = "DELETE",
-                ["orig"] = "/user",
-                ["segments"] = {
-                  {
-                    ["lit"] = "user",
-                  },
-                },
-                ["parts"] = {
-                  "user",
-                },
-                ["rename"] = {},
-                ["transform"] = {
-                  ["req"] = "`reqdata`",
-                  ["res"] = "`body`",
-                },
-                ["args"] = {},
-                ["select"] = {},
               },
             },
           },
@@ -1761,363 +833,6 @@ local function make_config()
                 },
                 ["parts"] = {
                   "me",
-                },
-                ["rename"] = {},
-                ["transform"] = {
-                  ["req"] = "`reqdata`",
-                  ["res"] = "`body`",
-                },
-                ["args"] = {},
-                ["select"] = {},
-                ["response"] = {
-                  ["kind"] = "json",
-                  ["media"] = "application/json",
-                },
-              },
-            },
-          },
-        },
-        ["relations"] = {
-          ["ancestors"] = {},
-        },
-      },
-      ["web_authn"] = {
-        ["fields"] = {
-          {
-            ["name"] = "aaguid",
-            ["title"] = "Aaguid",
-            ["type"] = "`$STRING`",
-            ["format"] = "uuid",
-          },
-          {
-            ["name"] = "attestation_type",
-            ["title"] = "Attestation Type",
-            ["type"] = "`$STRING`",
-          },
-          {
-            ["name"] = "backup_eligible",
-            ["title"] = "Backup Eligible",
-            ["type"] = "`$BOOLEAN`",
-          },
-          {
-            ["name"] = "backup_state",
-            ["title"] = "Backup State",
-            ["type"] = "`$BOOLEAN`",
-          },
-          {
-            ["name"] = "created_at",
-            ["title"] = "Created At",
-            ["type"] = "`$STRING`",
-            ["format"] = "date-time",
-          },
-          {
-            ["name"] = "credential_id",
-            ["title"] = "Credential Id",
-            ["type"] = "`$STRING`",
-            ["short"] = "The ID of the created credential",
-            ["format"] = "base64",
-          },
-          {
-            ["name"] = "id",
-            ["title"] = "Id",
-            ["type"] = "`$STRING`",
-            ["format"] = "uuid",
-          },
-          {
-            ["name"] = "last_used_at",
-            ["title"] = "Last Used At",
-            ["type"] = "`$STRING`",
-            ["format"] = "date-time",
-          },
-          {
-            ["name"] = "mfa_only",
-            ["title"] = "Mfa Only",
-            ["type"] = "`$BOOLEAN`",
-          },
-          {
-            ["name"] = "name",
-            ["title"] = "Name",
-            ["type"] = "`$STRING`",
-            ["short"] = "A new credential name.",
-          },
-          {
-            ["name"] = "publickey",
-            ["title"] = "Publickey",
-            ["type"] = "`$STRING`",
-          },
-          {
-            ["name"] = "rawId",
-            ["title"] = "Raw Id",
-            ["type"] = "`$STRING`",
-          },
-          {
-            ["name"] = "response",
-            ["title"] = "Response",
-            ["type"] = "`$OBJECT`",
-          },
-          {
-            ["name"] = "transports",
-            ["title"] = "Transports",
-            ["type"] = "`$ARRAY`",
-          },
-          {
-            ["name"] = "type",
-            ["title"] = "Type",
-            ["type"] = "`$STRING`",
-          },
-          {
-            ["name"] = "user_id",
-            ["title"] = "User Id",
-            ["type"] = "`$STRING`",
-            ["short"] = "The ID of the user on whose behalf a credential was created",
-            ["format"] = "uuid4",
-          },
-        },
-        ["id"] = {
-          ["field"] = "id",
-          ["name"] = "id",
-        },
-        ["name"] = "web_authn",
-        ["op"] = {
-          ["create"] = {
-            ["input"] = "data",
-            ["name"] = "create",
-            ["points"] = {
-              {
-                ["kind"] = "http",
-                ["method"] = "POST",
-                ["orig"] = "/webauthn/registration/finalize",
-                ["segments"] = {
-                  {
-                    ["lit"] = "webauthn",
-                  },
-                  {
-                    ["lit"] = "registration",
-                  },
-                  {
-                    ["lit"] = "finalize",
-                  },
-                },
-                ["parts"] = {
-                  "webauthn",
-                  "registration",
-                  "finalize",
-                },
-                ["rename"] = {},
-                ["transform"] = {
-                  ["req"] = "`reqdata`",
-                  ["res"] = "`body`",
-                },
-                ["args"] = {},
-                ["select"] = {},
-                ["response"] = {
-                  ["kind"] = "json",
-                  ["media"] = "application/json",
-                },
-              },
-            },
-          },
-          ["list"] = {
-            ["input"] = "data",
-            ["name"] = "list",
-            ["points"] = {
-              {
-                ["kind"] = "http",
-                ["method"] = "GET",
-                ["orig"] = "/webauthn/credentials",
-                ["segments"] = {
-                  {
-                    ["lit"] = "webauthn",
-                  },
-                  {
-                    ["lit"] = "credentials",
-                  },
-                },
-                ["parts"] = {
-                  "webauthn",
-                  "credentials",
-                },
-                ["rename"] = {},
-                ["transform"] = {
-                  ["req"] = "`reqdata`",
-                  ["res"] = "`body`",
-                },
-                ["args"] = {},
-                ["select"] = {},
-                ["response"] = {
-                  ["kind"] = "json",
-                  ["media"] = "application/json",
-                },
-              },
-            },
-          },
-          ["remove"] = {
-            ["input"] = "data",
-            ["name"] = "remove",
-            ["points"] = {
-              {
-                ["kind"] = "http",
-                ["method"] = "DELETE",
-                ["orig"] = "/webauthn/credentials/{id}",
-                ["segments"] = {
-                  {
-                    ["lit"] = "webauthn",
-                  },
-                  {
-                    ["lit"] = "credentials",
-                  },
-                  {
-                    ["var"] = "id",
-                  },
-                },
-                ["parts"] = {
-                  "webauthn",
-                  "credentials",
-                  "{id}",
-                },
-                ["rename"] = {},
-                ["transform"] = {
-                  ["req"] = "`reqdata`",
-                  ["res"] = "`body`",
-                },
-                ["args"] = {
-                  ["params"] = {
-                    {
-                      ["name"] = "id",
-                      ["orig"] = "id",
-                      ["type"] = "`$STRING`",
-                      ["kind"] = "param",
-                      ["reqd"] = true,
-                      ["example"] = "c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c",
-                    },
-                  },
-                },
-                ["select"] = {
-                  ["exist"] = {
-                    "id",
-                  },
-                },
-              },
-            },
-          },
-          ["update"] = {
-            ["input"] = "data",
-            ["name"] = "update",
-            ["points"] = {
-              {
-                ["kind"] = "http",
-                ["method"] = "PATCH",
-                ["orig"] = "/webauthn/credentials/{id}",
-                ["segments"] = {
-                  {
-                    ["lit"] = "webauthn",
-                  },
-                  {
-                    ["lit"] = "credentials",
-                  },
-                  {
-                    ["var"] = "id",
-                  },
-                },
-                ["parts"] = {
-                  "webauthn",
-                  "credentials",
-                  "{id}",
-                },
-                ["rename"] = {},
-                ["transform"] = {
-                  ["req"] = "`reqdata`",
-                  ["res"] = "`body`",
-                },
-                ["args"] = {
-                  ["params"] = {
-                    {
-                      ["name"] = "id",
-                      ["orig"] = "id",
-                      ["type"] = "`$STRING`",
-                      ["kind"] = "param",
-                      ["reqd"] = true,
-                      ["example"] = "c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c",
-                    },
-                  },
-                },
-                ["select"] = {
-                  ["exist"] = {
-                    "id",
-                  },
-                },
-              },
-            },
-          },
-        },
-        ["relations"] = {
-          ["ancestors"] = {},
-        },
-      },
-      ["webauthn_login"] = {
-        ["fields"] = {
-          {
-            ["name"] = "credential_id",
-            ["title"] = "Credential Id",
-            ["type"] = "`$STRING`",
-            ["format"] = "base64url",
-          },
-          {
-            ["name"] = "id",
-            ["title"] = "Id",
-            ["type"] = "`$STRING`",
-          },
-          {
-            ["name"] = "rawId",
-            ["title"] = "Raw Id",
-            ["type"] = "`$STRING`",
-          },
-          {
-            ["name"] = "response",
-            ["title"] = "Response",
-            ["type"] = "`$OBJECT`",
-          },
-          {
-            ["name"] = "type",
-            ["title"] = "Type",
-            ["type"] = "`$STRING`",
-          },
-          {
-            ["name"] = "user_id",
-            ["title"] = "User Id",
-            ["type"] = "`$STRING`",
-            ["format"] = "uuid4",
-          },
-        },
-        ["id"] = {
-          ["field"] = "id",
-          ["name"] = "id",
-        },
-        ["name"] = "webauthn_login",
-        ["op"] = {
-          ["create"] = {
-            ["input"] = "data",
-            ["name"] = "create",
-            ["points"] = {
-              {
-                ["kind"] = "http",
-                ["method"] = "POST",
-                ["orig"] = "/webauthn/login/finalize",
-                ["segments"] = {
-                  {
-                    ["lit"] = "webauthn",
-                  },
-                  {
-                    ["lit"] = "login",
-                  },
-                  {
-                    ["lit"] = "finalize",
-                  },
-                },
-                ["parts"] = {
-                  "webauthn",
-                  "login",
-                  "finalize",
                 },
                 ["rename"] = {},
                 ["transform"] = {

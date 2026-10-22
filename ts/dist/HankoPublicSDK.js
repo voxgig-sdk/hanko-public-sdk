@@ -1,23 +1,47 @@
 "use strict";
 // HankoPublic Ts SDK
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SDK = exports.HankoPublicSDK = exports.HankoPublicEntityBase = exports.BaseFeature = exports.config = exports.stdutil = void 0;
-const CredentialCreationOptionEntity_1 = require("./entity/CredentialCreationOptionEntity");
-const CredentialRequestOptionEntity_1 = require("./entity/CredentialRequestOptionEntity");
-const EmailEntity_1 = require("./entity/EmailEntity");
-const HankoConfigurationEntity_1 = require("./entity/HankoConfigurationEntity");
+exports.SDK = exports.HankoPublicSDK = exports.HankoPublicEntityBase = exports.BaseFeature = exports.sekreto = exports.config = exports.stdutil = void 0;
 const JsonWebKeyEntity_1 = require("./entity/JsonWebKeyEntity");
-const PasscodeEntity_1 = require("./entity/PasscodeEntity");
-const PasswordEntity_1 = require("./entity/PasswordEntity");
+const OrganizationManagementEntity_1 = require("./entity/OrganizationManagementEntity");
 const SamlEntity_1 = require("./entity/SamlEntity");
 const SessionManagementEntity_1 = require("./entity/SessionManagementEntity");
 const StatusEntity_1 = require("./entity/StatusEntity");
 const ThirdPartyEntity_1 = require("./entity/ThirdPartyEntity");
-const TokenEntity_1 = require("./entity/TokenEntity");
-const UserEntity_1 = require("./entity/UserEntity");
 const UserManagementEntity_1 = require("./entity/UserManagementEntity");
-const WebAuthnEntity_1 = require("./entity/WebAuthnEntity");
-const WebauthnLoginEntity_1 = require("./entity/WebauthnLoginEntity");
 const node_util_1 = require("node:util");
 const Config_1 = require("./Config");
 Object.defineProperty(exports, "config", { enumerable: true, get: function () { return Config_1.config; } });
@@ -29,6 +53,8 @@ const MakeRequestUtility_1 = require("./utility/MakeRequestUtility");
 const PrepareMethodUtility_1 = require("./utility/PrepareMethodUtility");
 const BaseFeature_1 = require("./feature/base/BaseFeature");
 Object.defineProperty(exports, "BaseFeature", { enumerable: true, get: function () { return BaseFeature_1.BaseFeature; } });
+const sekreto = __importStar(require("./feature/secrets/sekreto"));
+exports.sekreto = sekreto;
 const stdutil = new Utility_1.Utility();
 exports.stdutil = stdutil;
 class HankoPublicSDK {
@@ -37,6 +63,7 @@ class HankoPublicSDK {
     _utility = new Utility_1.Utility();
     _features;
     _rootctx;
+    _secrets;
     constructor(options) {
         this._rootctx = this._utility.makeContext({
             client: this,
@@ -96,6 +123,9 @@ class HankoPublicSDK {
     utility() {
         return this._utility.struct.clone(this._utility);
     }
+    secrets() {
+        return this._secrets && this._secrets.sekreto();
+    }
     async prepare(fetchargs) {
         const utility = this._utility;
         const struct = utility.struct;
@@ -129,6 +159,14 @@ class HankoPublicSDK {
             const uheaders = fetchargs.headers;
             for (let key in uheaders) {
                 spec.headers[key] = uheaders[key];
+            }
+        }
+        if (null != this._secrets) {
+            try {
+                await this._secrets.resolve();
+            }
+            catch (err) {
+                return err instanceof Error ? err : new Error(String(err));
             }
         }
         const authResult = prepareAuth(ctx);
@@ -253,34 +291,6 @@ class HankoPublicSDK {
         }
         return res;
     }
-    // Entity access: `client.CredentialCreationOption().list()` / `client.CredentialCreationOption().load({ id })`.
-    // The argument is the entity OPTIONS object (passed to the entity
-    // constructor as entopts), not initial entity data.
-    CredentialCreationOption(entopts) {
-        const self = this;
-        return new CredentialCreationOptionEntity_1.CredentialCreationOptionEntity(self, entopts);
-    }
-    // Entity access: `client.CredentialRequestOption().list()` / `client.CredentialRequestOption().load({ id })`.
-    // The argument is the entity OPTIONS object (passed to the entity
-    // constructor as entopts), not initial entity data.
-    CredentialRequestOption(entopts) {
-        const self = this;
-        return new CredentialRequestOptionEntity_1.CredentialRequestOptionEntity(self, entopts);
-    }
-    // Entity access: `client.Email().list()` / `client.Email().load({ id })`.
-    // The argument is the entity OPTIONS object (passed to the entity
-    // constructor as entopts), not initial entity data.
-    Email(entopts) {
-        const self = this;
-        return new EmailEntity_1.EmailEntity(self, entopts);
-    }
-    // Entity access: `client.HankoConfiguration().list()` / `client.HankoConfiguration().load({ id })`.
-    // The argument is the entity OPTIONS object (passed to the entity
-    // constructor as entopts), not initial entity data.
-    HankoConfiguration(entopts) {
-        const self = this;
-        return new HankoConfigurationEntity_1.HankoConfigurationEntity(self, entopts);
-    }
     // Entity access: `client.JsonWebKey().list()` / `client.JsonWebKey().load({ id })`.
     // The argument is the entity OPTIONS object (passed to the entity
     // constructor as entopts), not initial entity data.
@@ -288,19 +298,12 @@ class HankoPublicSDK {
         const self = this;
         return new JsonWebKeyEntity_1.JsonWebKeyEntity(self, entopts);
     }
-    // Entity access: `client.Passcode().list()` / `client.Passcode().load({ id })`.
+    // Entity access: `client.OrganizationManagement().list()` / `client.OrganizationManagement().load({ id })`.
     // The argument is the entity OPTIONS object (passed to the entity
     // constructor as entopts), not initial entity data.
-    Passcode(entopts) {
+    OrganizationManagement(entopts) {
         const self = this;
-        return new PasscodeEntity_1.PasscodeEntity(self, entopts);
-    }
-    // Entity access: `client.Password().list()` / `client.Password().load({ id })`.
-    // The argument is the entity OPTIONS object (passed to the entity
-    // constructor as entopts), not initial entity data.
-    Password(entopts) {
-        const self = this;
-        return new PasswordEntity_1.PasswordEntity(self, entopts);
+        return new OrganizationManagementEntity_1.OrganizationManagementEntity(self, entopts);
     }
     // Entity access: `client.Saml().list()` / `client.Saml().load({ id })`.
     // The argument is the entity OPTIONS object (passed to the entity
@@ -330,40 +333,12 @@ class HankoPublicSDK {
         const self = this;
         return new ThirdPartyEntity_1.ThirdPartyEntity(self, entopts);
     }
-    // Entity access: `client.Token().list()` / `client.Token().load({ id })`.
-    // The argument is the entity OPTIONS object (passed to the entity
-    // constructor as entopts), not initial entity data.
-    Token(entopts) {
-        const self = this;
-        return new TokenEntity_1.TokenEntity(self, entopts);
-    }
-    // Entity access: `client.User().list()` / `client.User().load({ id })`.
-    // The argument is the entity OPTIONS object (passed to the entity
-    // constructor as entopts), not initial entity data.
-    User(entopts) {
-        const self = this;
-        return new UserEntity_1.UserEntity(self, entopts);
-    }
     // Entity access: `client.UserManagement().list()` / `client.UserManagement().load({ id })`.
     // The argument is the entity OPTIONS object (passed to the entity
     // constructor as entopts), not initial entity data.
     UserManagement(entopts) {
         const self = this;
         return new UserManagementEntity_1.UserManagementEntity(self, entopts);
-    }
-    // Entity access: `client.WebAuthn().list()` / `client.WebAuthn().load({ id })`.
-    // The argument is the entity OPTIONS object (passed to the entity
-    // constructor as entopts), not initial entity data.
-    WebAuthn(entopts) {
-        const self = this;
-        return new WebAuthnEntity_1.WebAuthnEntity(self, entopts);
-    }
-    // Entity access: `client.WebauthnLogin().list()` / `client.WebauthnLogin().load({ id })`.
-    // The argument is the entity OPTIONS object (passed to the entity
-    // constructor as entopts), not initial entity data.
-    WebauthnLogin(entopts) {
-        const self = this;
-        return new WebauthnLoginEntity_1.WebauthnLoginEntity(self, entopts);
     }
     static test(testoptsarg, sdkoptsarg) {
         const struct = stdutil.struct;

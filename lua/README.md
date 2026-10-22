@@ -4,7 +4,7 @@
 
 The Lua SDK for the HankoPublic API — an entity-oriented client using Lua conventions.
 
-It exposes the API as capitalised, semantic **Entities** — e.g. `client:CredentialCreationOption()` — each with the same small set of operations (`list`, `load`, `create`, `update`, `remove`) instead of raw URL paths and query strings. You call meaning, not endpoints, which keeps the cognitive load low.
+It exposes the API as capitalised, semantic **Entities** — e.g. `client:JsonWebKey()` — each with the same small set of operations (`list`, `load`, `create`) instead of raw URL paths and query strings. You call meaning, not endpoints, which keeps the cognitive load low.
 
 > Other languages, the CLI, and MCP server live alongside this one — see
 > the [top-level README](../README.md).
@@ -23,7 +23,7 @@ export LUA_PATH="path/to/lua/?.lua;path/to/lua/?/init.lua;;"
 ## Tutorial: your first API call
 
 This tutorial walks through creating a client, listing entities, and
-loading a specific record. The client sends the API key as the `hanko` cookie.
+loading a specific record.
 
 ### 1. Create a client
 
@@ -35,13 +35,19 @@ local client = sdk.new({
 })
 ```
 
-### 4. Create, update, and remove
+### 2. List jsonwebkey records
+
+Entity operations return `(value, err)`. For `list`, `value` is an
+array of entities, one per record — iterate it directly (there is no
+wrapper), and read each record with `data_get()`.
 
 ```lua
--- Create
-local created, err = client:CredentialCreationOption():create({ attestation = "example_attestation", authenticatorSelection = {} })
+local jsonwebkeys, err = client:JsonWebKey():list()
 if err then error(err) end
 
+for _, item in ipairs(jsonwebkeys) do
+  for k, val in pairs(item:data_get()) do print(k, val) end
+end
 ```
 
 
@@ -190,22 +196,13 @@ Creates a test-mode client with mock transport. Both arguments may be `nil`.
 | `get_utility` | `() -> Utility` | Copy of the SDK utility object. |
 | `prepare` | `(fetchargs) -> table, err` | Build an HTTP request definition without sending. |
 | `direct` | `(fetchargs) -> table, err` | Build and send an HTTP request. |
-| `CredentialCreationOption` | `(data) -> CredentialCreationOptionEntity` | Create a CredentialCreationOption entity instance. |
-| `CredentialRequestOption` | `(data) -> CredentialRequestOptionEntity` | Create a CredentialRequestOption entity instance. |
-| `Email` | `(data) -> EmailEntity` | Create an Email entity instance. |
-| `HankoConfiguration` | `(data) -> HankoConfigurationEntity` | Create a HankoConfiguration entity instance. |
 | `JsonWebKey` | `(data) -> JsonWebKeyEntity` | Create a JsonWebKey entity instance. |
-| `Passcode` | `(data) -> PasscodeEntity` | Create a Passcode entity instance. |
-| `Password` | `(data) -> PasswordEntity` | Create a Password entity instance. |
+| `OrganizationManagement` | `(data) -> OrganizationManagementEntity` | Create an OrganizationManagement entity instance. |
 | `Saml` | `(data) -> SamlEntity` | Create a Saml entity instance. |
 | `SessionManagement` | `(data) -> SessionManagementEntity` | Create a SessionManagement entity instance. |
 | `Status` | `(data) -> StatusEntity` | Create a Status entity instance. |
 | `ThirdParty` | `(data) -> ThirdPartyEntity` | Create a ThirdParty entity instance. |
-| `Token` | `(data) -> TokenEntity` | Create a Token entity instance. |
-| `User` | `(data) -> UserEntity` | Create an User entity instance. |
 | `UserManagement` | `(data) -> UserManagementEntity` | Create an UserManagement entity instance. |
-| `WebAuthn` | `(data) -> WebAuthnEntity` | Create a WebAuthn entity instance. |
-| `WebauthnLogin` | `(data) -> WebauthnLoginEntity` | Create a WebauthnLogin entity instance. |
 
 ### Entity interface
 
@@ -216,8 +213,6 @@ All entities share the same interface.
 | `load` | `(reqmatch, ctrl) -> any, err` | Load a single entity by match criteria, and return it. |
 | `list` | `(reqmatch, ctrl) -> any, err` | List entities matching the criteria, one per record. |
 | `create` | `(reqdata, ctrl) -> any, err` | Create a new entity, and return it. |
-| `update` | `(reqdata, ctrl) -> any, err` | Update an existing entity, and return it. |
-| `remove` | `(reqmatch, ctrl) -> any, err` | Remove an entity, and return it marked as deleted. |
 | `data_get` | `() -> table` | Get entity data. |
 | `data_set` | `(data)` | Set entity data. |
 | `match_get` | `() -> table` | Get entity match criteria. |
@@ -232,77 +227,19 @@ itself — there is no wrapper:
 
 | Operation | `value` |
 | --- | --- |
-| `load` / `create` / `update` / `remove` | the entity, whose `data_get()` reads its record (a `table`) |
+| `load` / `create` | the entity, whose `data_get()` reads its record (a `table`) |
 | `list` | an array (`table`) of entities, one per record |
 
 Check `err` first (it is non-`nil` on failure), then use `value`:
 
-    local hanko_configuration, err = client:HankoConfiguration():load()
+    local saml, err = client:Saml():load({ domain = "example" })
     if err then error(err) end
-    -- hanko_configuration is the loaded entity
+    -- saml is the loaded entity
 
 Only `direct()` returns a response envelope — a `table` with `ok`,
 `status`, `headers`, and `data` keys.
 
 ### Entities
-
-#### CredentialCreationOption
-
-| Field | Description |
-| --- | --- |
-| `attestation` |  |
-| `authenticatorSelection` |  |
-| `challenge` |  |
-| `pubKeyCredParams` |  |
-| `rp` |  |
-| `timeout` |  |
-| `user` |  |
-
-Operations: Create.
-
-API path: `/webauthn/registration/initialize`
-
-#### CredentialRequestOption
-
-| Field | Description |
-| --- | --- |
-| `allowCredentials` |  |
-| `challenge` |  |
-| `rpId` |  |
-| `timeout` |  |
-| `userVerification` |  |
-| `user_id` | The ID of the user on whose behalf WebAuthn login should be performed |
-
-Operations: Create.
-
-API path: `/webauthn/login/initialize`
-
-#### Email
-
-| Field | Description |
-| --- | --- |
-| `address` | The email address |
-| `id` | The ID of the email address |
-| `identities` |  |
-| `identity` |  |
-| `is_primary` | Indicates it's the primary email address. |
-| `is_verified` | Indicated the email has been verified. |
-
-Operations: Create, List, Remove.
-
-API path: `/emails/{id}/set_primary`
-
-#### HankoConfiguration
-
-| Field | Description |
-| --- | --- |
-| `account` | Controls the behavior regarding user account. |
-| `emails` | Controls the behavior regarding email addresses. |
-| `password` | Configuration options concerning passwords |
-
-Operations: Load.
-
-API path: `/.well-known/config`
 
 #### JsonWebKey
 
@@ -319,31 +256,17 @@ Operations: List.
 
 API path: `/.well-known/jwks.json`
 
-#### Passcode
+#### OrganizationManagement
 
 | Field | Description |
 | --- | --- |
-| `code` | The actual passcode from the email sent to the user during initialization, a string of 6 decimal digits |
-| `created_at` | Time of creation of the passcode |
-| `email_id` | The ID of the email address |
-| `id` | The ID of the passcode |
-| `ttl` | Lifespan of a passcode in seconds |
-| `user_id` | The ID of the user |
+| `has_role` |  |
+| `organization_id` | The ID of the organization to check |
+| `roles` | IDs or slugs of roles to check for. |
 
 Operations: Create.
 
-API path: `/passcode/login/finalize`
-
-#### Password
-
-| Field | Description |
-| --- | --- |
-| `password` | The actual password, its `minLength` defaults to 8 but can be [configured](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config) through the `password.min_password_length` option. |
-| `user_id` | The ID of the user to create/set a password for |
-
-Operations: Create, Update.
-
-API path: `/password/login`
+API path: `/organizations/roles/check`
 
 #### Saml
 
@@ -360,12 +283,16 @@ API path: `/saml/callback`
 | --- | --- |
 | `claims` | The claims extracted from a JWT. |
 | `expiration_time` | Date-time indicating the expiration of the session. |
+| `id` | The ID of the organization |
 | `idle_expires_at` | Timestamp (in UTC) indicating when the session will expire due to inactivity, assuming no further activity occurs before this time. |
 | `is_valid` | Indicates whether the session is valid or not |
+| `name` | The name of the organization |
+| `organizations` | The organizations the user belongs to, and the role slugs they hold within each. |
+| `roles` | The slugs of the roles the user holds within this organization |
 | `session_token` | The session token (JWT) to validate |
 | `user_id` | The ID of the user the session is associated with. |
 
-Operations: Create, Load.
+Operations: Create, List.
 
 API path: `/sessions/validate`
 
@@ -385,46 +312,7 @@ API path: `/`
 
 Operations: Load.
 
-API path: `/thirdparty/auth`
-
-#### Token
-
-| Field | Description |
-| --- | --- |
-| `user_id` | The ID of the user on whose behalf the token was exchanged. |
-| `value` |  |
-
-Operations: Create.
-
-API path: `/token`
-
-#### User
-
-| Field | Description |
-| --- | --- |
-| `created_at` | Time of creation of the the user |
-| `email` | The email address of the user |
-| `email_id` | The ID of the newly created email address |
-| `emails` |  |
-| `family_name` |  |
-| `given_name` |  |
-| `has_webauthn_credential` |  |
-| `id` | The ID of the user. |
-| `metadata` | The public and unsafe metadata of a user |
-| `mfa_config` |  |
-| `name` |  |
-| `passkeys` |  |
-| `picture` |  |
-| `security_keys` |  |
-| `updated_at` | Time of last update of the user |
-| `user_id` | The ID of the user |
-| `username` | The username of the user |
-| `verified` |  |
-| `webauthn_credentials` | A list of WebAuthn credentials |
-
-Operations: Create, Load, Remove.
-
-API path: `/user`
+API path: `/thirdparty/callback`
 
 #### UserManagement
 
@@ -449,171 +337,9 @@ Operations: Create, List.
 
 API path: `/logout`
 
-#### WebAuthn
-
-| Field | Description |
-| --- | --- |
-| `aaguid` |  |
-| `attestation_type` |  |
-| `backup_eligible` |  |
-| `backup_state` |  |
-| `created_at` |  |
-| `credential_id` | The ID of the created credential |
-| `id` |  |
-| `last_used_at` |  |
-| `mfa_only` |  |
-| `name` | A new credential name. |
-| `publickey` |  |
-| `rawId` |  |
-| `response` |  |
-| `transports` |  |
-| `type` |  |
-| `user_id` | The ID of the user on whose behalf a credential was created |
-
-Operations: Create, List, Remove, Update.
-
-API path: `/webauthn/registration/finalize`
-
-#### WebauthnLogin
-
-| Field | Description |
-| --- | --- |
-| `credential_id` |  |
-| `id` |  |
-| `rawId` |  |
-| `response` |  |
-| `type` |  |
-| `user_id` |  |
-
-Operations: Create.
-
-API path: `/webauthn/login/finalize`
-
 
 
 ## Entities
-
-
-### CredentialCreationOption
-
-Create an instance: `local credential_creation_option = client:CredentialCreationOption(nil)`
-
-#### Operations
-
-| Method | Description |
-| --- | --- |
-| `create(data)` | Create a new entity with the given data. |
-
-#### Fields
-
-| Field | Type | Description |
-| --- | --- | --- |
-| `attestation` | `string` |  |
-| `authenticatorSelection` | `table` |  |
-| `challenge` | `string` |  |
-| `pubKeyCredParams` | `table` |  |
-| `rp` | `table` |  |
-| `timeout` | `number` |  |
-| `user` | `table` |  |
-
-#### Example: Create
-
-```lua
-local credential_creation_option, err = client:CredentialCreationOption():create({
-})
-```
-
-
-### CredentialRequestOption
-
-Create an instance: `local credential_request_option = client:CredentialRequestOption(nil)`
-
-#### Operations
-
-| Method | Description |
-| --- | --- |
-| `create(data)` | Create a new entity with the given data. |
-
-#### Fields
-
-| Field | Type | Description |
-| --- | --- | --- |
-| `allowCredentials` | `table` |  |
-| `challenge` | `string` |  |
-| `rpId` | `string` |  |
-| `timeout` | `number` |  |
-| `userVerification` | `string` |  |
-| `user_id` | `string` | The ID of the user on whose behalf WebAuthn login should be performed |
-
-#### Example: Create
-
-```lua
-local credential_request_option, err = client:CredentialRequestOption():create({
-})
-```
-
-
-### Email
-
-Create an instance: `local email = client:Email(nil)`
-
-#### Operations
-
-| Method | Description |
-| --- | --- |
-| `create(data)` | Create a new entity with the given data. |
-| `list(match)` | List entities matching the criteria. |
-| `remove(match)` | Remove the matching entity. |
-
-#### Fields
-
-| Field | Type | Description |
-| --- | --- | --- |
-| `address` | `string` | The email address |
-| `id` | `string` | The ID of the email address |
-| `identities` | `any` |  |
-| `identity` | `any` |  |
-| `is_primary` | `boolean` | Indicates it's the primary email address. |
-| `is_verified` | `boolean` | Indicated the email has been verified. |
-
-#### Example: List
-
-```lua
-local emails, err = client:Email():list()
-```
-
-#### Example: Create
-
-```lua
-local email, err = client:Email():create({
-  address = "example_address", -- string
-})
-```
-
-
-### HankoConfiguration
-
-Create an instance: `local hanko_configuration = client:HankoConfiguration(nil)`
-
-#### Operations
-
-| Method | Description |
-| --- | --- |
-| `load(match)` | Load a single entity by match criteria. |
-
-#### Fields
-
-| Field | Type | Description |
-| --- | --- | --- |
-| `account` | `table` | Controls the behavior regarding user account. |
-| `emails` | `table` | Controls the behavior regarding email addresses. |
-| `password` | `table` | Configuration options concerning passwords |
-
-#### Example: Load
-
-```lua
-local hanko_configuration, err = client:HankoConfiguration():load()
-```
 
 
 ### JsonWebKey
@@ -644,9 +370,9 @@ local json_web_keys, err = client:JsonWebKey():list()
 ```
 
 
-### Passcode
+### OrganizationManagement
 
-Create an instance: `local passcode = client:Passcode(nil)`
+Create an instance: `local organization_management = client:OrganizationManagement(nil)`
 
 #### Operations
 
@@ -658,46 +384,16 @@ Create an instance: `local passcode = client:Passcode(nil)`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `code` | `string` | The actual passcode from the email sent to the user during initialization, a string of 6 decimal digits |
-| `created_at` | `string` | Time of creation of the passcode |
-| `email_id` | `string` | The ID of the email address |
-| `id` | `string` | The ID of the passcode |
-| `ttl` | `number` | Lifespan of a passcode in seconds |
-| `user_id` | `string` | The ID of the user |
+| `has_role` | `boolean` |  |
+| `organization_id` | `string` | The ID of the organization to check |
+| `roles` | `table` | IDs or slugs of roles to check for. |
 
 #### Example: Create
 
 ```lua
-local passcode, err = client:Passcode():create({
-  user_id = "example_user_id", -- string
-})
-```
-
-
-### Password
-
-Create an instance: `local password = client:Password(nil)`
-
-#### Operations
-
-| Method | Description |
-| --- | --- |
-| `create(data)` | Create a new entity with the given data. |
-| `update(data)` | Update an existing entity. |
-
-#### Fields
-
-| Field | Type | Description |
-| --- | --- | --- |
-| `password` | `string` | The actual password, its `minLength` defaults to 8 but can be [configured](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config) through the `password.min_password_length` option. |
-| `user_id` | `string` | The ID of the user to create/set a password for |
-
-#### Example: Create
-
-```lua
-local password, err = client:Password():create({
-  password = "example_password", -- string
-  user_id = "example_user_id", -- string
+local organization_management, err = client:OrganizationManagement():create({
+  organization_id = "example_organization_id", -- string
+  roles = {}, -- table
 })
 ```
 
@@ -712,6 +408,12 @@ Create an instance: `local saml = client:Saml(nil)`
 | --- | --- |
 | `create(data)` | Create a new entity with the given data. |
 | `load(match)` | Load a single entity by match criteria. |
+
+#### Example: Load
+
+```lua
+local saml, err = client:Saml():load({ domain = "domain" })
+```
 
 #### Example: Create
 
@@ -730,7 +432,7 @@ Create an instance: `local session_management = client:SessionManagement(nil)`
 | Method | Description |
 | --- | --- |
 | `create(data)` | Create a new entity with the given data. |
-| `load(match)` | Load a single entity by match criteria. |
+| `list(match)` | List entities matching the criteria. |
 
 #### Fields
 
@@ -738,22 +440,25 @@ Create an instance: `local session_management = client:SessionManagement(nil)`
 | --- | --- | --- |
 | `claims` | `table` | The claims extracted from a JWT. |
 | `expiration_time` | `string` | Date-time indicating the expiration of the session. |
+| `id` | `string` | The ID of the organization |
 | `idle_expires_at` | `string` | Timestamp (in UTC) indicating when the session will expire due to inactivity, assuming no further activity occurs before this time. |
 | `is_valid` | `boolean` | Indicates whether the session is valid or not |
+| `name` | `string` | The name of the organization |
+| `organizations` | `table` | The organizations the user belongs to, and the role slugs they hold within each. |
+| `roles` | `table` | The slugs of the roles the user holds within this organization |
 | `session_token` | `string` | The session token (JWT) to validate |
 | `user_id` | `string` | The ID of the user the session is associated with. |
 
-#### Example: Load
+#### Example: List
 
 ```lua
-local session_management, err = client:SessionManagement():load()
+local session_managements, err = client:SessionManagement():list()
 ```
 
 #### Example: Create
 
 ```lua
 local session_management, err = client:SessionManagement():create({
-  claims = {}, -- table
   session_token = "example_session_token", -- string
 })
 ```
@@ -789,82 +494,7 @@ Create an instance: `local third_party = client:ThirdParty(nil)`
 #### Example: Load
 
 ```lua
-local third_party, err = client:ThirdParty():load({ provider = "provider", redirect_to = "redirect_to" })
-```
-
-
-### Token
-
-Create an instance: `local token = client:Token(nil)`
-
-#### Operations
-
-| Method | Description |
-| --- | --- |
-| `create(data)` | Create a new entity with the given data. |
-
-#### Fields
-
-| Field | Type | Description |
-| --- | --- | --- |
-| `user_id` | `string` | The ID of the user on whose behalf the token was exchanged. |
-| `value` | `string` |  |
-
-#### Example: Create
-
-```lua
-local token, err = client:Token():create({
-})
-```
-
-
-### User
-
-Create an instance: `local user = client:User(nil)`
-
-#### Operations
-
-| Method | Description |
-| --- | --- |
-| `create(data)` | Create a new entity with the given data. |
-| `load(match)` | Load a single entity by match criteria. |
-| `remove(match)` | Remove the matching entity. |
-
-#### Fields
-
-| Field | Type | Description |
-| --- | --- | --- |
-| `created_at` | `string` | Time of creation of the the user |
-| `email` | `string` | The email address of the user |
-| `email_id` | `string` | The ID of the newly created email address |
-| `emails` | `table` |  |
-| `family_name` | `string` |  |
-| `given_name` | `string` |  |
-| `has_webauthn_credential` | `boolean` |  |
-| `id` | `string` | The ID of the user. |
-| `metadata` | `table` | The public and unsafe metadata of a user |
-| `mfa_config` | `table` |  |
-| `name` | `string` |  |
-| `passkeys` | `table` |  |
-| `picture` | `string` |  |
-| `security_keys` | `table` |  |
-| `updated_at` | `string` | Time of last update of the user |
-| `user_id` | `string` | The ID of the user |
-| `username` | `string` | The username of the user |
-| `verified` | `boolean` |  |
-| `webauthn_credentials` | `table` | A list of WebAuthn credentials |
-
-#### Example: Load
-
-```lua
-local user, err = client:User():load({ id = "user_id" })
-```
-
-#### Example: Create
-
-```lua
-local user, err = client:User():create({
-})
+local third_party, err = client:ThirdParty():load({ state = "state" })
 ```
 
 
@@ -911,86 +541,9 @@ local user_management, err = client:UserManagement():create({
 })
 ```
 
-
-### WebAuthn
-
-Create an instance: `local web_authn = client:WebAuthn(nil)`
-
-#### Operations
-
-| Method | Description |
-| --- | --- |
-| `create(data)` | Create a new entity with the given data. |
-| `list(match)` | List entities matching the criteria. |
-| `remove(match)` | Remove the matching entity. |
-| `update(data)` | Update an existing entity. |
-
-#### Fields
-
-| Field | Type | Description |
-| --- | --- | --- |
-| `aaguid` | `string` |  |
-| `attestation_type` | `string` |  |
-| `backup_eligible` | `boolean` |  |
-| `backup_state` | `boolean` |  |
-| `created_at` | `string` |  |
-| `credential_id` | `string` | The ID of the created credential |
-| `id` | `string` |  |
-| `last_used_at` | `string` |  |
-| `mfa_only` | `boolean` |  |
-| `name` | `string` | A new credential name. |
-| `publickey` | `string` |  |
-| `rawId` | `string` |  |
-| `response` | `table` |  |
-| `transports` | `table` |  |
-| `type` | `string` |  |
-| `user_id` | `string` | The ID of the user on whose behalf a credential was created |
-
-#### Example: List
-
-```lua
-local web_authns, err = client:WebAuthn():list()
-```
-
-#### Example: Create
-
-```lua
-local web_authn, err = client:WebAuthn():create({
-})
-```
-
-
-### WebauthnLogin
-
-Create an instance: `local webauthn_login = client:WebauthnLogin(nil)`
-
-#### Operations
-
-| Method | Description |
-| --- | --- |
-| `create(data)` | Create a new entity with the given data. |
-
-#### Fields
-
-| Field | Type | Description |
-| --- | --- | --- |
-| `credential_id` | `string` |  |
-| `id` | `string` |  |
-| `rawId` | `string` |  |
-| `response` | `table` |  |
-| `type` | `string` |  |
-| `user_id` | `string` |  |
-
-#### Example: Create
-
-```lua
-local webauthn_login, err = client:WebauthnLogin():create({
-})
-```
-
 ## Features
 
-This SDK ships 8 optional features. Each is **inactive until you
+This SDK ships 9 optional features. Each is **inactive until you
 switch it on**, so an SDK you have not configured behaves exactly as if none of
 them existed — no retries, no cache, no logging, no measurable overhead.
 
@@ -1005,10 +558,11 @@ above:
 | [`paging`](#paging) | Paging |
 | [`ratelimit`](#ratelimit) | Rate limiting |
 | [`retry`](#retry) | Retry |
+| [`secrets`](#secrets) | Secrets |
 | [`test`](#test) | Test transport |
 | [`timeout`](#timeout) | Timeout |
 
-> **Order matters for `ratelimit`, `retry`, `timeout`.** These wrap the
+> **Order matters for `ratelimit`, `retry`, `secrets`, `timeout`.** These wrap the
 > transport, so each one wraps whatever is already installed: the order you
 > activate them in IS the nesting order. Activating them as an ordered list
 > rather than a map is what fixes that order.
@@ -1099,6 +653,24 @@ Set `feature.retry.active` to enable it, then override any of the options above.
 transport features decides what it sees. A feature activated later wraps one
 activated earlier.
 
+### secrets
+
+Secrets.
+
+| Option | Default |
+|---|---|
+| `active` | `false` |
+| `cache` | `true` |
+| `exchange` | `{active: false, method: 'POST', path: 'auth/token', refresh: '', request: 'refresh_token', response: 'access_token', retries: 1, statuses: [401]}` |
+| `name` | `'apikey'` |
+| `providers` | `[]` |
+
+Set `feature.secrets.active` to enable it, then override any of the options above.
+
+`secrets` wraps the transport, so its position among the other
+transport features decides what it sees. A feature activated later wraps one
+activated earlier.
+
 ### test
 
 Test transport.
@@ -1169,6 +741,7 @@ The SDK ships with built-in features:
 - **PagingFeature**: Paging
 - **RatelimitFeature**: Rate limiting
 - **RetryFeature**: Retry
+- **SecretsFeature**: Secrets
 - **TestFeature**: Test transport
 - **TimeoutFeature**: Timeout
 

@@ -3,30 +3,39 @@
     "session_management": {
       "SESSION_MANAGEMENT00": {
         "claims": {},
-        "expiration_time": "s3d",
-        "idle_expires_at": "s3e",
-        "is_valid": false,
-        "session_token": "s40",
-        "user_id": "USER01",
-        "id": "SESSION_MANAGEMENT00"
+        "expiration_time": "s65",
+        "id": "SESSION_MANAGEMENT00",
+        "idle_expires_at": "s67",
+        "is_valid": true,
+        "name": "s69",
+        "organizations": [],
+        "roles": [],
+        "session_token": "s6c",
+        "user_id": "USER01"
       },
       "SESSION_MANAGEMENT01": {
         "claims": {},
-        "expiration_time": "s79",
-        "idle_expires_at": "s7a",
-        "is_valid": false,
-        "session_token": "s7c",
-        "user_id": "USER01",
-        "id": "SESSION_MANAGEMENT01"
+        "expiration_time": "sc9",
+        "id": "SESSION_MANAGEMENT01",
+        "idle_expires_at": "scb",
+        "is_valid": true,
+        "name": "scd",
+        "organizations": [],
+        "roles": [],
+        "session_token": "sd0",
+        "user_id": "USER01"
       },
       "SESSION_MANAGEMENT02": {
         "claims": {},
-        "expiration_time": "sb5",
-        "idle_expires_at": "sb6",
-        "is_valid": false,
-        "session_token": "sb8",
-        "user_id": "USER01",
-        "id": "SESSION_MANAGEMENT02"
+        "expiration_time": "s12d",
+        "id": "SESSION_MANAGEMENT02",
+        "idle_expires_at": "s12f",
+        "is_valid": true,
+        "name": "s131",
+        "organizations": [],
+        "roles": [],
+        "session_token": "s134",
+        "user_id": "USER01"
       }
     }
   },
@@ -34,10 +43,13 @@
     "session_management": {
       "session_management_ref01": {
         "claims": {},
-        "expiration_time": "sf1",
-        "idle_expires_at": "sf2",
-        "is_valid": false,
-        "session_token": "sf4",
+        "expiration_time": "s191",
+        "idle_expires_at": "s193",
+        "is_valid": true,
+        "name": "s195",
+        "organizations": [],
+        "roles": [],
+        "session_token": "s198",
         "user_id": "USER01"
       }
     }

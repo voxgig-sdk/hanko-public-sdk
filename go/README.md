@@ -4,7 +4,7 @@
 
 The Golang SDK for the HankoPublic API — an entity-oriented client using standard Go conventions. No generics required; data flows as `map[string]any`.
 
-It exposes the API as capitalised, semantic **Entities** — e.g. `client.CredentialCreationOption(nil)` — each with the same small set of operations (`List`, `Load`, `Create`, `Update`, `Remove`) instead of raw URL paths and query strings. You call meaning, not endpoints, which keeps the cognitive load low.
+It exposes the API as capitalised, semantic **Entities** — e.g. `client.JsonWebKey(nil)` — each with the same small set of operations (`List`, `Load`, `Create`) instead of raw URL paths and query strings. You call meaning, not endpoints, which keeps the cognitive load low.
 
 > Also generated from this model: `go-cli`, `go-mcp`, `lua`, `php`, `py`, `rb`, `ts` — see
 > the [top-level README](../README.md).
@@ -30,7 +30,7 @@ go mod edit -replace github.com/voxgig-sdk/hanko-public-sdk/go=../hanko-public-s
 ## Tutorial: your first API call
 
 This tutorial walks through creating a client, listing entities, and
-loading a specific record. The client sends the API key as the `hanko` cookie.
+loading a specific record.
 
 ### Quickstart
 
@@ -57,12 +57,14 @@ func main() {
     },
     })
 
-    // Create a credentialCreationOption.
-    created, err := client.CredentialCreationOption(nil).Create(map[string]any{"attestation": "example_attestation", "authenticatorSelection": map[string]any{}}, nil)
+    // List jsonWebKey records — the value is a []any of entities, one per record.
+    jsonWebKeys, err := client.JsonWebKey(nil).List(nil, nil)
     if err != nil {
         panic(err)
     }
-    fmt.Println(created.(sdk.Entity).Data())
+    for _, item := range jsonWebKeys.([]any) {
+        fmt.Println(item.(sdk.Entity).Data())
+    }
 }
 ```
 
@@ -230,22 +232,13 @@ Creates a test-mode client with mock transport. Both arguments may be `nil`.
 | `GetUtility` | `() *Utility` | Copy of the SDK utility object. |
 | `Prepare` | `(fetchargs map[string]any) (map[string]any, error)` | Build an HTTP request definition without sending. |
 | `Direct` | `(fetchargs map[string]any) (map[string]any, error)` | Build and send an HTTP request. |
-| `CredentialCreationOption` | `(data map[string]any) HankoPublicEntity` | Create a CredentialCreationOption entity instance. |
-| `CredentialRequestOption` | `(data map[string]any) HankoPublicEntity` | Create a CredentialRequestOption entity instance. |
-| `Email` | `(data map[string]any) HankoPublicEntity` | Create an Email entity instance. |
-| `HankoConfiguration` | `(data map[string]any) HankoPublicEntity` | Create a HankoConfiguration entity instance. |
 | `JsonWebKey` | `(data map[string]any) HankoPublicEntity` | Create a JsonWebKey entity instance. |
-| `Passcode` | `(data map[string]any) HankoPublicEntity` | Create a Passcode entity instance. |
-| `Password` | `(data map[string]any) HankoPublicEntity` | Create a Password entity instance. |
+| `OrganizationManagement` | `(data map[string]any) HankoPublicEntity` | Create an OrganizationManagement entity instance. |
 | `Saml` | `(data map[string]any) HankoPublicEntity` | Create a Saml entity instance. |
 | `SessionManagement` | `(data map[string]any) HankoPublicEntity` | Create a SessionManagement entity instance. |
 | `Status` | `(data map[string]any) HankoPublicEntity` | Create a Status entity instance. |
 | `ThirdParty` | `(data map[string]any) HankoPublicEntity` | Create a ThirdParty entity instance. |
-| `Token` | `(data map[string]any) HankoPublicEntity` | Create a Token entity instance. |
-| `User` | `(data map[string]any) HankoPublicEntity` | Create an User entity instance. |
 | `UserManagement` | `(data map[string]any) HankoPublicEntity` | Create an UserManagement entity instance. |
-| `WebAuthn` | `(data map[string]any) HankoPublicEntity` | Create a WebAuthn entity instance. |
-| `WebauthnLogin` | `(data map[string]any) HankoPublicEntity` | Create a WebauthnLogin entity instance. |
 
 ### Entity interface (HankoPublicEntity)
 
@@ -256,8 +249,6 @@ All entities implement the `HankoPublicEntity` interface.
 | `Load` | `(reqmatch, ctrl map[string]any) (any, error)` | Load a single entity by match criteria, and return it. |
 | `List` | `(reqmatch, ctrl map[string]any) (any, error)` | List entities matching the criteria, one per record. |
 | `Create` | `(reqdata, ctrl map[string]any) (any, error)` | Create a new entity, and return it. |
-| `Update` | `(reqdata, ctrl map[string]any) (any, error)` | Update an existing entity, and return it. |
-| `Remove` | `(reqmatch, ctrl map[string]any) (any, error)` | Remove an entity, and return it marked as deleted. |
 | `Data` | `(args ...any) any` | Get or set entity data. |
 | `Match` | `(args ...any) any` | Get or set entity match criteria. |
 | `Make` | `() Entity` | Create a new instance with the same options. |
@@ -270,79 +261,21 @@ itself — there is no wrapper:
 
 | Operation | `value` |
 | --- | --- |
-| `Load` / `Create` / `Update` / `Remove` | the entity, whose `Data()` reads its record (`map[string]any`) |
+| `Load` / `Create` | the entity, whose `Data()` reads its record (`map[string]any`) |
 | `List` | a `[]any` of entities, one per record |
 
 Check `err` first, then use the value directly (or the typed
 `...Typed` variants, which return the entity's model struct and a typed
 slice):
 
-    credentialCreationOption, err := client.CredentialCreationOption(nil).Create(map[string]any{/* fields */}, nil)
+    jsonWebKey, err := client.JsonWebKey(nil).List(nil, nil)
     if err != nil { /* handle */ }
-    // credentialCreationOption is the entity; credentialCreationOption.(sdk.Entity).Data() reads its record
+    // jsonWebKey is a []any of entities, one per record
 
 Only `Direct()` returns a response envelope — a `map[string]any` with
 `"ok"`, `"status"`, `"headers"`, and `"data"` keys.
 
 ### Entities
-
-#### CredentialCreationOption
-
-| Field | Description |
-| --- | --- |
-| `"attestation"` |  |
-| `"authenticatorSelection"` |  |
-| `"challenge"` |  |
-| `"pubKeyCredParams"` |  |
-| `"rp"` |  |
-| `"timeout"` |  |
-| `"user"` |  |
-
-Operations: Create.
-
-API path: `/webauthn/registration/initialize`
-
-#### CredentialRequestOption
-
-| Field | Description |
-| --- | --- |
-| `"allowCredentials"` |  |
-| `"challenge"` |  |
-| `"rpId"` |  |
-| `"timeout"` |  |
-| `"userVerification"` |  |
-| `"user_id"` | The ID of the user on whose behalf WebAuthn login should be performed |
-
-Operations: Create.
-
-API path: `/webauthn/login/initialize`
-
-#### Email
-
-| Field | Description |
-| --- | --- |
-| `"address"` | The email address |
-| `"id"` | The ID of the email address |
-| `"identities"` |  |
-| `"identity"` |  |
-| `"is_primary"` | Indicates it's the primary email address. |
-| `"is_verified"` | Indicated the email has been verified. |
-
-Operations: Create, List, Remove.
-
-API path: `/emails/{id}/set_primary`
-
-#### HankoConfiguration
-
-| Field | Description |
-| --- | --- |
-| `"account"` | Controls the behavior regarding user account. |
-| `"emails"` | Controls the behavior regarding email addresses. |
-| `"password"` | Configuration options concerning passwords |
-
-Operations: Load.
-
-API path: `/.well-known/config`
 
 #### JsonWebKey
 
@@ -359,31 +292,17 @@ Operations: List.
 
 API path: `/.well-known/jwks.json`
 
-#### Passcode
+#### OrganizationManagement
 
 | Field | Description |
 | --- | --- |
-| `"code"` | The actual passcode from the email sent to the user during initialization, a string of 6 decimal digits |
-| `"created_at"` | Time of creation of the passcode |
-| `"email_id"` | The ID of the email address |
-| `"id"` | The ID of the passcode |
-| `"ttl"` | Lifespan of a passcode in seconds |
-| `"user_id"` | The ID of the user |
+| `"has_role"` |  |
+| `"organization_id"` | The ID of the organization to check |
+| `"roles"` | IDs or slugs of roles to check for. |
 
 Operations: Create.
 
-API path: `/passcode/login/finalize`
-
-#### Password
-
-| Field | Description |
-| --- | --- |
-| `"password"` | The actual password, its `minLength` defaults to 8 but can be [configured](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config) through the `password.min_password_length` option. |
-| `"user_id"` | The ID of the user to create/set a password for |
-
-Operations: Create, Update.
-
-API path: `/password/login`
+API path: `/organizations/roles/check`
 
 #### Saml
 
@@ -400,12 +319,16 @@ API path: `/saml/callback`
 | --- | --- |
 | `"claims"` | The claims extracted from a JWT. |
 | `"expiration_time"` | Date-time indicating the expiration of the session. |
+| `"id"` | The ID of the organization |
 | `"idle_expires_at"` | Timestamp (in UTC) indicating when the session will expire due to inactivity, assuming no further activity occurs before this time. |
 | `"is_valid"` | Indicates whether the session is valid or not |
+| `"name"` | The name of the organization |
+| `"organizations"` | The organizations the user belongs to, and the role slugs they hold within each. |
+| `"roles"` | The slugs of the roles the user holds within this organization |
 | `"session_token"` | The session token (JWT) to validate |
 | `"user_id"` | The ID of the user the session is associated with. |
 
-Operations: Create, Load.
+Operations: Create, List.
 
 API path: `/sessions/validate`
 
@@ -425,46 +348,7 @@ API path: `/`
 
 Operations: Load.
 
-API path: `/thirdparty/auth`
-
-#### Token
-
-| Field | Description |
-| --- | --- |
-| `"user_id"` | The ID of the user on whose behalf the token was exchanged. |
-| `"value"` |  |
-
-Operations: Create.
-
-API path: `/token`
-
-#### User
-
-| Field | Description |
-| --- | --- |
-| `"created_at"` | Time of creation of the the user |
-| `"email"` | The email address of the user |
-| `"email_id"` | The ID of the newly created email address |
-| `"emails"` |  |
-| `"family_name"` |  |
-| `"given_name"` |  |
-| `"has_webauthn_credential"` |  |
-| `"id"` | The ID of the user. |
-| `"metadata"` | The public and unsafe metadata of a user |
-| `"mfa_config"` |  |
-| `"name"` |  |
-| `"passkeys"` |  |
-| `"picture"` |  |
-| `"security_keys"` |  |
-| `"updated_at"` | Time of last update of the user |
-| `"user_id"` | The ID of the user |
-| `"username"` | The username of the user |
-| `"verified"` |  |
-| `"webauthn_credentials"` | A list of WebAuthn credentials |
-
-Operations: Create, Load, Remove.
-
-API path: `/user`
+API path: `/thirdparty/callback`
 
 #### UserManagement
 
@@ -489,194 +373,9 @@ Operations: Create, List.
 
 API path: `/logout`
 
-#### WebAuthn
-
-| Field | Description |
-| --- | --- |
-| `"aaguid"` |  |
-| `"attestation_type"` |  |
-| `"backup_eligible"` |  |
-| `"backup_state"` |  |
-| `"created_at"` |  |
-| `"credential_id"` | The ID of the created credential |
-| `"id"` |  |
-| `"last_used_at"` |  |
-| `"mfa_only"` |  |
-| `"name"` | A new credential name. |
-| `"publickey"` |  |
-| `"rawId"` |  |
-| `"response"` |  |
-| `"transports"` |  |
-| `"type"` |  |
-| `"user_id"` | The ID of the user on whose behalf a credential was created |
-
-Operations: Create, List, Remove, Update.
-
-API path: `/webauthn/registration/finalize`
-
-#### WebauthnLogin
-
-| Field | Description |
-| --- | --- |
-| `"credential_id"` |  |
-| `"id"` |  |
-| `"rawId"` |  |
-| `"response"` |  |
-| `"type"` |  |
-| `"user_id"` |  |
-
-Operations: Create.
-
-API path: `/webauthn/login/finalize`
-
 
 
 ## Entities
-
-
-### CredentialCreationOption
-
-Create an instance: `credentialCreationOption := client.CredentialCreationOption(nil)`
-
-#### Operations
-
-| Method | Description |
-| --- | --- |
-| `Create(data, ctrl)` | Create a new entity with the given data. |
-
-#### Fields
-
-| Field | Type | Description |
-| --- | --- | --- |
-| `attestation` | `string` |  |
-| `authenticatorSelection` | `map[string]any` |  |
-| `challenge` | `string` |  |
-| `pubKeyCredParams` | `[]any` |  |
-| `rp` | `map[string]any` |  |
-| `timeout` | `int` |  |
-| `user` | `map[string]any` |  |
-
-#### Example: Create
-
-```go
-result, err := client.CredentialCreationOption(nil).Create(map[string]any{
-}, nil)
-if err != nil {
-    panic(err)
-}
-fmt.Println(result.(sdk.Entity).Data()) // the created entity's record
-```
-
-
-### CredentialRequestOption
-
-Create an instance: `credentialRequestOption := client.CredentialRequestOption(nil)`
-
-#### Operations
-
-| Method | Description |
-| --- | --- |
-| `Create(data, ctrl)` | Create a new entity with the given data. |
-
-#### Fields
-
-| Field | Type | Description |
-| --- | --- | --- |
-| `allowCredentials` | `[]any` |  |
-| `challenge` | `string` |  |
-| `rpId` | `string` |  |
-| `timeout` | `int` |  |
-| `userVerification` | `string` |  |
-| `user_id` | `string` | The ID of the user on whose behalf WebAuthn login should be performed |
-
-#### Example: Create
-
-```go
-result, err := client.CredentialRequestOption(nil).Create(map[string]any{
-}, nil)
-if err != nil {
-    panic(err)
-}
-fmt.Println(result.(sdk.Entity).Data()) // the created entity's record
-```
-
-
-### Email
-
-Create an instance: `email := client.Email(nil)`
-
-#### Operations
-
-| Method | Description |
-| --- | --- |
-| `List(match, ctrl)` | List entities matching the criteria. |
-| `Create(data, ctrl)` | Create a new entity with the given data. |
-| `Remove(match, ctrl)` | Remove the matching entity. |
-
-#### Fields
-
-| Field | Type | Description |
-| --- | --- | --- |
-| `address` | `string` | The email address |
-| `id` | `string` | The ID of the email address |
-| `identities` | `any` |  |
-| `identity` | `any` |  |
-| `is_primary` | `bool` | Indicates it's the primary email address. |
-| `is_verified` | `bool` | Indicated the email has been verified. |
-
-#### Example: List
-
-```go
-emails, err := client.Email(nil).List(nil, nil)
-if err != nil {
-    panic(err)
-}
-// A []any of entities, one per record.
-for _, item := range emails.([]any) {
-    fmt.Println(item.(sdk.Entity).Data())
-}
-```
-
-#### Example: Create
-
-```go
-result, err := client.Email(nil).Create(map[string]any{
-    "address": "example_address",
-}, nil)
-if err != nil {
-    panic(err)
-}
-fmt.Println(result.(sdk.Entity).Data()) // the created entity's record
-```
-
-
-### HankoConfiguration
-
-Create an instance: `hankoConfiguration := client.HankoConfiguration(nil)`
-
-#### Operations
-
-| Method | Description |
-| --- | --- |
-| `Load(match, ctrl)` | Load a single entity by match criteria. |
-
-#### Fields
-
-| Field | Type | Description |
-| --- | --- | --- |
-| `account` | `map[string]any` | Controls the behavior regarding user account. |
-| `emails` | `map[string]any` | Controls the behavior regarding email addresses. |
-| `password` | `map[string]any` | Configuration options concerning passwords |
-
-#### Example: Load
-
-```go
-hankoConfiguration, err := client.HankoConfiguration(nil).Load(nil, nil)
-if err != nil {
-    panic(err)
-}
-fmt.Println(hankoConfiguration.(sdk.Entity).Data()) // the loaded entity's record
-```
 
 
 ### JsonWebKey
@@ -714,9 +413,9 @@ for _, item := range jsonWebKeys.([]any) {
 ```
 
 
-### Passcode
+### OrganizationManagement
 
-Create an instance: `passcode := client.Passcode(nil)`
+Create an instance: `organizationManagement := client.OrganizationManagement(nil)`
 
 #### Operations
 
@@ -728,50 +427,16 @@ Create an instance: `passcode := client.Passcode(nil)`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `code` | `string` | The actual passcode from the email sent to the user during initialization, a string of 6 decimal digits |
-| `created_at` | `string` | Time of creation of the passcode |
-| `email_id` | `string` | The ID of the email address |
-| `id` | `string` | The ID of the passcode |
-| `ttl` | `int` | Lifespan of a passcode in seconds |
-| `user_id` | `string` | The ID of the user |
+| `has_role` | `bool` |  |
+| `organization_id` | `string` | The ID of the organization to check |
+| `roles` | `[]any` | IDs or slugs of roles to check for. |
 
 #### Example: Create
 
 ```go
-result, err := client.Passcode(nil).Create(map[string]any{
-    "user_id": "example_user_id",
-}, nil)
-if err != nil {
-    panic(err)
-}
-fmt.Println(result.(sdk.Entity).Data()) // the created entity's record
-```
-
-
-### Password
-
-Create an instance: `password := client.Password(nil)`
-
-#### Operations
-
-| Method | Description |
-| --- | --- |
-| `Create(data, ctrl)` | Create a new entity with the given data. |
-| `Update(data, ctrl)` | Update an existing entity. |
-
-#### Fields
-
-| Field | Type | Description |
-| --- | --- | --- |
-| `password` | `string` | The actual password, its `minLength` defaults to 8 but can be [configured](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config) through the `password.min_password_length` option. |
-| `user_id` | `string` | The ID of the user to create/set a password for |
-
-#### Example: Create
-
-```go
-result, err := client.Password(nil).Create(map[string]any{
-    "password": "example_password",
-    "user_id": "example_user_id",
+result, err := client.OrganizationManagement(nil).Create(map[string]any{
+    "organization_id": "example_organization_id",
+    "roles": []any{},
 }, nil)
 if err != nil {
     panic(err)
@@ -788,7 +453,18 @@ Create an instance: `saml := client.Saml(nil)`
 
 | Method | Description |
 | --- | --- |
+| `Load(match, ctrl)` | Load a single entity by match criteria. |
 | `Create(data, ctrl)` | Create a new entity with the given data. |
+
+#### Example: Load
+
+```go
+saml, err := client.Saml(nil).Load(map[string]any{"domain": "domain"}, nil)
+if err != nil {
+    panic(err)
+}
+fmt.Println(saml.(sdk.Entity).Data()) // the loaded entity's record
+```
 
 #### Example: Create
 
@@ -810,7 +486,7 @@ Create an instance: `sessionManagement := client.SessionManagement(nil)`
 
 | Method | Description |
 | --- | --- |
-| `Load(match, ctrl)` | Load a single entity by match criteria. |
+| `List(match, ctrl)` | List entities matching the criteria. |
 | `Create(data, ctrl)` | Create a new entity with the given data. |
 
 #### Fields
@@ -819,26 +495,32 @@ Create an instance: `sessionManagement := client.SessionManagement(nil)`
 | --- | --- | --- |
 | `claims` | `map[string]any` | The claims extracted from a JWT. |
 | `expiration_time` | `string` | Date-time indicating the expiration of the session. |
+| `id` | `string` | The ID of the organization |
 | `idle_expires_at` | `string` | Timestamp (in UTC) indicating when the session will expire due to inactivity, assuming no further activity occurs before this time. |
 | `is_valid` | `bool` | Indicates whether the session is valid or not |
+| `name` | `string` | The name of the organization |
+| `organizations` | `[]any` | The organizations the user belongs to, and the role slugs they hold within each. |
+| `roles` | `[]any` | The slugs of the roles the user holds within this organization |
 | `session_token` | `string` | The session token (JWT) to validate |
 | `user_id` | `string` | The ID of the user the session is associated with. |
 
-#### Example: Load
+#### Example: List
 
 ```go
-sessionManagement, err := client.SessionManagement(nil).Load(nil, nil)
+sessionManagements, err := client.SessionManagement(nil).List(nil, nil)
 if err != nil {
     panic(err)
 }
-fmt.Println(sessionManagement.(sdk.Entity).Data()) // the loaded entity's record
+// A []any of entities, one per record.
+for _, item := range sessionManagements.([]any) {
+    fmt.Println(item.(sdk.Entity).Data())
+}
 ```
 
 #### Example: Create
 
 ```go
 result, err := client.SessionManagement(nil).Create(map[string]any{
-    "claims": map[string]any{},
     "session_token": "example_session_token",
 }, nil)
 if err != nil {
@@ -882,98 +564,11 @@ Create an instance: `thirdParty := client.ThirdParty(nil)`
 #### Example: Load
 
 ```go
-thirdParty, err := client.ThirdParty(nil).Load(map[string]any{"provider": "provider", "redirect_to": "redirect_to"}, nil)
+thirdParty, err := client.ThirdParty(nil).Load(map[string]any{"state": "state"}, nil)
 if err != nil {
     panic(err)
 }
 fmt.Println(thirdParty.(sdk.Entity).Data()) // the loaded entity's record
-```
-
-
-### Token
-
-Create an instance: `token := client.Token(nil)`
-
-#### Operations
-
-| Method | Description |
-| --- | --- |
-| `Create(data, ctrl)` | Create a new entity with the given data. |
-
-#### Fields
-
-| Field | Type | Description |
-| --- | --- | --- |
-| `user_id` | `string` | The ID of the user on whose behalf the token was exchanged. |
-| `value` | `string` |  |
-
-#### Example: Create
-
-```go
-result, err := client.Token(nil).Create(map[string]any{
-}, nil)
-if err != nil {
-    panic(err)
-}
-fmt.Println(result.(sdk.Entity).Data()) // the created entity's record
-```
-
-
-### User
-
-Create an instance: `user := client.User(nil)`
-
-#### Operations
-
-| Method | Description |
-| --- | --- |
-| `Load(match, ctrl)` | Load a single entity by match criteria. |
-| `Create(data, ctrl)` | Create a new entity with the given data. |
-| `Remove(match, ctrl)` | Remove the matching entity. |
-
-#### Fields
-
-| Field | Type | Description |
-| --- | --- | --- |
-| `created_at` | `string` | Time of creation of the the user |
-| `email` | `string` | The email address of the user |
-| `email_id` | `string` | The ID of the newly created email address |
-| `emails` | `[]any` |  |
-| `family_name` | `string` |  |
-| `given_name` | `string` |  |
-| `has_webauthn_credential` | `bool` |  |
-| `id` | `string` | The ID of the user. |
-| `metadata` | `map[string]any` | The public and unsafe metadata of a user |
-| `mfa_config` | `map[string]any` |  |
-| `name` | `string` |  |
-| `passkeys` | `[]any` |  |
-| `picture` | `string` |  |
-| `security_keys` | `[]any` |  |
-| `updated_at` | `string` | Time of last update of the user |
-| `user_id` | `string` | The ID of the user |
-| `username` | `string` | The username of the user |
-| `verified` | `bool` |  |
-| `webauthn_credentials` | `[]any` | A list of WebAuthn credentials |
-
-#### Example: Load
-
-```go
-user, err := client.User(nil).Load(map[string]any{"id": "user_id"}, nil)
-if err != nil {
-    panic(err)
-}
-fmt.Println(user.(sdk.Entity).Data()) // the loaded entity's record
-```
-
-#### Example: Create
-
-```go
-result, err := client.User(nil).Create(map[string]any{
-}, nil)
-if err != nil {
-    panic(err)
-}
-fmt.Println(result.(sdk.Entity).Data()) // the created entity's record
 ```
 
 
@@ -1031,101 +626,9 @@ if err != nil {
 fmt.Println(result.(sdk.Entity).Data()) // the created entity's record
 ```
 
-
-### WebAuthn
-
-Create an instance: `webAuthn := client.WebAuthn(nil)`
-
-#### Operations
-
-| Method | Description |
-| --- | --- |
-| `List(match, ctrl)` | List entities matching the criteria. |
-| `Create(data, ctrl)` | Create a new entity with the given data. |
-| `Update(data, ctrl)` | Update an existing entity. |
-| `Remove(match, ctrl)` | Remove the matching entity. |
-
-#### Fields
-
-| Field | Type | Description |
-| --- | --- | --- |
-| `aaguid` | `string` |  |
-| `attestation_type` | `string` |  |
-| `backup_eligible` | `bool` |  |
-| `backup_state` | `bool` |  |
-| `created_at` | `string` |  |
-| `credential_id` | `string` | The ID of the created credential |
-| `id` | `string` |  |
-| `last_used_at` | `string` |  |
-| `mfa_only` | `bool` |  |
-| `name` | `string` | A new credential name. |
-| `publickey` | `string` |  |
-| `rawId` | `string` |  |
-| `response` | `map[string]any` |  |
-| `transports` | `[]any` |  |
-| `type` | `string` |  |
-| `user_id` | `string` | The ID of the user on whose behalf a credential was created |
-
-#### Example: List
-
-```go
-webAuthns, err := client.WebAuthn(nil).List(nil, nil)
-if err != nil {
-    panic(err)
-}
-// A []any of entities, one per record.
-for _, item := range webAuthns.([]any) {
-    fmt.Println(item.(sdk.Entity).Data())
-}
-```
-
-#### Example: Create
-
-```go
-result, err := client.WebAuthn(nil).Create(map[string]any{
-}, nil)
-if err != nil {
-    panic(err)
-}
-fmt.Println(result.(sdk.Entity).Data()) // the created entity's record
-```
-
-
-### WebauthnLogin
-
-Create an instance: `webauthnLogin := client.WebauthnLogin(nil)`
-
-#### Operations
-
-| Method | Description |
-| --- | --- |
-| `Create(data, ctrl)` | Create a new entity with the given data. |
-
-#### Fields
-
-| Field | Type | Description |
-| --- | --- | --- |
-| `credential_id` | `string` |  |
-| `id` | `string` |  |
-| `rawId` | `string` |  |
-| `response` | `map[string]any` |  |
-| `type` | `string` |  |
-| `user_id` | `string` |  |
-
-#### Example: Create
-
-```go
-result, err := client.WebauthnLogin(nil).Create(map[string]any{
-}, nil)
-if err != nil {
-    panic(err)
-}
-fmt.Println(result.(sdk.Entity).Data()) // the created entity's record
-```
-
 ## Features
 
-This SDK ships 8 optional features. Each is **inactive until you
+This SDK ships 9 optional features. Each is **inactive until you
 switch it on**, so an SDK you have not configured behaves exactly as if none of
 them existed — no retries, no cache, no logging, no measurable overhead.
 
@@ -1140,10 +643,11 @@ above:
 | [`paging`](#paging) | Paging |
 | [`ratelimit`](#ratelimit) | Rate limiting |
 | [`retry`](#retry) | Retry |
+| [`secrets`](#secrets) | Secrets |
 | [`test`](#test) | Test transport |
 | [`timeout`](#timeout) | Timeout |
 
-> **Order matters for `ratelimit`, `retry`, `timeout`.** These wrap the
+> **Order matters for `ratelimit`, `retry`, `secrets`, `timeout`.** These wrap the
 > transport, so each one wraps whatever is already installed: the order you
 > activate them in IS the nesting order. Activating them as an ordered list
 > rather than a map is what fixes that order.
@@ -1234,6 +738,24 @@ Set `feature.retry.active` to enable it, then override any of the options above.
 transport features decides what it sees. A feature activated later wraps one
 activated earlier.
 
+### secrets
+
+Secrets.
+
+| Option | Default |
+|---|---|
+| `active` | `false` |
+| `cache` | `true` |
+| `exchange` | `{active: false, method: 'POST', path: 'auth/token', refresh: '', request: 'refresh_token', response: 'access_token', retries: 1, statuses: [401]}` |
+| `name` | `'apikey'` |
+| `providers` | `[]` |
+
+Set `feature.secrets.active` to enable it, then override any of the options above.
+
+`secrets` wraps the transport, so its position among the other
+transport features decides what it sees. A feature activated later wraps one
+activated earlier.
+
 ### test
 
 Test transport.
@@ -1304,6 +826,7 @@ The SDK ships with built-in features:
 - **PagingFeature**: Paging
 - **RatelimitFeature**: Rate limiting
 - **RetryFeature**: Retry
+- **SecretsFeature**: Secrets
 - **TestFeature**: Test transport
 - **TimeoutFeature**: Timeout
 

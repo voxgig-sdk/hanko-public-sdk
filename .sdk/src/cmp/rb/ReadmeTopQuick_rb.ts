@@ -1,5 +1,5 @@
 
-import { cmp, Content, isAuthActive, envName, canonKey, canonScalarKey, entityIdField, opRequestShape, safeVarName, exampleVarName } from '@voxgig/sdkgen'
+import { cmp, Content, isAuthActive, envName, canonKey, canonScalarKey, entityIdField, opRequestShape, safeVarName, exampleVarName, matchExampleItems, litString } from '@voxgig/sdkgen'
 
 import {
   KIT,
@@ -21,7 +21,7 @@ function rbLit(type: any, placeholder: string = 'example'): string {
   if ('BOOLEAN' === k) return 'true'
   if ('ARRAY' === k) return '[]'
   if ('OBJECT' === k) return '{}'
-  return `"${placeholder}"`
+  return litString('rb', placeholder)
 }
 
 
@@ -63,13 +63,12 @@ ${eVar}s.each { |item| puts item.data_get }
     }
 
     if (opnames.includes('load')) {
-      const loadItems = opRequestShape(exampleEntity, 'load').items
-        .filter((it: any) => !it.optional || it.name === idF)
+      const loadItems = matchExampleItems(exampleEntity, 'load', idF)
         .sort((a: any, b: any) =>
           (a.name === idF ? 0 : 1) - (b.name === idF ? 0 : 1))
       const loadArg = 0 < loadItems.length
         ? `{ ${loadItems.map((it: any) =>
-          `"${it.name}" => ${rbLit(it.type,
+          `${litString('rb', it.name)} => ${rbLit(it.type,
             it.name === idF ? 'example_id' : 'example_' + it.name)}`).join(', ')} }`
         : ''
       Content(`

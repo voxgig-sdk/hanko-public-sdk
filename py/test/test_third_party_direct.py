@@ -39,7 +39,7 @@ class TestThirdPartyDirect:
             pass
 
         result = client.direct({
-            "path": "thirdparty/auth",
+            "path": "thirdparty/callback",
             "method": "GET",
             "params": params,
             "query": query,

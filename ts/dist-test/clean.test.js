@@ -6,7 +6,7 @@ const node_util_1 = require("node:util");
 const __1 = require("..");
 const harness_1 = require("./feature/harness");
 // Generated: the credential's wire placement is fixed when the SDK is built.
-const AUTH = { "suppressed": false, "where": "cookie", "name": "hanko", "basic": false };
+const AUTH = { "suppressed": false, "where": "header", "name": "authorization", "basic": false };
 const CANARY = {
     apikey: 'CANARY-APIKEY-k9x2m7q4p1',
     secret: 'CANARY-SECRET-w3e8r5t2y6',

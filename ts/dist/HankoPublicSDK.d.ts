@@ -1,19 +1,10 @@
-import { CredentialCreationOptionEntity } from './entity/CredentialCreationOptionEntity';
-import { CredentialRequestOptionEntity } from './entity/CredentialRequestOptionEntity';
-import { EmailEntity } from './entity/EmailEntity';
-import { HankoConfigurationEntity } from './entity/HankoConfigurationEntity';
 import { JsonWebKeyEntity } from './entity/JsonWebKeyEntity';
-import { PasscodeEntity } from './entity/PasscodeEntity';
-import { PasswordEntity } from './entity/PasswordEntity';
+import { OrganizationManagementEntity } from './entity/OrganizationManagementEntity';
 import { SamlEntity } from './entity/SamlEntity';
 import { SessionManagementEntity } from './entity/SessionManagementEntity';
 import { StatusEntity } from './entity/StatusEntity';
 import { ThirdPartyEntity } from './entity/ThirdPartyEntity';
-import { TokenEntity } from './entity/TokenEntity';
-import { UserEntity } from './entity/UserEntity';
 import { UserManagementEntity } from './entity/UserManagementEntity';
-import { WebAuthnEntity } from './entity/WebAuthnEntity';
-import { WebauthnLoginEntity } from './entity/WebauthnLoginEntity';
 export type * from './HankoPublicTypes';
 import { inspect } from 'node:util';
 import type { Context, Feature } from './types';
@@ -21,6 +12,7 @@ import { config } from './Config';
 import { HankoPublicEntityBase } from './HankoPublicEntityBase';
 import { Utility } from './utility/Utility';
 import { BaseFeature } from './feature/base/BaseFeature';
+import * as sekreto from './feature/secrets/sekreto';
 declare const stdutil: Utility;
 type DirectResult = {
     ok: false;
@@ -41,29 +33,22 @@ declare class HankoPublicSDK {
     _utility: Utility;
     _features: Feature[];
     _rootctx: Context;
+    _secrets?: any;
     constructor(options?: any);
     options(): any;
     utility(): any;
+    secrets(): any;
     prepare(fetchargs?: any): Promise<any>;
     direct(fetchargs?: any): Promise<DirectResult>;
     _rawRequest(fetchargs?: any): Promise<DirectResult>;
     graphql(query: string, variables?: any, ctrl?: any): Promise<any>;
-    CredentialCreationOption(entopts?: Record<string, any>): CredentialCreationOptionEntity;
-    CredentialRequestOption(entopts?: Record<string, any>): CredentialRequestOptionEntity;
-    Email(entopts?: Record<string, any>): EmailEntity;
-    HankoConfiguration(entopts?: Record<string, any>): HankoConfigurationEntity;
     JsonWebKey(entopts?: Record<string, any>): JsonWebKeyEntity;
-    Passcode(entopts?: Record<string, any>): PasscodeEntity;
-    Password(entopts?: Record<string, any>): PasswordEntity;
+    OrganizationManagement(entopts?: Record<string, any>): OrganizationManagementEntity;
     Saml(entopts?: Record<string, any>): SamlEntity;
     SessionManagement(entopts?: Record<string, any>): SessionManagementEntity;
     Status(entopts?: Record<string, any>): StatusEntity;
     ThirdParty(entopts?: Record<string, any>): ThirdPartyEntity;
-    Token(entopts?: Record<string, any>): TokenEntity;
-    User(entopts?: Record<string, any>): UserEntity;
     UserManagement(entopts?: Record<string, any>): UserManagementEntity;
-    WebAuthn(entopts?: Record<string, any>): WebAuthnEntity;
-    WebauthnLogin(entopts?: Record<string, any>): WebauthnLoginEntity;
     static test(testoptsarg?: any, sdkoptsarg?: any): HankoPublicSDK;
     tester(testopts?: any, sdkopts?: any): HankoPublicSDK;
     toJSON(): {
@@ -73,5 +58,5 @@ declare class HankoPublicSDK {
     [inspect.custom](): string;
 }
 declare const SDK: typeof HankoPublicSDK;
-export { stdutil, config, BaseFeature, HankoPublicEntityBase, HankoPublicSDK, SDK, };
+export { stdutil, config, sekreto, BaseFeature, HankoPublicEntityBase, HankoPublicSDK, SDK, };
 export type { DirectResult };

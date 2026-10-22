@@ -50,7 +50,7 @@ describe('ThirdPartyDirect', async () => {
 
 
     const result: any = await client.direct({
-      path: 'thirdparty/auth',
+      path: 'thirdparty/callback',
       method: 'GET',
       params,
       query,

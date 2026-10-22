@@ -31,10 +31,10 @@ Tool-call arguments (what an agent sends):
 
 ```jsonc
 // hanko-public_list: first page of records
-{ "entity": "email" }
+{ "entity": "json_web_key" }
 
 // hanko-public_load: one record
-{ "entity": "hanko_configuration", "query": {} }
+{ "entity": "saml", "query": { "domain": "example" } }
 ```
 
 > The rest of this guide follows the [Diátaxis](https://diataxis.fr) framework:
@@ -63,8 +63,8 @@ Tool-call arguments (what an agent sends):
    ```
 
 4. **Restart Claude Code.** The `hanko-public_list` and `hanko-public_load` tools now appear in new
-   sessions. Ask the agent to *"list email using hanko-public"*
-   and it calls `hanko-public_list` with `{"entity":"email"}`.
+   sessions. Ask the agent to *"list json_web_key using hanko-public"*
+   and it calls `hanko-public_list` with `{"entity":"json_web_key"}`.
 
 ## How-to guides
 
@@ -95,7 +95,7 @@ Args: `entity` (required), `query` (optional: optional filter map; omit it for t
 Returns the first page of records as JSON:
 
 ```jsonc
-{ "entity": "email" }
+{ "entity": "json_web_key" }
 ```
 
 ### Call the `hanko-public_load` tool
@@ -104,7 +104,7 @@ Args: `entity` (required), `query` (required: match map naming the record, such 
 Returns the record as JSON:
 
 ```jsonc
-{ "entity": "hanko_configuration", "query": {} }
+{ "entity": "saml", "query": { "domain": "example" } }
 ```
 
 ### Turn on the write tools
@@ -137,12 +137,12 @@ failure message (e.g. unknown entity, or an API error).
 ### Entities
 
 Each tool takes as its `entity` argument one of the entities that has its
-operation, of the 16 the SDK has:
+operation, of the 7 the SDK has:
 
 | Tool | Entities |
 |------|----------|
-| `hanko-public_list` | email, json_web_key, user_management, web_authn |
-| `hanko-public_load` | hanko_configuration, session_management, status, third_party, user |
+| `hanko-public_list` | json_web_key, session_management, user_management |
+| `hanko-public_load` | saml, status, third_party |
 
 JSON schemas are emitted by the SDK from each tool's argument struct's
 `json` / `jsonschema` tags — no schema is hand-written. Each tool's
@@ -181,7 +181,7 @@ curl -sN -X POST http://localhost:18080 \
   -H 'Content-Type: application/json' \
   -H 'Accept: application/json, text/event-stream' \
   -H "Mcp-Session-Id: $SESSION" \
-  -d '{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"hanko-public_list","arguments":{"entity":"email"}}}'
+  -d '{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"hanko-public_list","arguments":{"entity":"json_web_key"}}}'
 ```
 
 ## Explanation

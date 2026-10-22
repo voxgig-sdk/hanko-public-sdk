@@ -1,0 +1,40 @@
+{
+  "existing": {
+    "organization_management": {
+      "ORGANIZATION_MANAGEMENT00": {
+        "has_role": true,
+        "organization_id": "ORGANIZATION01",
+        "roles": [],
+        "id": "ORGANIZATION_MANAGEMENT00"
+      },
+      "ORGANIZATION_MANAGEMENT01": {
+        "has_role": true,
+        "organization_id": "ORGANIZATION01",
+        "roles": [],
+        "id": "ORGANIZATION_MANAGEMENT01"
+      },
+      "ORGANIZATION_MANAGEMENT02": {
+        "has_role": true,
+        "organization_id": "ORGANIZATION01",
+        "roles": [],
+        "id": "ORGANIZATION_MANAGEMENT02"
+      }
+    }
+  },
+  "new": {
+    "organization_management": {
+      "organization_management_ref01": {
+        "has_role": true,
+        "organization_id": "ORGANIZATION01",
+        "roles": []
+      }
+    }
+  },
+  "requests": {
+    "POST /organizations/roles/check": {
+      "provenance": "operation-contract",
+      "version": 2,
+      "source": "openapi3"
+    }
+  }
+}

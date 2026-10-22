@@ -39,15 +39,14 @@ describe('SessionManagementDirect', async () => {
   })
 
 
-  test('direct-load-session_management', async (t: any) => {
+  test('direct-list-session_management', async (t: any) => {
     if (liveScenariosActive()) { t.skip('Covered by live operation scenarios'); return }
-    const setup = directSetup({ id: 'direct01' })
-    if (maybeSkipControl(t, 'direct', 'direct-load-session_management', setup.live)) return
+    const setup = directSetup([{ id: 'direct01' }, { id: 'direct02' }])
+    if (maybeSkipControl(t, 'direct', 'direct-list-session_management', setup.live)) return
     const { client, calls } = setup
 
     const params: any = {}
     const query: any = {}
-
 
     const result: any = await client.direct({
       path: 'sessions/validate',
@@ -58,16 +57,18 @@ describe('SessionManagementDirect', async () => {
 
     if (setup.live) {
       if (!result.ok || result.status < 200 || result.status >= 300) {
-        return void liveMiss(t, LIVE_STRICT, 'Live load failed: ' + describeLive(result))
+        return void liveMiss(t, LIVE_STRICT, 'Live list failed: ' + describeLive(result))
       }
-      if (!(null != result.data)) {
-        return void liveMiss(t, LIVE_STRICT, 'Live load returned no data: ' + describeLive(result))
+      if (!(Array.isArray(unwrapListData(result.data)))) {
+        return void liveMiss(t, LIVE_STRICT, 'Live list returned no list: ' + describeLive(result))
       }
     } else {
       assert(result.ok === true)
       assert(result.status === 200)
       assert(null != result.data)
-      assert(result.data.id === 'direct01')
+      const listArr = unwrapListData(result.data)
+      assert(Array.isArray(listArr))
+      assert(listArr!.length === 2)
       assert(calls.length === 1)
       assert(calls[0].init.method === 'GET')
     }

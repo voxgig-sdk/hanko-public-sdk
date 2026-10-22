@@ -200,6 +200,7 @@ func TestUserManagementEntity(t *testing.T) {
 			}
 		}
 		client := setup.client
+		_ = client
 
 		// CREATE
 		userManagementRef01Ent := client.UserManagement(nil)

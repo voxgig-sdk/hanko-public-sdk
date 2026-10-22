@@ -67,8 +67,8 @@ class SamlEntity
   end
 
   def data_set(args)
-    if args
-      @_data = HankoPublicHelpers.to_map(VoxgigStruct.clone(args)) || {}
+    unless args.nil?
+      @_data = VoxgigStruct.clone(args)
       @_utility.feature_hook.call(@_entctx, "SetData")
     end
   end
@@ -175,7 +175,7 @@ class SamlEntity
 
         # What a hook raises here must not escape the cleaning below.
         begin
-          utility.feature_hook.call(ctx, "PreUnexpected")
+          utility.feature_hook.call(ctx, "PreUnexpected") unless ctx.unexpected_fired
         rescue StandardError => hookerr
           operr = hookerr
           ctx.ctrl.err = operr
@@ -351,7 +351,10 @@ class SamlEntity
 
       # What a hook raises here must not escape the cleaning below.
       begin
-        utility.feature_hook.call(ctx, "PreUnexpected")
+        # Once per operation: make_error fires it for its own error.
+        unless ctx.unexpected_fired
+          utility.feature_hook.call(ctx, "PreUnexpected")
+        end
       rescue StandardError => hookerr
         operr = hookerr
         ctx.ctrl.err = operr

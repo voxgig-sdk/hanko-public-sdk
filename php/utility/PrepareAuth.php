@@ -3,12 +3,9 @@ declare(strict_types=1);
 
 // HankoPublic SDK utility: prepare_auth
 
-require_once __DIR__ . '/PrepareHeaders.php';
-
 class HankoPublicPrepareAuth
 {
-    private const COOKIE_AUTH = 'hanko';
-    private const HEADER_COOKIE = 'cookie';
+    private const HEADER_AUTH = 'authorization';
     private const OPTION_APIKEY = 'apikey';
     private const NOT_FOUND = '__NOTFOUND__';
 
@@ -16,23 +13,7 @@ class HankoPublicPrepareAuth
     private static function authName(array $options): string
     {
         $name = \Voxgig\Struct\Struct::getpath($options, 'auth.name');
-        return is_string($name) && '' !== $name ? $name : self::COOKIE_AUTH;
-    }
-
-    private static function applyCookie(array &$headers, string $name, ?string $value): void
-    {
-        $existing = $headers[self::HEADER_COOKIE] ?? '';
-        $kept = is_string($existing) ? HankoPublicPrepareHeaders::cookieKeep($existing, [$name]) : [];
-
-        if (null !== $value) {
-            $kept[] = $name . '=' . $value;
-        }
-
-        if ([] === $kept) {
-            unset($headers[self::HEADER_COOKIE]);
-        } else {
-            $headers[self::HEADER_COOKIE] = implode('; ', $kept);
-        }
+        return is_string($name) && '' !== $name ? strtolower($name) : self::HEADER_AUTH;
     }
 
     public static function call(HankoPublicContext $ctx): array
@@ -47,27 +28,30 @@ class HankoPublicPrepareAuth
 
         // Public APIs that need no auth omit the options.auth block entirely.
         if (!isset($options['auth']) || $options['auth'] === null) {
-            self::applyCookie($headers, self::COOKIE_AUTH, null);
+            unset($headers[self::HEADER_AUTH]);
             return [$spec, null];
         }
 
         $name = self::authName($options);
 
         // A credential left under the declared name would travel beside the renamed one.
-        if ($name !== self::COOKIE_AUTH) {
-            self::applyCookie($headers, self::COOKIE_AUTH, null);
+        if ($name !== self::HEADER_AUTH) {
+            unset($headers[self::HEADER_AUTH]);
         }
 
         $apikey = \Voxgig\Struct\Struct::getprop($options, self::OPTION_APIKEY, self::NOT_FOUND);
 
-        $missing = (is_string($apikey) && ($apikey === self::NOT_FOUND || $apikey === ''))
-            || $apikey === null;
-
-        if ($missing) {
-            self::applyCookie($headers, $name, null);
+        if (
+            (is_string($apikey) && ($apikey === self::NOT_FOUND || $apikey === ''))
+            || $apikey === null
+        ) {
+            unset($headers[$name]);
         } else {
-            // One `Cookie:` header holds every cookie, separated by '; '.
-            self::applyCookie($headers, $name, is_string($apikey) ? $apikey : '');
+            $auth_prefix = \Voxgig\Struct\Struct::getpath($options, 'auth.prefix') ?? '';
+            $apikey_val = is_string($apikey) ? $apikey : '';
+            // Empty prefix (raw apiKey credential) must not add a leading space.
+            $headers[$name] = $auth_prefix === ''
+                ? $apikey_val : "{$auth_prefix} {$apikey_val}";
         }
 
         return [$spec, null];

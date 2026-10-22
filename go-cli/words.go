@@ -77,20 +77,10 @@ func runOp(client *sdk.HankoPublicSDK, op string, query *eng.Value, entityAtom e
 // emits one `case "<name>":` per entity defined in the SDK model.
 func entityFor(client *sdk.HankoPublicSDK, name string) (sdk.HankoPublicEntity, error) {
 	switch strings.ToLower(name) {
-	case "credential_creation_option":
-		return client.CredentialCreationOption(nil), nil
-	case "credential_request_option":
-		return client.CredentialRequestOption(nil), nil
-	case "email":
-		return client.Email(nil), nil
-	case "hanko_configuration":
-		return client.HankoConfiguration(nil), nil
 	case "json_web_key":
 		return client.JsonWebKey(nil), nil
-	case "passcode":
-		return client.Passcode(nil), nil
-	case "password":
-		return client.Password(nil), nil
+	case "organization_management":
+		return client.OrganizationManagement(nil), nil
 	case "saml":
 		return client.Saml(nil), nil
 	case "session_management":
@@ -99,16 +89,8 @@ func entityFor(client *sdk.HankoPublicSDK, name string) (sdk.HankoPublicEntity, 
 		return client.Status(nil), nil
 	case "third_party":
 		return client.ThirdParty(nil), nil
-	case "token":
-		return client.Token(nil), nil
-	case "user":
-		return client.User(nil), nil
 	case "user_management":
 		return client.UserManagement(nil), nil
-	case "web_authn":
-		return client.WebAuthn(nil), nil
-	case "webauthn_login":
-		return client.WebauthnLogin(nil), nil
 
 	}
 	return nil, fmt.Errorf("unknown entity %q", name)

@@ -21,7 +21,7 @@ local SDK_MODULE = "hanko-public_sdk"
 -- A test-mode client seeded with a fixture for every entity. The constructor
 -- of each runnable snippet is rewritten to this form so the offline mock has
 -- data to return.
-local TEST_SEED = '{ entity = { ["credential_creation_option"] = { ["test01"] = { id = "test01" } }, ["credential_request_option"] = { ["test01"] = { id = "test01" } }, ["email"] = { ["test01"] = { id = "test01" } }, ["hanko_configuration"] = { ["test01"] = { id = "test01" } }, ["json_web_key"] = { ["test01"] = { id = "test01" } }, ["passcode"] = { ["test01"] = { id = "test01" } }, ["password"] = { ["test01"] = { id = "test01" } }, ["saml"] = { ["test01"] = { id = "test01" } }, ["session_management"] = { ["test01"] = { id = "test01" } }, ["status"] = { ["test01"] = { id = "test01" } }, ["third_party"] = { ["test01"] = { id = "test01" } }, ["token"] = { ["test01"] = { id = "test01" } }, ["user"] = { ["test01"] = { id = "test01" } }, ["user_management"] = { ["test01"] = { id = "test01" } }, ["web_authn"] = { ["test01"] = { id = "test01" } }, ["webauthn_login"] = { ["test01"] = { id = "test01" } } } }'
+local TEST_SEED = '{ entity = { ["json_web_key"] = { ["test01"] = { id = "test01" } }, ["organization_management"] = { ["test01"] = { id = "test01" } }, ["saml"] = { ["test01"] = { id = "test01" } }, ["session_management"] = { ["test01"] = { id = "test01" } }, ["status"] = { ["test01"] = { id = "test01" } }, ["third_party"] = { ["test01"] = { id = "test01" } }, ["user_management"] = { ["test01"] = { id = "test01" } } } }'
 local TEST_CTOR = "sdk.test(" .. TEST_SEED .. ")"
 
 local function script_dir()

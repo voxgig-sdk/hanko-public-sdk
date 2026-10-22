@@ -33,7 +33,7 @@ class ThirdPartyDirectTest < Minitest::Test
     end
 
     result = client.direct({
-      "path" => "thirdparty/auth",
+      "path" => "thirdparty/callback",
       "method" => "GET",
       "params" => params,
       "query" => query,

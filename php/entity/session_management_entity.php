@@ -14,7 +14,7 @@ class SessionManagementEntity
     private $_client;
     private $_utility;
     private array $_entopts;
-    private array $_data;
+    private mixed $_data;
     private array $_match;
     private $_entctx;
     private bool $_deleted = false;
@@ -98,8 +98,9 @@ class SessionManagementEntity
      */
     public function data_set($args): void
     {
-        if ($args) {
-            $this->_data = HankoPublicHelpers::to_map(Struct::clone($args)) ?? [];
+        if ($args !== null) {
+            $data = Struct::clone($args);
+            $this->_data = $data instanceof \stdClass ? (array)$data : $data;
             ($this->_utility->feature_hook)($this->_entctx, "SetData");
         }
     }
@@ -230,7 +231,9 @@ class SessionManagementEntity
         } catch (\Throwable $err) {
             // What a hook throws here must not escape the cleaning below.
             try {
-                ($utility->feature_hook)($ctx, "PreUnexpected");
+                if (!$ctx->unexpected_fired) {
+                    ($utility->feature_hook)($ctx, "PreUnexpected");
+                }
             } catch (\Throwable $hookerr) {
                 $err = $hookerr;
             }
@@ -287,20 +290,22 @@ class SessionManagementEntity
     }
 
     
+
+    
     /**
-     * Load a single SessionManagement.
+     * List SessionManagement items matching the given filter.
      *
-     * @param SessionManagementLoadMatch|array|null $reqmatch Match criteria (id/query
-     *   fields) as an assoc-array; a typed SessionManagementLoadMatch names the shape.
+     * @param SessionManagementListMatch|array|null $reqmatch Match filter (any subset
+     *   of SessionManagement fields) as an assoc-array; SessionManagementListMatch names the shape.
      * @param mixed $ctrl Optional per-call control overrides.
-     * @return SessionManagementEntity The loaded SessionManagement entity, whose data_get() reads
-     *   its record; throws HankoPublicError on failure (item-5 convention).
+     * @return SessionManagementEntity[] The SessionManagement entities, one per record, each read
+     *   with data_get(); throws HankoPublicError on failure (item-5 convention).
      */
-    public function load(?array $reqmatch = null, $ctrl = null): mixed
+    public function list(?array $reqmatch = null, $ctrl = null): mixed
     {
         $utility = $this->_utility;
         $ctx = ($utility->make_context)([
-            "opname" => "load",
+            "opname" => "list",
             "ctrl" => $ctrl,
             "match" => $this->_match,
             "data" => $this->_data,
@@ -312,16 +317,11 @@ class SessionManagementEntity
                 if ($ctx->result->resmatch) {
                     $this->_match = $ctx->result->resmatch;
                 }
-                if ($ctx->result->resdata) {
-                    $this->_data = HankoPublicHelpers::to_map(Struct::clone($ctx->result->resdata)) ?? [];
-                }
             }
         });
     }
 
 
-
-    
 
     
     /**
@@ -370,7 +370,10 @@ class SessionManagementEntity
         } catch (\Throwable $err) {
             // What a hook throws here must not escape the cleaning below.
             try {
-                ($utility->feature_hook)($ctx, "PreUnexpected");            } catch (\Throwable $hookerr) {
+                // Once per operation: make_error fires it for its own error.
+                if (!$ctx->unexpected_fired) {
+                    ($utility->feature_hook)($ctx, "PreUnexpected");                }
+            } catch (\Throwable $hookerr) {
                 $err = $hookerr;
             }
             $err = $this->_unexpected($ctx, $err);

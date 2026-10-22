@@ -10,5 +10,5 @@ if [[ ! -f "$trust" ]]; then
 fi
 exec node "$trust" \
   --repository 'voxgig-sdk/hanko-public-sdk' \
-  --publish '@voxgig-sdk/hanko-public-sdk=publish-ts.yml' \
+  --publish '@voxgig-sdk/hanko-public=publish-ts.yml' \
   "$@"

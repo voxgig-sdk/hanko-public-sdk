@@ -1,10 +1,8 @@
 -- HankoPublic SDK utility: prepare_auth
 
 local vs = require("utility.struct.struct")
-local helpers = require("core.helpers")
 
-local COOKIE_AUTH = "hanko"
-local HEADER_COOKIE = "cookie"
+local HEADER_AUTH = "authorization"
 local OPTION_APIKEY = "apikey"
 local NOT_FOUND = "__NOTFOUND__"
 
@@ -13,30 +11,11 @@ local NOT_FOUND = "__NOTFOUND__"
 local function auth_name(options)
   local name = vs.getpath(options, "auth.name")
   if type(name) == "string" and name ~= "" then
-    return name
+    -- ASCII rules, as a field name is ASCII: lower-casing in the string library follows the C locale.
+    return (string.gsub(name, "[A-Z]", function(c) return string.char(c:byte() + 32) end))
   end
-  return COOKIE_AUTH
+  return HEADER_AUTH
 end
-
-local function cookie_set(headers, name, value)
-  local kept = {}
-  local existing = headers[HEADER_COOKIE]
-
-  if type(existing) == "string" then
-    kept = helpers.cookie_keep(existing, { [name] = true })
-  end
-
-  if value ~= nil then
-    kept[#kept + 1] = name .. "=" .. value
-  end
-
-  if #kept == 0 then
-    headers[HEADER_COOKIE] = nil
-  else
-    headers[HEADER_COOKIE] = table.concat(kept, "; ")
-  end
-end
-
 
 local function prepare_auth_util(ctx)
   local spec = ctx.spec
@@ -50,15 +29,15 @@ local function prepare_auth_util(ctx)
 
   -- Public APIs that need no auth omit the options.auth block entirely.
   if options.auth == nil then
-    cookie_set(headers, COOKIE_AUTH, nil)
+    headers[HEADER_AUTH] = nil
     return spec, nil
   end
 
   local name = auth_name(options)
 
   -- A credential left under the declared name would travel beside the renamed one.
-  if name ~= COOKIE_AUTH then
-    cookie_set(headers, COOKIE_AUTH, nil)
+  if name ~= HEADER_AUTH then
+    headers[HEADER_AUTH] = nil
   end
 
   local apikey = vs.getprop(options, OPTION_APIKEY, NOT_FOUND)
@@ -66,15 +45,23 @@ local function prepare_auth_util(ctx)
   if apikey == nil
     or (type(apikey) == "string" and (apikey == NOT_FOUND or apikey == ""))
   then
-    cookie_set(headers, name, nil)
+    headers[name] = nil
   else
+    local auth_prefix = ""
+    local ap = vs.getpath(options, "auth.prefix")
+    if type(ap) == "string" then
+      auth_prefix = ap
+    end
     local apikey_val = ""
     if type(apikey) == "string" then
       apikey_val = apikey
     end
-    -- The prefix is a header-value convention and has no meaning in a
-    -- cookie pair, so it is dropped the way a query placement drops it.
-    cookie_set(headers, name, apikey_val)
+    -- Empty prefix (raw apiKey credential) must not add a leading space.
+    if auth_prefix == "" then
+      headers[name] = apikey_val
+    else
+      headers[name] = auth_prefix .. " " .. apikey_val
+    end
   end
 
   return spec, nil

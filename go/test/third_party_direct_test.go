@@ -34,7 +34,7 @@ func TestThirdPartyDirect(t *testing.T) {
 
 
 		result, err := client.Direct(map[string]any{
-			"path":   "thirdparty/auth",
+			"path":   "thirdparty/callback",
 			"method": "GET",
 			"params": map[string]any{},
 		})

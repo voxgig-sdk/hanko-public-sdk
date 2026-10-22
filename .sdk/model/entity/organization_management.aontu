@@ -1,0 +1,74 @@
+# Entity: organization_management
+
+main: kit: entity: organization_management: {
+
+  alias: field: {}
+
+  fields: {
+    has_role: {
+      h: "Has Role"
+      n: "has_role"
+      r: true
+      t: "`$BOOLEAN`"
+    }
+    organization_id: {
+      fo: "uuid4"
+      h: "Organization Id"
+      n: "organization_id"
+      r: true
+      sh: "The ID of the organization to check"
+      t: "`$STRING`"
+    }
+    roles: {
+      h: "Roles"
+      n: "roles"
+      r: true
+      sh: "IDs or slugs of roles to check for."
+      t: "`$ARRAY`"
+    }
+  }
+
+  name: "organization_management"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          bf: [
+            "organization_id"
+            "roles"
+          ]
+          co: {
+            id: "POST /organizations/roles/check"
+            source: "openapi3"
+            version: 2
+          }
+          m: "POST"
+          o: "/organizations/roles/check"
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "organizations"
+            }
+            {
+              lit: "roles"
+            }
+            {
+              lit: "check"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}

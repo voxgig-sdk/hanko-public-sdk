@@ -7,7 +7,7 @@ import { hasFeature } from './feature/harness'
 
 
 // Generated: the credential's wire placement is fixed when the SDK is built.
-const AUTH = {"suppressed":false,"where":"cookie","name":"hanko","basic":false}
+const AUTH = {"suppressed":false,"where":"header","name":"authorization","basic":false}
 
 const CANARY = {
   apikey: 'CANARY-APIKEY-k9x2m7q4p1',

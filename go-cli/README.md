@@ -19,14 +19,15 @@ make build
 export HANKO_PUBLIC_APIKEY=sk_live_xxx
 
 # 4. Each command line is ONE boru expression, run against the API:
-./hanko-public-cli list email
+./hanko-public-cli list json_web_key
+./hanko-public-cli list session_management
 
 # 5. Override the API base URL for a single call
-HANKO_PUBLIC_BASE=https://api.example.com ./hanko-public-cli --help
+HANKO_PUBLIC_BASE=https://api.example.com ./hanko-public-cli list json_web_key
 
 # 6. No arguments -> interactive REPL
 ./hanko-public-cli
-hanko-public> /help
+hanko-public> list json_web_key
 hanko-public> /quit
 ```
 
@@ -52,7 +53,7 @@ hanko-public> /quit
    arguments to open the REPL):
 
    ```sh
-   ./dist/*/hanko-public-cli --help
+   ./dist/*/hanko-public-cli list json_web_key
    ```
 
 4. **Go interactive.** Run the binary with no arguments to open the REPL, then
@@ -62,6 +63,15 @@ That is the whole loop: *build → set key → evaluate boru expressions*.
 
 ## How-to guides
 
+### List the records of an entity
+
+```sh
+./hanko-public-cli list json_web_key
+```
+
+`list <entity>` returns the first page of records. `<entity>` is a bareword —
+it is auto-quoted as an boru atom, so no quotes are needed.
+
 ### Authenticate and choose an environment
 
 Configuration is read from the environment — nothing is written to disk:
@@ -69,7 +79,7 @@ Configuration is read from the environment — nothing is written to disk:
 ```sh
 export HANKO_PUBLIC_APIKEY=sk_live_xxx            # API key
 export HANKO_PUBLIC_BASE=https://api.example.com  # optional: override the API base URL
-./hanko-public-cli --help
+./hanko-public-cli list json_web_key
 ```
 
 Both are injectable by a secrets vault, so the key never has to be typed inline.
@@ -81,6 +91,7 @@ evaluated as its own boru expression:
 
 ```text
 $ ./hanko-public-cli
+hanko-public> list json_web_key
 hanko-public> /help
 hanko-public> /quit
 ```
@@ -95,7 +106,7 @@ make build-all   # linux/darwin/windows x amd64/arm64, under dist/<os>-<arch>/
 ### Discover the available entities
 
 `/help` in the REPL prints the full entity list, or see [Entities](#entities)
-below — this SDK exposes 16 entities.
+below — this SDK exposes 7 entities.
 
 ## Reference
 
@@ -107,9 +118,8 @@ The CLI registers these boru words, each bound to the SDK:
 |----------|-----------------------------------------------|--------------------------------|
 | `list`   | `list <entity>` · `list <query> <entity>`     | First page of records          |
 | `load`   | `load <entity>` · `load <query> <entity>`     | A single record                |
-| `update` | `update <query> <entity>`                     | Update a record, return it     |
 
-- `<entity>` is a bareword, auto-quoted as an boru atom (e.g. `credential_creation_option`).
+- `<entity>` is a bareword, auto-quoted as an boru atom (e.g. `json_web_key`).
 - `<query>` is either a **Map** (`{id:1}`) or a **Scalar** (`1`, treated as
   `{id:1}`). A scalar is always wrapped as `{id:<value>}`.
 
@@ -150,9 +160,9 @@ Meta-commands use the `/` prefix (everything else on a line is evaluated as boru
 
 ### Entities
 
-The 16 entities this SDK exposes (any is valid as `<entity>`):
+The 7 entities this SDK exposes (any is valid as `<entity>`):
 
-credential_creation_option credential_request_option email hanko_configuration json_web_key passcode password saml session_management status third_party token user user_management web_authn webauthn_login
+json_web_key organization_management saml session_management status third_party user_management
 
 ## Explanation
 

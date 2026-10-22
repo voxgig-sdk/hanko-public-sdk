@@ -22,11 +22,22 @@ describe("SamlEntity", function()
     assert.is_not_nil(ent)
   end)
 
+  it("should refuse an invalid request", function()
+    local config = require("config_shared")()
+    if type(config.feature) ~= "table" or config.feature.validate == nil then
+      pending("feature not present in this SDK: validate")
+      return
+    end
+    local client = sdk.test(nil, { feature = { validate = { active = true } } })
+    local _, err = client:Saml(nil):load({ ["cert_only"] = "x", ["domain"] = "x" }, nil)
+    assert.are.equal("validate_failed", type(err) == "table" and err.code or nil)
+  end)
+
   it("should run basic flow", function()
     local setup = saml_basic_setup(nil)
     -- Per-op sdk-test-control.json skip.
     local _live = setup.live or false
-    for _, _op in ipairs({"create"}) do
+    for _, _op in ipairs({"create", "load"}) do
       local _should_skip, _reason = runner.is_control_skipped("entityOp", "saml." .. _op, _live and "live" or "unit")
       if _should_skip then
         pending(_reason or "skipped via sdk-test-control.json")
@@ -44,6 +55,12 @@ describe("SamlEntity", function()
     assert.is_nil(err)
     saml_ref01_data = helpers.to_map(type(saml_ref01_data_result) == 'table' and saml_ref01_data_result.data_get and saml_ref01_data_result:data_get() or saml_ref01_data_result)
     assert.is_not_nil(saml_ref01_data)
+
+    -- LOAD
+    local saml_ref01_match_dt0 = {}
+    local saml_ref01_data_dt0_loaded, err = saml_ref01_ent:load(saml_ref01_match_dt0, nil)
+    assert.is_nil(err)
+    assert.is_not_nil(saml_ref01_data_dt0_loaded)
 
   end)
 end)

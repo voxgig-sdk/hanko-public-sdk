@@ -1,4 +1,4 @@
-import { flowSteps, opReachable } from '@voxgig/sdkgen'
+import { flowSteps, opReachable, validateSeeds } from '@voxgig/sdkgen'
 
 import {
   flatten,
@@ -210,7 +210,7 @@ ${hasList ? `
             $this->assertCount(3, $got);
         }
     }
-${failureTests(model, entity, accessor)}` : ''}${validateTest(model, entity, accessor)}
+${failureTests(model, entity, accessor)}${validateListTest(model, entity, accessor)}` : ''}${validateTest(model, entity, accessor)}
     public function test_basic_flow(): void
     {
         $setup = ${entity.name}_basic_setup(null);
@@ -600,7 +600,7 @@ const generateLoad: OpGen = (ctx, step, index) => {
     Content(`        $${matchvar} = [
             "id" => $${srcdatavar}["id"],
         ];
-        $${datavar}_loaded = $${entvar}->load($${matchvar}, null);
+${parentMatch(step, matchvar)}        $${datavar}_loaded = $${entvar}->load($${matchvar}, null);
         $${datavar}_load_result = Helpers::to_map(is_object($${datavar}_loaded) && method_exists($${datavar}_loaded, 'data_get') ? $${datavar}_loaded->data_get() : $${datavar}_loaded);
         $this->assertNotNull($${datavar}_load_result);
         $this->assertEquals($${datavar}_load_result["id"], $${srcdatavar}["id"]);
@@ -608,7 +608,7 @@ const generateLoad: OpGen = (ctx, step, index) => {
   }
   else {
     Content(`        $${matchvar} = [];
-        $${datavar}_loaded = $${entvar}->load($${matchvar}, null);
+${parentMatch(step, matchvar)}        $${datavar}_loaded = $${entvar}->load($${matchvar}, null);
         $this->assertNotNull($${datavar}_loaded);
 `)
   }
@@ -639,10 +639,21 @@ const generateRemove: OpGen = (ctx, step, index) => {
   Content(`        $${matchvar} = [
             "id" => $${srcdatavar}["id"],
         ];
-        $${entvar}->remove($${matchvar}, null);
+${parentMatch(step, matchvar)}        $${entvar}->remove($${matchvar}, null);
 `)
 }
 
+
+
+// A child's route names its parents, and an entity no earlier step has
+// filled knows none of them, so the call itself gives each parent id. A live
+// ENTID may key a parent by its field name, the fixture by its own name.
+function parentMatch(step: any, matchvar: string): string {
+  return Object.entries(step.m || {})
+    .filter(([k]: any) => k !== 'id' && !k.endsWith('$'))
+    .map(([key, val]: any) => `        $${matchvar}["${key}"] = $setup["idmap"]["${key}"] ?? $setup["idmap"]["${val}"] ?? null;
+`).join('')
+}
 
 const GENERATE_OP: Record<string, OpGen> = {
   create: generateCreate,
@@ -805,6 +816,39 @@ function validateTest(model: Model, entity: ModelEntity, accessor: string): stri
         }
         $this->assertSame('validate_failed', $err->sdk_code ?? null);
     }
+`
+}
+
+
+// A list response is checked record by record, not entity by entity.
+function validateListTest(model: Model, entity: ModelEntity, accessor: string): string {
+  const seeds = validateSeeds(entity)
+  if (null == seeds) {
+    return ''
+  }
+  const Name = model.const.Name
+  const seed = (rec: Record<string, any>) =>
+    "['entity' => [" + formatPhpValue(entity.name) + " => ['v1' => [" +
+    Object.entries(rec).map(([k, v]) => formatPhpValue(k) + ' => ' + formatPhpValue(v)).join(', ') +
+    ']]]]'
+  return `
+    public function test_validate_list_response(): void
+    {
+        $cfg = ${Name}Config::shared_config();
+        if (!isset($cfg["feature"]["validate"])) {
+            $this->markTestSkipped('feature not present in this SDK: validate');
+        }
+        $opts = ["feature" => ["validate" => ["active" => true, "request" => false, "response" => true]]];
+        $listed = ${Name}SDK::test(${seed(seeds.valid)}, $opts)->${accessor}(null)->list(null, null);
+        $this->assertSame(['v1'], array_map(fn($ent) => $ent->data_get()['id'] ?? null, $listed));
+${null == seeds.invalid ? '' : `        $err = null;
+        try {
+            ${Name}SDK::test(${seed(seeds.invalid)}, $opts)->${accessor}(null)->list(null, null);
+        } catch (\\Throwable $e) {
+            $err = $e;
+        }
+        $this->assertSame('validate_failed', $err->sdk_code ?? null);
+`}    }
 `
 }
 

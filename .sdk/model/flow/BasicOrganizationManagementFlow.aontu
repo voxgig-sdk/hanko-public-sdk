@@ -1,0 +1,18 @@
+# BasicOrganizationManagementFlow
+
+main: kit: flow: BasicOrganizationManagementFlow:
+{
+  entity: "organization_management",
+  kind: "basic",
+  name: "BasicOrganizationManagementFlow",
+  step: [
+    {
+      i: {
+        ref: "organization_management_ref01"
+      }
+
+      o: "create"
+    }
+  ],
+  "key$": "BasicOrganizationManagementFlow"
+}

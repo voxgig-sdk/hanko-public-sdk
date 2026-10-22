@@ -12,75 +12,6 @@ import (
 	"github.com/voxgig-sdk/hanko-public-sdk/go/core"
 )
 
-// CredentialCreationOption is the typed data model for the credential_creation_option entity.
-type CredentialCreationOption struct {
-}
-
-// CredentialCreationOptionCreateData is the typed request payload for CredentialCreationOption.CreateTyped.
-type CredentialCreationOptionCreateData struct {
-	Attestation *string `json:"attestation,omitempty"`
-	AuthenticatorSelection *map[string]any `json:"authenticatorSelection,omitempty"`
-	Challenge *string `json:"challenge,omitempty"`
-	PubKeyCredParams *[]any `json:"pubKeyCredParams,omitempty"`
-	Rp *map[string]any `json:"rp,omitempty"`
-	Timeout *int `json:"timeout,omitempty"`
-	User *map[string]any `json:"user,omitempty"`
-}
-
-// CredentialRequestOption is the typed data model for the credential_request_option entity.
-type CredentialRequestOption struct {
-}
-
-// CredentialRequestOptionCreateData is the typed request payload for CredentialRequestOption.CreateTyped.
-type CredentialRequestOptionCreateData struct {
-	AllowCredentials *[]any `json:"allowCredentials,omitempty"`
-	Challenge *string `json:"challenge,omitempty"`
-	RpId *string `json:"rpId,omitempty"`
-	Timeout *int `json:"timeout,omitempty"`
-	UserVerification *string `json:"userVerification,omitempty"`
-	UserId *string `json:"user_id,omitempty"`
-}
-
-// Email is the typed data model for the email entity.
-type Email struct {
-}
-
-// EmailListMatch is the typed request payload for Email.ListTyped.
-type EmailListMatch struct {
-	Address *string `json:"address,omitempty"`
-	Id *string `json:"id,omitempty"`
-	Identities *any `json:"identities,omitempty"`
-	Identity *any `json:"identity,omitempty"`
-	IsPrimary *bool `json:"is_primary,omitempty"`
-	IsVerified *bool `json:"is_verified,omitempty"`
-}
-
-// EmailCreateData is the typed request payload for Email.CreateTyped.
-type EmailCreateData struct {
-	Address string `json:"address"`
-	Id *string `json:"id,omitempty"`
-	Identities *any `json:"identities,omitempty"`
-	Identity *any `json:"identity,omitempty"`
-	IsPrimary *bool `json:"is_primary,omitempty"`
-	IsVerified *bool `json:"is_verified,omitempty"`
-}
-
-// EmailRemoveMatch is the typed request payload for Email.RemoveTyped.
-type EmailRemoveMatch struct {
-	Id string `json:"id"`
-}
-
-// HankoConfiguration is the typed data model for the hanko_configuration entity.
-type HankoConfiguration struct {
-}
-
-// HankoConfigurationLoadMatch is the typed request payload for HankoConfiguration.LoadTyped.
-type HankoConfigurationLoadMatch struct {
-	Account *map[string]any `json:"account,omitempty"`
-	Emails *map[string]any `json:"emails,omitempty"`
-	Password *map[string]any `json:"password,omitempty"`
-}
-
 // JsonWebKey is the typed data model for the json_web_key entity.
 type JsonWebKey struct {
 }
@@ -95,34 +26,14 @@ type JsonWebKeyListMatch struct {
 	Use *string `json:"use,omitempty"`
 }
 
-// Passcode is the typed data model for the passcode entity.
-type Passcode struct {
+// OrganizationManagement is the typed data model for the organization_management entity.
+type OrganizationManagement struct {
 }
 
-// PasscodeCreateData is the typed request payload for Passcode.CreateTyped.
-type PasscodeCreateData struct {
-	Code *string `json:"code,omitempty"`
-	CreatedAt *string `json:"created_at,omitempty"`
-	EmailId *string `json:"email_id,omitempty"`
-	Id *string `json:"id,omitempty"`
-	Ttl *int `json:"ttl,omitempty"`
-	UserId string `json:"user_id"`
-}
-
-// Password is the typed data model for the password entity.
-type Password struct {
-}
-
-// PasswordCreateData is the typed request payload for Password.CreateTyped.
-type PasswordCreateData struct {
-	Password string `json:"password"`
-	UserId string `json:"user_id"`
-}
-
-// PasswordUpdateData is the typed request payload for Password.UpdateTyped.
-type PasswordUpdateData struct {
-	Password *string `json:"password,omitempty"`
-	UserId *string `json:"user_id,omitempty"`
+// OrganizationManagementCreateData is the typed request payload for OrganizationManagement.CreateTyped.
+type OrganizationManagementCreateData struct {
+	OrganizationId string `json:"organization_id"`
+	Roles []any `json:"roles"`
 }
 
 // Saml is the typed data model for the saml entity.
@@ -143,24 +54,23 @@ type SamlCreateData struct {
 type SessionManagement struct {
 }
 
-// SessionManagementLoadMatch is the typed request payload for SessionManagement.LoadTyped.
-type SessionManagementLoadMatch struct {
+// SessionManagementListMatch is the typed request payload for SessionManagement.ListTyped.
+type SessionManagementListMatch struct {
 	Claims *map[string]any `json:"claims,omitempty"`
 	ExpirationTime *string `json:"expiration_time,omitempty"`
+	Id *string `json:"id,omitempty"`
 	IdleExpiresAt *string `json:"idle_expires_at,omitempty"`
 	IsValid *bool `json:"is_valid,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Organizations *[]any `json:"organizations,omitempty"`
+	Roles *[]any `json:"roles,omitempty"`
 	SessionToken *string `json:"session_token,omitempty"`
 	UserId *string `json:"user_id,omitempty"`
 }
 
 // SessionManagementCreateData is the typed request payload for SessionManagement.CreateTyped.
 type SessionManagementCreateData struct {
-	Claims map[string]any `json:"claims"`
-	ExpirationTime *string `json:"expiration_time,omitempty"`
-	IdleExpiresAt *string `json:"idle_expires_at,omitempty"`
-	IsValid *bool `json:"is_valid,omitempty"`
 	SessionToken string `json:"session_token"`
-	UserId *string `json:"user_id,omitempty"`
 }
 
 // Status is the typed data model for the status entity.
@@ -177,73 +87,10 @@ type ThirdParty struct {
 
 // ThirdPartyLoadMatch is the typed request payload for ThirdParty.LoadTyped.
 type ThirdPartyLoadMatch struct {
-	Provider string `json:"provider"`
-	RedirectTo string `json:"redirect_to"`
-}
-
-// Token is the typed data model for the token entity.
-type Token struct {
-}
-
-// TokenCreateData is the typed request payload for Token.CreateTyped.
-type TokenCreateData struct {
-	UserId *string `json:"user_id,omitempty"`
-	Value *string `json:"value,omitempty"`
-}
-
-// User is the typed data model for the user entity.
-type User struct {
-}
-
-// UserLoadMatch is the typed request payload for User.LoadTyped.
-type UserLoadMatch struct {
-	Id string `json:"id"`
-}
-
-// UserCreateData is the typed request payload for User.CreateTyped.
-type UserCreateData struct {
-	CreatedAt *string `json:"created_at,omitempty"`
-	Email *string `json:"email,omitempty"`
-	EmailId *string `json:"email_id,omitempty"`
-	Emails *[]any `json:"emails,omitempty"`
-	FamilyName *string `json:"family_name,omitempty"`
-	GivenName *string `json:"given_name,omitempty"`
-	HasWebauthnCredential *bool `json:"has_webauthn_credential,omitempty"`
-	Id *string `json:"id,omitempty"`
-	Metadata *map[string]any `json:"metadata,omitempty"`
-	MfaConfig *map[string]any `json:"mfa_config,omitempty"`
-	Name *string `json:"name,omitempty"`
-	Passkeys *[]any `json:"passkeys,omitempty"`
-	Picture *string `json:"picture,omitempty"`
-	SecurityKeys *[]any `json:"security_keys,omitempty"`
-	UpdatedAt *string `json:"updated_at,omitempty"`
-	UserId *string `json:"user_id,omitempty"`
-	Username *string `json:"username,omitempty"`
-	Verified *bool `json:"verified,omitempty"`
-	WebauthnCredentials *[]any `json:"webauthn_credentials,omitempty"`
-}
-
-// UserRemoveMatch is the typed request payload for User.RemoveTyped.
-type UserRemoveMatch struct {
-	CreatedAt *string `json:"created_at,omitempty"`
-	Email *string `json:"email,omitempty"`
-	EmailId *string `json:"email_id,omitempty"`
-	Emails *[]any `json:"emails,omitempty"`
-	FamilyName *string `json:"family_name,omitempty"`
-	GivenName *string `json:"given_name,omitempty"`
-	HasWebauthnCredential *bool `json:"has_webauthn_credential,omitempty"`
-	Id string `json:"id"`
-	Metadata *map[string]any `json:"metadata,omitempty"`
-	MfaConfig *map[string]any `json:"mfa_config,omitempty"`
-	Name *string `json:"name,omitempty"`
-	Passkeys *[]any `json:"passkeys,omitempty"`
-	Picture *string `json:"picture,omitempty"`
-	SecurityKeys *[]any `json:"security_keys,omitempty"`
-	UpdatedAt *string `json:"updated_at,omitempty"`
-	UserId *string `json:"user_id,omitempty"`
-	Username *string `json:"username,omitempty"`
-	Verified *bool `json:"verified,omitempty"`
-	WebauthnCredentials *[]any `json:"webauthn_credentials,omitempty"`
+	Code *string `json:"code,omitempty"`
+	Error *string `json:"error,omitempty"`
+	ErrorDescription *string `json:"error_description,omitempty"`
+	State string `json:"state"`
 }
 
 // UserManagement is the typed data model for the user_management entity.
@@ -284,89 +131,6 @@ type UserManagementCreateData struct {
 	UpdatedAt *string `json:"updated_at,omitempty"`
 	UserId *string `json:"user_id,omitempty"`
 	Username *map[string]any `json:"username,omitempty"`
-}
-
-// WebAuthn is the typed data model for the web_authn entity.
-type WebAuthn struct {
-}
-
-// WebAuthnListMatch is the typed request payload for WebAuthn.ListTyped.
-type WebAuthnListMatch struct {
-	Aaguid *string `json:"aaguid,omitempty"`
-	AttestationType *string `json:"attestation_type,omitempty"`
-	BackupEligible *bool `json:"backup_eligible,omitempty"`
-	BackupState *bool `json:"backup_state,omitempty"`
-	CreatedAt *string `json:"created_at,omitempty"`
-	CredentialId *string `json:"credential_id,omitempty"`
-	Id *string `json:"id,omitempty"`
-	LastUsedAt *string `json:"last_used_at,omitempty"`
-	MfaOnly *bool `json:"mfa_only,omitempty"`
-	Name *string `json:"name,omitempty"`
-	Publickey *string `json:"publickey,omitempty"`
-	RawId *string `json:"rawId,omitempty"`
-	Response *map[string]any `json:"response,omitempty"`
-	Transports *[]any `json:"transports,omitempty"`
-	Type *string `json:"type,omitempty"`
-	UserId *string `json:"user_id,omitempty"`
-}
-
-// WebAuthnCreateData is the typed request payload for WebAuthn.CreateTyped.
-type WebAuthnCreateData struct {
-	Aaguid *string `json:"aaguid,omitempty"`
-	AttestationType *string `json:"attestation_type,omitempty"`
-	BackupEligible *bool `json:"backup_eligible,omitempty"`
-	BackupState *bool `json:"backup_state,omitempty"`
-	CreatedAt *string `json:"created_at,omitempty"`
-	CredentialId *string `json:"credential_id,omitempty"`
-	Id *string `json:"id,omitempty"`
-	LastUsedAt *string `json:"last_used_at,omitempty"`
-	MfaOnly *bool `json:"mfa_only,omitempty"`
-	Name *string `json:"name,omitempty"`
-	Publickey *string `json:"publickey,omitempty"`
-	RawId *string `json:"rawId,omitempty"`
-	Response *map[string]any `json:"response,omitempty"`
-	Transports *[]any `json:"transports,omitempty"`
-	Type *string `json:"type,omitempty"`
-	UserId *string `json:"user_id,omitempty"`
-}
-
-// WebAuthnUpdateData is the typed request payload for WebAuthn.UpdateTyped.
-type WebAuthnUpdateData struct {
-	Id string `json:"id"`
-	Aaguid *string `json:"aaguid,omitempty"`
-	AttestationType *string `json:"attestation_type,omitempty"`
-	BackupEligible *bool `json:"backup_eligible,omitempty"`
-	BackupState *bool `json:"backup_state,omitempty"`
-	CreatedAt *string `json:"created_at,omitempty"`
-	CredentialId *string `json:"credential_id,omitempty"`
-	LastUsedAt *string `json:"last_used_at,omitempty"`
-	MfaOnly *bool `json:"mfa_only,omitempty"`
-	Name *string `json:"name,omitempty"`
-	Publickey *string `json:"publickey,omitempty"`
-	RawId *string `json:"rawId,omitempty"`
-	Response *map[string]any `json:"response,omitempty"`
-	Transports *[]any `json:"transports,omitempty"`
-	Type *string `json:"type,omitempty"`
-	UserId *string `json:"user_id,omitempty"`
-}
-
-// WebAuthnRemoveMatch is the typed request payload for WebAuthn.RemoveTyped.
-type WebAuthnRemoveMatch struct {
-	Id string `json:"id"`
-}
-
-// WebauthnLogin is the typed data model for the webauthn_login entity.
-type WebauthnLogin struct {
-}
-
-// WebauthnLoginCreateData is the typed request payload for WebauthnLogin.CreateTyped.
-type WebauthnLoginCreateData struct {
-	CredentialId *string `json:"credential_id,omitempty"`
-	Id *string `json:"id,omitempty"`
-	RawId *string `json:"rawId,omitempty"`
-	Response *map[string]any `json:"response,omitempty"`
-	Type *string `json:"type,omitempty"`
-	UserId *string `json:"user_id,omitempty"`
 }
 
 // asMap turns a typed request/data struct into the map[string]any the

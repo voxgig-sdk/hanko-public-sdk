@@ -41,33 +41,13 @@ local client = sdk.test()
 
 ### Instance Methods
 
-#### `CredentialCreationOption(data)`
-
-Create a new `CredentialCreationOption` entity instance. Pass `nil` for no initial data.
-
-#### `CredentialRequestOption(data)`
-
-Create a new `CredentialRequestOption` entity instance. Pass `nil` for no initial data.
-
-#### `Email(data)`
-
-Create a new `Email` entity instance. Pass `nil` for no initial data.
-
-#### `HankoConfiguration(data)`
-
-Create a new `HankoConfiguration` entity instance. Pass `nil` for no initial data.
-
 #### `JsonWebKey(data)`
 
 Create a new `JsonWebKey` entity instance. Pass `nil` for no initial data.
 
-#### `Passcode(data)`
+#### `OrganizationManagement(data)`
 
-Create a new `Passcode` entity instance. Pass `nil` for no initial data.
-
-#### `Password(data)`
-
-Create a new `Password` entity instance. Pass `nil` for no initial data.
+Create a new `OrganizationManagement` entity instance. Pass `nil` for no initial data.
 
 #### `Saml(data)`
 
@@ -85,25 +65,9 @@ Create a new `Status` entity instance. Pass `nil` for no initial data.
 
 Create a new `ThirdParty` entity instance. Pass `nil` for no initial data.
 
-#### `Token(data)`
-
-Create a new `Token` entity instance. Pass `nil` for no initial data.
-
-#### `User(data)`
-
-Create a new `User` entity instance. Pass `nil` for no initial data.
-
 #### `UserManagement(data)`
 
 Create a new `UserManagement` entity instance. Pass `nil` for no initial data.
-
-#### `WebAuthn(data)`
-
-Create a new `WebAuthn` entity instance. Pass `nil` for no initial data.
-
-#### `WebauthnLogin(data)`
-
-Create a new `WebauthnLogin` entity instance. Pass `nil` for no initial data.
 
 #### `options_map() -> table`
 
@@ -137,263 +101,6 @@ Prepare a fetch definition without sending the request. Accepts the
 same parameters as `direct()`.
 
 **Returns:** `table, err`
-
-
----
-
-## CredentialCreationOptionEntity
-
-```lua
-local credential_creation_option = client:CredentialCreationOption(nil)
-```
-
-### Fields
-
-| Field | Type | Required | Description |
-| --- | --- | --- | --- |
-| `attestation` | `string` | No |  |
-| `authenticatorSelection` | `table` | No |  |
-| `challenge` | `string` | No |  |
-| `pubKeyCredParams` | `table` | No |  |
-| `rp` | `table` | No |  |
-| `timeout` | `number` | No |  |
-| `user` | `table` | No |  |
-
-### Operations
-
-#### `create(reqdata, ctrl) -> any, err`
-
-Create a new entity with the given data. Returns the created entity, or `nil` and an error on failure.
-
-```lua
-local result, err = client:CredentialCreationOption():create({
-})
-```
-
-### Common Methods
-
-#### `data_get() -> table`
-
-Get the entity data. Returns a copy of the current data.
-
-#### `data_set(data)`
-
-Set the entity data.
-
-#### `match_get() -> table`
-
-Get the entity match criteria.
-
-#### `match_set(match)`
-
-Set the entity match criteria.
-
-#### `make() -> Entity`
-
-Create a new `CredentialCreationOptionEntity` instance with the same client and
-options.
-
-#### `get_name() -> string`
-
-Return the entity name.
-
-
----
-
-## CredentialRequestOptionEntity
-
-```lua
-local credential_request_option = client:CredentialRequestOption(nil)
-```
-
-### Fields
-
-| Field | Type | Required | Description |
-| --- | --- | --- | --- |
-| `allowCredentials` | `table` | No |  |
-| `challenge` | `string` | No |  |
-| `rpId` | `string` | No |  |
-| `timeout` | `number` | No |  |
-| `userVerification` | `string` | No |  |
-| `user_id` | `string` | No | The ID of the user on whose behalf WebAuthn login should be performed |
-
-### Operations
-
-#### `create(reqdata, ctrl) -> any, err`
-
-Create a new entity with the given data. Returns the created entity, or `nil` and an error on failure.
-
-```lua
-local result, err = client:CredentialRequestOption():create({
-})
-```
-
-### Common Methods
-
-#### `data_get() -> table`
-
-Get the entity data. Returns a copy of the current data.
-
-#### `data_set(data)`
-
-Set the entity data.
-
-#### `match_get() -> table`
-
-Get the entity match criteria.
-
-#### `match_set(match)`
-
-Set the entity match criteria.
-
-#### `make() -> Entity`
-
-Create a new `CredentialRequestOptionEntity` instance with the same client and
-options.
-
-#### `get_name() -> string`
-
-Return the entity name.
-
-
----
-
-## EmailEntity
-
-```lua
-local email = client:Email(nil)
-```
-
-### Fields
-
-| Field | Type | Required | Description |
-| --- | --- | --- | --- |
-| `address` | `string` | Yes | The email address |
-| `id` | `string` | No | The ID of the email address |
-| `identities` | `any` | No |  |
-| `identity` | `any` | No |  |
-| `is_primary` | `boolean` | No | Indicates it's the primary email address. |
-| `is_verified` | `boolean` | No | Indicated the email has been verified. |
-
-### Field Usage by Operation
-
-| Field | list | create | remove |
-| --- | --- | --- | --- |
-| `address` | Yes | - | - |
-| `id` | - | - | - |
-| `identities` | - | - | - |
-| `identity` | - | - | - |
-| `is_primary` | - | - | - |
-| `is_verified` | - | - | - |
-
-### Operations
-
-#### `create(reqdata, ctrl) -> any, err`
-
-Create a new entity with the given data. Returns the created entity, or `nil` and an error on failure.
-
-```lua
-local result, err = client:Email():create({
-  address = --[[ string ]],
-})
-```
-
-#### `list(reqmatch, ctrl) -> any, err`
-
-List entities matching the given criteria. Returns an array of entities, one per record, or `nil` and an error on failure.
-
-```lua
-local results, err = client:Email():list()
-```
-
-#### `remove(reqmatch, ctrl) -> any, err`
-
-Remove the entity matching the given criteria. Returns the entity, marked as deleted, or `nil` and an error on failure.
-
-```lua
-local result, err = client:Email():remove({ id = "id" })
-```
-
-### Common Methods
-
-#### `data_get() -> table`
-
-Get the entity data. Returns a copy of the current data.
-
-#### `data_set(data)`
-
-Set the entity data.
-
-#### `match_get() -> table`
-
-Get the entity match criteria.
-
-#### `match_set(match)`
-
-Set the entity match criteria.
-
-#### `make() -> Entity`
-
-Create a new `EmailEntity` instance with the same client and
-options.
-
-#### `get_name() -> string`
-
-Return the entity name.
-
-
----
-
-## HankoConfigurationEntity
-
-```lua
-local hanko_configuration = client:HankoConfiguration(nil)
-```
-
-### Fields
-
-| Field | Type | Required | Description |
-| --- | --- | --- | --- |
-| `account` | `table` | No | Controls the behavior regarding user account. |
-| `emails` | `table` | No | Controls the behavior regarding email addresses. |
-| `password` | `table` | No | Configuration options concerning passwords |
-
-### Operations
-
-#### `load(reqmatch, ctrl) -> any, err`
-
-Load a single entity matching the given criteria. Returns the entity, whose record `data_get()` reads, or `nil` and an error on failure.
-
-```lua
-local result, err = client:HankoConfiguration():load()
-```
-
-### Common Methods
-
-#### `data_get() -> table`
-
-Get the entity data. Returns a copy of the current data.
-
-#### `data_set(data)`
-
-Set the entity data.
-
-#### `match_get() -> table`
-
-Get the entity match criteria.
-
-#### `match_set(match)`
-
-Set the entity match criteria.
-
-#### `make() -> Entity`
-
-Create a new `HankoConfigurationEntity` instance with the same client and
-options.
-
-#### `get_name() -> string`
-
-Return the entity name.
 
 
 ---
@@ -455,22 +162,19 @@ Return the entity name.
 
 ---
 
-## PasscodeEntity
+## OrganizationManagementEntity
 
 ```lua
-local passcode = client:Passcode(nil)
+local organization_management = client:OrganizationManagement(nil)
 ```
 
 ### Fields
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `code` | `string` | No | The actual passcode from the email sent to the user during initialization, a string of 6 decimal digits |
-| `created_at` | `string` | No | Time of creation of the passcode |
-| `email_id` | `string` | No | The ID of the email address |
-| `id` | `string` | No | The ID of the passcode |
-| `ttl` | `number` | No | Lifespan of a passcode in seconds |
-| `user_id` | `string` | Yes | The ID of the user |
+| `has_role` | `boolean` | Yes |  |
+| `organization_id` | `string` | Yes | The ID of the organization to check |
+| `roles` | `table` | Yes | IDs or slugs of roles to check for. |
 
 ### Operations
 
@@ -479,8 +183,9 @@ local passcode = client:Passcode(nil)
 Create a new entity with the given data. Returns the created entity, or `nil` and an error on failure.
 
 ```lua
-local result, err = client:Passcode():create({
-  user_id = --[[ string ]],
+local result, err = client:OrganizationManagement():create({
+  organization_id = --[[ string ]],
+  roles = --[[ table ]],
 })
 ```
 
@@ -504,73 +209,7 @@ Set the entity match criteria.
 
 #### `make() -> Entity`
 
-Create a new `PasscodeEntity` instance with the same client and
-options.
-
-#### `get_name() -> string`
-
-Return the entity name.
-
-
----
-
-## PasswordEntity
-
-```lua
-local password = client:Password(nil)
-```
-
-### Fields
-
-| Field | Type | Required | Description |
-| --- | --- | --- | --- |
-| `password` | `string` | Yes | The actual password, its `minLength` defaults to 8 but can be [configured](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config) through the `password.min_password_length` option. |
-| `user_id` | `string` | Yes | The ID of the user to create/set a password for |
-
-### Operations
-
-#### `create(reqdata, ctrl) -> any, err`
-
-Create a new entity with the given data. Returns the created entity, or `nil` and an error on failure.
-
-```lua
-local result, err = client:Password():create({
-  password = --[[ string ]],
-  user_id = --[[ string ]],
-})
-```
-
-#### `update(reqdata, ctrl) -> any, err`
-
-Update an existing entity. The data must include the entity `id`. Returns the updated entity, or `nil` and an error on failure.
-
-```lua
-local result, err = client:Password():update({
-  -- Fields to update
-})
-```
-
-### Common Methods
-
-#### `data_get() -> table`
-
-Get the entity data. Returns a copy of the current data.
-
-#### `data_set(data)`
-
-Set the entity data.
-
-#### `match_get() -> table`
-
-Get the entity match criteria.
-
-#### `match_set(match)`
-
-Set the entity match criteria.
-
-#### `make() -> Entity`
-
-Create a new `PasswordEntity` instance with the same client and
+Create a new `OrganizationManagementEntity` instance with the same client and
 options.
 
 #### `get_name() -> string`
@@ -602,6 +241,10 @@ Declares a `application/x-www-form-urlencoded` body, which this SDK does not enc
 #### `load(reqmatch, ctrl) -> any, err`
 
 Load a single entity matching the given criteria. Returns the entity, whose record `data_get()` reads, or `nil` and an error on failure.
+
+```lua
+local result, err = client:Saml():load({ domain = "domain" })
+```
 
 ### Common Methods
 
@@ -645,8 +288,12 @@ local session_management = client:SessionManagement(nil)
 | --- | --- | --- | --- |
 | `claims` | `table` | Yes | The claims extracted from a JWT. |
 | `expiration_time` | `string` | No | Date-time indicating the expiration of the session. |
+| `id` | `string` | Yes | The ID of the organization |
 | `idle_expires_at` | `string` | No | Timestamp (in UTC) indicating when the session will expire due to inactivity, assuming no further activity occurs before this time. |
 | `is_valid` | `boolean` | No | Indicates whether the session is valid or not |
+| `name` | `string` | Yes | The name of the organization |
+| `organizations` | `table` | No | The organizations the user belongs to, and the role slugs they hold within each. |
+| `roles` | `table` | Yes | The slugs of the roles the user holds within this organization |
 | `session_token` | `string` | Yes | The session token (JWT) to validate |
 | `user_id` | `string` | No | The ID of the user the session is associated with. |
 
@@ -658,17 +305,16 @@ Create a new entity with the given data. Returns the created entity, or `nil` an
 
 ```lua
 local result, err = client:SessionManagement():create({
-  claims = --[[ table ]],
   session_token = --[[ string ]],
 })
 ```
 
-#### `load(reqmatch, ctrl) -> any, err`
+#### `list(reqmatch, ctrl) -> any, err`
 
-Load a single entity matching the given criteria. Returns the entity, whose record `data_get()` reads, or `nil` and an error on failure.
+List entities matching the given criteria. Returns an array of entities, one per record, or `nil` and an error on failure.
 
 ```lua
-local result, err = client:SessionManagement():load()
+local results, err = client:SessionManagement():list()
 ```
 
 ### Common Methods
@@ -760,7 +406,7 @@ local third_party = client:ThirdParty(nil)
 Load a single entity matching the given criteria. Returns the entity, whose record `data_get()` reads, or `nil` and an error on failure.
 
 ```lua
-local result, err = client:ThirdParty():load({ provider = "provider", redirect_to = "redirect_to" })
+local result, err = client:ThirdParty():load({ state = "state" })
 ```
 
 ### Common Methods
@@ -784,171 +430,6 @@ Set the entity match criteria.
 #### `make() -> Entity`
 
 Create a new `ThirdPartyEntity` instance with the same client and
-options.
-
-#### `get_name() -> string`
-
-Return the entity name.
-
-
----
-
-## TokenEntity
-
-```lua
-local token = client:Token(nil)
-```
-
-### Fields
-
-| Field | Type | Required | Description |
-| --- | --- | --- | --- |
-| `user_id` | `string` | No | The ID of the user on whose behalf the token was exchanged. |
-| `value` | `string` | No |  |
-
-### Operations
-
-#### `create(reqdata, ctrl) -> any, err`
-
-Create a new entity with the given data. Returns the created entity, or `nil` and an error on failure.
-
-```lua
-local result, err = client:Token():create({
-})
-```
-
-### Common Methods
-
-#### `data_get() -> table`
-
-Get the entity data. Returns a copy of the current data.
-
-#### `data_set(data)`
-
-Set the entity data.
-
-#### `match_get() -> table`
-
-Get the entity match criteria.
-
-#### `match_set(match)`
-
-Set the entity match criteria.
-
-#### `make() -> Entity`
-
-Create a new `TokenEntity` instance with the same client and
-options.
-
-#### `get_name() -> string`
-
-Return the entity name.
-
-
----
-
-## UserEntity
-
-```lua
-local user = client:User(nil)
-```
-
-### Fields
-
-| Field | Type | Required | Description |
-| --- | --- | --- | --- |
-| `created_at` | `string` | No | Time of creation of the the user |
-| `email` | `string` | No | The email address of the user |
-| `email_id` | `string` | No | The ID of the newly created email address |
-| `emails` | `table` | No |  |
-| `family_name` | `string` | No |  |
-| `given_name` | `string` | No |  |
-| `has_webauthn_credential` | `boolean` | No |  |
-| `id` | `string` | No | The ID of the user. |
-| `metadata` | `table` | No | The public and unsafe metadata of a user |
-| `mfa_config` | `table` | No |  |
-| `name` | `string` | No |  |
-| `passkeys` | `table` | No |  |
-| `picture` | `string` | No |  |
-| `security_keys` | `table` | No |  |
-| `updated_at` | `string` | No | Time of last update of the user |
-| `user_id` | `string` | No | The ID of the user |
-| `username` | `string` | No | The username of the user |
-| `verified` | `boolean` | No |  |
-| `webauthn_credentials` | `table` | No | A list of WebAuthn credentials |
-
-### Field Usage by Operation
-
-| Field | load | create | remove |
-| --- | --- | --- | --- |
-| `created_at` | - | - | - |
-| `email` | - | Yes | - |
-| `email_id` | - | - | - |
-| `emails` | - | - | - |
-| `family_name` | - | - | - |
-| `given_name` | - | - | - |
-| `has_webauthn_credential` | - | - | - |
-| `id` | - | - | - |
-| `metadata` | - | - | - |
-| `mfa_config` | - | - | - |
-| `name` | - | - | - |
-| `passkeys` | - | - | - |
-| `picture` | - | - | - |
-| `security_keys` | - | - | - |
-| `updated_at` | - | - | - |
-| `user_id` | - | - | - |
-| `username` | - | - | - |
-| `verified` | - | - | - |
-| `webauthn_credentials` | - | - | - |
-
-### Operations
-
-#### `create(reqdata, ctrl) -> any, err`
-
-Create a new entity with the given data. Returns the created entity, or `nil` and an error on failure.
-
-```lua
-local result, err = client:User():create({
-})
-```
-
-#### `load(reqmatch, ctrl) -> any, err`
-
-Load a single entity matching the given criteria. Returns the entity, whose record `data_get()` reads, or `nil` and an error on failure.
-
-```lua
-local result, err = client:User():load({ id = "user_id" })
-```
-
-#### `remove(reqmatch, ctrl) -> any, err`
-
-Remove the entity matching the given criteria. Returns the entity, marked as deleted, or `nil` and an error on failure.
-
-```lua
-local result, err = client:User():remove({ id = "user_id" })
-```
-
-### Common Methods
-
-#### `data_get() -> table`
-
-Get the entity data. Returns a copy of the current data.
-
-#### `data_set(data)`
-
-Set the entity data.
-
-#### `match_get() -> table`
-
-Get the entity match criteria.
-
-#### `match_set(match)`
-
-Set the entity match criteria.
-
-#### `make() -> Entity`
-
-Create a new `UserEntity` instance with the same client and
 options.
 
 #### `get_name() -> string`
@@ -1032,159 +513,6 @@ Return the entity name.
 
 ---
 
-## WebAuthnEntity
-
-```lua
-local web_authn = client:WebAuthn(nil)
-```
-
-### Fields
-
-| Field | Type | Required | Description |
-| --- | --- | --- | --- |
-| `aaguid` | `string` | No |  |
-| `attestation_type` | `string` | No |  |
-| `backup_eligible` | `boolean` | No |  |
-| `backup_state` | `boolean` | No |  |
-| `created_at` | `string` | No |  |
-| `credential_id` | `string` | No | The ID of the created credential |
-| `id` | `string` | No |  |
-| `last_used_at` | `string` | No |  |
-| `mfa_only` | `boolean` | No |  |
-| `name` | `string` | No | A new credential name. |
-| `publickey` | `string` | No |  |
-| `rawId` | `string` | No |  |
-| `response` | `table` | No |  |
-| `transports` | `table` | No |  |
-| `type` | `string` | No |  |
-| `user_id` | `string` | No | The ID of the user on whose behalf a credential was created |
-
-### Operations
-
-#### `create(reqdata, ctrl) -> any, err`
-
-Create a new entity with the given data. Returns the created entity, or `nil` and an error on failure.
-
-```lua
-local result, err = client:WebAuthn():create({
-})
-```
-
-#### `list(reqmatch, ctrl) -> any, err`
-
-List entities matching the given criteria. Returns an array of entities, one per record, or `nil` and an error on failure.
-
-```lua
-local results, err = client:WebAuthn():list()
-```
-
-#### `remove(reqmatch, ctrl) -> any, err`
-
-Remove the entity matching the given criteria. Returns the entity, marked as deleted, or `nil` and an error on failure.
-
-```lua
-local result, err = client:WebAuthn():remove({ id = "id" })
-```
-
-#### `update(reqdata, ctrl) -> any, err`
-
-Update an existing entity. The data must include the entity `id`. Returns the updated entity, or `nil` and an error on failure.
-
-```lua
-local result, err = client:WebAuthn():update({
-  id = "id",
-  -- Fields to update
-})
-```
-
-### Common Methods
-
-#### `data_get() -> table`
-
-Get the entity data. Returns a copy of the current data.
-
-#### `data_set(data)`
-
-Set the entity data.
-
-#### `match_get() -> table`
-
-Get the entity match criteria.
-
-#### `match_set(match)`
-
-Set the entity match criteria.
-
-#### `make() -> Entity`
-
-Create a new `WebAuthnEntity` instance with the same client and
-options.
-
-#### `get_name() -> string`
-
-Return the entity name.
-
-
----
-
-## WebauthnLoginEntity
-
-```lua
-local webauthn_login = client:WebauthnLogin(nil)
-```
-
-### Fields
-
-| Field | Type | Required | Description |
-| --- | --- | --- | --- |
-| `credential_id` | `string` | No |  |
-| `id` | `string` | No |  |
-| `rawId` | `string` | No |  |
-| `response` | `table` | No |  |
-| `type` | `string` | No |  |
-| `user_id` | `string` | No |  |
-
-### Operations
-
-#### `create(reqdata, ctrl) -> any, err`
-
-Create a new entity with the given data. Returns the created entity, or `nil` and an error on failure.
-
-```lua
-local result, err = client:WebauthnLogin():create({
-})
-```
-
-### Common Methods
-
-#### `data_get() -> table`
-
-Get the entity data. Returns a copy of the current data.
-
-#### `data_set(data)`
-
-Set the entity data.
-
-#### `match_get() -> table`
-
-Get the entity match criteria.
-
-#### `match_set(match)`
-
-Set the entity match criteria.
-
-#### `make() -> Entity`
-
-Create a new `WebauthnLoginEntity` instance with the same client and
-options.
-
-#### `get_name() -> string`
-
-Return the entity name.
-
-
----
-
 ## Features
 
 | Feature | Version | Description |
@@ -1195,6 +523,7 @@ Return the entity name.
 | `paging` | 0.0.1 | Paging |
 | `ratelimit` | 0.0.1 | Rate limiting |
 | `retry` | 0.0.1 | Retry |
+| `secrets` | 0.1.0 | Secrets |
 | `test` | 0.0.1 | Test transport |
 | `timeout` | 0.0.1 | Timeout |
 
@@ -1210,6 +539,7 @@ local client = sdk.new({
     paging = { active = true },
     ratelimit = { active = true },
     retry = { active = true },
+    secrets = { active = true },
     test = { active = true },
     timeout = { active = true },
   },
@@ -1228,7 +558,7 @@ transport, and the order you list them in is the order they nest.
 
 #### Ordering
 
-`ratelimit`, `retry`, `timeout` wrap the transport. Each
+`ratelimit`, `retry`, `secrets`, `timeout` wrap the transport. Each
 wraps whatever is already installed, so **activation order is nesting order**:
 a feature activated later sits OUTSIDE one activated earlier, and sees the call
 first.
@@ -1422,6 +752,31 @@ another when you do not.
 **Usage**
 
 Set `feature.retry.active` to true in the client options, and override any option above in the same entry. Every option keeps
+its default unless you name it.
+
+**Considerations**
+
+- Wraps the transport: its place in the activation order decides what it
+  sees. See [Ordering](#ordering) above.
+- Inactive by default: leaving it out costs nothing at runtime.
+
+#### `secrets`
+
+Secrets.
+
+**Configuration**
+
+| Option | Default |
+|---|---|
+| `active` | `false` |
+| `cache` | `true` |
+| `exchange` | `{active: false, method: 'POST', path: 'auth/token', refresh: '', request: 'refresh_token', response: 'access_token', retries: 1, statuses: [401]}` |
+| `name` | `'apikey'` |
+| `providers` | `[]` |
+
+**Usage**
+
+Set `feature.secrets.active` to true in the client options, and override any option above in the same entry. Every option keeps
 its default unless you name it.
 
 **Considerations**

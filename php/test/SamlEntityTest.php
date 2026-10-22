@@ -24,12 +24,28 @@ class SamlEntityTest extends TestCase
         $this->assertNotNull($ent);
     }
 
+    public function test_validate(): void
+    {
+        $cfg = HankoPublicConfig::shared_config();
+        if (!isset($cfg["feature"]["validate"])) {
+            $this->markTestSkipped('feature not present in this SDK: validate');
+        }
+        $client = HankoPublicSDK::test(null, ["feature" => ["validate" => ["active" => true]]]);
+        $err = null;
+        try {
+            $client->Saml(null)->load(["cert_only" => 'x', "domain" => 'x'], null);
+        } catch (\Throwable $e) {
+            $err = $e;
+        }
+        $this->assertSame('validate_failed', $err->sdk_code ?? null);
+    }
+
     public function test_basic_flow(): void
     {
         $setup = saml_basic_setup(null);
         // Per-op sdk-test-control.json skip.
         $_live = !empty($setup["live"]);
-        foreach (["create"] as $_op) {
+        foreach (["create", "load"] as $_op) {
             [$_shouldSkip, $_reason] = Runner::is_control_skipped("entityOp", "saml." . $_op, $_live ? "live" : "unit");
             if ($_shouldSkip) {
                 $this->markTestSkipped($_reason ?? "skipped via sdk-test-control.json");
@@ -46,6 +62,11 @@ class SamlEntityTest extends TestCase
         $saml_ref01_data_result = $saml_ref01_ent->create($saml_ref01_data, null);
         $saml_ref01_data = Helpers::to_map(is_object($saml_ref01_data_result) && method_exists($saml_ref01_data_result, 'data_get') ? $saml_ref01_data_result->data_get() : $saml_ref01_data_result);
         $this->assertNotNull($saml_ref01_data);
+
+        // LOAD
+        $saml_ref01_match_dt0 = [];
+        $saml_ref01_data_dt0_loaded = $saml_ref01_ent->load($saml_ref01_match_dt0, null);
+        $this->assertNotNull($saml_ref01_data_dt0_loaded);
 
     }
 }

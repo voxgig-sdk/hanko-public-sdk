@@ -21,6 +21,14 @@ main: kit: entity: session_management: {
       sh: "Date-time indicating the expiration of the session."
       t: "`$STRING`"
     }
+    id: {
+      fo: "uuid4"
+      h: "Id"
+      n: "id"
+      r: true
+      sh: "The ID of the organization"
+      t: "`$STRING`"
+    }
     idle_expires_at: {
       fo: "date-time"
       h: "Idle Expires At"
@@ -35,6 +43,27 @@ main: kit: entity: session_management: {
       r: false
       sh: "Indicates whether the session is valid or not"
       t: "`$BOOLEAN`"
+    }
+    name: {
+      h: "Name"
+      n: "name"
+      r: true
+      sh: "The name of the organization"
+      t: "`$STRING`"
+    }
+    organizations: {
+      h: "Organizations"
+      n: "organizations"
+      r: false
+      sh: "The organizations the user belongs to, and the role slugs they hold within each."
+      t: "`$ARRAY`"
+    }
+    roles: {
+      h: "Roles"
+      n: "roles"
+      r: true
+      sh: "The slugs of the roles the user holds within this organization"
+      t: "`$ARRAY`"
     }
     session_token: {
       fo: "JWT"
@@ -53,6 +82,11 @@ main: kit: entity: session_management: {
       sh: "The ID of the user the session is associated with."
       t: "`$STRING`"
     }
+  }
+
+  id: {
+    field: "id"
+    name: "id"
   }
 
   name: "session_management"
@@ -90,8 +124,8 @@ main: kit: entity: session_management: {
         }
       ]
     }
-    load: {
-      name: "load"
+    list: {
+      name: "list"
       points: [
         {
           co: {

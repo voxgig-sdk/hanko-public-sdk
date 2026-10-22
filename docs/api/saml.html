@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Saml | Hanko Public API</title><link rel="stylesheet" href="../assets/style.css"></head>
+<body><a class="skip" href="#content">Skip to content</a>
+<header class="site-header"><a class="site-title" href="../index.html">Hanko Public API<span>SDK documentation</span></a><div class="site-links"><a class="repo-link" href="https://github.com/voxgig-sdk/hanko-public-sdk">voxgig-sdk/hanko-public-sdk</a></div></header>
+<div class="site-notice" role="note"></div>
+<div class="shell"><nav class="site-nav" aria-label="Documentation"><div class="search"><label for="search">Search documentation</label><input id="search" type="search" data-base="../" placeholder="Find a guide or reference"><div id="results" aria-live="polite"></div></div><details><summary>Overview</summary><a href="../index.html">Hanko Public API</a></details>
+<details open><summary>API</summary><a href="../api/index.html">API overview</a>
+<a href="../api/json_web_key.html">JsonWebKey</a>
+<a href="../api/organization_management.html">OrganizationManagement</a>
+<a aria-current="page" href="../api/saml.html">Saml</a><div class="nav-sections"><a class="nav-section" href="#post-samlcallback">POST /saml/callback</a>
+<a class="nav-section" href="#get-samlmetadata">GET /saml/metadata</a></div>
+<a href="../api/session_management.html">SessionManagement</a>
+<a href="../api/status.html">Status</a>
+<a href="../api/third_party.html">ThirdParty</a>
+<a href="../api/user_management.html">UserManagement</a></details>
+<details><summary>Guides</summary><a href="../guides/authentication.html">Authentication</a>
+<a href="../guides/first-call.html">Make your first API call</a>
+<a href="../guides/errors.html">Handle errors</a>
+<a href="../guides/concepts.html">Entities, SDKs, and tools</a></details>
+<details><summary>SDKs</summary><a href="../sdks/go.html">Golang</a>
+<a href="../sdks/lua.html">Lua</a>
+<a href="../sdks/php.html">PHP</a>
+<a href="../sdks/py.html">Python</a>
+<a href="../sdks/rb.html">Ruby</a>
+<a href="../sdks/ts.html">TypeScript</a></details>
+<details><summary>Tools</summary><a href="../tools/go-cli.html">Go CLI</a>
+<a href="../tools/go-mcp.html">Go MCP server</a></details>
+<details><summary>Features</summary><a href="../features/debug.html">Debug capture</a>
+<a href="../features/idempotency.html">Idempotency</a>
+<a href="../features/metrics.html">Metrics</a>
+<a href="../features/paging.html">Paging</a>
+<a href="../features/ratelimit.html">Rate limiting</a>
+<a href="../features/retry.html">Retry</a>
+<a href="../features/secrets.html">Secrets</a>
+<a href="../features/test.html">Test transport</a>
+<a href="../features/timeout.html">Timeout</a></details></nav><main id="content"><div class="page-context"><span class="section-dot" aria-hidden="true"></span>API</div><h1 id="saml">Saml</h1>
+<h2 id="operations">Operations</h2>
+<p>Every route this entity exposes. Each route links to its own reference on this page.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Route</th>
+<th>SDK operation</th>
+<th>Returns</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>POST</code></td>
+<td><a href="#post-samlcallback"><code>/saml/callback</code></a></td>
+<td><code>create</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><a href="#get-samlmetadata"><code>/saml/metadata</code></a></td>
+<td><code>load</code></td>
+<td>OK</td>
+</tr>
+</tbody>
+</table>
+<h2 id="examples">Examples</h2>
+<p>One example per SDK, generated from the API model. The argument names are the parameters and fields of this entity, and the values are placeholders. The examples are not compiled or executed.</p>
+<h3 id="golang">Golang</h3>
+<p>Construct <code>client</code> as shown in the <a href="../sdks/go.html#set-up-the-client">Golang setup</a>, then call the operations:</p>
+<pre><code class="language-go">saml, err := client.Saml(nil).Load(map[string]any{&quot;domain&quot;: &quot;example&quot;}, nil)
+if err != nil {
+    panic(err)
+}
+fmt.Println(saml)
+created, err := client.Saml(nil).Create(map[string]any{}, nil)
+if err != nil {
+    panic(err)
+}
+fmt.Println(created)
+</code></pre>
+<h3 id="lua">Lua</h3>
+<p>Construct <code>client</code> as shown in the <a href="../sdks/lua.html#set-up-the-client">Lua setup</a>, then call the operations:</p>
+<pre><code class="language-lua">local saml, err = client:Saml():load({ domain = &quot;example&quot; })
+local created, err = client:Saml():create({  })
+</code></pre>
+<h3 id="php">PHP</h3>
+<p>Construct <code>client</code> as shown in the <a href="../sdks/php.html#set-up-the-client">PHP setup</a>, then call the operations:</p>
+<pre><code class="language-php">$saml = $client-&gt;Saml()-&gt;load([&quot;domain&quot; =&gt; &quot;example&quot;]);
+$created = $client-&gt;Saml()-&gt;create([]);
+</code></pre>
+<h3 id="python">Python</h3>
+<p>Construct <code>client</code> as shown in the <a href="../sdks/py.html#set-up-the-client">Python setup</a>, then call the operations:</p>
+<pre><code class="language-py">saml = client.Saml().load({&quot;domain&quot;: &quot;example&quot;})
+created = client.Saml().create({  })
+</code></pre>
+<h3 id="ruby">Ruby</h3>
+<p>Construct <code>client</code> as shown in the <a href="../sdks/rb.html#set-up-the-client">Ruby setup</a>, then call the operations:</p>
+<pre><code class="language-rb">saml = client.Saml.load({ &quot;domain&quot; =&gt; &quot;example&quot; })
+created = client.Saml.create({  })
+</code></pre>
+<h3 id="typescript">TypeScript</h3>
+<p>Construct <code>client</code> as shown in the <a href="../sdks/ts.html#set-up-the-client">TypeScript setup</a>, then call the operations:</p>
+<pre><code class="language-ts">const saml = await client.Saml().load({ domain: &quot;example&quot; })
+const created = await client.Saml().create({  })
+</code></pre>
+<h2 id="fields">Fields</h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+</table>
+<h2 id="create">create</h2>
+<h3 id="post-samlcallback" class="operation" data-method="post"><code>POST</code> /saml/callback</h3>
+<p>Operation ID: <code>post-saml-callback</code>.</p>
+<h4 id="request-body">Request body</h4>
+<p><code>application/x-www-form-urlencoded</code></p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>RelayState</code></td>
+<td><code>string</code></td>
+<td>No</td>
+<td></td>
+</tr>
+<tr>
+<td><code>SAMLResponse</code></td>
+<td><code>string</code></td>
+<td>No</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="responses">Responses</h4>
+<h5 id="302-found" class="status" data-status="3xx">302: Found</h5>
+<h5 id="307-temporary-redirect" class="status" data-status="3xx">307: Temporary Redirect</h5>
+<h2 id="load">load</h2>
+<h3 id="get-samlmetadata" class="operation" data-method="get"><code>GET</code> /saml/metadata</h3>
+<p>Operation ID: <code>get-saml-metadata</code>.</p>
+<h4 id="parameters">Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>In</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>domain</code></td>
+<td><code>query</code></td>
+<td><code>string</code></td>
+<td>Yes</td>
+<td>Fully qualified domain name to which a SAML service provider is registered</td>
+</tr>
+<tr>
+<td><code>cert_only</code></td>
+<td><code>query</code></td>
+<td><code>boolean</code></td>
+<td>No</td>
+<td>Toggle to download the SAML service provider public certificate</td>
+</tr>
+</tbody>
+</table>
+<h4 id="responses-1">Responses</h4>
+<h5 id="200-ok" class="status" data-status="2xx">200: OK</h5>
+<p><code>application/octet-stream</code></p>
+<p>The response is <code>string (binary)</code>.</p>
+<h5 id="400-bad-request" class="status" data-status="4xx">400: Bad Request</h5>
+<p><code>application/json</code></p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>code</code></td>
+<td><code>integer (int32)</code></td>
+<td>Yes</td>
+<td></td>
+</tr>
+<tr>
+<td><code>message</code></td>
+<td><code>string</code></td>
+<td>Yes</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Example response:</p>
+<pre><code class="language-json">{
+  &quot;code&quot;: 400,
+  &quot;message&quot;: &quot;Bad Request&quot;
+}
+</code></pre>
+<h5 id="404-not-found" class="status" data-status="4xx">404: Not found</h5>
+</main></div>
+<script src="../assets/search.js" defer></script></body></html>

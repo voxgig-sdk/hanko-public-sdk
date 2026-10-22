@@ -6,7 +6,7 @@ from hankopublic_sdk.utility.voxgig_struct import voxgig_struct as vs
 from hankopublic_sdk.core import helpers
 from hankopublic_sdk.hankopublic_types import (
     SessionManagement,
-    SessionManagementLoadMatch,
+    SessionManagementListMatch,
     SessionManagementCreateData,
 )
 
@@ -59,7 +59,7 @@ class SessionManagementEntity:
 
     def data_set(self, args=None):
         if args is not None:
-            self._data = helpers.to_map(vs.clone(args)) or {}
+            self._data = vs.clone(args)
             self._utility.feature_hook(self._entctx, "SetData")
 
     def data_get(self) -> SessionManagement:
@@ -155,7 +155,8 @@ class SessionManagementEntity:
         except Exception as err:
             # What a hook raises here must not escape the cleaning below.
             try:
-                utility.feature_hook(ctx, "PreUnexpected")
+                if not ctx.unexpected_fired:
+                    utility.feature_hook(ctx, "PreUnexpected")
             except Exception as hookerr:
                 err = hookerr
             if self._unexpected(ctx, err) is not None:
@@ -200,15 +201,16 @@ class SessionManagementEntity:
         return None
 
     
-    def load(self, reqmatch=None, ctrl=None) -> SessionManagementEntity:
+
+    
+    def list(self, reqmatch=None, ctrl=None) -> list[SessionManagementEntity]:
         utility = self._utility
-        # reqmatch is optional: an entity with no id-like key loads with no
-        # match. Treat None as an empty match so client.SessionManagement().load()
-        # works with no args.
+        # reqmatch is optional: an omitted match lists all records. Treat None
+        # as an empty match so client.SessionManagement().list() works with no args.
         if reqmatch is None:
             reqmatch = {}
         ctx = utility.make_context({
-            "opname": "load",
+            "opname": "list",
             "ctrl": ctrl,
             "match": self._match,
             "data": self._data,
@@ -219,14 +221,10 @@ class SessionManagementEntity:
             if ctx.result is not None:
                 if ctx.result.resmatch is not None:
                     self._match = ctx.result.resmatch
-                if ctx.result.resdata is not None:
-                    self._data = helpers.to_map(vs.clone(ctx.result.resdata)) or {}
 
         return self._run_op(ctx, post_done)
 
 
-
-    
 
     
     def create(self, reqdata: SessionManagementCreateData, ctrl=None) -> SessionManagementEntity:
@@ -319,7 +317,9 @@ class SessionManagementEntity:
         except Exception as err:
             # What a hook raises here must not escape the cleaning below.
             try:
-                utility.feature_hook(ctx, "PreUnexpected")
+                # Once per operation: make_error fires it for its own error.
+                if not ctx.unexpected_fired:
+                    utility.feature_hook(ctx, "PreUnexpected")
             except Exception as hookerr:
                 err = hookerr
             if self._unexpected(ctx, err) is None:

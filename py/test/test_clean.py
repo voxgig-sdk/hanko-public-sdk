@@ -16,7 +16,7 @@ from test.feature_harness import has_feature
 
 
 # Generated: the credential's wire placement is fixed when the SDK is built.
-AUTH = {"suppressed":False,"where":"cookie","name":"hanko","basic":False}
+AUTH = {"suppressed":False,"where":"header","name":"authorization","basic":False}
 
 CANARY = {
     "apikey": "CANARY-APIKEY-k9x2m7q4p1",

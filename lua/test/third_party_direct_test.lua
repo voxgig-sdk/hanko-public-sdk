@@ -37,7 +37,7 @@ describe("ThirdPartyDirect", function()
     end
 
     local result, err = client:direct({
-      path = "thirdparty/auth",
+      path = "thirdparty/callback",
       method = "GET",
       params = params,
       query = query,

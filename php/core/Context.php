@@ -34,6 +34,9 @@ class HankoPublicContext implements \JsonSerializable
     public ?HankoPublicResult $result;
     public ?HankoPublicResponse $response;
     public HankoPublicOperation $op;
+    // Set by make_error as it fires PreUnexpected, which fires once per
+    // operation.
+    public bool $unexpected_fired = false;
 
     public function __construct(array $ctxmap = [], ?self $basectx = null)
     {

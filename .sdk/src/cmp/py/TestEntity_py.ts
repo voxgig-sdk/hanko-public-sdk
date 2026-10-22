@@ -1,4 +1,4 @@
-import { flowSteps, opReachable } from '@voxgig/sdkgen'
+import { flowSteps, opReachable, validateSeeds } from '@voxgig/sdkgen'
 
 import {
   flatten,
@@ -201,7 +201,7 @@ ${hasList ? `
                 else:
                     got.append(item)
             assert len(got) == 3
-${failureTests(model, entity)}` : ''}${validateTest(model, entity)}
+${failureTests(model, entity)}${validateListTest(model, entity)}` : ''}${validateTest(model, entity)}
 ${strict ? '' : `    @runner.live_observe("${PROJUPPER}_TEST_LIVE", LIVE_STRICT)\n`}    def test_should_run_basic_flow(self):
         setup = _${entity.name}_basic_setup(None)
         # Per-op sdk-test-control.json skip — basic test exercises a flow with
@@ -573,7 +573,7 @@ const generateLoad: OpGen = (ctx, step, index) => {
     Content(`        ${matchvar} = {
             "id": ${srcdatavar}["id"],
         }
-        ${datavar}_loaded = ${entvar}.load(${matchvar}, None)
+${parentMatch(step, matchvar)}        ${datavar}_loaded = ${entvar}.load(${matchvar}, None)
         ${datavar}_load_result = helpers.to_map(runner.entity_data(${datavar}_loaded))
         assert ${datavar}_load_result is not None
         assert ${datavar}_load_result["id"] == ${srcdatavar}["id"]
@@ -581,7 +581,7 @@ const generateLoad: OpGen = (ctx, step, index) => {
   }
   else {
     Content(`        ${matchvar} = {}
-        ${datavar}_loaded = ${entvar}.load(${matchvar}, None)
+${parentMatch(step, matchvar)}        ${datavar}_loaded = ${entvar}.load(${matchvar}, None)
         assert ${datavar}_loaded is not None
 `)
   }
@@ -612,10 +612,21 @@ const generateRemove: OpGen = (ctx, step, index) => {
   Content(`        ${matchvar} = {
             "id": ${srcdatavar}["id"],
         }
-        ${entvar}.remove(${matchvar}, None)
+${parentMatch(step, matchvar)}        ${entvar}.remove(${matchvar}, None)
 `)
 }
 
+
+
+// A child's route names its parents, and an entity no earlier step has
+// filled knows none of them, so the call itself gives each parent id. A live
+// ENTID may key a parent by its field name, the fixture by its own name.
+function parentMatch(step: any, matchvar: string): string {
+  return Object.entries(step.m || {})
+    .filter(([k]: any) => k !== 'id' && !k.endsWith('$'))
+    .map(([key, val]: any) => `        ${matchvar}["${key}"] = setup["idmap"].get("${key}") or setup["idmap"].get("${val}")
+`).join('')
+}
 
 const GENERATE_OP: Record<string, OpGen> = {
   create: generateCreate,
@@ -709,6 +720,30 @@ function validateTest(model: Model, entity: ModelEntity): string {
             client.${entity.Name}(None).${bad.op}({${args}}, None)
         assert "validate_failed" == getattr(err.value, "code", None)
 `
+}
+
+
+// A list response is checked record by record, not entity by entity.
+function validateListTest(model: Model, entity: ModelEntity): string {
+  const seeds = validateSeeds(entity)
+  if (null == seeds) {
+    return ''
+  }
+  const SDK = model.const.Name + 'SDK'
+  const seed = (rec: Record<string, any>) =>
+    '{"entity": {' + JSON.stringify(entity.name) + ': {"v1": {' +
+    Object.entries(rec).map(([k, v]) => JSON.stringify(k) + ': ' + pyLit(v)).join(', ') + '}}}}'
+  return `
+    def test_should_validate_each_listed_record(self):
+        if "validate" not in (shared_config().get("feature") or {}):
+            pytest.skip("feature not present in this SDK: validate")
+        opts = {"feature": {"validate": {"active": True, "request": False, "response": True}}}
+        listed = ${SDK}.test(${seed(seeds.valid)}, opts).${entity.Name}(None).list(None, None)
+        assert ["v1"] == [ent.data_get().get("id") for ent in listed]
+${null == seeds.invalid ? '' : `        with pytest.raises(Exception) as err:
+            ${SDK}.test(${seed(seeds.invalid)}, opts).${entity.Name}(None).list(None, None)
+        assert "validate_failed" == getattr(err.value, "code", None)
+`}`
 }
 
 

@@ -18,11 +18,23 @@ class SamlEntityTest < Minitest::Test
     assert !ent.nil?
   end
 
+  def test_validate
+    cfg = HankoPublicConfig.shared_config
+    unless cfg["feature"].is_a?(Hash) && cfg["feature"].key?("validate")
+      skip("feature not present in this SDK: validate")
+    end
+    client = HankoPublicSDK.test(nil, { "feature" => { "validate" => { "active" => true } } })
+    err = assert_raises(StandardError) do
+      client.Saml(nil).load({ "cert_only" => "x", "domain" => "x" }, nil)
+    end
+    assert_equal "validate_failed", err.code
+  end
+
   def test_basic_flow
     setup = saml_basic_setup(nil)
     # Per-op sdk-test-control.json skip.
     _live = setup[:live] || false
-    ["create"].each do |_op|
+    ["create", "load"].each do |_op|
       _should_skip, _reason = Runner.is_control_skipped("entityOp", "saml." + _op, _live ? "live" : "unit")
       if _should_skip
         skip(_reason || "skipped via sdk-test-control.json")
@@ -39,6 +51,11 @@ class SamlEntityTest < Minitest::Test
     saml_ref01_data_result = saml_ref01_ent.create(saml_ref01_data, nil)
     saml_ref01_data = Helpers.to_map(saml_ref01_data_result.respond_to?(:data_get) ? saml_ref01_data_result.data_get : saml_ref01_data_result)
     assert !saml_ref01_data.nil?
+
+    # LOAD
+    saml_ref01_match_dt0 = {}
+    saml_ref01_data_dt0_loaded = saml_ref01_ent.load(saml_ref01_match_dt0, nil)
+    assert !saml_ref01_data_dt0_loaded.nil?
 
   end
 end

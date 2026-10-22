@@ -31,6 +31,19 @@ func TestSamlEntity(t *testing.T) {
 		}
 	})
 
+	t.Run("validate", func(t *testing.T) {
+		if !fhHasFeature("validate") {
+			t.Skip("feature not present in this SDK: validate")
+		}
+		client := sdk.TestSDK(nil, map[string]any{
+			"feature": map[string]any{"validate": map[string]any{"active": true}},
+		})
+		_, err := client.Saml(nil).Load(map[string]any{"cert_only": "x", "domain": "x"}, nil)
+		if sdkerr, ok := err.(*core.HankoPublicError); !ok || "validate_failed" != sdkerr.Code {
+			t.Fatalf("expected validate_failed, got %v", err)
+		}
+	})
+
 	t.Run("basic", func(tt *testing.T) {
 		var t testing.TB = tt
 		setup := samlBasicSetup(nil)
@@ -40,7 +53,7 @@ func TestSamlEntity(t *testing.T) {
 		if setup.live {
 			_mode = "live"
 		}
-		for _, _op := range []string{"create"} {
+		for _, _op := range []string{"create", "load"} {
 			if _shouldSkip, _reason := isControlSkipped("entityOp", "saml." + _op, _mode); _shouldSkip {
 				if _reason == "" {
 					_reason = "skipped via sdk-test-control.json"
@@ -50,6 +63,7 @@ func TestSamlEntity(t *testing.T) {
 			}
 		}
 		client := setup.client
+		_ = client
 
 		// CREATE
 		samlRef01Ent := client.Saml(nil)
@@ -63,6 +77,16 @@ func TestSamlEntity(t *testing.T) {
 		samlRef01Data = core.ToMapAny(entityData(samlRef01DataResult))
 		if samlRef01Data == nil {
 			t.Fatal("expected create result to be a map")
+		}
+
+		// LOAD
+		samlRef01MatchDt0 := map[string]any{}
+		samlRef01DataDt0Loaded, err := samlRef01Ent.Load(samlRef01MatchDt0, nil)
+		if err != nil {
+			t.Fatalf("load failed: %v", err)
+		}
+		if samlRef01DataDt0Loaded == nil {
+			t.Fatal("expected load result to be non-nil")
 		}
 
 	})

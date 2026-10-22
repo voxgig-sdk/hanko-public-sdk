@@ -8,260 +8,6 @@
 # @voxgig/apidef VALID_CANON). Ruby types are unenforced; these YARD
 # annotations document the shapes. Do not edit by hand.
 
-# CredentialCreationOption entity data model.
-#
-# @!attribute [rw] attestation
-#   @return [String, nil]
-#
-# @!attribute [rw] authenticatorSelection
-#   @return [Hash, nil]
-#
-# @!attribute [rw] challenge
-#   @return [String, nil]
-#
-# @!attribute [rw] pubKeyCredParams
-#   @return [Array, nil]
-#
-# @!attribute [rw] rp
-#   @return [Hash, nil]
-#
-# @!attribute [rw] timeout
-#   @return [Integer, nil]
-#
-# @!attribute [rw] user
-#   @return [Hash, nil]
-CredentialCreationOption = Struct.new(
-  :attestation,
-  :authenticatorSelection,
-  :challenge,
-  :pubKeyCredParams,
-  :rp,
-  :timeout,
-  :user,
-  keyword_init: true
-)
-
-# Request payload for CredentialCreationOption#create.
-#
-# @!attribute [rw] attestation
-#   @return [String, nil]
-#
-# @!attribute [rw] authenticatorSelection
-#   @return [Hash, nil]
-#
-# @!attribute [rw] challenge
-#   @return [String, nil]
-#
-# @!attribute [rw] pubKeyCredParams
-#   @return [Array, nil]
-#
-# @!attribute [rw] rp
-#   @return [Hash, nil]
-#
-# @!attribute [rw] timeout
-#   @return [Integer, nil]
-#
-# @!attribute [rw] user
-#   @return [Hash, nil]
-CredentialCreationOptionCreateData = Struct.new(
-  :attestation,
-  :authenticatorSelection,
-  :challenge,
-  :pubKeyCredParams,
-  :rp,
-  :timeout,
-  :user,
-  keyword_init: true
-)
-
-# CredentialRequestOption entity data model.
-#
-# @!attribute [rw] allowCredentials
-#   @return [Array, nil]
-#
-# @!attribute [rw] challenge
-#   @return [String, nil]
-#
-# @!attribute [rw] rpId
-#   @return [String, nil]
-#
-# @!attribute [rw] timeout
-#   @return [Integer, nil]
-#
-# @!attribute [rw] userVerification
-#   @return [String, nil]
-#
-# @!attribute [rw] user_id
-#   @return [String, nil]
-CredentialRequestOption = Struct.new(
-  :allowCredentials,
-  :challenge,
-  :rpId,
-  :timeout,
-  :userVerification,
-  :user_id,
-  keyword_init: true
-)
-
-# Request payload for CredentialRequestOption#create.
-#
-# @!attribute [rw] allowCredentials
-#   @return [Array, nil]
-#
-# @!attribute [rw] challenge
-#   @return [String, nil]
-#
-# @!attribute [rw] rpId
-#   @return [String, nil]
-#
-# @!attribute [rw] timeout
-#   @return [Integer, nil]
-#
-# @!attribute [rw] userVerification
-#   @return [String, nil]
-#
-# @!attribute [rw] user_id
-#   @return [String, nil]
-CredentialRequestOptionCreateData = Struct.new(
-  :allowCredentials,
-  :challenge,
-  :rpId,
-  :timeout,
-  :userVerification,
-  :user_id,
-  keyword_init: true
-)
-
-# Email entity data model.
-#
-# @!attribute [rw] address
-#   @return [String]
-#
-# @!attribute [rw] id
-#   @return [String, nil]
-#
-# @!attribute [rw] identities
-#   @return [Object, nil]
-#
-# @!attribute [rw] identity
-#   @return [Object, nil]
-#
-# @!attribute [rw] is_primary
-#   @return [Boolean, nil]
-#
-# @!attribute [rw] is_verified
-#   @return [Boolean, nil]
-Email = Struct.new(
-  :address,
-  :id,
-  :identities,
-  :identity,
-  :is_primary,
-  :is_verified,
-  keyword_init: true
-)
-
-# Request payload for Email#list.
-#
-# @!attribute [rw] address
-#   @return [String, nil]
-#
-# @!attribute [rw] id
-#   @return [String, nil]
-#
-# @!attribute [rw] identities
-#   @return [Object, nil]
-#
-# @!attribute [rw] identity
-#   @return [Object, nil]
-#
-# @!attribute [rw] is_primary
-#   @return [Boolean, nil]
-#
-# @!attribute [rw] is_verified
-#   @return [Boolean, nil]
-EmailListMatch = Struct.new(
-  :address,
-  :id,
-  :identities,
-  :identity,
-  :is_primary,
-  :is_verified,
-  keyword_init: true
-)
-
-# Request payload for Email#create.
-#
-# @!attribute [rw] address
-#   @return [String]
-#
-# @!attribute [rw] id
-#   @return [String, nil]
-#
-# @!attribute [rw] identities
-#   @return [Object, nil]
-#
-# @!attribute [rw] identity
-#   @return [Object, nil]
-#
-# @!attribute [rw] is_primary
-#   @return [Boolean, nil]
-#
-# @!attribute [rw] is_verified
-#   @return [Boolean, nil]
-EmailCreateData = Struct.new(
-  :address,
-  :id,
-  :identities,
-  :identity,
-  :is_primary,
-  :is_verified,
-  keyword_init: true
-)
-
-# Request payload for Email#remove.
-#
-# @!attribute [rw] id
-#   @return [String]
-EmailRemoveMatch = Struct.new(
-  :id,
-  keyword_init: true
-)
-
-# HankoConfiguration entity data model.
-#
-# @!attribute [rw] account
-#   @return [Hash, nil]
-#
-# @!attribute [rw] emails
-#   @return [Hash, nil]
-#
-# @!attribute [rw] password
-#   @return [Hash, nil]
-HankoConfiguration = Struct.new(
-  :account,
-  :emails,
-  :password,
-  keyword_init: true
-)
-
-# Request payload for HankoConfiguration#load.
-#
-# @!attribute [rw] account
-#   @return [Hash, nil]
-#
-# @!attribute [rw] emails
-#   @return [Hash, nil]
-#
-# @!attribute [rw] password
-#   @return [Hash, nil]
-HankoConfigurationLoadMatch = Struct.new(
-  :account,
-  :emails,
-  :password,
-  keyword_init: true
-)
-
 # JsonWebKey entity data model.
 #
 # @!attribute [rw] alg
@@ -320,100 +66,33 @@ JsonWebKeyListMatch = Struct.new(
   keyword_init: true
 )
 
-# Passcode entity data model.
+# OrganizationManagement entity data model.
 #
-# @!attribute [rw] code
-#   @return [String, nil]
+# @!attribute [rw] has_role
+#   @return [Boolean]
 #
-# @!attribute [rw] created_at
-#   @return [String, nil]
-#
-# @!attribute [rw] email_id
-#   @return [String, nil]
-#
-# @!attribute [rw] id
-#   @return [String, nil]
-#
-# @!attribute [rw] ttl
-#   @return [Integer, nil]
-#
-# @!attribute [rw] user_id
+# @!attribute [rw] organization_id
 #   @return [String]
-Passcode = Struct.new(
-  :code,
-  :created_at,
-  :email_id,
-  :id,
-  :ttl,
-  :user_id,
+#
+# @!attribute [rw] roles
+#   @return [Array]
+OrganizationManagement = Struct.new(
+  :has_role,
+  :organization_id,
+  :roles,
   keyword_init: true
 )
 
-# Request payload for Passcode#create.
+# Request payload for OrganizationManagement#create.
 #
-# @!attribute [rw] code
-#   @return [String, nil]
-#
-# @!attribute [rw] created_at
-#   @return [String, nil]
-#
-# @!attribute [rw] email_id
-#   @return [String, nil]
-#
-# @!attribute [rw] id
-#   @return [String, nil]
-#
-# @!attribute [rw] ttl
-#   @return [Integer, nil]
-#
-# @!attribute [rw] user_id
-#   @return [String]
-PasscodeCreateData = Struct.new(
-  :code,
-  :created_at,
-  :email_id,
-  :id,
-  :ttl,
-  :user_id,
-  keyword_init: true
-)
-
-# Password entity data model.
-#
-# @!attribute [rw] password
+# @!attribute [rw] organization_id
 #   @return [String]
 #
-# @!attribute [rw] user_id
-#   @return [String]
-Password = Struct.new(
-  :password,
-  :user_id,
-  keyword_init: true
-)
-
-# Request payload for Password#create.
-#
-# @!attribute [rw] password
-#   @return [String]
-#
-# @!attribute [rw] user_id
-#   @return [String]
-PasswordCreateData = Struct.new(
-  :password,
-  :user_id,
-  keyword_init: true
-)
-
-# Request payload for Password#update.
-#
-# @!attribute [rw] password
-#   @return [String, nil]
-#
-# @!attribute [rw] user_id
-#   @return [String, nil]
-PasswordUpdateData = Struct.new(
-  :password,
-  :user_id,
+# @!attribute [rw] roles
+#   @return [Array]
+OrganizationManagementCreateData = Struct.new(
+  :organization_id,
+  :roles,
   keyword_init: true
 )
 
@@ -446,11 +125,23 @@ end
 # @!attribute [rw] expiration_time
 #   @return [String, nil]
 #
+# @!attribute [rw] id
+#   @return [String]
+#
 # @!attribute [rw] idle_expires_at
 #   @return [String, nil]
 #
 # @!attribute [rw] is_valid
 #   @return [Boolean, nil]
+#
+# @!attribute [rw] name
+#   @return [String]
+#
+# @!attribute [rw] organizations
+#   @return [Array, nil]
+#
+# @!attribute [rw] roles
+#   @return [Array]
 #
 # @!attribute [rw] session_token
 #   @return [String]
@@ -460,14 +151,18 @@ end
 SessionManagement = Struct.new(
   :claims,
   :expiration_time,
+  :id,
   :idle_expires_at,
   :is_valid,
+  :name,
+  :organizations,
+  :roles,
   :session_token,
   :user_id,
   keyword_init: true
 )
 
-# Request payload for SessionManagement#load.
+# Request payload for SessionManagement#list.
 #
 # @!attribute [rw] claims
 #   @return [Hash, nil]
@@ -475,22 +170,38 @@ SessionManagement = Struct.new(
 # @!attribute [rw] expiration_time
 #   @return [String, nil]
 #
+# @!attribute [rw] id
+#   @return [String, nil]
+#
 # @!attribute [rw] idle_expires_at
 #   @return [String, nil]
 #
 # @!attribute [rw] is_valid
 #   @return [Boolean, nil]
 #
+# @!attribute [rw] name
+#   @return [String, nil]
+#
+# @!attribute [rw] organizations
+#   @return [Array, nil]
+#
+# @!attribute [rw] roles
+#   @return [Array, nil]
+#
 # @!attribute [rw] session_token
 #   @return [String, nil]
 #
 # @!attribute [rw] user_id
 #   @return [String, nil]
-SessionManagementLoadMatch = Struct.new(
+SessionManagementListMatch = Struct.new(
   :claims,
   :expiration_time,
+  :id,
   :idle_expires_at,
   :is_valid,
+  :name,
+  :organizations,
+  :roles,
   :session_token,
   :user_id,
   keyword_init: true
@@ -498,30 +209,10 @@ SessionManagementLoadMatch = Struct.new(
 
 # Request payload for SessionManagement#create.
 #
-# @!attribute [rw] claims
-#   @return [Hash]
-#
-# @!attribute [rw] expiration_time
-#   @return [String, nil]
-#
-# @!attribute [rw] idle_expires_at
-#   @return [String, nil]
-#
-# @!attribute [rw] is_valid
-#   @return [Boolean, nil]
-#
 # @!attribute [rw] session_token
 #   @return [String]
-#
-# @!attribute [rw] user_id
-#   @return [String, nil]
 SessionManagementCreateData = Struct.new(
-  :claims,
-  :expiration_time,
-  :idle_expires_at,
-  :is_valid,
   :session_token,
-  :user_id,
   keyword_init: true
 )
 
@@ -539,292 +230,22 @@ end
 
 # Request payload for ThirdParty#load.
 #
-# @!attribute [rw] provider
-#   @return [String]
+# @!attribute [rw] code
+#   @return [String, nil]
 #
-# @!attribute [rw] redirect_to
+# @!attribute [rw] error
+#   @return [String, nil]
+#
+# @!attribute [rw] error_description
+#   @return [String, nil]
+#
+# @!attribute [rw] state
 #   @return [String]
 ThirdPartyLoadMatch = Struct.new(
-  :provider,
-  :redirect_to,
-  keyword_init: true
-)
-
-# Token entity data model.
-#
-# @!attribute [rw] user_id
-#   @return [String, nil]
-#
-# @!attribute [rw] value
-#   @return [String, nil]
-Token = Struct.new(
-  :user_id,
-  :value,
-  keyword_init: true
-)
-
-# Request payload for Token#create.
-#
-# @!attribute [rw] user_id
-#   @return [String, nil]
-#
-# @!attribute [rw] value
-#   @return [String, nil]
-TokenCreateData = Struct.new(
-  :user_id,
-  :value,
-  keyword_init: true
-)
-
-# User entity data model.
-#
-# @!attribute [rw] created_at
-#   @return [String, nil]
-#
-# @!attribute [rw] email
-#   @return [String, nil]
-#
-# @!attribute [rw] email_id
-#   @return [String, nil]
-#
-# @!attribute [rw] emails
-#   @return [Array, nil]
-#
-# @!attribute [rw] family_name
-#   @return [String, nil]
-#
-# @!attribute [rw] given_name
-#   @return [String, nil]
-#
-# @!attribute [rw] has_webauthn_credential
-#   @return [Boolean, nil]
-#
-# @!attribute [rw] id
-#   @return [String, nil]
-#
-# @!attribute [rw] metadata
-#   @return [Hash, nil]
-#
-# @!attribute [rw] mfa_config
-#   @return [Hash, nil]
-#
-# @!attribute [rw] name
-#   @return [String, nil]
-#
-# @!attribute [rw] passkeys
-#   @return [Array, nil]
-#
-# @!attribute [rw] picture
-#   @return [String, nil]
-#
-# @!attribute [rw] security_keys
-#   @return [Array, nil]
-#
-# @!attribute [rw] updated_at
-#   @return [String, nil]
-#
-# @!attribute [rw] user_id
-#   @return [String, nil]
-#
-# @!attribute [rw] username
-#   @return [String, nil]
-#
-# @!attribute [rw] verified
-#   @return [Boolean, nil]
-#
-# @!attribute [rw] webauthn_credentials
-#   @return [Array, nil]
-User = Struct.new(
-  :created_at,
-  :email,
-  :email_id,
-  :emails,
-  :family_name,
-  :given_name,
-  :has_webauthn_credential,
-  :id,
-  :metadata,
-  :mfa_config,
-  :name,
-  :passkeys,
-  :picture,
-  :security_keys,
-  :updated_at,
-  :user_id,
-  :username,
-  :verified,
-  :webauthn_credentials,
-  keyword_init: true
-)
-
-# Request payload for User#load.
-#
-# @!attribute [rw] id
-#   @return [String]
-UserLoadMatch = Struct.new(
-  :id,
-  keyword_init: true
-)
-
-# Request payload for User#create.
-#
-# @!attribute [rw] created_at
-#   @return [String, nil]
-#
-# @!attribute [rw] email
-#   @return [String, nil]
-#
-# @!attribute [rw] email_id
-#   @return [String, nil]
-#
-# @!attribute [rw] emails
-#   @return [Array, nil]
-#
-# @!attribute [rw] family_name
-#   @return [String, nil]
-#
-# @!attribute [rw] given_name
-#   @return [String, nil]
-#
-# @!attribute [rw] has_webauthn_credential
-#   @return [Boolean, nil]
-#
-# @!attribute [rw] id
-#   @return [String, nil]
-#
-# @!attribute [rw] metadata
-#   @return [Hash, nil]
-#
-# @!attribute [rw] mfa_config
-#   @return [Hash, nil]
-#
-# @!attribute [rw] name
-#   @return [String, nil]
-#
-# @!attribute [rw] passkeys
-#   @return [Array, nil]
-#
-# @!attribute [rw] picture
-#   @return [String, nil]
-#
-# @!attribute [rw] security_keys
-#   @return [Array, nil]
-#
-# @!attribute [rw] updated_at
-#   @return [String, nil]
-#
-# @!attribute [rw] user_id
-#   @return [String, nil]
-#
-# @!attribute [rw] username
-#   @return [String, nil]
-#
-# @!attribute [rw] verified
-#   @return [Boolean, nil]
-#
-# @!attribute [rw] webauthn_credentials
-#   @return [Array, nil]
-UserCreateData = Struct.new(
-  :created_at,
-  :email,
-  :email_id,
-  :emails,
-  :family_name,
-  :given_name,
-  :has_webauthn_credential,
-  :id,
-  :metadata,
-  :mfa_config,
-  :name,
-  :passkeys,
-  :picture,
-  :security_keys,
-  :updated_at,
-  :user_id,
-  :username,
-  :verified,
-  :webauthn_credentials,
-  keyword_init: true
-)
-
-# Request payload for User#remove.
-#
-# @!attribute [rw] created_at
-#   @return [String, nil]
-#
-# @!attribute [rw] email
-#   @return [String, nil]
-#
-# @!attribute [rw] email_id
-#   @return [String, nil]
-#
-# @!attribute [rw] emails
-#   @return [Array, nil]
-#
-# @!attribute [rw] family_name
-#   @return [String, nil]
-#
-# @!attribute [rw] given_name
-#   @return [String, nil]
-#
-# @!attribute [rw] has_webauthn_credential
-#   @return [Boolean, nil]
-#
-# @!attribute [rw] id
-#   @return [String]
-#
-# @!attribute [rw] metadata
-#   @return [Hash, nil]
-#
-# @!attribute [rw] mfa_config
-#   @return [Hash, nil]
-#
-# @!attribute [rw] name
-#   @return [String, nil]
-#
-# @!attribute [rw] passkeys
-#   @return [Array, nil]
-#
-# @!attribute [rw] picture
-#   @return [String, nil]
-#
-# @!attribute [rw] security_keys
-#   @return [Array, nil]
-#
-# @!attribute [rw] updated_at
-#   @return [String, nil]
-#
-# @!attribute [rw] user_id
-#   @return [String, nil]
-#
-# @!attribute [rw] username
-#   @return [String, nil]
-#
-# @!attribute [rw] verified
-#   @return [Boolean, nil]
-#
-# @!attribute [rw] webauthn_credentials
-#   @return [Array, nil]
-UserRemoveMatch = Struct.new(
-  :created_at,
-  :email,
-  :email_id,
-  :emails,
-  :family_name,
-  :given_name,
-  :has_webauthn_credential,
-  :id,
-  :metadata,
-  :mfa_config,
-  :name,
-  :passkeys,
-  :picture,
-  :security_keys,
-  :updated_at,
-  :user_id,
-  :username,
-  :verified,
-  :webauthn_credentials,
+  :code,
+  :error,
+  :error_description,
+  :state,
   keyword_init: true
 )
 
@@ -1008,349 +429,6 @@ UserManagementCreateData = Struct.new(
   :updated_at,
   :user_id,
   :username,
-  keyword_init: true
-)
-
-# WebAuthn entity data model.
-#
-# @!attribute [rw] aaguid
-#   @return [String, nil]
-#
-# @!attribute [rw] attestation_type
-#   @return [String, nil]
-#
-# @!attribute [rw] backup_eligible
-#   @return [Boolean, nil]
-#
-# @!attribute [rw] backup_state
-#   @return [Boolean, nil]
-#
-# @!attribute [rw] created_at
-#   @return [String, nil]
-#
-# @!attribute [rw] credential_id
-#   @return [String, nil]
-#
-# @!attribute [rw] id
-#   @return [String, nil]
-#
-# @!attribute [rw] last_used_at
-#   @return [String, nil]
-#
-# @!attribute [rw] mfa_only
-#   @return [Boolean, nil]
-#
-# @!attribute [rw] name
-#   @return [String, nil]
-#
-# @!attribute [rw] publickey
-#   @return [String, nil]
-#
-# @!attribute [rw] rawId
-#   @return [String, nil]
-#
-# @!attribute [rw] response
-#   @return [Hash, nil]
-#
-# @!attribute [rw] transports
-#   @return [Array, nil]
-#
-# @!attribute [rw] type
-#   @return [String, nil]
-#
-# @!attribute [rw] user_id
-#   @return [String, nil]
-WebAuthn = Struct.new(
-  :aaguid,
-  :attestation_type,
-  :backup_eligible,
-  :backup_state,
-  :created_at,
-  :credential_id,
-  :id,
-  :last_used_at,
-  :mfa_only,
-  :name,
-  :publickey,
-  :rawId,
-  :response,
-  :transports,
-  :type,
-  :user_id,
-  keyword_init: true
-)
-
-# Request payload for WebAuthn#list.
-#
-# @!attribute [rw] aaguid
-#   @return [String, nil]
-#
-# @!attribute [rw] attestation_type
-#   @return [String, nil]
-#
-# @!attribute [rw] backup_eligible
-#   @return [Boolean, nil]
-#
-# @!attribute [rw] backup_state
-#   @return [Boolean, nil]
-#
-# @!attribute [rw] created_at
-#   @return [String, nil]
-#
-# @!attribute [rw] credential_id
-#   @return [String, nil]
-#
-# @!attribute [rw] id
-#   @return [String, nil]
-#
-# @!attribute [rw] last_used_at
-#   @return [String, nil]
-#
-# @!attribute [rw] mfa_only
-#   @return [Boolean, nil]
-#
-# @!attribute [rw] name
-#   @return [String, nil]
-#
-# @!attribute [rw] publickey
-#   @return [String, nil]
-#
-# @!attribute [rw] rawId
-#   @return [String, nil]
-#
-# @!attribute [rw] response
-#   @return [Hash, nil]
-#
-# @!attribute [rw] transports
-#   @return [Array, nil]
-#
-# @!attribute [rw] type
-#   @return [String, nil]
-#
-# @!attribute [rw] user_id
-#   @return [String, nil]
-WebAuthnListMatch = Struct.new(
-  :aaguid,
-  :attestation_type,
-  :backup_eligible,
-  :backup_state,
-  :created_at,
-  :credential_id,
-  :id,
-  :last_used_at,
-  :mfa_only,
-  :name,
-  :publickey,
-  :rawId,
-  :response,
-  :transports,
-  :type,
-  :user_id,
-  keyword_init: true
-)
-
-# Request payload for WebAuthn#create.
-#
-# @!attribute [rw] aaguid
-#   @return [String, nil]
-#
-# @!attribute [rw] attestation_type
-#   @return [String, nil]
-#
-# @!attribute [rw] backup_eligible
-#   @return [Boolean, nil]
-#
-# @!attribute [rw] backup_state
-#   @return [Boolean, nil]
-#
-# @!attribute [rw] created_at
-#   @return [String, nil]
-#
-# @!attribute [rw] credential_id
-#   @return [String, nil]
-#
-# @!attribute [rw] id
-#   @return [String, nil]
-#
-# @!attribute [rw] last_used_at
-#   @return [String, nil]
-#
-# @!attribute [rw] mfa_only
-#   @return [Boolean, nil]
-#
-# @!attribute [rw] name
-#   @return [String, nil]
-#
-# @!attribute [rw] publickey
-#   @return [String, nil]
-#
-# @!attribute [rw] rawId
-#   @return [String, nil]
-#
-# @!attribute [rw] response
-#   @return [Hash, nil]
-#
-# @!attribute [rw] transports
-#   @return [Array, nil]
-#
-# @!attribute [rw] type
-#   @return [String, nil]
-#
-# @!attribute [rw] user_id
-#   @return [String, nil]
-WebAuthnCreateData = Struct.new(
-  :aaguid,
-  :attestation_type,
-  :backup_eligible,
-  :backup_state,
-  :created_at,
-  :credential_id,
-  :id,
-  :last_used_at,
-  :mfa_only,
-  :name,
-  :publickey,
-  :rawId,
-  :response,
-  :transports,
-  :type,
-  :user_id,
-  keyword_init: true
-)
-
-# Request payload for WebAuthn#update.
-#
-# @!attribute [rw] id
-#   @return [String]
-#
-# @!attribute [rw] aaguid
-#   @return [String, nil]
-#
-# @!attribute [rw] attestation_type
-#   @return [String, nil]
-#
-# @!attribute [rw] backup_eligible
-#   @return [Boolean, nil]
-#
-# @!attribute [rw] backup_state
-#   @return [Boolean, nil]
-#
-# @!attribute [rw] created_at
-#   @return [String, nil]
-#
-# @!attribute [rw] credential_id
-#   @return [String, nil]
-#
-# @!attribute [rw] last_used_at
-#   @return [String, nil]
-#
-# @!attribute [rw] mfa_only
-#   @return [Boolean, nil]
-#
-# @!attribute [rw] name
-#   @return [String, nil]
-#
-# @!attribute [rw] publickey
-#   @return [String, nil]
-#
-# @!attribute [rw] rawId
-#   @return [String, nil]
-#
-# @!attribute [rw] response
-#   @return [Hash, nil]
-#
-# @!attribute [rw] transports
-#   @return [Array, nil]
-#
-# @!attribute [rw] type
-#   @return [String, nil]
-#
-# @!attribute [rw] user_id
-#   @return [String, nil]
-WebAuthnUpdateData = Struct.new(
-  :id,
-  :aaguid,
-  :attestation_type,
-  :backup_eligible,
-  :backup_state,
-  :created_at,
-  :credential_id,
-  :last_used_at,
-  :mfa_only,
-  :name,
-  :publickey,
-  :rawId,
-  :response,
-  :transports,
-  :type,
-  :user_id,
-  keyword_init: true
-)
-
-# Request payload for WebAuthn#remove.
-#
-# @!attribute [rw] id
-#   @return [String]
-WebAuthnRemoveMatch = Struct.new(
-  :id,
-  keyword_init: true
-)
-
-# WebauthnLogin entity data model.
-#
-# @!attribute [rw] credential_id
-#   @return [String, nil]
-#
-# @!attribute [rw] id
-#   @return [String, nil]
-#
-# @!attribute [rw] rawId
-#   @return [String, nil]
-#
-# @!attribute [rw] response
-#   @return [Hash, nil]
-#
-# @!attribute [rw] type
-#   @return [String, nil]
-#
-# @!attribute [rw] user_id
-#   @return [String, nil]
-WebauthnLogin = Struct.new(
-  :credential_id,
-  :id,
-  :rawId,
-  :response,
-  :type,
-  :user_id,
-  keyword_init: true
-)
-
-# Request payload for WebauthnLogin#create.
-#
-# @!attribute [rw] credential_id
-#   @return [String, nil]
-#
-# @!attribute [rw] id
-#   @return [String, nil]
-#
-# @!attribute [rw] rawId
-#   @return [String, nil]
-#
-# @!attribute [rw] response
-#   @return [Hash, nil]
-#
-# @!attribute [rw] type
-#   @return [String, nil]
-#
-# @!attribute [rw] user_id
-#   @return [String, nil]
-WebauthnLoginCreateData = Struct.new(
-  :credential_id,
-  :id,
-  :rawId,
-  :response,
-  :type,
-  :user_id,
   keyword_init: true
 )
 

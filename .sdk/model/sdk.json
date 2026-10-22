@@ -53,7 +53,7 @@
         },
         "edition": {
           "github-pages": {
-            "active": false,
+            "active": true,
             "base": "node_modules/@voxgig/docgen/project/.sdk",
             "brand": {},
             "filter": {
@@ -68,7 +68,7 @@
               "path": "docs"
             },
             "package": "@voxgig/docgen",
-            "published": false,
+            "published": true,
             "site": {
               "active": true
             },
@@ -104,536 +104,25 @@
         },
         "style": {
           "color": {
-            "accent": "#00c6d8",
-            "background": "#f5f5f9",
-            "darkBackground": "#0f1117",
-            "darkText": "#e6edf3",
-            "primary": "#e70042",
-            "text": "#0a0a0a"
+            "accent": "#da9aff",
+            "background": "#1d1d1f",
+            "darkBackground": "#1d1d1f",
+            "darkText": "#fafafa",
+            "primary": "#aedfff",
+            "text": "#fafafa"
           },
           "font": "Nunito, system-ui, sans-serif",
           "fontFile": "",
           "headingFont": "Nunito, system-ui, sans-serif",
           "headingFontFile": "",
           "logo": "",
-          "mode": "light",
+          "mode": "dark",
           "mono": "ui-monospace, monospace",
           "monoFile": ""
         },
         "target": {}
       },
       "entity": {
-        "credential_creation_option": {
-          "active": true,
-          "alias": {
-            "field": {}
-          },
-          "fields": {
-            "attestation": {
-              "a": true,
-              "h": "Attestation",
-              "n": "attestation",
-              "r": false,
-              "t": "`$STRING`"
-            },
-            "authenticatorSelection": {
-              "a": true,
-              "h": "Authenticator Selection",
-              "n": "authenticatorSelection",
-              "r": false,
-              "t": "`$OBJECT`"
-            },
-            "challenge": {
-              "a": true,
-              "fo": "base64url",
-              "h": "Challenge",
-              "n": "challenge",
-              "r": false,
-              "t": "`$STRING`"
-            },
-            "pubKeyCredParams": {
-              "a": true,
-              "h": "Pub Key Cred Params",
-              "n": "pubKeyCredParams",
-              "r": false,
-              "t": "`$ARRAY`"
-            },
-            "rp": {
-              "a": true,
-              "h": "Rp",
-              "n": "rp",
-              "r": false,
-              "t": "`$OBJECT`"
-            },
-            "timeout": {
-              "a": true,
-              "fo": "int64",
-              "h": "Timeout",
-              "n": "timeout",
-              "r": false,
-              "t": "`$INTEGER`"
-            },
-            "user": {
-              "a": true,
-              "h": "User",
-              "n": "user",
-              "r": false,
-              "t": "`$OBJECT`"
-            }
-          },
-          "name": "credential_creation_option",
-          "op": {
-            "create": {
-              "input": "data",
-              "name": "create",
-              "points": [
-                {
-                  "a": true,
-                  "co": {
-                    "id": "POST /webauthn/registration/initialize",
-                    "source": "openapi3",
-                    "version": 2
-                  },
-                  "g": {},
-                  "k": "http",
-                  "m": "POST",
-                  "o": "/webauthn/registration/initialize",
-                  "q": {},
-                  "r": {},
-                  "rs": {
-                    "kind": "json",
-                    "media": "application/json"
-                  },
-                  "s": [
-                    {
-                      "lit": "webauthn"
-                    },
-                    {
-                      "lit": "registration"
-                    },
-                    {
-                      "lit": "initialize"
-                    }
-                  ],
-                  "t": {
-                    "req": "`reqdata`",
-                    "res": "`body.publicKey`"
-                  }
-                }
-              ]
-            }
-          },
-          "relations": {
-            "ancestors": []
-          }
-        },
-        "credential_request_option": {
-          "active": true,
-          "alias": {
-            "field": {}
-          },
-          "fields": {
-            "allowCredentials": {
-              "a": true,
-              "h": "Allow Credentials",
-              "n": "allowCredentials",
-              "r": false,
-              "t": "`$ARRAY`"
-            },
-            "challenge": {
-              "a": true,
-              "fo": "base64url",
-              "h": "Challenge",
-              "n": "challenge",
-              "r": false,
-              "t": "`$STRING`"
-            },
-            "rpId": {
-              "a": true,
-              "h": "Rp Id",
-              "n": "rpId",
-              "r": false,
-              "t": "`$STRING`"
-            },
-            "timeout": {
-              "a": true,
-              "fo": "int64",
-              "h": "Timeout",
-              "n": "timeout",
-              "r": false,
-              "t": "`$INTEGER`"
-            },
-            "userVerification": {
-              "a": true,
-              "h": "User Verification",
-              "n": "userVerification",
-              "r": false,
-              "t": "`$STRING`"
-            },
-            "user_id": {
-              "a": true,
-              "fo": "uuid4",
-              "h": "User Id",
-              "n": "user_id",
-              "r": false,
-              "sh": "The ID of the user on whose behalf WebAuthn login should be performed",
-              "t": "`$STRING`"
-            }
-          },
-          "name": "credential_request_option",
-          "op": {
-            "create": {
-              "input": "data",
-              "name": "create",
-              "points": [
-                {
-                  "a": true,
-                  "bf": [
-                    "user_id"
-                  ],
-                  "co": {
-                    "id": "POST /webauthn/login/initialize",
-                    "source": "openapi3",
-                    "version": 2
-                  },
-                  "g": {},
-                  "k": "http",
-                  "m": "POST",
-                  "o": "/webauthn/login/initialize",
-                  "q": {},
-                  "r": {},
-                  "rs": {
-                    "kind": "json",
-                    "media": "application/json"
-                  },
-                  "s": [
-                    {
-                      "lit": "webauthn"
-                    },
-                    {
-                      "lit": "login"
-                    },
-                    {
-                      "lit": "initialize"
-                    }
-                  ],
-                  "t": {
-                    "req": "`reqdata`",
-                    "res": "`body.publicKey`"
-                  }
-                }
-              ]
-            }
-          },
-          "relations": {
-            "ancestors": []
-          }
-        },
-        "email": {
-          "active": true,
-          "alias": {
-            "field": {}
-          },
-          "fields": {
-            "address": {
-              "a": true,
-              "fo": "email",
-              "h": "Address",
-              "n": "address",
-              "op": {
-                "list": {
-                  "req": false,
-                  "type": "`$STRING`"
-                }
-              },
-              "r": true,
-              "sh": "The email address",
-              "t": "`$STRING`"
-            },
-            "id": {
-              "a": true,
-              "fo": "uuid4",
-              "h": "Id",
-              "n": "id",
-              "r": false,
-              "sh": "The ID of the email address",
-              "t": "`$STRING`"
-            },
-            "identities": {
-              "a": true,
-              "h": "Identities",
-              "n": "identities",
-              "r": false,
-              "t": "`$ANY`"
-            },
-            "identity": {
-              "a": true,
-              "h": "Identity",
-              "n": "identity",
-              "r": false,
-              "t": "`$ANY`"
-            },
-            "is_primary": {
-              "a": true,
-              "h": "Is Primary",
-              "n": "is_primary",
-              "r": false,
-              "sh": "Indicates it's the primary email address.",
-              "t": "`$BOOLEAN`"
-            },
-            "is_verified": {
-              "a": true,
-              "h": "Is Verified",
-              "n": "is_verified",
-              "r": false,
-              "sh": "Indicated the email has been verified.",
-              "t": "`$BOOLEAN`"
-            }
-          },
-          "id": {
-            "field": "id",
-            "name": "id"
-          },
-          "name": "email",
-          "op": {
-            "create": {
-              "input": "data",
-              "name": "create",
-              "points": [
-                {
-                  "a": true,
-                  "co": {
-                    "id": "POST /emails/{id}/set_primary",
-                    "source": "openapi3",
-                    "version": 2
-                  },
-                  "g": {
-                    "params": [
-                      {
-                        "a": true,
-                        "ex": "c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c",
-                        "k": "param",
-                        "n": "id",
-                        "or": "id",
-                        "r": true,
-                        "t": "`$STRING`"
-                      }
-                    ]
-                  },
-                  "k": "http",
-                  "m": "POST",
-                  "o": "/emails/{id}/set_primary",
-                  "q": {
-                    "$action": "set_primary",
-                    "exist": [
-                      "id"
-                    ]
-                  },
-                  "r": {},
-                  "s": [
-                    {
-                      "lit": "emails"
-                    },
-                    {
-                      "var": "id"
-                    },
-                    {
-                      "lit": "set_primary"
-                    }
-                  ],
-                  "t": {
-                    "req": "`reqdata`",
-                    "res": "`body`"
-                  }
-                },
-                {
-                  "a": true,
-                  "bf": [
-                    "address"
-                  ],
-                  "co": {
-                    "id": "POST /emails",
-                    "source": "openapi3",
-                    "version": 2
-                  },
-                  "g": {},
-                  "k": "http",
-                  "m": "POST",
-                  "o": "/emails",
-                  "q": {},
-                  "r": {},
-                  "s": [
-                    {
-                      "lit": "emails"
-                    }
-                  ],
-                  "t": {
-                    "req": "`reqdata`",
-                    "res": "`body`"
-                  }
-                }
-              ]
-            },
-            "list": {
-              "input": "data",
-              "name": "list",
-              "points": [
-                {
-                  "a": true,
-                  "co": {
-                    "id": "GET /emails",
-                    "source": "openapi3",
-                    "version": 2
-                  },
-                  "g": {},
-                  "k": "http",
-                  "m": "GET",
-                  "o": "/emails",
-                  "q": {},
-                  "r": {},
-                  "rs": {
-                    "kind": "json",
-                    "media": "application/json"
-                  },
-                  "s": [
-                    {
-                      "lit": "emails"
-                    }
-                  ],
-                  "t": {
-                    "req": "`reqdata`",
-                    "res": "`body`"
-                  }
-                }
-              ]
-            },
-            "remove": {
-              "input": "data",
-              "name": "remove",
-              "points": [
-                {
-                  "a": true,
-                  "co": {
-                    "id": "DELETE /emails/{id}",
-                    "source": "openapi3",
-                    "version": 2
-                  },
-                  "g": {
-                    "params": [
-                      {
-                        "a": true,
-                        "ex": "c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c",
-                        "k": "param",
-                        "n": "id",
-                        "or": "id",
-                        "r": true,
-                        "t": "`$STRING`"
-                      }
-                    ]
-                  },
-                  "k": "http",
-                  "m": "DELETE",
-                  "o": "/emails/{id}",
-                  "q": {
-                    "exist": [
-                      "id"
-                    ]
-                  },
-                  "r": {},
-                  "s": [
-                    {
-                      "lit": "emails"
-                    },
-                    {
-                      "var": "id"
-                    }
-                  ],
-                  "t": {
-                    "req": "`reqdata`",
-                    "res": "`body`"
-                  }
-                }
-              ]
-            }
-          },
-          "relations": {
-            "ancestors": []
-          }
-        },
-        "hanko_configuration": {
-          "active": true,
-          "alias": {
-            "field": {}
-          },
-          "fields": {
-            "account": {
-              "a": true,
-              "h": "Account",
-              "n": "account",
-              "r": false,
-              "sh": "Controls the behavior regarding user account.",
-              "t": "`$OBJECT`"
-            },
-            "emails": {
-              "a": true,
-              "h": "Emails",
-              "n": "emails",
-              "r": false,
-              "sh": "Controls the behavior regarding email addresses.",
-              "t": "`$OBJECT`"
-            },
-            "password": {
-              "a": true,
-              "h": "Password",
-              "n": "password",
-              "r": false,
-              "sh": "Configuration options concerning passwords",
-              "t": "`$OBJECT`"
-            }
-          },
-          "name": "hanko_configuration",
-          "op": {
-            "load": {
-              "input": "data",
-              "name": "load",
-              "points": [
-                {
-                  "a": true,
-                  "co": {
-                    "id": "GET /.well-known/config",
-                    "source": "openapi3",
-                    "version": 2
-                  },
-                  "g": {},
-                  "k": "http",
-                  "m": "GET",
-                  "o": "/.well-known/config",
-                  "q": {},
-                  "r": {},
-                  "rs": {
-                    "kind": "json",
-                    "media": "application/json"
-                  },
-                  "s": [
-                    {
-                      "lit": ".well-known"
-                    },
-                    {
-                      "lit": "config"
-                    }
-                  ],
-                  "t": {
-                    "req": "`reqdata`",
-                    "res": "`body`"
-                  }
-                }
-              ]
-            }
-          },
-          "relations": {
-            "ancestors": []
-          }
-        },
         "json_web_key": {
           "active": true,
           "alias": {
@@ -728,70 +217,38 @@
             "ancestors": []
           }
         },
-        "passcode": {
+        "organization_management": {
           "active": true,
           "alias": {
             "field": {}
           },
           "fields": {
-            "code": {
+            "has_role": {
               "a": true,
-              "h": "Code",
-              "n": "code",
-              "r": false,
-              "sh": "The actual passcode from the email sent to the user during initialization, a string of 6 decimal digits",
-              "t": "`$STRING`"
-            },
-            "created_at": {
-              "a": true,
-              "fo": "date-time",
-              "h": "Created At",
-              "n": "created_at",
-              "r": false,
-              "sh": "Time of creation of the passcode",
-              "t": "`$STRING`"
-            },
-            "email_id": {
-              "a": true,
-              "fo": "uuid4",
-              "h": "Email Id",
-              "n": "email_id",
-              "r": false,
-              "sh": "The ID of the email address",
-              "t": "`$STRING`"
-            },
-            "id": {
-              "a": true,
-              "fo": "uuid4",
-              "h": "Id",
-              "n": "id",
-              "r": false,
-              "sh": "The ID of the passcode",
-              "t": "`$STRING`"
-            },
-            "ttl": {
-              "a": true,
-              "h": "Ttl",
-              "n": "ttl",
-              "r": false,
-              "sh": "Lifespan of a passcode in seconds",
-              "t": "`$INTEGER`"
-            },
-            "user_id": {
-              "a": true,
-              "fo": "uuid4",
-              "h": "User Id",
-              "n": "user_id",
+              "h": "Has Role",
+              "n": "has_role",
               "r": true,
-              "sh": "The ID of the user",
+              "t": "`$BOOLEAN`"
+            },
+            "organization_id": {
+              "a": true,
+              "fo": "uuid4",
+              "h": "Organization Id",
+              "n": "organization_id",
+              "r": true,
+              "sh": "The ID of the organization to check",
               "t": "`$STRING`"
+            },
+            "roles": {
+              "a": true,
+              "h": "Roles",
+              "n": "roles",
+              "r": true,
+              "sh": "IDs or slugs of roles to check for.",
+              "t": "`$ARRAY`"
             }
           },
-          "id": {
-            "field": "id",
-            "name": "id"
-          },
-          "name": "passcode",
+          "name": "organization_management",
           "op": {
             "create": {
               "input": "data",
@@ -800,18 +257,18 @@
                 {
                   "a": true,
                   "bf": [
-                    "code",
-                    "id"
+                    "organization_id",
+                    "roles"
                   ],
                   "co": {
-                    "id": "POST /passcode/login/finalize",
+                    "id": "POST /organizations/roles/check",
                     "source": "openapi3",
                     "version": 2
                   },
                   "g": {},
                   "k": "http",
                   "m": "POST",
-                  "o": "/passcode/login/finalize",
+                  "o": "/organizations/roles/check",
                   "q": {},
                   "r": {},
                   "rs": {
@@ -820,152 +277,13 @@
                   },
                   "s": [
                     {
-                      "lit": "passcode"
+                      "lit": "organizations"
                     },
                     {
-                      "lit": "login"
+                      "lit": "roles"
                     },
                     {
-                      "lit": "finalize"
-                    }
-                  ],
-                  "t": {
-                    "req": "`reqdata`",
-                    "res": "`body`"
-                  }
-                },
-                {
-                  "a": true,
-                  "bf": [
-                    "email_id",
-                    "user_id"
-                  ],
-                  "co": {
-                    "id": "POST /passcode/login/initialize",
-                    "source": "openapi3",
-                    "version": 2
-                  },
-                  "g": {},
-                  "k": "http",
-                  "m": "POST",
-                  "o": "/passcode/login/initialize",
-                  "q": {},
-                  "r": {},
-                  "rs": {
-                    "kind": "json",
-                    "media": "application/json"
-                  },
-                  "s": [
-                    {
-                      "lit": "passcode"
-                    },
-                    {
-                      "lit": "login"
-                    },
-                    {
-                      "lit": "initialize"
-                    }
-                  ],
-                  "t": {
-                    "req": "`reqdata`",
-                    "res": "`body`"
-                  }
-                }
-              ]
-            }
-          },
-          "relations": {
-            "ancestors": []
-          }
-        },
-        "password": {
-          "active": true,
-          "alias": {
-            "field": {}
-          },
-          "fields": {
-            "password": {
-              "a": true,
-              "h": "Password",
-              "n": "password",
-              "r": true,
-              "sh": "The actual password, its `minLength` defaults to 8 but can be [configured](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config) through the `password.min_password_length` option.",
-              "t": "`$STRING`"
-            },
-            "user_id": {
-              "a": true,
-              "fo": "uuid4",
-              "h": "User Id",
-              "n": "user_id",
-              "r": true,
-              "sh": "The ID of the user to create/set a password for",
-              "t": "`$STRING`"
-            }
-          },
-          "name": "password",
-          "op": {
-            "create": {
-              "input": "data",
-              "name": "create",
-              "points": [
-                {
-                  "a": true,
-                  "bf": [
-                    "password",
-                    "user_id"
-                  ],
-                  "co": {
-                    "id": "POST /password/login",
-                    "source": "openapi3",
-                    "version": 2
-                  },
-                  "g": {},
-                  "k": "http",
-                  "m": "POST",
-                  "o": "/password/login",
-                  "q": {
-                    "$action": "login"
-                  },
-                  "r": {},
-                  "s": [
-                    {
-                      "lit": "password"
-                    },
-                    {
-                      "lit": "login"
-                    }
-                  ],
-                  "t": {
-                    "req": "`reqdata`",
-                    "res": "`body`"
-                  }
-                }
-              ]
-            },
-            "update": {
-              "input": "data",
-              "name": "update",
-              "points": [
-                {
-                  "a": true,
-                  "bf": [
-                    "password",
-                    "user_id"
-                  ],
-                  "co": {
-                    "id": "PUT /password",
-                    "source": "openapi3",
-                    "version": 2
-                  },
-                  "g": {},
-                  "k": "http",
-                  "m": "PUT",
-                  "o": "/password",
-                  "q": {},
-                  "r": {},
-                  "s": [
-                    {
-                      "lit": "password"
+                      "lit": "check"
                     }
                   ],
                   "t": {
@@ -1092,52 +410,6 @@
                     "req": "`reqdata`",
                     "res": "`body`"
                   }
-                },
-                {
-                  "a": true,
-                  "co": {
-                    "id": "GET /saml/provider",
-                    "source": "openapi3",
-                    "version": 2
-                  },
-                  "g": {
-                    "query": [
-                      {
-                        "a": true,
-                        "k": "query",
-                        "n": "domain",
-                        "or": "domain",
-                        "r": true,
-                        "t": "`$STRING`"
-                      }
-                    ]
-                  },
-                  "k": "http",
-                  "m": "GET",
-                  "o": "/saml/provider",
-                  "q": {
-                    "$action": "provider",
-                    "exist": [
-                      "domain"
-                    ]
-                  },
-                  "r": {},
-                  "rs": {
-                    "kind": "json",
-                    "media": "application/json"
-                  },
-                  "s": [
-                    {
-                      "lit": "saml"
-                    },
-                    {
-                      "lit": "provider"
-                    }
-                  ],
-                  "t": {
-                    "req": "`reqdata`",
-                    "res": "`body`"
-                  }
                 }
               ]
             }
@@ -1170,6 +442,15 @@
               "sh": "Date-time indicating the expiration of the session.",
               "t": "`$STRING`"
             },
+            "id": {
+              "a": true,
+              "fo": "uuid4",
+              "h": "Id",
+              "n": "id",
+              "r": true,
+              "sh": "The ID of the organization",
+              "t": "`$STRING`"
+            },
             "idle_expires_at": {
               "a": true,
               "fo": "date-time",
@@ -1186,6 +467,30 @@
               "r": false,
               "sh": "Indicates whether the session is valid or not",
               "t": "`$BOOLEAN`"
+            },
+            "name": {
+              "a": true,
+              "h": "Name",
+              "n": "name",
+              "r": true,
+              "sh": "The name of the organization",
+              "t": "`$STRING`"
+            },
+            "organizations": {
+              "a": true,
+              "h": "Organizations",
+              "n": "organizations",
+              "r": false,
+              "sh": "The organizations the user belongs to, and the role slugs they hold within each.",
+              "t": "`$ARRAY`"
+            },
+            "roles": {
+              "a": true,
+              "h": "Roles",
+              "n": "roles",
+              "r": true,
+              "sh": "The slugs of the roles the user holds within this organization",
+              "t": "`$ARRAY`"
             },
             "session_token": {
               "a": true,
@@ -1206,6 +511,10 @@
               "sh": "The ID of the user the session is associated with.",
               "t": "`$STRING`"
             }
+          },
+          "id": {
+            "field": "id",
+            "name": "id"
           },
           "name": "session_management",
           "op": {
@@ -1248,9 +557,9 @@
                 }
               ]
             },
-            "load": {
+            "list": {
               "input": "data",
-              "name": "load",
+              "name": "list",
               "points": [
                 {
                   "a": true,
@@ -1346,56 +655,6 @@
                 {
                   "a": true,
                   "co": {
-                    "id": "GET /thirdparty/auth",
-                    "source": "openapi3",
-                    "version": 2
-                  },
-                  "g": {
-                    "query": [
-                      {
-                        "a": true,
-                        "k": "query",
-                        "n": "provider",
-                        "or": "provider",
-                        "r": true,
-                        "t": "`$STRING`"
-                      },
-                      {
-                        "a": true,
-                        "k": "query",
-                        "n": "redirect_to",
-                        "or": "redirect_to",
-                        "r": true,
-                        "t": "`$STRING`"
-                      }
-                    ]
-                  },
-                  "k": "http",
-                  "m": "GET",
-                  "o": "/thirdparty/auth",
-                  "q": {
-                    "exist": [
-                      "provider",
-                      "redirect_to"
-                    ]
-                  },
-                  "r": {},
-                  "s": [
-                    {
-                      "lit": "thirdparty"
-                    },
-                    {
-                      "lit": "auth"
-                    }
-                  ],
-                  "t": {
-                    "req": "`reqdata`",
-                    "res": "`body`"
-                  }
-                },
-                {
-                  "a": true,
-                  "co": {
                     "id": "GET /thirdparty/callback",
                     "source": "openapi3",
                     "version": 2
@@ -1451,394 +710,6 @@
                     },
                     {
                       "lit": "callback"
-                    }
-                  ],
-                  "t": {
-                    "req": "`reqdata`",
-                    "res": "`body`"
-                  }
-                }
-              ]
-            }
-          },
-          "relations": {
-            "ancestors": []
-          }
-        },
-        "token": {
-          "active": true,
-          "alias": {
-            "field": {}
-          },
-          "fields": {
-            "user_id": {
-              "a": true,
-              "fo": "uuid4",
-              "h": "User Id",
-              "n": "user_id",
-              "r": false,
-              "sh": "The ID of the user on whose behalf the token was exchanged.",
-              "t": "`$STRING`"
-            },
-            "value": {
-              "a": true,
-              "fo": "base64url",
-              "h": "Value",
-              "n": "value",
-              "r": false,
-              "t": "`$STRING`"
-            }
-          },
-          "name": "token",
-          "op": {
-            "create": {
-              "input": "data",
-              "name": "create",
-              "points": [
-                {
-                  "a": true,
-                  "bf": [
-                    "value"
-                  ],
-                  "co": {
-                    "id": "POST /token",
-                    "source": "openapi3",
-                    "version": 2
-                  },
-                  "g": {},
-                  "k": "http",
-                  "m": "POST",
-                  "o": "/token",
-                  "q": {},
-                  "r": {},
-                  "rs": {
-                    "kind": "json",
-                    "media": "application/json"
-                  },
-                  "s": [
-                    {
-                      "lit": "token"
-                    }
-                  ],
-                  "t": {
-                    "req": "`reqdata`",
-                    "res": "`body`"
-                  }
-                }
-              ]
-            }
-          },
-          "relations": {
-            "ancestors": []
-          }
-        },
-        "user": {
-          "active": true,
-          "alias": {
-            "field": {}
-          },
-          "fields": {
-            "created_at": {
-              "a": true,
-              "fo": "date-time",
-              "h": "Created At",
-              "n": "created_at",
-              "r": false,
-              "sh": "Time of creation of the the user",
-              "t": "`$STRING`"
-            },
-            "email": {
-              "a": true,
-              "fo": "email",
-              "h": "Email",
-              "n": "email",
-              "op": {
-                "create": {
-                  "req": true,
-                  "type": "`$STRING`"
-                }
-              },
-              "r": false,
-              "sh": "The email address of the user",
-              "t": "`$STRING`"
-            },
-            "email_id": {
-              "a": true,
-              "fo": "uuid4",
-              "h": "Email Id",
-              "n": "email_id",
-              "r": false,
-              "sh": "The ID of the newly created email address",
-              "t": "`$STRING`"
-            },
-            "emails": {
-              "a": true,
-              "h": "Emails",
-              "n": "emails",
-              "r": false,
-              "t": "`$ARRAY`"
-            },
-            "family_name": {
-              "a": true,
-              "h": "Family Name",
-              "n": "family_name",
-              "r": false,
-              "t": "`$STRING`"
-            },
-            "given_name": {
-              "a": true,
-              "h": "Given Name",
-              "n": "given_name",
-              "r": false,
-              "t": "`$STRING`"
-            },
-            "has_webauthn_credential": {
-              "a": true,
-              "h": "Has Webauthn Credential",
-              "n": "has_webauthn_credential",
-              "r": false,
-              "t": "`$BOOLEAN`"
-            },
-            "id": {
-              "a": true,
-              "de": true,
-              "fo": "uuid4",
-              "h": "Id",
-              "n": "id",
-              "r": false,
-              "sh": "The ID of the user.",
-              "t": "`$STRING`"
-            },
-            "metadata": {
-              "a": true,
-              "h": "Metadata",
-              "n": "metadata",
-              "r": false,
-              "sh": "The public and unsafe metadata of a user",
-              "t": "`$OBJECT`"
-            },
-            "mfa_config": {
-              "a": true,
-              "h": "Mfa Config",
-              "n": "mfa_config",
-              "r": false,
-              "t": "`$OBJECT`"
-            },
-            "name": {
-              "a": true,
-              "h": "Name",
-              "n": "name",
-              "r": false,
-              "t": "`$STRING`"
-            },
-            "passkeys": {
-              "a": true,
-              "h": "Passkeys",
-              "n": "passkeys",
-              "r": false,
-              "t": "`$ARRAY`"
-            },
-            "picture": {
-              "a": true,
-              "fo": "uri",
-              "h": "Picture",
-              "n": "picture",
-              "r": false,
-              "t": "`$STRING`"
-            },
-            "security_keys": {
-              "a": true,
-              "h": "Security Keys",
-              "n": "security_keys",
-              "r": false,
-              "t": "`$ARRAY`"
-            },
-            "updated_at": {
-              "a": true,
-              "fo": "date-time",
-              "h": "Updated At",
-              "n": "updated_at",
-              "r": false,
-              "sh": "Time of last update of the user",
-              "t": "`$STRING`"
-            },
-            "user_id": {
-              "a": true,
-              "fo": "uuid4",
-              "h": "User Id",
-              "n": "user_id",
-              "r": false,
-              "sh": "The ID of the user",
-              "t": "`$STRING`"
-            },
-            "username": {
-              "a": true,
-              "h": "Username",
-              "n": "username",
-              "r": false,
-              "sh": "The username of the user",
-              "t": "`$STRING`"
-            },
-            "verified": {
-              "a": true,
-              "h": "Verified",
-              "n": "verified",
-              "r": false,
-              "t": "`$BOOLEAN`"
-            },
-            "webauthn_credentials": {
-              "a": true,
-              "h": "Webauthn Credentials",
-              "n": "webauthn_credentials",
-              "r": false,
-              "sh": "A list of WebAuthn credentials",
-              "t": "`$ARRAY`"
-            }
-          },
-          "id": {
-            "field": "id",
-            "name": "id"
-          },
-          "name": "user",
-          "op": {
-            "create": {
-              "input": "data",
-              "name": "create",
-              "points": [
-                {
-                  "a": true,
-                  "bf": [
-                    "email"
-                  ],
-                  "co": {
-                    "id": "POST /user",
-                    "source": "openapi3",
-                    "version": 2
-                  },
-                  "g": {},
-                  "k": "http",
-                  "m": "POST",
-                  "o": "/user",
-                  "q": {},
-                  "r": {},
-                  "rs": {
-                    "kind": "json",
-                    "media": "application/json"
-                  },
-                  "s": [
-                    {
-                      "lit": "user"
-                    }
-                  ],
-                  "t": {
-                    "req": "`reqdata`",
-                    "res": "`body`"
-                  }
-                },
-                {
-                  "a": true,
-                  "bf": [
-                    "email"
-                  ],
-                  "co": {
-                    "id": "POST /users",
-                    "source": "openapi3",
-                    "version": 2
-                  },
-                  "g": {},
-                  "k": "http",
-                  "m": "POST",
-                  "o": "/users",
-                  "q": {},
-                  "r": {},
-                  "rs": {
-                    "kind": "json",
-                    "media": "application/json"
-                  },
-                  "s": [
-                    {
-                      "lit": "users"
-                    }
-                  ],
-                  "t": {
-                    "req": "`reqdata`",
-                    "res": "`body`"
-                  }
-                }
-              ]
-            },
-            "load": {
-              "input": "data",
-              "name": "load",
-              "points": [
-                {
-                  "a": true,
-                  "co": {
-                    "id": "GET /users/{id}",
-                    "source": "openapi3",
-                    "version": 2
-                  },
-                  "g": {
-                    "params": [
-                      {
-                        "a": true,
-                        "ex": "c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c",
-                        "k": "param",
-                        "n": "id",
-                        "or": "id",
-                        "r": true,
-                        "t": "`$STRING`"
-                      }
-                    ]
-                  },
-                  "k": "http",
-                  "m": "GET",
-                  "o": "/users/{id}",
-                  "q": {
-                    "exist": [
-                      "id"
-                    ]
-                  },
-                  "r": {},
-                  "rs": {
-                    "kind": "json",
-                    "media": "application/json"
-                  },
-                  "s": [
-                    {
-                      "lit": "users"
-                    },
-                    {
-                      "var": "id"
-                    }
-                  ],
-                  "t": {
-                    "req": "`reqdata`",
-                    "res": "`body`"
-                  }
-                }
-              ]
-            },
-            "remove": {
-              "input": "data",
-              "name": "remove",
-              "points": [
-                {
-                  "a": true,
-                  "co": {
-                    "id": "DELETE /user",
-                    "source": "openapi3",
-                    "version": 2
-                  },
-                  "g": {},
-                  "k": "http",
-                  "m": "DELETE",
-                  "o": "/user",
-                  "q": {},
-                  "r": {},
-                  "s": [
-                    {
-                      "lit": "user"
                     }
                   ],
                   "t": {
@@ -2029,438 +900,6 @@
                   "s": [
                     {
                       "lit": "me"
-                    }
-                  ],
-                  "t": {
-                    "req": "`reqdata`",
-                    "res": "`body`"
-                  }
-                }
-              ]
-            }
-          },
-          "relations": {
-            "ancestors": []
-          }
-        },
-        "web_authn": {
-          "active": true,
-          "alias": {
-            "field": {}
-          },
-          "fields": {
-            "aaguid": {
-              "a": true,
-              "fo": "uuid",
-              "h": "Aaguid",
-              "n": "aaguid",
-              "r": false,
-              "t": "`$STRING`"
-            },
-            "attestation_type": {
-              "a": true,
-              "h": "Attestation Type",
-              "n": "attestation_type",
-              "r": false,
-              "t": "`$STRING`"
-            },
-            "backup_eligible": {
-              "a": true,
-              "h": "Backup Eligible",
-              "n": "backup_eligible",
-              "r": false,
-              "t": "`$BOOLEAN`"
-            },
-            "backup_state": {
-              "a": true,
-              "h": "Backup State",
-              "n": "backup_state",
-              "r": false,
-              "t": "`$BOOLEAN`"
-            },
-            "created_at": {
-              "a": true,
-              "fo": "date-time",
-              "h": "Created At",
-              "n": "created_at",
-              "r": false,
-              "t": "`$STRING`"
-            },
-            "credential_id": {
-              "a": true,
-              "fo": "base64",
-              "h": "Credential Id",
-              "n": "credential_id",
-              "r": false,
-              "sh": "The ID of the created credential",
-              "t": "`$STRING`"
-            },
-            "id": {
-              "a": true,
-              "fo": "uuid",
-              "h": "Id",
-              "n": "id",
-              "r": false,
-              "t": "`$STRING`"
-            },
-            "last_used_at": {
-              "a": true,
-              "fo": "date-time",
-              "h": "Last Used At",
-              "n": "last_used_at",
-              "r": false,
-              "t": "`$STRING`"
-            },
-            "mfa_only": {
-              "a": true,
-              "h": "Mfa Only",
-              "n": "mfa_only",
-              "r": false,
-              "t": "`$BOOLEAN`"
-            },
-            "name": {
-              "a": true,
-              "h": "Name",
-              "n": "name",
-              "r": false,
-              "sh": "A new credential name.",
-              "t": "`$STRING`"
-            },
-            "publickey": {
-              "a": true,
-              "h": "Publickey",
-              "n": "publickey",
-              "r": false,
-              "t": "`$STRING`"
-            },
-            "rawId": {
-              "a": true,
-              "h": "Raw Id",
-              "n": "rawId",
-              "r": false,
-              "t": "`$STRING`"
-            },
-            "response": {
-              "a": true,
-              "h": "Response",
-              "n": "response",
-              "r": false,
-              "t": "`$OBJECT`"
-            },
-            "transports": {
-              "a": true,
-              "h": "Transports",
-              "n": "transports",
-              "r": false,
-              "t": "`$ARRAY`"
-            },
-            "type": {
-              "a": true,
-              "h": "Type",
-              "n": "type",
-              "r": false,
-              "t": "`$STRING`"
-            },
-            "user_id": {
-              "a": true,
-              "fo": "uuid4",
-              "h": "User Id",
-              "n": "user_id",
-              "r": false,
-              "sh": "The ID of the user on whose behalf a credential was created",
-              "t": "`$STRING`"
-            }
-          },
-          "id": {
-            "field": "id",
-            "name": "id"
-          },
-          "name": "web_authn",
-          "op": {
-            "create": {
-              "input": "data",
-              "name": "create",
-              "points": [
-                {
-                  "a": true,
-                  "bf": [
-                    "id",
-                    "rawId",
-                    "response",
-                    "type"
-                  ],
-                  "co": {
-                    "id": "POST /webauthn/registration/finalize",
-                    "source": "openapi3",
-                    "version": 2
-                  },
-                  "g": {},
-                  "k": "http",
-                  "m": "POST",
-                  "o": "/webauthn/registration/finalize",
-                  "q": {},
-                  "r": {},
-                  "rs": {
-                    "kind": "json",
-                    "media": "application/json"
-                  },
-                  "s": [
-                    {
-                      "lit": "webauthn"
-                    },
-                    {
-                      "lit": "registration"
-                    },
-                    {
-                      "lit": "finalize"
-                    }
-                  ],
-                  "t": {
-                    "req": "`reqdata`",
-                    "res": "`body`"
-                  }
-                }
-              ]
-            },
-            "list": {
-              "input": "data",
-              "name": "list",
-              "points": [
-                {
-                  "a": true,
-                  "co": {
-                    "id": "GET /webauthn/credentials",
-                    "source": "openapi3",
-                    "version": 2
-                  },
-                  "g": {},
-                  "k": "http",
-                  "m": "GET",
-                  "o": "/webauthn/credentials",
-                  "q": {},
-                  "r": {},
-                  "rs": {
-                    "kind": "json",
-                    "media": "application/json"
-                  },
-                  "s": [
-                    {
-                      "lit": "webauthn"
-                    },
-                    {
-                      "lit": "credentials"
-                    }
-                  ],
-                  "t": {
-                    "req": "`reqdata`",
-                    "res": "`body`"
-                  }
-                }
-              ]
-            },
-            "remove": {
-              "input": "data",
-              "name": "remove",
-              "points": [
-                {
-                  "a": true,
-                  "co": {
-                    "id": "DELETE /webauthn/credentials/{id}",
-                    "source": "openapi3",
-                    "version": 2
-                  },
-                  "g": {
-                    "params": [
-                      {
-                        "a": true,
-                        "ex": "c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c",
-                        "k": "param",
-                        "n": "id",
-                        "or": "id",
-                        "r": true,
-                        "t": "`$STRING`"
-                      }
-                    ]
-                  },
-                  "k": "http",
-                  "m": "DELETE",
-                  "o": "/webauthn/credentials/{id}",
-                  "q": {
-                    "exist": [
-                      "id"
-                    ]
-                  },
-                  "r": {},
-                  "s": [
-                    {
-                      "lit": "webauthn"
-                    },
-                    {
-                      "lit": "credentials"
-                    },
-                    {
-                      "var": "id"
-                    }
-                  ],
-                  "t": {
-                    "req": "`reqdata`",
-                    "res": "`body`"
-                  }
-                }
-              ]
-            },
-            "update": {
-              "input": "data",
-              "name": "update",
-              "points": [
-                {
-                  "a": true,
-                  "bf": [
-                    "name"
-                  ],
-                  "co": {
-                    "id": "PATCH /webauthn/credentials/{id}",
-                    "source": "openapi3",
-                    "version": 2
-                  },
-                  "g": {
-                    "params": [
-                      {
-                        "a": true,
-                        "ex": "c339547d-e17d-4ba7-8a1d-b3d5a4d17c1c",
-                        "k": "param",
-                        "n": "id",
-                        "or": "id",
-                        "r": true,
-                        "t": "`$STRING`"
-                      }
-                    ]
-                  },
-                  "k": "http",
-                  "m": "PATCH",
-                  "o": "/webauthn/credentials/{id}",
-                  "q": {
-                    "exist": [
-                      "id"
-                    ]
-                  },
-                  "r": {},
-                  "s": [
-                    {
-                      "lit": "webauthn"
-                    },
-                    {
-                      "lit": "credentials"
-                    },
-                    {
-                      "var": "id"
-                    }
-                  ],
-                  "t": {
-                    "req": "`reqdata`",
-                    "res": "`body`"
-                  }
-                }
-              ]
-            }
-          },
-          "relations": {
-            "ancestors": []
-          }
-        },
-        "webauthn_login": {
-          "active": true,
-          "alias": {
-            "field": {}
-          },
-          "fields": {
-            "credential_id": {
-              "a": true,
-              "fo": "base64url",
-              "h": "Credential Id",
-              "n": "credential_id",
-              "r": false,
-              "t": "`$STRING`"
-            },
-            "id": {
-              "a": true,
-              "h": "Id",
-              "n": "id",
-              "r": false,
-              "t": "`$STRING`"
-            },
-            "rawId": {
-              "a": true,
-              "h": "Raw Id",
-              "n": "rawId",
-              "r": false,
-              "t": "`$STRING`"
-            },
-            "response": {
-              "a": true,
-              "h": "Response",
-              "n": "response",
-              "r": false,
-              "t": "`$OBJECT`"
-            },
-            "type": {
-              "a": true,
-              "h": "Type",
-              "n": "type",
-              "r": false,
-              "t": "`$STRING`"
-            },
-            "user_id": {
-              "a": true,
-              "fo": "uuid4",
-              "h": "User Id",
-              "n": "user_id",
-              "r": false,
-              "t": "`$STRING`"
-            }
-          },
-          "id": {
-            "field": "id",
-            "name": "id"
-          },
-          "name": "webauthn_login",
-          "op": {
-            "create": {
-              "input": "data",
-              "name": "create",
-              "points": [
-                {
-                  "a": true,
-                  "bf": [
-                    "id",
-                    "rawId",
-                    "response",
-                    "type"
-                  ],
-                  "co": {
-                    "id": "POST /webauthn/login/finalize",
-                    "source": "openapi3",
-                    "version": 2
-                  },
-                  "g": {},
-                  "k": "http",
-                  "m": "POST",
-                  "o": "/webauthn/login/finalize",
-                  "q": {},
-                  "r": {},
-                  "rs": {
-                    "kind": "json",
-                    "media": "application/json"
-                  },
-                  "s": [
-                    {
-                      "lit": "webauthn"
-                    },
-                    {
-                      "lit": "login"
-                    },
-                    {
-                      "lit": "finalize"
                     }
                   ],
                   "t": {
@@ -3114,6 +1553,993 @@
           "transport": "wrap",
           "version": "0.0.1"
         },
+        "secrets": {
+          "active": true,
+          "base": "node_modules/@voxgig/sdkgen/project/.sdk",
+          "config": {
+            "options": {
+              "active": false,
+              "cache": true,
+              "exchange": {
+                "active": false,
+                "method": "POST",
+                "path": "auth/token",
+                "refresh": "",
+                "request": "refresh_token",
+                "response": "access_token",
+                "retries": 1,
+                "statuses": [
+                  401
+                ]
+              },
+              "name": "apikey",
+              "providers": []
+            },
+            "optspec": {},
+            "strict": false
+          },
+          "deps": {
+            "rust": {
+              "rustls": {
+                "active": true,
+                "default": false,
+                "features": [
+                  "std",
+                  "ring",
+                  "tls12"
+                ],
+                "kind": "prod",
+                "version": "0.23"
+              },
+              "webpki-roots": {
+                "active": true,
+                "kind": "prod",
+                "version": "0.26"
+              }
+            }
+          },
+          "description": "Secret access: resolve the API credential through a provider chain, and exchange a refresh token for short-lived access tokens",
+          "hook": {
+            "GetData": {
+              "active": false,
+              "await": false
+            },
+            "GetMatch": {
+              "active": false,
+              "await": false
+            },
+            "PostConstruct": {
+              "active": false,
+              "await": false
+            },
+            "PostConstructEntity": {
+              "active": false,
+              "await": false
+            },
+            "PostOperation": {
+              "active": false,
+              "await": false
+            },
+            "PreRequest": {
+              "active": false,
+              "await": false
+            },
+            "PreResponse": {
+              "active": false,
+              "await": false
+            },
+            "PreResult": {
+              "active": false,
+              "await": false
+            },
+            "PreSpec": {
+              "active": true,
+              "await": true
+            },
+            "PreTarget": {
+              "active": false,
+              "await": false
+            },
+            "SetData": {
+              "active": false,
+              "await": false
+            }
+          },
+          "name": "secrets",
+          "needs": {
+            "sekreto": true
+          },
+          "origname": "",
+          "package": "@voxgig/sdkgen",
+          "plugin": {
+            "aws": {
+              "active": false,
+              "def": {
+                "c": {
+                  "sek_plugin_awsparams": "feature/secrets/plugins/aws.c",
+                  "sek_plugin_awssecrets": "feature/secrets/plugins/aws.c"
+                },
+                "clojure": {
+                  "voxgig.sekreto.plugins.aws/awsparams": "feature/secrets/voxgig/sekreto/plugins/aws.clj",
+                  "voxgig.sekreto.plugins.aws/awssecrets": "feature/secrets/voxgig/sekreto/plugins/aws.clj"
+                },
+                "cpp": {
+                  "awsparams": "feature/secrets/plugins/Aws.cpp",
+                  "awssecrets": "feature/secrets/plugins/Aws.cpp"
+                },
+                "csharp": {
+                  "AwsPlugins.Params": "feature/secrets/plugins/Aws.cs",
+                  "AwsPlugins.Secrets": "feature/secrets/plugins/Aws.cs"
+                },
+                "dart": {
+                  "awsparams": "lib/feature/secrets/sekreto/plugins/aws.dart",
+                  "awssecrets": "lib/feature/secrets/sekreto/plugins/aws.dart"
+                },
+                "elixir": {
+                  "Sekreto.Plugins.Aws.awsparams": "lib/projectname/feature/secrets/sekreto/plugins/aws.ex",
+                  "Sekreto.Plugins.Aws.awssecrets": "lib/projectname/feature/secrets/sekreto/plugins/aws.ex"
+                },
+                "go": {
+                  "aws.Params": "feature/secrets/plugins/aws/aws.go",
+                  "aws.Secrets": "feature/secrets/plugins/aws/aws.go"
+                },
+                "java": {
+                  "Aws.PARAMS": "feature/secrets/sekreto/plugins/Aws.java",
+                  "Aws.SECRETS": "feature/secrets/sekreto/plugins/Aws.java"
+                },
+                "js": {
+                  "awsparams": "src/feature/secrets/sekreto/plugins/aws.js",
+                  "awssecrets": "src/feature/secrets/sekreto/plugins/aws.js"
+                },
+                "kotlin": {
+                  "awsparams": "feature/secrets/sekreto/plugins/Aws.kt",
+                  "awssecrets": "feature/secrets/sekreto/plugins/Aws.kt"
+                },
+                "lean": {
+                  "Sekreto.awsparams": "src/feature/secrets/sekreto/plugins/SekretoPlugins/Aws.lean",
+                  "Sekreto.awssecrets": "src/feature/secrets/sekreto/plugins/SekretoPlugins/Aws.lean"
+                },
+                "lua": {
+                  "awsparams": "feature/secrets/sekreto/plugins/aws.lua",
+                  "awssecrets": "feature/secrets/sekreto/plugins/aws.lua"
+                },
+                "ocaml": {
+                  "Aws.paramsplugin": "feature/secrets/plugins/aws.ml",
+                  "Aws.secretsplugin": "feature/secrets/plugins/aws.ml"
+                },
+                "perl": {
+                  "awsparams": "feature/secrets/plugins/Voxgig/Sekreto/Plugins/Aws.pm",
+                  "awssecrets": "feature/secrets/plugins/Voxgig/Sekreto/Plugins/Aws.pm"
+                },
+                "php": {
+                  "awsparams": "feature/secrets/sekreto/plugins/aws.php",
+                  "awssecrets": "feature/secrets/sekreto/plugins/aws.php"
+                },
+                "py": {
+                  "awsparams": "pkg/feature/secrets/voxgig_sekreto/plugins/aws.py",
+                  "awssecrets": "pkg/feature/secrets/voxgig_sekreto/plugins/aws.py"
+                },
+                "rb": {
+                  "VoxgigSekreto::Plugins::AWSPARAMS": "feature/secrets/voxgig_sekreto/plugins/aws.rb",
+                  "VoxgigSekreto::Plugins::AWSSECRETS": "feature/secrets/voxgig_sekreto/plugins/aws.rb"
+                },
+                "rust": {
+                  "aws::params": "feature/secrets/plugins/aws.rs",
+                  "aws::secrets": "feature/secrets/plugins/aws.rs"
+                },
+                "scala": {
+                  "com.voxgig.sekreto.plugins.awsparams": "feature/secrets/sekreto/plugins/Aws.scala",
+                  "com.voxgig.sekreto.plugins.awssecrets": "feature/secrets/sekreto/plugins/Aws.scala"
+                },
+                "swift": {
+                  "awsparams": "Sources/ProjectNameSDK/feature/secrets/plugins/Aws.swift",
+                  "awssecrets": "Sources/ProjectNameSDK/feature/secrets/plugins/Aws.swift"
+                },
+                "ts": {
+                  "awsparams": "src/feature/secrets/sekreto/plugins/aws.ts",
+                  "awssecrets": "src/feature/secrets/sekreto/plugins/aws.ts"
+                },
+                "zig": {
+                  "awsparams": "feature/secrets/plugins/aws.zig",
+                  "awssecrets": "feature/secrets/plugins/aws.zig"
+                }
+              },
+              "deps": {},
+              "name": "aws",
+              "needs": {
+                "crypto": true,
+                "fetch": true
+              },
+              "path": [
+                "src/feature/secrets/sekreto/plugins/aws.ts",
+                "src/feature/secrets/sekreto/plugins/sigv4.ts",
+                "feature/secrets/plugins/aws/aws.go",
+                "feature/secrets/plugins/aws/sigv4.go",
+                "feature/secrets/plugins/aws.rs",
+                "feature/secrets/plugins/aws/sigv4.rs",
+                "feature/secrets/plugins/aws/crypto.rs",
+                "feature/secrets/voxgig_sekreto/plugins/aws.py",
+                "feature/secrets/voxgig_sekreto/plugins/sigv4.py",
+                "src/feature/secrets/sekreto/plugins/aws.js",
+                "src/feature/secrets/sekreto/plugins/sigv4.js",
+                "feature/secrets/voxgig_sekreto/plugins/aws.rb",
+                "feature/secrets/voxgig_sekreto/plugins/sigv4.rb",
+                "feature/secrets/sekreto/plugins/aws.php",
+                "feature/secrets/sekreto/plugins/sigv4.php",
+                "feature/secrets/plugins/Aws.cs",
+                "feature/secrets/plugins/Sigv4.cs",
+                "feature/secrets/sekreto/plugins/Aws.java",
+                "feature/secrets/sekreto/plugins/Aws.scala",
+                "feature/secrets/sekreto/plugins/Aws.kt",
+                "feature/secrets/plugins/Voxgig/Sekreto/Plugins/Aws.pm",
+                "feature/secrets/plugins/Voxgig/Sekreto/Plugins/Sigv4.pm",
+                "lib/feature/secrets/sekreto/plugins/aws.dart",
+                "lib/feature/secrets/sekreto/plugins/sigv4.dart",
+                "lib/feature/secrets/sekreto/plugins/crypto.dart",
+                "feature/secrets/voxgig/sekreto/plugins/aws.clj",
+                "feature/secrets/voxgig/sekreto/plugins/sigv4.clj",
+                "feature/secrets/sekreto/plugins/aws.ex",
+                "feature/secrets/sekreto/plugins/sigv4.ex",
+                "feature/secrets/plugins/Aws.swift",
+                "feature/secrets/plugins/Sigv4.swift",
+                "feature/secrets/plugins/Crypto.swift",
+                "src/feature/secrets/sekreto/plugins/SekretoPlugins/Aws.lean",
+                "src/feature/secrets/sekreto/plugins/SekretoPlugins/Sigv4.lean",
+                "src/feature/secrets/sekreto/plugins/SekretoPlugins/Crypto.lean",
+                "src/feature/secrets/sekreto/plugins/SekretoPlugins/Clock.lean",
+                "feature/secrets/plugins/aws.c",
+                "feature/secrets/plugins/sigv4.c",
+                "feature/secrets/plugins/sha256.c",
+                "feature/secrets/sekreto/plugins/aws.lua",
+                "feature/secrets/sekreto/plugins/sigv4.lua",
+                "feature/secrets/plugins/aws.zig",
+                "feature/secrets/plugins/sigv4.zig",
+                "feature/secrets/plugins/aws.ml",
+                "feature/secrets/plugins/Aws.cpp",
+                "feature/secrets/plugins/Aws.hpp",
+                "feature/secrets/plugins/Sigv4.cpp",
+                "feature/secrets/plugins/Sigv4.hpp"
+              ],
+              "stub": {},
+              "title": "AWS Secrets Manager and Parameter Store (SigV4 signing)"
+            },
+            "cloud": {
+              "active": false,
+              "def": {
+                "c": {
+                  "sek_plugin_azuresecrets": "feature/secrets/plugins/azuresecrets.c",
+                  "sek_plugin_gcpsecrets": "feature/secrets/plugins/gcpsecrets.c"
+                },
+                "clojure": {
+                  "voxgig.sekreto.plugins.azuresecrets/azuresecrets": "feature/secrets/voxgig/sekreto/plugins/azuresecrets.clj",
+                  "voxgig.sekreto.plugins.gcpsecrets/gcpsecrets": "feature/secrets/voxgig/sekreto/plugins/gcpsecrets.clj"
+                },
+                "cpp": {
+                  "azuresecrets": "feature/secrets/plugins/Azuresecrets.cpp",
+                  "gcpsecrets": "feature/secrets/plugins/Gcpsecrets.cpp"
+                },
+                "csharp": {
+                  "AzureSecrets.Plugin": "feature/secrets/plugins/AzureSecrets.cs",
+                  "GcpSecrets.Plugin": "feature/secrets/plugins/GcpSecrets.cs"
+                },
+                "dart": {
+                  "azuresecrets": "lib/feature/secrets/sekreto/plugins/azuresecrets.dart",
+                  "gcpsecrets": "lib/feature/secrets/sekreto/plugins/gcpsecrets.dart"
+                },
+                "elixir": {
+                  "Sekreto.Plugins.Azuresecrets.azuresecrets": "lib/projectname/feature/secrets/sekreto/plugins/azuresecrets.ex",
+                  "Sekreto.Plugins.Gcpsecrets.gcpsecrets": "lib/projectname/feature/secrets/sekreto/plugins/gcpsecrets.ex"
+                },
+                "go": {
+                  "azuresecrets.Plugin": "feature/secrets/plugins/azuresecrets/azuresecrets.go",
+                  "gcpsecrets.Plugin": "feature/secrets/plugins/gcpsecrets/gcpsecrets.go"
+                },
+                "java": {
+                  "Azuresecrets.PLUGIN": "feature/secrets/sekreto/plugins/Azuresecrets.java",
+                  "Gcpsecrets.PLUGIN": "feature/secrets/sekreto/plugins/Gcpsecrets.java"
+                },
+                "js": {
+                  "azuresecrets": "src/feature/secrets/sekreto/plugins/azuresecrets.js",
+                  "gcpsecrets": "src/feature/secrets/sekreto/plugins/gcpsecrets.js"
+                },
+                "kotlin": {
+                  "azuresecrets": "feature/secrets/sekreto/plugins/Azuresecrets.kt",
+                  "gcpsecrets": "feature/secrets/sekreto/plugins/Gcpsecrets.kt"
+                },
+                "lean": {
+                  "Sekreto.azuresecrets": "src/feature/secrets/sekreto/plugins/SekretoPlugins/Azuresecrets.lean",
+                  "Sekreto.gcpsecrets": "src/feature/secrets/sekreto/plugins/SekretoPlugins/Gcpsecrets.lean"
+                },
+                "lua": {
+                  "azuresecrets": "feature/secrets/sekreto/plugins/azuresecrets.lua",
+                  "gcpsecrets": "feature/secrets/sekreto/plugins/gcpsecrets.lua"
+                },
+                "ocaml": {
+                  "Azuresecrets.plugin": "feature/secrets/plugins/azuresecrets.ml",
+                  "Gcpsecrets.plugin": "feature/secrets/plugins/gcpsecrets.ml"
+                },
+                "perl": {
+                  "azuresecrets": "feature/secrets/plugins/Voxgig/Sekreto/Plugins/Azuresecrets.pm",
+                  "gcpsecrets": "feature/secrets/plugins/Voxgig/Sekreto/Plugins/Gcpsecrets.pm"
+                },
+                "php": {
+                  "azuresecrets": "feature/secrets/sekreto/plugins/azuresecrets.php",
+                  "gcpsecrets": "feature/secrets/sekreto/plugins/gcpsecrets.php"
+                },
+                "py": {
+                  "azuresecrets": "pkg/feature/secrets/voxgig_sekreto/plugins/azuresecrets.py",
+                  "gcpsecrets": "pkg/feature/secrets/voxgig_sekreto/plugins/gcpsecrets.py"
+                },
+                "rb": {
+                  "VoxgigSekreto::Plugins::AZURESECRETS": "feature/secrets/voxgig_sekreto/plugins/azuresecrets.rb",
+                  "VoxgigSekreto::Plugins::GCPSECRETS": "feature/secrets/voxgig_sekreto/plugins/gcpsecrets.rb"
+                },
+                "rust": {
+                  "azuresecrets::plugin": "feature/secrets/plugins/azuresecrets.rs",
+                  "gcpsecrets::plugin": "feature/secrets/plugins/gcpsecrets.rs"
+                },
+                "scala": {
+                  "com.voxgig.sekreto.plugins.azuresecrets": "feature/secrets/sekreto/plugins/Azuresecrets.scala",
+                  "com.voxgig.sekreto.plugins.gcpsecrets": "feature/secrets/sekreto/plugins/Gcpsecrets.scala"
+                },
+                "swift": {
+                  "azuresecrets": "Sources/ProjectNameSDK/feature/secrets/plugins/Azuresecrets.swift",
+                  "gcpsecrets": "Sources/ProjectNameSDK/feature/secrets/plugins/Gcpsecrets.swift"
+                },
+                "ts": {
+                  "azuresecrets": "src/feature/secrets/sekreto/plugins/azuresecrets.ts",
+                  "gcpsecrets": "src/feature/secrets/sekreto/plugins/gcpsecrets.ts"
+                },
+                "zig": {
+                  "azuresecrets": "feature/secrets/plugins/azuresecrets.zig",
+                  "gcpsecrets": "feature/secrets/plugins/gcpsecrets.zig"
+                }
+              },
+              "deps": {},
+              "name": "cloud",
+              "needs": {
+                "fetch": true
+              },
+              "path": [
+                "src/feature/secrets/sekreto/plugins/gcpsecrets.ts",
+                "src/feature/secrets/sekreto/plugins/azuresecrets.ts",
+                "feature/secrets/plugins/gcpsecrets/gcpsecrets.go",
+                "feature/secrets/plugins/azuresecrets/azuresecrets.go",
+                "feature/secrets/plugins/gcpsecrets.rs",
+                "feature/secrets/plugins/azuresecrets.rs",
+                "feature/secrets/voxgig_sekreto/plugins/gcpsecrets.py",
+                "feature/secrets/voxgig_sekreto/plugins/azuresecrets.py",
+                "src/feature/secrets/sekreto/plugins/gcpsecrets.js",
+                "src/feature/secrets/sekreto/plugins/azuresecrets.js",
+                "feature/secrets/voxgig_sekreto/plugins/gcpsecrets.rb",
+                "feature/secrets/voxgig_sekreto/plugins/azuresecrets.rb",
+                "feature/secrets/sekreto/plugins/gcpsecrets.php",
+                "feature/secrets/sekreto/plugins/azuresecrets.php",
+                "feature/secrets/plugins/GcpSecrets.cs",
+                "feature/secrets/plugins/AzureSecrets.cs",
+                "feature/secrets/sekreto/plugins/Gcpsecrets.java",
+                "feature/secrets/sekreto/plugins/Azuresecrets.java",
+                "feature/secrets/sekreto/plugins/Gcpsecrets.scala",
+                "feature/secrets/sekreto/plugins/Azuresecrets.scala",
+                "feature/secrets/sekreto/plugins/Gcpsecrets.kt",
+                "feature/secrets/sekreto/plugins/Azuresecrets.kt",
+                "feature/secrets/plugins/Voxgig/Sekreto/Plugins/Gcpsecrets.pm",
+                "feature/secrets/plugins/Voxgig/Sekreto/Plugins/Azuresecrets.pm",
+                "lib/feature/secrets/sekreto/plugins/gcpsecrets.dart",
+                "lib/feature/secrets/sekreto/plugins/azuresecrets.dart",
+                "feature/secrets/sekreto/plugins/gcpsecrets.ex",
+                "feature/secrets/sekreto/plugins/azuresecrets.ex",
+                "feature/secrets/voxgig/sekreto/plugins/gcpsecrets.clj",
+                "feature/secrets/voxgig/sekreto/plugins/azuresecrets.clj",
+                "feature/secrets/plugins/Gcpsecrets.swift",
+                "feature/secrets/plugins/Azuresecrets.swift",
+                "src/feature/secrets/sekreto/plugins/SekretoPlugins/Gcpsecrets.lean",
+                "src/feature/secrets/sekreto/plugins/SekretoPlugins/Azuresecrets.lean",
+                "feature/secrets/plugins/gcpsecrets.c",
+                "feature/secrets/plugins/azuresecrets.c",
+                "feature/secrets/sekreto/plugins/gcpsecrets.lua",
+                "feature/secrets/sekreto/plugins/azuresecrets.lua",
+                "feature/secrets/plugins/gcpsecrets.zig",
+                "feature/secrets/plugins/azuresecrets.zig",
+                "feature/secrets/plugins/gcpsecrets.ml",
+                "feature/secrets/plugins/azuresecrets.ml",
+                "feature/secrets/plugins/Gcpsecrets.cpp",
+                "feature/secrets/plugins/Gcpsecrets.hpp",
+                "feature/secrets/plugins/Azuresecrets.cpp",
+                "feature/secrets/plugins/Azuresecrets.hpp"
+              ],
+              "stub": {},
+              "title": "GCP Secret Manager and Azure Key Vault"
+            },
+            "minivault": {
+              "active": false,
+              "def": {
+                "c": {
+                  "sek_plugin_minivault": "feature/secrets/plugins/minivault.c"
+                },
+                "clojure": {
+                  "voxgig.sekreto.plugins.minivault/minivault": "feature/secrets/voxgig/sekreto/plugins/minivault.clj"
+                },
+                "cpp": {
+                  "minivault": "feature/secrets/plugins/Minivault.cpp"
+                },
+                "csharp": {
+                  "MiniVault.Plugin": "feature/secrets/plugins/MiniVault.cs"
+                },
+                "elixir": {
+                  "Sekreto.Plugins.Minivault.minivault": "lib/projectname/feature/secrets/sekreto/plugins/minivault.ex"
+                },
+                "go": {
+                  "minivault.Plugin": "feature/secrets/plugins/minivault/minivault.go"
+                },
+                "java": {
+                  "Minivault.PLUGIN": "feature/secrets/sekreto/plugins/Minivault.java"
+                },
+                "js": {
+                  "minivault": "src/feature/secrets/sekreto/plugins/minivault.js"
+                },
+                "kotlin": {
+                  "minivault": "feature/secrets/sekreto/plugins/Minivault.kt"
+                },
+                "lua": {
+                  "minivault": "feature/secrets/sekreto/plugins/minivault.lua"
+                },
+                "ocaml": {
+                  "Minivault.plugin": "feature/secrets/plugins/minivault.ml"
+                },
+                "perl": {
+                  "minivault": "feature/secrets/plugins/Voxgig/Sekreto/Plugins/Minivault.pm"
+                },
+                "php": {
+                  "minivault": "feature/secrets/sekreto/plugins/minivault.php"
+                },
+                "py": {
+                  "minivault": "pkg/feature/secrets/voxgig_sekreto/plugins/minivault.py"
+                },
+                "rb": {
+                  "VoxgigSekreto::Plugins::MINIVAULT": "feature/secrets/voxgig_sekreto/plugins/minivault.rb"
+                },
+                "rust": {
+                  "minivault::minivault": "feature/secrets/plugins/minivault.rs"
+                },
+                "scala": {
+                  "com.voxgig.sekreto.plugins.minivault": "feature/secrets/sekreto/plugins/Minivault.scala"
+                },
+                "ts": {
+                  "minivault": "src/feature/secrets/sekreto/plugins/minivault.ts"
+                },
+                "zig": {
+                  "minivault": "feature/secrets/plugins/minivault.zig"
+                }
+              },
+              "deps": {
+                "rust": {
+                  "ring": {
+                    "active": true,
+                    "version": "0.17"
+                  }
+                }
+              },
+              "name": "minivault",
+              "needs": {
+                "crypto": true,
+                "fs": true
+              },
+              "path": [
+                "src/feature/secrets/sekreto/plugins/minivault.ts",
+                "src/feature/secrets/sekreto/plugins/minivault.js",
+                "pkg/feature/secrets/voxgig_sekreto/plugins/minivault.py",
+                "feature/secrets/voxgig_sekreto/plugins/minivault.rb",
+                "feature/secrets/sekreto/plugins/minivault.php",
+                "feature/secrets/plugins/minivault/minivault.go",
+                "feature/secrets/plugins/minivault/format.go",
+                "feature/secrets/plugins/minivault.rs",
+                "feature/secrets/plugins/minivault/format.rs",
+                "feature/secrets/plugins/MiniVault.cs",
+                "feature/secrets/sekreto/plugins/Minivault.java",
+                "feature/secrets/sekreto/plugins/Minivault.scala",
+                "feature/secrets/sekreto/plugins/Minivault.kt",
+                "feature/secrets/plugins/Voxgig/Sekreto/Plugins/Minivault.pm",
+                "feature/secrets/plugins/minivault.c",
+                "feature/secrets/plugins/Minivault.cpp",
+                "feature/secrets/plugins/Minivault.hpp",
+                "feature/secrets/voxgig/sekreto/plugins/minivault.clj",
+                "lib/projectname/feature/secrets/sekreto/plugins/minivault.ex",
+                "feature/secrets/sekreto/plugins/minivault.lua",
+                "feature/secrets/native/sekretovault.c",
+                "feature/secrets/plugins/minivault.ml",
+                "feature/secrets/plugins/minivault_stubs.c",
+                "feature/secrets/plugins/minivault.zig"
+              ],
+              "stub": {
+                "lua": [
+                  "feature/secrets/native/sekretovault.c"
+                ],
+                "ocaml": [
+                  "feature/secrets/plugins/minivault_stubs.c"
+                ]
+              },
+              "title": "The local encrypted vault (AES-256-GCM, one file)"
+            },
+            "saas": {
+              "active": false,
+              "def": {
+                "c": {
+                  "sek_plugin_doppler": "feature/secrets/plugins/doppler.c",
+                  "sek_plugin_infisical": "feature/secrets/plugins/infisical.c",
+                  "sek_plugin_onepassword": "feature/secrets/plugins/onepassword.c"
+                },
+                "clojure": {
+                  "voxgig.sekreto.plugins.doppler/doppler": "feature/secrets/voxgig/sekreto/plugins/doppler.clj",
+                  "voxgig.sekreto.plugins.infisical/infisical": "feature/secrets/voxgig/sekreto/plugins/infisical.clj",
+                  "voxgig.sekreto.plugins.onepassword/onepassword": "feature/secrets/voxgig/sekreto/plugins/onepassword.clj"
+                },
+                "cpp": {
+                  "doppler": "feature/secrets/plugins/Doppler.cpp",
+                  "infisical": "feature/secrets/plugins/Infisical.cpp",
+                  "onepassword": "feature/secrets/plugins/Onepassword.cpp"
+                },
+                "csharp": {
+                  "Doppler.Plugin": "feature/secrets/plugins/Doppler.cs",
+                  "Infisical.Plugin": "feature/secrets/plugins/Infisical.cs",
+                  "OnePassword.Plugin": "feature/secrets/plugins/OnePassword.cs"
+                },
+                "dart": {
+                  "doppler": "lib/feature/secrets/sekreto/plugins/doppler.dart",
+                  "infisical": "lib/feature/secrets/sekreto/plugins/infisical.dart",
+                  "onepassword": "lib/feature/secrets/sekreto/plugins/onepassword.dart"
+                },
+                "elixir": {
+                  "Sekreto.Plugins.Doppler.doppler": "lib/projectname/feature/secrets/sekreto/plugins/doppler.ex",
+                  "Sekreto.Plugins.Infisical.infisical": "lib/projectname/feature/secrets/sekreto/plugins/infisical.ex",
+                  "Sekreto.Plugins.Onepassword.onepassword": "lib/projectname/feature/secrets/sekreto/plugins/onepassword.ex"
+                },
+                "go": {
+                  "doppler.Plugin": "feature/secrets/plugins/doppler/doppler.go",
+                  "infisical.Plugin": "feature/secrets/plugins/infisical/infisical.go",
+                  "onepassword.Plugin": "feature/secrets/plugins/onepassword/onepassword.go"
+                },
+                "java": {
+                  "Doppler.PLUGIN": "feature/secrets/sekreto/plugins/Doppler.java",
+                  "Infisical.PLUGIN": "feature/secrets/sekreto/plugins/Infisical.java",
+                  "Onepassword.PLUGIN": "feature/secrets/sekreto/plugins/Onepassword.java"
+                },
+                "js": {
+                  "doppler": "src/feature/secrets/sekreto/plugins/doppler.js",
+                  "infisical": "src/feature/secrets/sekreto/plugins/infisical.js",
+                  "onepassword": "src/feature/secrets/sekreto/plugins/onepassword.js"
+                },
+                "kotlin": {
+                  "doppler": "feature/secrets/sekreto/plugins/Doppler.kt",
+                  "infisical": "feature/secrets/sekreto/plugins/Infisical.kt",
+                  "onepassword": "feature/secrets/sekreto/plugins/Onepassword.kt"
+                },
+                "lean": {
+                  "Sekreto.doppler": "src/feature/secrets/sekreto/plugins/SekretoPlugins/Doppler.lean",
+                  "Sekreto.infisical": "src/feature/secrets/sekreto/plugins/SekretoPlugins/Infisical.lean",
+                  "Sekreto.onepassword": "src/feature/secrets/sekreto/plugins/SekretoPlugins/Onepassword.lean"
+                },
+                "lua": {
+                  "doppler": "feature/secrets/sekreto/plugins/doppler.lua",
+                  "infisical": "feature/secrets/sekreto/plugins/infisical.lua",
+                  "onepassword": "feature/secrets/sekreto/plugins/onepassword.lua"
+                },
+                "ocaml": {
+                  "Doppler.plugin": "feature/secrets/plugins/doppler.ml",
+                  "Infisical.plugin": "feature/secrets/plugins/infisical.ml",
+                  "Onepassword.plugin": "feature/secrets/plugins/onepassword.ml"
+                },
+                "perl": {
+                  "doppler": "feature/secrets/plugins/Voxgig/Sekreto/Plugins/Doppler.pm",
+                  "infisical": "feature/secrets/plugins/Voxgig/Sekreto/Plugins/Infisical.pm",
+                  "onepassword": "feature/secrets/plugins/Voxgig/Sekreto/Plugins/Onepassword.pm"
+                },
+                "php": {
+                  "doppler": "feature/secrets/sekreto/plugins/doppler.php",
+                  "infisical": "feature/secrets/sekreto/plugins/infisical.php",
+                  "onepassword": "feature/secrets/sekreto/plugins/onepassword.php"
+                },
+                "py": {
+                  "doppler": "pkg/feature/secrets/voxgig_sekreto/plugins/doppler.py",
+                  "infisical": "pkg/feature/secrets/voxgig_sekreto/plugins/infisical.py",
+                  "onepassword": "pkg/feature/secrets/voxgig_sekreto/plugins/onepassword.py"
+                },
+                "rb": {
+                  "VoxgigSekreto::Plugins::DOPPLER": "feature/secrets/voxgig_sekreto/plugins/doppler.rb",
+                  "VoxgigSekreto::Plugins::INFISICAL": "feature/secrets/voxgig_sekreto/plugins/infisical.rb",
+                  "VoxgigSekreto::Plugins::ONEPASSWORD": "feature/secrets/voxgig_sekreto/plugins/onepassword.rb"
+                },
+                "rust": {
+                  "doppler::plugin": "feature/secrets/plugins/doppler.rs",
+                  "infisical::plugin": "feature/secrets/plugins/infisical.rs",
+                  "onepassword::plugin": "feature/secrets/plugins/onepassword.rs"
+                },
+                "scala": {
+                  "com.voxgig.sekreto.plugins.doppler": "feature/secrets/sekreto/plugins/Doppler.scala",
+                  "com.voxgig.sekreto.plugins.infisical": "feature/secrets/sekreto/plugins/Infisical.scala",
+                  "com.voxgig.sekreto.plugins.onepassword": "feature/secrets/sekreto/plugins/Onepassword.scala"
+                },
+                "swift": {
+                  "doppler": "Sources/ProjectNameSDK/feature/secrets/plugins/Doppler.swift",
+                  "infisical": "Sources/ProjectNameSDK/feature/secrets/plugins/Infisical.swift",
+                  "onepassword": "Sources/ProjectNameSDK/feature/secrets/plugins/Onepassword.swift"
+                },
+                "ts": {
+                  "doppler": "src/feature/secrets/sekreto/plugins/doppler.ts",
+                  "infisical": "src/feature/secrets/sekreto/plugins/infisical.ts",
+                  "onepassword": "src/feature/secrets/sekreto/plugins/onepassword.ts"
+                },
+                "zig": {
+                  "doppler": "feature/secrets/plugins/doppler.zig",
+                  "infisical": "feature/secrets/plugins/infisical.zig",
+                  "onepassword": "feature/secrets/plugins/onepassword.zig"
+                }
+              },
+              "deps": {},
+              "name": "saas",
+              "needs": {
+                "fetch": true
+              },
+              "path": [
+                "src/feature/secrets/sekreto/plugins/onepassword.ts",
+                "src/feature/secrets/sekreto/plugins/doppler.ts",
+                "src/feature/secrets/sekreto/plugins/infisical.ts",
+                "feature/secrets/plugins/onepassword/onepassword.go",
+                "feature/secrets/plugins/doppler/doppler.go",
+                "feature/secrets/plugins/infisical/infisical.go",
+                "feature/secrets/plugins/onepassword.rs",
+                "feature/secrets/plugins/doppler.rs",
+                "feature/secrets/plugins/infisical.rs",
+                "feature/secrets/voxgig_sekreto/plugins/onepassword.py",
+                "feature/secrets/voxgig_sekreto/plugins/doppler.py",
+                "feature/secrets/voxgig_sekreto/plugins/infisical.py",
+                "src/feature/secrets/sekreto/plugins/onepassword.js",
+                "src/feature/secrets/sekreto/plugins/doppler.js",
+                "src/feature/secrets/sekreto/plugins/infisical.js",
+                "feature/secrets/voxgig_sekreto/plugins/onepassword.rb",
+                "feature/secrets/voxgig_sekreto/plugins/doppler.rb",
+                "feature/secrets/voxgig_sekreto/plugins/infisical.rb",
+                "feature/secrets/sekreto/plugins/onepassword.php",
+                "feature/secrets/sekreto/plugins/doppler.php",
+                "feature/secrets/sekreto/plugins/infisical.php",
+                "feature/secrets/plugins/OnePassword.cs",
+                "feature/secrets/plugins/Doppler.cs",
+                "feature/secrets/plugins/Infisical.cs",
+                "feature/secrets/sekreto/plugins/Onepassword.java",
+                "feature/secrets/sekreto/plugins/Doppler.java",
+                "feature/secrets/sekreto/plugins/Infisical.java",
+                "feature/secrets/sekreto/plugins/Onepassword.scala",
+                "feature/secrets/sekreto/plugins/Doppler.scala",
+                "feature/secrets/sekreto/plugins/Infisical.scala",
+                "feature/secrets/sekreto/plugins/Onepassword.kt",
+                "feature/secrets/sekreto/plugins/Doppler.kt",
+                "feature/secrets/sekreto/plugins/Infisical.kt",
+                "feature/secrets/plugins/Voxgig/Sekreto/Plugins/Onepassword.pm",
+                "feature/secrets/plugins/Voxgig/Sekreto/Plugins/Doppler.pm",
+                "feature/secrets/plugins/Voxgig/Sekreto/Plugins/Infisical.pm",
+                "lib/feature/secrets/sekreto/plugins/onepassword.dart",
+                "lib/feature/secrets/sekreto/plugins/doppler.dart",
+                "lib/feature/secrets/sekreto/plugins/infisical.dart",
+                "feature/secrets/voxgig/sekreto/plugins/onepassword.clj",
+                "feature/secrets/voxgig/sekreto/plugins/doppler.clj",
+                "feature/secrets/voxgig/sekreto/plugins/infisical.clj",
+                "feature/secrets/sekreto/plugins/onepassword.ex",
+                "feature/secrets/sekreto/plugins/doppler.ex",
+                "feature/secrets/sekreto/plugins/infisical.ex",
+                "feature/secrets/plugins/Onepassword.swift",
+                "feature/secrets/plugins/Doppler.swift",
+                "feature/secrets/plugins/Infisical.swift",
+                "src/feature/secrets/sekreto/plugins/SekretoPlugins/Onepassword.lean",
+                "src/feature/secrets/sekreto/plugins/SekretoPlugins/Doppler.lean",
+                "src/feature/secrets/sekreto/plugins/SekretoPlugins/Infisical.lean",
+                "feature/secrets/plugins/onepassword.c",
+                "feature/secrets/plugins/doppler.c",
+                "feature/secrets/plugins/infisical.c",
+                "feature/secrets/sekreto/plugins/onepassword.lua",
+                "feature/secrets/sekreto/plugins/doppler.lua",
+                "feature/secrets/sekreto/plugins/infisical.lua",
+                "feature/secrets/plugins/onepassword.zig",
+                "feature/secrets/plugins/doppler.zig",
+                "feature/secrets/plugins/infisical.zig",
+                "feature/secrets/plugins/onepassword.ml",
+                "feature/secrets/plugins/doppler.ml",
+                "feature/secrets/plugins/infisical.ml",
+                "feature/secrets/plugins/Onepassword.cpp",
+                "feature/secrets/plugins/Onepassword.hpp",
+                "feature/secrets/plugins/Doppler.cpp",
+                "feature/secrets/plugins/Doppler.hpp",
+                "feature/secrets/plugins/Infisical.cpp",
+                "feature/secrets/plugins/Infisical.hpp"
+              ],
+              "stub": {},
+              "title": "1Password, Doppler and Infisical"
+            },
+            "secretspec": {
+              "active": false,
+              "def": {
+                "c": {
+                  "sek_plugin_secretspec": "feature/secrets/plugins/secretspec.c"
+                },
+                "clojure": {
+                  "voxgig.sekreto.plugins.secretspec/secretspec": "feature/secrets/voxgig/sekreto/plugins/secretspec.clj"
+                },
+                "cpp": {
+                  "secretspec": "feature/secrets/plugins/Secretspec.cpp"
+                },
+                "csharp": {
+                  "SecretSpec.Plugin": "feature/secrets/plugins/SecretSpec.cs"
+                },
+                "dart": {
+                  "secretspec": "lib/feature/secrets/sekreto/plugins/secretspec.dart"
+                },
+                "elixir": {
+                  "Sekreto.Plugins.Secretspec.secretspec": "lib/projectname/feature/secrets/sekreto/plugins/secretspec.ex"
+                },
+                "go": {
+                  "secretspec.Plugin": "feature/secrets/plugins/secretspec/secretspec.go"
+                },
+                "java": {
+                  "Secretspec.PLUGIN": "feature/secrets/sekreto/plugins/Secretspec.java"
+                },
+                "js": {
+                  "secretspec": "src/feature/secrets/sekreto/plugins/secretspec.js"
+                },
+                "kotlin": {
+                  "secretspec": "feature/secrets/sekreto/plugins/Secretspec.kt"
+                },
+                "lean": {
+                  "Sekreto.secretspec": "src/feature/secrets/sekreto/plugins/SekretoPlugins/Secretspec.lean"
+                },
+                "lua": {
+                  "secretspec": "feature/secrets/sekreto/plugins/secretspec.lua"
+                },
+                "ocaml": {
+                  "Secretspec.plugin": "feature/secrets/plugins/secretspec.ml"
+                },
+                "perl": {
+                  "secretspec": "feature/secrets/plugins/Voxgig/Sekreto/Plugins/Secretspec.pm"
+                },
+                "php": {
+                  "secretspec": "feature/secrets/sekreto/plugins/secretspec.php"
+                },
+                "py": {
+                  "secretspec": "pkg/feature/secrets/voxgig_sekreto/plugins/secretspec.py"
+                },
+                "rb": {
+                  "VoxgigSekreto::Plugins::SECRETSPEC": "feature/secrets/voxgig_sekreto/plugins/secretspec.rb"
+                },
+                "rust": {
+                  "secretspec::plugin": "feature/secrets/plugins/secretspec.rs"
+                },
+                "scala": {
+                  "com.voxgig.sekreto.plugins.secretspec": "feature/secrets/sekreto/plugins/Secretspec.scala"
+                },
+                "swift": {
+                  "secretspec": "Sources/ProjectNameSDK/feature/secrets/plugins/Secretspec.swift"
+                },
+                "ts": {
+                  "secretspec": "src/feature/secrets/sekreto/plugins/secretspec.ts"
+                },
+                "zig": {
+                  "secretspec": "feature/secrets/plugins/secretspec.zig"
+                }
+              },
+              "deps": {},
+              "name": "secretspec",
+              "needs": {
+                "fs": true
+              },
+              "path": [
+                "src/feature/secrets/sekreto/plugins/secretspec.ts",
+                "feature/secrets/plugins/secretspec/secretspec.go",
+                "feature/secrets/plugins/secretspec.rs",
+                "feature/secrets/voxgig_sekreto/plugins/secretspec.py",
+                "src/feature/secrets/sekreto/plugins/secretspec.js",
+                "feature/secrets/voxgig_sekreto/plugins/secretspec.rb",
+                "feature/secrets/sekreto/plugins/secretspec.php",
+                "feature/secrets/plugins/SecretSpec.cs",
+                "feature/secrets/sekreto/plugins/Secretspec.java",
+                "feature/secrets/sekreto/plugins/Secretspec.scala",
+                "feature/secrets/sekreto/plugins/Secretspec.kt",
+                "feature/secrets/plugins/Voxgig/Sekreto/Plugins/Secretspec.pm",
+                "lib/feature/secrets/sekreto/plugins/secretspec.dart",
+                "feature/secrets/voxgig/sekreto/plugins/secretspec.clj",
+                "feature/secrets/sekreto/plugins/secretspec.ex",
+                "feature/secrets/plugins/Secretspec.swift",
+                "src/feature/secrets/sekreto/plugins/SekretoPlugins/Secretspec.lean",
+                "feature/secrets/plugins/secretspec.c",
+                "feature/secrets/sekreto/plugins/secretspec.lua",
+                "feature/secrets/plugins/secretspec.zig",
+                "feature/secrets/plugins/secretspec.ml",
+                "feature/secrets/plugins/Secretspec.cpp",
+                "feature/secrets/plugins/Secretspec.hpp"
+              ],
+              "stub": {},
+              "title": "secretspec CLI bridge (child process)"
+            },
+            "vault": {
+              "active": false,
+              "def": {
+                "c": {
+                  "sek_plugin_boru": "feature/secrets/plugins/boru.c",
+                  "sek_plugin_hashicorp": "feature/secrets/plugins/hashicorp.c"
+                },
+                "clojure": {
+                  "voxgig.sekreto.plugins.boru/boru": "feature/secrets/voxgig/sekreto/plugins/boru.clj",
+                  "voxgig.sekreto.plugins.hashicorp/hashicorp": "feature/secrets/voxgig/sekreto/plugins/hashicorp.clj"
+                },
+                "cpp": {
+                  "boru": "feature/secrets/plugins/Boru.cpp",
+                  "hashicorp": "feature/secrets/plugins/Hashicorp.cpp"
+                },
+                "csharp": {
+                  "Boru.Plugin": "feature/secrets/plugins/Boru.cs",
+                  "Hashicorp.Plugin": "feature/secrets/plugins/Hashicorp.cs"
+                },
+                "dart": {
+                  "boru": "lib/feature/secrets/sekreto/plugins/boru.dart",
+                  "hashicorp": "lib/feature/secrets/sekreto/plugins/hashicorp.dart"
+                },
+                "elixir": {
+                  "Sekreto.Plugins.Boru.boru": "lib/projectname/feature/secrets/sekreto/plugins/boru.ex",
+                  "Sekreto.Plugins.Hashicorp.hashicorp": "lib/projectname/feature/secrets/sekreto/plugins/hashicorp.ex"
+                },
+                "go": {
+                  "boru.Plugin": "feature/secrets/plugins/boru/boru.go",
+                  "hashicorp.Plugin": "feature/secrets/plugins/hashicorp/hashicorp.go"
+                },
+                "java": {
+                  "Boru.PLUGIN": "feature/secrets/sekreto/plugins/Boru.java",
+                  "Hashicorp.PLUGIN": "feature/secrets/sekreto/plugins/Hashicorp.java"
+                },
+                "js": {
+                  "boru": "src/feature/secrets/sekreto/plugins/boru.js",
+                  "hashicorp": "src/feature/secrets/sekreto/plugins/hashicorp.js"
+                },
+                "kotlin": {
+                  "boru": "feature/secrets/sekreto/plugins/Boru.kt",
+                  "hashicorp": "feature/secrets/sekreto/plugins/Hashicorp.kt"
+                },
+                "lean": {
+                  "Sekreto.boru": "src/feature/secrets/sekreto/plugins/SekretoPlugins/Boru.lean",
+                  "Sekreto.hashicorp": "src/feature/secrets/sekreto/plugins/SekretoPlugins/Hashicorp.lean"
+                },
+                "lua": {
+                  "boru": "feature/secrets/sekreto/plugins/boru.lua",
+                  "hashicorp": "feature/secrets/sekreto/plugins/hashicorp.lua"
+                },
+                "ocaml": {
+                  "Boru.plugin": "feature/secrets/plugins/boru.ml",
+                  "Hashicorp.plugin": "feature/secrets/plugins/hashicorp.ml"
+                },
+                "perl": {
+                  "boru": "feature/secrets/plugins/Voxgig/Sekreto/Plugins/Boru.pm",
+                  "hashicorp": "feature/secrets/plugins/Voxgig/Sekreto/Plugins/Hashicorp.pm"
+                },
+                "php": {
+                  "boru": "feature/secrets/sekreto/plugins/boru.php",
+                  "hashicorp": "feature/secrets/sekreto/plugins/hashicorp.php"
+                },
+                "py": {
+                  "boru": "pkg/feature/secrets/voxgig_sekreto/plugins/boru.py",
+                  "hashicorp": "pkg/feature/secrets/voxgig_sekreto/plugins/hashicorp.py"
+                },
+                "rb": {
+                  "VoxgigSekreto::Plugins::BORU": "feature/secrets/voxgig_sekreto/plugins/boru.rb",
+                  "VoxgigSekreto::Plugins::HASHICORP": "feature/secrets/voxgig_sekreto/plugins/hashicorp.rb"
+                },
+                "rust": {
+                  "boru::plugin": "feature/secrets/plugins/boru.rs",
+                  "hashicorp::plugin": "feature/secrets/plugins/hashicorp.rs"
+                },
+                "scala": {
+                  "com.voxgig.sekreto.plugins.boru": "feature/secrets/sekreto/plugins/Boru.scala",
+                  "com.voxgig.sekreto.plugins.hashicorp": "feature/secrets/sekreto/plugins/Hashicorp.scala"
+                },
+                "swift": {
+                  "boru": "Sources/ProjectNameSDK/feature/secrets/plugins/Boru.swift",
+                  "hashicorp": "Sources/ProjectNameSDK/feature/secrets/plugins/Hashicorp.swift"
+                },
+                "ts": {
+                  "boru": "src/feature/secrets/sekreto/plugins/boru.ts",
+                  "hashicorp": "src/feature/secrets/sekreto/plugins/hashicorp.ts"
+                },
+                "zig": {
+                  "boru": "feature/secrets/plugins/boru.zig",
+                  "hashicorp": "feature/secrets/plugins/hashicorp.zig"
+                }
+              },
+              "deps": {},
+              "name": "vault",
+              "needs": {
+                "fetch": true,
+                "fs": true
+              },
+              "path": [
+                "src/feature/secrets/sekreto/plugins/hashicorp.ts",
+                "src/feature/secrets/sekreto/plugins/boru.ts",
+                "feature/secrets/plugins/hashicorp/hashicorp.go",
+                "feature/secrets/plugins/boru/boru.go",
+                "feature/secrets/plugins/hashicorp.rs",
+                "feature/secrets/plugins/boru.rs",
+                "feature/secrets/voxgig_sekreto/plugins/hashicorp.py",
+                "feature/secrets/voxgig_sekreto/plugins/boru.py",
+                "src/feature/secrets/sekreto/plugins/hashicorp.js",
+                "src/feature/secrets/sekreto/plugins/boru.js",
+                "feature/secrets/voxgig_sekreto/plugins/hashicorp.rb",
+                "feature/secrets/voxgig_sekreto/plugins/boru.rb",
+                "feature/secrets/sekreto/plugins/hashicorp.php",
+                "feature/secrets/sekreto/plugins/boru.php",
+                "feature/secrets/plugins/Hashicorp.cs",
+                "feature/secrets/plugins/Boru.cs",
+                "feature/secrets/sekreto/plugins/Hashicorp.java",
+                "feature/secrets/sekreto/plugins/Boru.java",
+                "feature/secrets/sekreto/plugins/Hashicorp.scala",
+                "feature/secrets/sekreto/plugins/Boru.scala",
+                "feature/secrets/sekreto/plugins/Hashicorp.kt",
+                "feature/secrets/sekreto/plugins/Boru.kt",
+                "feature/secrets/plugins/Voxgig/Sekreto/Plugins/Hashicorp.pm",
+                "feature/secrets/plugins/Voxgig/Sekreto/Plugins/Boru.pm",
+                "lib/feature/secrets/sekreto/plugins/hashicorp.dart",
+                "lib/feature/secrets/sekreto/plugins/boru.dart",
+                "feature/secrets/sekreto/plugins/hashicorp.ex",
+                "feature/secrets/sekreto/plugins/boru.ex",
+                "feature/secrets/voxgig/sekreto/plugins/hashicorp.clj",
+                "feature/secrets/voxgig/sekreto/plugins/boru.clj",
+                "feature/secrets/plugins/Hashicorp.swift",
+                "feature/secrets/plugins/Boru.swift",
+                "src/feature/secrets/sekreto/plugins/SekretoPlugins/Hashicorp.lean",
+                "src/feature/secrets/sekreto/plugins/SekretoPlugins/Boru.lean",
+                "feature/secrets/plugins/hashicorp.c",
+                "feature/secrets/plugins/boru.c",
+                "feature/secrets/sekreto/plugins/hashicorp.lua",
+                "feature/secrets/sekreto/plugins/boru.lua",
+                "feature/secrets/plugins/hashicorp.zig",
+                "feature/secrets/plugins/boru.zig",
+                "feature/secrets/plugins/hashicorp.ml",
+                "feature/secrets/plugins/boru.ml",
+                "feature/secrets/plugins/Hashicorp.cpp",
+                "feature/secrets/plugins/Hashicorp.hpp",
+                "feature/secrets/plugins/Boru.cpp",
+                "feature/secrets/plugins/Boru.hpp"
+              ],
+              "stub": {},
+              "title": "HashiCorp Vault and boru"
+            }
+          },
+          "spec": {
+            "authexchange": "exchange"
+          },
+          "target": {
+            "go": {
+              "deps": {}
+            },
+            "go-cli": {
+              "deps": {}
+            },
+            "go-mcp": {
+              "deps": {}
+            },
+            "lua": {
+              "deps": {}
+            },
+            "php": {
+              "deps": {}
+            },
+            "py": {
+              "deps": {}
+            },
+            "rb": {
+              "deps": {}
+            },
+            "ts": {
+              "deps": {}
+            }
+          },
+          "title": "Secrets",
+          "transport": "wrap",
+          "version": "0.1.0"
+        },
         "test": {
           "active": true,
           "base": "node_modules/@voxgig/sdkgen/project/.sdk",
@@ -3318,147 +2744,6 @@
         }
       },
       "flow": {
-        "BasicCredentialCreationOptionFlow": {
-          "active": true,
-          "entity": "credential_creation_option",
-          "key$": "BasicCredentialCreationOptionFlow",
-          "kind": "basic",
-          "name": "BasicCredentialCreationOptionFlow",
-          "param": {},
-          "step": [
-            {
-              "a": true,
-              "d": {},
-              "i": {
-                "ref": "credential_creation_option_ref01"
-              },
-              "m": {},
-              "o": "create",
-              "s": [],
-              "v": []
-            }
-          ]
-        },
-        "BasicCredentialRequestOptionFlow": {
-          "active": true,
-          "entity": "credential_request_option",
-          "key$": "BasicCredentialRequestOptionFlow",
-          "kind": "basic",
-          "name": "BasicCredentialRequestOptionFlow",
-          "param": {},
-          "step": [
-            {
-              "a": true,
-              "d": {},
-              "i": {
-                "ref": "credential_request_option_ref01"
-              },
-              "m": {},
-              "o": "create",
-              "s": [],
-              "v": []
-            }
-          ]
-        },
-        "BasicEmailFlow": {
-          "active": true,
-          "entity": "email",
-          "key$": "BasicEmailFlow",
-          "kind": "basic",
-          "name": "BasicEmailFlow",
-          "param": {},
-          "step": [
-            {
-              "a": true,
-              "d": {},
-              "i": {
-                "ref": "email_ref01"
-              },
-              "m": {},
-              "o": "create",
-              "s": [],
-              "v": []
-            },
-            {
-              "a": true,
-              "d": {},
-              "i": {},
-              "m": {},
-              "o": "list",
-              "s": [],
-              "v": [
-                {
-                  "apply": "ItemExists",
-                  "def": {
-                    "ref": "email_ref01"
-                  }
-                }
-              ]
-            },
-            {
-              "a": true,
-              "d": {},
-              "i": {
-                "ref": "email_ref01",
-                "suffix": "_rm0"
-              },
-              "m": {
-                "id": "email01"
-              },
-              "o": "remove",
-              "s": [],
-              "v": []
-            },
-            {
-              "a": true,
-              "d": {},
-              "i": {
-                "suffix": "_rt0"
-              },
-              "m": {},
-              "o": "list",
-              "s": [],
-              "v": [
-                {
-                  "apply": "ItemNotExists",
-                  "def": {
-                    "ref": "email_ref01"
-                  }
-                }
-              ]
-            }
-          ]
-        },
-        "BasicHankoConfigurationFlow": {
-          "active": true,
-          "entity": "hanko_configuration",
-          "key$": "BasicHankoConfigurationFlow",
-          "kind": "basic",
-          "name": "BasicHankoConfigurationFlow",
-          "param": {},
-          "step": [
-            {
-              "a": true,
-              "d": {},
-              "i": {
-                "ref": "hanko_configuration_ref01",
-                "srcdatavar": "hanko_configuration_ref01_data",
-                "suffix": "_dt0"
-              },
-              "m": {},
-              "o": "load",
-              "s": [],
-              "v": [
-                {
-                  "apply": "TextFieldMark",
-                  "def": {
-                    "mark": "Mark01-hanko_configuration_ref01"
-                  }
-                }
-              ]
-            }
-          ]
-        },
         "BasicJsonWebKeyFlow": {
           "active": true,
           "entity": "json_web_key",
@@ -3485,65 +2770,23 @@
             }
           ]
         },
-        "BasicPasscodeFlow": {
+        "BasicOrganizationManagementFlow": {
           "active": true,
-          "entity": "passcode",
-          "key$": "BasicPasscodeFlow",
+          "entity": "organization_management",
+          "key$": "BasicOrganizationManagementFlow",
           "kind": "basic",
-          "name": "BasicPasscodeFlow",
+          "name": "BasicOrganizationManagementFlow",
           "param": {},
           "step": [
             {
               "a": true,
               "d": {},
               "i": {
-                "ref": "passcode_ref01"
+                "ref": "organization_management_ref01"
               },
               "m": {},
               "o": "create",
               "s": [],
-              "v": []
-            }
-          ]
-        },
-        "BasicPasswordFlow": {
-          "active": true,
-          "entity": "password",
-          "key$": "BasicPasswordFlow",
-          "kind": "basic",
-          "name": "BasicPasswordFlow",
-          "param": {},
-          "step": [
-            {
-              "a": true,
-              "d": {},
-              "i": {
-                "ref": "password_ref01"
-              },
-              "m": {},
-              "o": "create",
-              "s": [],
-              "v": []
-            },
-            {
-              "a": true,
-              "d": {},
-              "i": {
-                "ref": "password_ref01",
-                "srcdatavar": "password_ref01_data",
-                "suffix": "_up0",
-                "textfield": "password"
-              },
-              "m": {},
-              "o": "update",
-              "s": [
-                {
-                  "apply": "TextFieldMark",
-                  "def": {
-                    "mark": "Mark01-password_ref01"
-                  }
-                }
-              ],
               "v": []
             }
           ]
@@ -3611,19 +2854,15 @@
             {
               "a": true,
               "d": {},
-              "i": {
-                "ref": "session_management_ref01",
-                "srcdatavar": "session_management_ref01_data",
-                "suffix": "_dt0"
-              },
+              "i": {},
               "m": {},
-              "o": "load",
+              "o": "list",
               "s": [],
               "v": [
                 {
-                  "apply": "TextFieldMark",
+                  "apply": "ItemExists",
                   "def": {
-                    "mark": "Mark01-session_management_ref01"
+                    "ref": "session_management_ref01"
                   }
                 }
               ]
@@ -3690,82 +2929,6 @@
             }
           ]
         },
-        "BasicTokenFlow": {
-          "active": true,
-          "entity": "token",
-          "key$": "BasicTokenFlow",
-          "kind": "basic",
-          "name": "BasicTokenFlow",
-          "param": {},
-          "step": [
-            {
-              "a": true,
-              "d": {},
-              "i": {
-                "ref": "token_ref01"
-              },
-              "m": {},
-              "o": "create",
-              "s": [],
-              "v": []
-            }
-          ]
-        },
-        "BasicUserFlow": {
-          "active": true,
-          "entity": "user",
-          "key$": "BasicUserFlow",
-          "kind": "basic",
-          "name": "BasicUserFlow",
-          "param": {},
-          "step": [
-            {
-              "a": true,
-              "d": {},
-              "i": {
-                "ref": "user_ref01"
-              },
-              "m": {},
-              "o": "create",
-              "s": [],
-              "v": []
-            },
-            {
-              "a": true,
-              "d": {},
-              "i": {
-                "ref": "user_ref01",
-                "srcdatavar": "user_ref01_data",
-                "suffix": "_dt0"
-              },
-              "m": {
-                "id": "user01"
-              },
-              "o": "load",
-              "s": [],
-              "v": [
-                {
-                  "apply": "TextFieldMark",
-                  "def": {
-                    "mark": "Mark01-user_ref01"
-                  }
-                }
-              ]
-            },
-            {
-              "a": true,
-              "d": {},
-              "i": {
-                "ref": "user_ref01",
-                "suffix": "_rm0"
-              },
-              "m": {},
-              "o": "remove",
-              "s": [],
-              "v": []
-            }
-          ]
-        },
         "BasicUserManagementFlow": {
           "active": true,
           "entity": "user_management",
@@ -3802,124 +2965,13 @@
               ]
             }
           ]
-        },
-        "BasicWebAuthnFlow": {
-          "active": true,
-          "entity": "web_authn",
-          "key$": "BasicWebAuthnFlow",
-          "kind": "basic",
-          "name": "BasicWebAuthnFlow",
-          "param": {},
-          "step": [
-            {
-              "a": true,
-              "d": {},
-              "i": {
-                "ref": "web_authn_ref01"
-              },
-              "m": {},
-              "o": "create",
-              "s": [],
-              "v": []
-            },
-            {
-              "a": true,
-              "d": {},
-              "i": {},
-              "m": {},
-              "o": "list",
-              "s": [],
-              "v": [
-                {
-                  "apply": "ItemExists",
-                  "def": {
-                    "ref": "web_authn_ref01"
-                  }
-                }
-              ]
-            },
-            {
-              "a": true,
-              "d": {},
-              "i": {
-                "ref": "web_authn_ref01",
-                "srcdatavar": "web_authn_ref01_data",
-                "suffix": "_up0",
-                "textfield": "aaguid"
-              },
-              "m": {},
-              "o": "update",
-              "s": [
-                {
-                  "apply": "TextFieldMark",
-                  "def": {
-                    "mark": "Mark01-web_authn_ref01"
-                  }
-                }
-              ],
-              "v": []
-            },
-            {
-              "a": true,
-              "d": {},
-              "i": {
-                "ref": "web_authn_ref01",
-                "suffix": "_rm0"
-              },
-              "m": {
-                "id": "web_authn01"
-              },
-              "o": "remove",
-              "s": [],
-              "v": []
-            },
-            {
-              "a": true,
-              "d": {},
-              "i": {
-                "suffix": "_rt0"
-              },
-              "m": {},
-              "o": "list",
-              "s": [],
-              "v": [
-                {
-                  "apply": "ItemNotExists",
-                  "def": {
-                    "ref": "web_authn_ref01"
-                  }
-                }
-              ]
-            }
-          ]
-        },
-        "BasicWebauthnLoginFlow": {
-          "active": true,
-          "entity": "webauthn_login",
-          "key$": "BasicWebauthnLoginFlow",
-          "kind": "basic",
-          "name": "BasicWebauthnLoginFlow",
-          "param": {},
-          "step": [
-            {
-              "a": true,
-              "d": {},
-              "i": {
-                "ref": "webauthn_login_ref01"
-              },
-              "m": {},
-              "o": "create",
-              "s": [],
-              "v": []
-            }
-          ]
         }
       },
       "info": {
         "contact": {
           "email": "developers@hanko.io"
         },
-        "description": "## Introduction\n\nThis is the OpenAPI specification for the [Hanko Public API](https://github.com/teamhanko/hanko/blob/main/backend/README.md#basic-usage).\n\n## Authentication\n\nThe API uses [JSON Web Tokens](https://www.rfc-editor.org/rfc/rfc7519.html) (JWTs) for authentication.\nJWTs are verified using [JSON Web Keys](https://www.rfc-editor.org/rfc/rfc7517) (JWK).\nJWKs can be [configured](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#all-available-config-options)\nthrough the `secrets.keys` options. The API also publishes public cryptographic keys as a\n[JWK set](https://www.rfc-editor.org/rfc/rfc7517#section-2) through the `.well-known/jwks.json` endpoint\nto enable clients to verify token signatures.\nJWTs must be provided on requests to protected endpoints using one of the following schemes:\n\n### CookieAuth\n\n**Security Scheme Type**: `API Key`\n\n**Cookie parameter name**: `hanko`\n\nThe JWT must be provided in a Cookie with the name `hanko`.\n\n### BearerTokenAuth\n\n**Security Scheme Type**: `http`\n\n**HTTP Authorization Scheme**: `Bearer`\n\n**Bearer format**: `JWT`\n\nThe JWT must be provided in an HTTP Authorization header with bearer type: `Authorization: Bearer <JWT>`.\n\n## Cross-Origin Resource Sharing\nCross-Origin Resource Sharing (CORS) can be currently\n[configured](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#all-available-config-options)\nfor public endpoints via the `server.public.cors` options.\n\n---\n",
+        "description": "## Introduction\n\nThis is the OpenAPI specification for the [Hanko Public API](https://github.com/teamhanko/hanko/blob/main/backend/README.md#start-the-public-api).\n\n## Authentication\n\nThe API uses [JSON Web Tokens](https://www.rfc-editor.org/rfc/rfc7519.html) (JWTs) for authentication.\nJWTs are verified using [JSON Web Keys](https://www.rfc-editor.org/rfc/rfc7517) (JWK).\nJWKs can be [configured](https://github.com/teamhanko/hanko/wiki/config)\nthrough the `secrets.keys` options. The API also publishes public cryptographic keys as a\n[JWK set](https://www.rfc-editor.org/rfc/rfc7517#section-2) through the `.well-known/jwks.json` endpoint\nto enable clients to verify token signatures.\nJWTs must be provided on requests to protected endpoints using one of the following schemes:\n\n### CookieAuth\n\n**Security Scheme Type**: `API Key`\n\n**Cookie parameter name**: `hanko`\n\nThe JWT must be provided in a Cookie with the name `hanko`.\n\n### BearerTokenAuth\n\n**Security Scheme Type**: `http`\n\n**HTTP Authorization Scheme**: `Bearer`\n\n**Bearer format**: `JWT`\n\nThe JWT must be provided in an HTTP Authorization header with bearer type: `Authorization: Bearer <JWT>`.\n\n## Cross-Origin Resource Sharing\nCross-Origin Resource Sharing (CORS) can be currently\n[configured](https://github.com/teamhanko/hanko/wiki/config)\nfor public endpoints via the `server.public.cors` options.\n\n---\n",
         "license": {
           "name": "AGPL-3.0-or-later",
           "url": "https://www.gnu.org/licenses/agpl-3.0.txt"
@@ -3928,19 +2980,19 @@
           "alternatives": [
             [
               {
-                "in": "header",
-                "name": "Authorization",
-                "prefix": "Bearer",
-                "scheme": "BearerTokenAuth",
-                "type": "http"
+                "in": "cookie",
+                "name": "hanko",
+                "prefix": "",
+                "scheme": "CookieAuth",
+                "type": "apiKey"
               }
             ]
           ],
-          "in": "cookie",
-          "name": "hanko",
-          "prefix": "",
-          "scheme": "CookieAuth",
-          "type": "apiKey"
+          "in": "header",
+          "name": "Authorization",
+          "prefix": "Bearer",
+          "scheme": "BearerTokenAuth",
+          "type": "http"
         },
         "servers": [
           {
@@ -3953,9 +3005,9 @@
             }
           }
         ],
-        "summary": "This is the OpenAPI specification for the [Hanko Public API](https://github.com/teamhanko/hanko/blob/main/backend/README.md#basic-usage).",
+        "summary": "This is the OpenAPI specification for the [Hanko Public API](https://github.com/teamhanko/hanko/blob/main/backend/README.md#start-the-public-api).",
         "title": "Hanko Public API",
-        "version": "1.2.0",
+        "version": "3.0.4",
         "website": "https://github.com/teamhanko/hanko"
       },
       "option": {},
@@ -4302,7 +3354,7 @@
             "registry": {
               "active": false,
               "name": "luarocks",
-              "package": "",
+              "package": "voxgig-sdk-hanko-public",
               "state": "pending",
               "url": "https://luarocks.org",
               "vault": {
@@ -4369,7 +3421,7 @@
             "registry": {
               "active": false,
               "name": "packagist",
-              "package": "",
+              "package": "voxgig-sdk/hanko-public",
               "state": "pending",
               "url": "https://packagist.org",
               "vault": {
@@ -4442,7 +3494,7 @@
             "registry": {
               "active": false,
               "name": "pypi",
-              "package": "",
+              "package": "voxgig-sdk-hanko-public",
               "state": "pending",
               "url": "https://pypi.org",
               "vault": {
@@ -4593,7 +3645,7 @@
             "registry": {
               "active": false,
               "name": "npm",
-              "package": "",
+              "package": "@voxgig-sdk/hanko-public",
               "state": "pending",
               "url": "https://registry.npmjs.org",
               "vault": {

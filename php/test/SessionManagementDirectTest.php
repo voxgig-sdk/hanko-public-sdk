@@ -22,10 +22,13 @@ class SessionManagementDirectTest extends TestCase
         return empty($result["err"]) && !empty($result["ok"]) && $status >= 200 && $status < 300;
     }
 
-    public function test_direct_load_session_management(): void
+    public function test_direct_list_session_management(): void
     {
-        $setup = session_management_direct_setup(["id" => "direct01"]);
-        [$_shouldSkip, $_reason] = Runner::is_control_skipped("direct", "direct-load-session_management", $setup["live"] ? "live" : "unit");
+        $setup = session_management_direct_setup([
+            ["id" => "direct01"],
+            ["id" => "direct02"],
+        ]);
+        [$_shouldSkip, $_reason] = Runner::is_control_skipped("direct", "direct-list-session_management", $setup["live"] ? "live" : "unit");
         if ($_shouldSkip) {
             $this->markTestSkipped($_reason ?? "skipped via sdk-test-control.json");
             return;
@@ -33,33 +36,26 @@ class SessionManagementDirectTest extends TestCase
         $client = $setup["client"];
 
         $params = [];
-        $query = [];
-        if ($setup["live"]) {
-        } else {
-        }
 
         $result = $client->direct([
             "path" => "sessions/validate",
             "method" => "GET",
             "params" => $params,
-            "query" => $query,
         ]);
         if ($setup["live"]) {
             if (!self::liveOk($result)) {
-                Runner::live_miss(self::LIVE_STRICT, "Live load failed: " . Runner::live_describe($result));
+                Runner::live_miss(self::LIVE_STRICT, "Live list failed: " . Runner::live_describe($result));
             }
-            if (null === ($result["data"] ?? null)) {
-                Runner::live_miss(self::LIVE_STRICT, "Live load returned no data: " . Runner::live_describe($result));
+            if (null === Runner::live_list($result["data"] ?? null)) {
+                Runner::live_miss(self::LIVE_STRICT, "Live list returned no list: " . Runner::live_describe($result));
             }
-            $this->assertNotNull($result["data"]);
+            $this->assertIsArray(Runner::live_list($result["data"]));
         } else {
             $this->assertArrayNotHasKey("err", $result);
             $this->assertTrue($result["ok"]);
             $this->assertEquals(200, Helpers::to_int($result["status"]));
-            $this->assertNotNull($result["data"]);
-            if (is_array($result["data"]) && isset($result["data"]["id"])) {
-                $this->assertEquals("direct01", $result["data"]["id"]);
-            }
+            $this->assertIsArray($result["data"]);
+            $this->assertCount(2, $result["data"]);
             $this->assertCount(1, $setup["calls"]);
         }
     }

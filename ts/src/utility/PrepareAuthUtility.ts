@@ -1,11 +1,8 @@
 
 import { Context, Spec } from '../types'
-import { cookieKeep } from './PrepareHeadersUtility'
 
 
-const CRED_name = 'hanko'
-
-const COOKIE_header = 'cookie'
+const CRED_name = 'authorization'
 
 const OPTION_apikey = 'apikey'
 const OPTION_secret = 'secret'
@@ -15,7 +12,7 @@ const NOTFOUND = '__NOTFOUND__'
 
 // The client's `auth.name` option, when set, replaces the name the API declares.
 function credName(name: any): string {
-  return 'string' === typeof name && '' !== name ? name : CRED_name
+  return 'string' === typeof name && '' !== name ? name.toLowerCase() : CRED_name
 }
 
 
@@ -36,27 +33,11 @@ function prepareAuth(ctx: Context): Spec | Error {
 
   const headers = spec.headers
 
-  function cookieSet(headers: any, name: string, value: any) {
-    const existing = getprop(headers, COOKIE_header, '')
-    const kept: string[] = 'string' === typeof existing ? cookieKeep(existing, [name]) : []
-
-    if (null != value) {
-      kept.push(name + '=' + value)
-    }
-
-    if (0 === kept.length) {
-      delprop(headers, COOKIE_header)
-    }
-    else {
-      setprop(headers, COOKIE_header, kept.join('; '))
-    }
-  }
-
   const options = client.options()
 
   // Public APIs that need no auth omit the options.auth block entirely.
   if (null == options.auth) {
-    cookieSet(headers, CRED_name, null)
+    delprop(headers, CRED_name)
     return spec
   }
 
@@ -65,16 +46,18 @@ function prepareAuth(ctx: Context): Spec | Error {
 
   // A credential left under the declared name would travel beside the renamed one.
   if (CRED_name !== name) {
-    cookieSet(headers, CRED_name, null)
+    delprop(headers, CRED_name)
   }
 
   const apikey = getprop(options, OPTION_apikey, NOTFOUND)
 
   if (NOTFOUND === apikey || null == apikey || '' === apikey) {
-    cookieSet(headers, name, null)
+    delprop(headers, name)
   }
   else {
-    cookieSet(headers, name, apikey)
+    // A raw credential (empty prefix, e.g. an apiKey scheme) must go in
+    // as-is; only a non-empty prefix (Bearer/Basic/OAuth) is space-joined.
+    setprop(headers, name, prefix ? prefix + ' ' + apikey : apikey)
   }
 
   return spec

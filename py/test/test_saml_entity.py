@@ -31,13 +31,22 @@ class TestSamlEntity:
         ent = testsdk.Saml(None)
         assert ent is not None
 
+    def test_should_refuse_an_invalid_request(self):
+        if "validate" not in (shared_config().get("feature") or {}):
+            pytest.skip("feature not present in this SDK: validate")
+        client = HankoPublicSDK.test(
+            None, {"feature": {"validate": {"active": True}}})
+        with pytest.raises(Exception) as err:
+            client.Saml(None).load({"cert_only": "x", "domain": "x"}, None)
+        assert "validate_failed" == getattr(err.value, "code", None)
+
     def test_should_run_basic_flow(self):
         setup = _saml_basic_setup(None)
         # Per-op sdk-test-control.json skip — basic test exercises a flow with
         # multiple ops; skipping any one skips the whole flow (steps depend
         # on each other).
         _live = setup.get("live", False)
-        for _op in ["create"]:
+        for _op in ["create", "load"]:
             _skip, _reason = runner.is_control_skipped("entityOp", "saml." + _op, "live" if _live else "unit")
             if _skip:
                 pytest.skip(_reason or "skipped via sdk-test-control.json")
@@ -51,6 +60,11 @@ class TestSamlEntity:
 
         saml_ref01_data = helpers.to_map(runner.entity_data(saml_ref01_ent.create(saml_ref01_data, None)))
         assert saml_ref01_data is not None
+
+        # LOAD
+        saml_ref01_match_dt0 = {}
+        saml_ref01_data_dt0_loaded = saml_ref01_ent.load(saml_ref01_match_dt0, None)
+        assert saml_ref01_data_dt0_loaded is not None
 
 
 

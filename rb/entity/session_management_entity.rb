@@ -67,8 +67,8 @@ class SessionManagementEntity
   end
 
   def data_set(args)
-    if args
-      @_data = HankoPublicHelpers.to_map(VoxgigStruct.clone(args)) || {}
+    unless args.nil?
+      @_data = VoxgigStruct.clone(args)
       @_utility.feature_hook.call(@_entctx, "SetData")
     end
   end
@@ -175,7 +175,7 @@ class SessionManagementEntity
 
         # What a hook raises here must not escape the cleaning below.
         begin
-          utility.feature_hook.call(ctx, "PreUnexpected")
+          utility.feature_hook.call(ctx, "PreUnexpected") unless ctx.unexpected_fired
         rescue StandardError => hookerr
           operr = hookerr
           ctx.ctrl.err = operr
@@ -222,37 +222,35 @@ class SessionManagementEntity
   end
 
   
-  # Load a single SessionManagement.
+
+  
+  # List SessionManagement items matching the given filter.
   #
-  # @param reqmatch [SessionManagementLoadMatch, Hash, nil] match criteria (id/query fields);
-  #   optional — an entity with no id-like key loads with no match (nil is treated
-  #   as an empty match, so client.SessionManagement.load works with no args).
+  # @param reqmatch [SessionManagementListMatch, Hash, nil] match filter (any subset of
+  #   SessionManagement fields); defaults to nil, treated as an empty match that lists all.
   # @param ctrl [Object, nil] optional per-call control
-  # @return [SessionManagementEntity] the loaded SessionManagement entity (data_get reads its record);
-  #   raises HankoPublicError on failure
-  def load(reqmatch = nil, ctrl = nil)
+  # @return [Array<SessionManagementEntity>] the matching SessionManagement items, one entity per
+  #   record (data_get reads the record); raises HankoPublicError on failure
+  def list(reqmatch = nil, ctrl = nil)
     utility = @_utility
     ctx = utility.make_context.call({
-      "opname" => "load",
+      "opname" => "list",
       "ctrl" => ctrl,
       "match" => @_match,
       "data" => @_data,
       "reqmatch" => reqmatch,
     }, @_entctx)
 
-    _run_op(ctx) do
+    records = _run_op(ctx) do
       if ctx.result
         @_match = ctx.result.resmatch if ctx.result.resmatch
-        if ctx.result.resdata
-          @_data = HankoPublicHelpers.to_map(VoxgigStruct.clone(ctx.result.resdata)) || {}
-        end
       end
     end
+
+    records
   end
 
 
-
-  
 
   
   # Create a new SessionManagement.
@@ -351,7 +349,10 @@ class SessionManagementEntity
 
       # What a hook raises here must not escape the cleaning below.
       begin
-        utility.feature_hook.call(ctx, "PreUnexpected")
+        # Once per operation: make_error fires it for its own error.
+        unless ctx.unexpected_fired
+          utility.feature_hook.call(ctx, "PreUnexpected")
+        end
       rescue StandardError => hookerr
         operr = hookerr
         ctx.ctrl.err = operr

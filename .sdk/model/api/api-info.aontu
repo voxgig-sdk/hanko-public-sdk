@@ -9,13 +9,13 @@ main: {
       }
       description: `## Introduction
 
-This is the OpenAPI specification for the [Hanko Public API](https://github.com/teamhanko/hanko/blob/main/backend/README.md#basic-usage).
+This is the OpenAPI specification for the [Hanko Public API](https://github.com/teamhanko/hanko/blob/main/backend/README.md#start-the-public-api).
 
 ## Authentication
 
 The API uses [JSON Web Tokens](https://www.rfc-editor.org/rfc/rfc7519.html) (JWTs) for authentication.
 JWTs are verified using [JSON Web Keys](https://www.rfc-editor.org/rfc/rfc7517) (JWK).
-JWKs can be [configured](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#all-available-config-options)
+JWKs can be [configured](https://github.com/teamhanko/hanko/wiki/config)
 through the \`secrets.keys\` options. The API also publishes public cryptographic keys as a
 [JWK set](https://www.rfc-editor.org/rfc/rfc7517#section-2) through the \`.well-known/jwks.json\` endpoint
 to enable clients to verify token signatures.
@@ -41,7 +41,7 @@ The JWT must be provided in an HTTP Authorization header with bearer type: \`Aut
 
 ## Cross-Origin Resource Sharing
 Cross-Origin Resource Sharing (CORS) can be currently
-[configured](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#all-available-config-options)
+[configured](https://github.com/teamhanko/hanko/wiki/config)
 for public endpoints via the \`server.public.cors\` options.
 
 ---
@@ -54,19 +54,19 @@ for public endpoints via the \`server.public.cors\` options.
         alternatives: [
           [
             {
-              in: "header"
-              name: "Authorization"
-              prefix: "Bearer"
-              scheme: "BearerTokenAuth"
-              type: "http"
+              in: "cookie"
+              name: "hanko"
+              prefix: ""
+              scheme: "CookieAuth"
+              type: "apiKey"
             }
           ]
         ]
-        in: "cookie"
-        name: "hanko"
-        prefix: ""
-        scheme: "CookieAuth"
-        type: "apiKey"
+        in: "header"
+        name: "Authorization"
+        prefix: "Bearer"
+        scheme: "BearerTokenAuth"
+        type: "http"
       }
       servers: [
         {
@@ -79,9 +79,9 @@ for public endpoints via the \`server.public.cors\` options.
           }
         }
       ]
-      summary: "This is the OpenAPI specification for the [Hanko Public API](https://github.com/teamhanko/hanko/blob/main/backend/README.md#basic-usage)."
+      summary: "This is the OpenAPI specification for the [Hanko Public API](https://github.com/teamhanko/hanko/blob/main/backend/README.md#start-the-public-api)."
       title: "Hanko Public API"
-      version: "1.2.0"
+      version: "3.0.4"
       website: "https://github.com/teamhanko/hanko"
     }
   }

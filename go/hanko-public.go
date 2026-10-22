@@ -48,32 +48,20 @@ func init() {
 	core.NewRetryFeatureFunc = func() core.Feature {
 		return feature.NewRetryFeature()
 	}
+	core.NewSecretsFeatureFunc = func() core.Feature {
+		return feature.NewSecretsFeature()
+	}
 	core.NewTestFeatureFunc = func() core.Feature {
 		return feature.NewTestFeature()
 	}
 	core.NewTimeoutFeatureFunc = func() core.Feature {
 		return feature.NewTimeoutFeature()
 	}
-	core.NewCredentialCreationOptionEntityFunc = func(client *core.HankoPublicSDK, entopts map[string]any) core.HankoPublicEntity {
-		return entity.NewCredentialCreationOptionEntity(client, entopts)
-	}
-	core.NewCredentialRequestOptionEntityFunc = func(client *core.HankoPublicSDK, entopts map[string]any) core.HankoPublicEntity {
-		return entity.NewCredentialRequestOptionEntity(client, entopts)
-	}
-	core.NewEmailEntityFunc = func(client *core.HankoPublicSDK, entopts map[string]any) core.HankoPublicEntity {
-		return entity.NewEmailEntity(client, entopts)
-	}
-	core.NewHankoConfigurationEntityFunc = func(client *core.HankoPublicSDK, entopts map[string]any) core.HankoPublicEntity {
-		return entity.NewHankoConfigurationEntity(client, entopts)
-	}
 	core.NewJsonWebKeyEntityFunc = func(client *core.HankoPublicSDK, entopts map[string]any) core.HankoPublicEntity {
 		return entity.NewJsonWebKeyEntity(client, entopts)
 	}
-	core.NewPasscodeEntityFunc = func(client *core.HankoPublicSDK, entopts map[string]any) core.HankoPublicEntity {
-		return entity.NewPasscodeEntity(client, entopts)
-	}
-	core.NewPasswordEntityFunc = func(client *core.HankoPublicSDK, entopts map[string]any) core.HankoPublicEntity {
-		return entity.NewPasswordEntity(client, entopts)
+	core.NewOrganizationManagementEntityFunc = func(client *core.HankoPublicSDK, entopts map[string]any) core.HankoPublicEntity {
+		return entity.NewOrganizationManagementEntity(client, entopts)
 	}
 	core.NewSamlEntityFunc = func(client *core.HankoPublicSDK, entopts map[string]any) core.HankoPublicEntity {
 		return entity.NewSamlEntity(client, entopts)
@@ -87,20 +75,8 @@ func init() {
 	core.NewThirdPartyEntityFunc = func(client *core.HankoPublicSDK, entopts map[string]any) core.HankoPublicEntity {
 		return entity.NewThirdPartyEntity(client, entopts)
 	}
-	core.NewTokenEntityFunc = func(client *core.HankoPublicSDK, entopts map[string]any) core.HankoPublicEntity {
-		return entity.NewTokenEntity(client, entopts)
-	}
-	core.NewUserEntityFunc = func(client *core.HankoPublicSDK, entopts map[string]any) core.HankoPublicEntity {
-		return entity.NewUserEntity(client, entopts)
-	}
 	core.NewUserManagementEntityFunc = func(client *core.HankoPublicSDK, entopts map[string]any) core.HankoPublicEntity {
 		return entity.NewUserManagementEntity(client, entopts)
-	}
-	core.NewWebAuthnEntityFunc = func(client *core.HankoPublicSDK, entopts map[string]any) core.HankoPublicEntity {
-		return entity.NewWebAuthnEntity(client, entopts)
-	}
-	core.NewWebauthnLoginEntityFunc = func(client *core.HankoPublicSDK, entopts map[string]any) core.HankoPublicEntity {
-		return entity.NewWebauthnLoginEntity(client, entopts)
 	}
 }
 
@@ -128,5 +104,6 @@ var NewMetricsFeature = feature.NewMetricsFeature
 var NewPagingFeature = feature.NewPagingFeature
 var NewRatelimitFeature = feature.NewRatelimitFeature
 var NewRetryFeature = feature.NewRetryFeature
+var NewSecretsFeature = feature.NewSecretsFeature
 var NewTestFeature = feature.NewTestFeature
 var NewTimeoutFeature = feature.NewTimeoutFeature

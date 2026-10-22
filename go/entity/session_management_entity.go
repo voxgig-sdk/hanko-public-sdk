@@ -14,7 +14,7 @@ type SessionManagementEntity struct {
 	client  *core.HankoPublicSDK
 	utility *core.Utility
 	entopts map[string]any
-	data    map[string]any
+	data    any
 	match   map[string]any
 	entctx  *core.Context
 	deleted bool
@@ -64,8 +64,12 @@ func (e *SessionManagementEntity) GoString() string {
 }
 
 func (e *SessionManagementEntity) MarshalJSON() ([]byte, error) {
+	data, ok := e.data.(map[string]any)
+	if !ok {
+		return json.Marshal(e.data)
+	}
 	out := map[string]any{}
-	for k, v := range e.data {
+	for k, v := range data {
 		out[k] = v
 	}
 	out["voxgig$entity"] = "SessionManagement"
@@ -93,10 +97,7 @@ func (e *SessionManagementEntity) Make() core.Entity {
 
 func (e *SessionManagementEntity) Data(args ...any) any {
 	if len(args) > 0 && args[0] != nil {
-		e.data = core.ToMapAny(vs.Clone(args[0]))
-		if e.data == nil {
-			e.data = map[string]any{}
-		}
+		e.data = vs.Clone(args[0])
 		e.utility.FeatureHook(e.entctx, "SetData")
 	}
 
@@ -293,11 +294,16 @@ func (e *SessionManagementEntity) streamSteps(ctx *core.Context) error {
 	return nil
 }
 
+func (e *SessionManagementEntity) Load(_ map[string]any, _ map[string]any) (any, error) {
+	return core.UnsupportedOp("load", e.name)
+}
 
-func (e *SessionManagementEntity) Load(reqmatch map[string]any, ctrl map[string]any) (any, error) {
+
+
+func (e *SessionManagementEntity) List(reqmatch map[string]any, ctrl map[string]any) (any, error) {
 	utility := e.utility
 	ctx := utility.MakeContext(map[string]any{
-		"opname":   "load",
+		"opname":   "list",
 		"ctrl":     ctrl,
 		"match":    e.match,
 		"data":     e.data,
@@ -309,32 +315,21 @@ func (e *SessionManagementEntity) Load(reqmatch map[string]any, ctrl map[string]
 			if ctx.Result.Resmatch != nil {
 				e.match = ctx.Result.Resmatch
 			}
-			if ctx.Result.Resdata != nil {
-				e.data = core.ToMapAny(vs.Clone(ctx.Result.Resdata))
-				if e.data == nil {
-					e.data = map[string]any{}
-				}
-			}
 		}
 	})
 }
 
-// LoadTyped is the statically-typed variant of Load: it takes an
-// SessionManagementLoadMatch and returns an SessionManagement. It delegates to the untyped
-// Load (identical runtime) and converts at the typed boundary.
-func (e *SessionManagementEntity) LoadTyped(reqmatch SessionManagementLoadMatch, ctrl map[string]any) (SessionManagement, error) {
-	res, err := e.Load(asMap(reqmatch), ctrl)
+// ListTyped is the statically-typed variant of List: it takes an
+// SessionManagementListMatch and returns []SessionManagement. It delegates to the untyped
+// List (identical runtime) and converts at the typed boundary.
+func (e *SessionManagementEntity) ListTyped(reqmatch SessionManagementListMatch, ctrl map[string]any) ([]SessionManagement, error) {
+	res, err := e.List(asMap(reqmatch), ctrl)
 	if err != nil {
-		return SessionManagement{}, err
+		return nil, err
 	}
-	return typedFrom[SessionManagement](res), nil
+	return typedSliceFrom[SessionManagement](res), nil
 }
 
-
-
-func (e *SessionManagementEntity) List(_ map[string]any, _ map[string]any) (any, error) {
-	return core.UnsupportedOp("list", e.name)
-}
 
 
 
@@ -351,9 +346,9 @@ func (e *SessionManagementEntity) Create(reqdata map[string]any, ctrl map[string
 	return e.runOp(ctx, func() {
 		if ctx.Result != nil {
 			if ctx.Result.Resdata != nil {
-				e.data = core.ToMapAny(vs.Clone(ctx.Result.Resdata))
-				if e.data == nil {
-					e.data = map[string]any{}
+				e.data = map[string]any{}
+				if data := core.ToMapAny(vs.Clone(ctx.Result.Resdata)); data != nil {
+					e.data = data
 				}
 			}
 		}

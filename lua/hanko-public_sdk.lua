@@ -157,6 +157,7 @@ function HankoPublicSDK.new(options)
   -- feature: paging
   -- feature: ratelimit
   -- feature: retry
+  -- feature: secrets
   -- feature: test
   -- feature: timeout
 
@@ -422,62 +423,6 @@ end
 
 
 
--- Idiomatic facade: client:CredentialCreationOption():list() / client:CredentialCreationOption():load({ id = ... })
--- Entity access is capitalised (PascalCase) for parity with the other SDKs.
-function HankoPublicSDK:CredentialCreationOption(data)
-  local EntityMod = require("entity.credential_creation_option_entity")
-  if data == nil then
-    if self._credential_creation_option == nil then
-      self._credential_creation_option = EntityMod.new(self, nil)
-    end
-    return self._credential_creation_option
-  end
-  return EntityMod.new(self, data)
-end
-
-
--- Idiomatic facade: client:CredentialRequestOption():list() / client:CredentialRequestOption():load({ id = ... })
--- Entity access is capitalised (PascalCase) for parity with the other SDKs.
-function HankoPublicSDK:CredentialRequestOption(data)
-  local EntityMod = require("entity.credential_request_option_entity")
-  if data == nil then
-    if self._credential_request_option == nil then
-      self._credential_request_option = EntityMod.new(self, nil)
-    end
-    return self._credential_request_option
-  end
-  return EntityMod.new(self, data)
-end
-
-
--- Idiomatic facade: client:Email():list() / client:Email():load({ id = ... })
--- Entity access is capitalised (PascalCase) for parity with the other SDKs.
-function HankoPublicSDK:Email(data)
-  local EntityMod = require("entity.email_entity")
-  if data == nil then
-    if self._email == nil then
-      self._email = EntityMod.new(self, nil)
-    end
-    return self._email
-  end
-  return EntityMod.new(self, data)
-end
-
-
--- Idiomatic facade: client:HankoConfiguration():list() / client:HankoConfiguration():load({ id = ... })
--- Entity access is capitalised (PascalCase) for parity with the other SDKs.
-function HankoPublicSDK:HankoConfiguration(data)
-  local EntityMod = require("entity.hanko_configuration_entity")
-  if data == nil then
-    if self._hanko_configuration == nil then
-      self._hanko_configuration = EntityMod.new(self, nil)
-    end
-    return self._hanko_configuration
-  end
-  return EntityMod.new(self, data)
-end
-
-
 -- Idiomatic facade: client:JsonWebKey():list() / client:JsonWebKey():load({ id = ... })
 -- Entity access is capitalised (PascalCase) for parity with the other SDKs.
 function HankoPublicSDK:JsonWebKey(data)
@@ -492,29 +437,15 @@ function HankoPublicSDK:JsonWebKey(data)
 end
 
 
--- Idiomatic facade: client:Passcode():list() / client:Passcode():load({ id = ... })
+-- Idiomatic facade: client:OrganizationManagement():list() / client:OrganizationManagement():load({ id = ... })
 -- Entity access is capitalised (PascalCase) for parity with the other SDKs.
-function HankoPublicSDK:Passcode(data)
-  local EntityMod = require("entity.passcode_entity")
+function HankoPublicSDK:OrganizationManagement(data)
+  local EntityMod = require("entity.organization_management_entity")
   if data == nil then
-    if self._passcode == nil then
-      self._passcode = EntityMod.new(self, nil)
+    if self._organization_management == nil then
+      self._organization_management = EntityMod.new(self, nil)
     end
-    return self._passcode
-  end
-  return EntityMod.new(self, data)
-end
-
-
--- Idiomatic facade: client:Password():list() / client:Password():load({ id = ... })
--- Entity access is capitalised (PascalCase) for parity with the other SDKs.
-function HankoPublicSDK:Password(data)
-  local EntityMod = require("entity.password_entity")
-  if data == nil then
-    if self._password == nil then
-      self._password = EntityMod.new(self, nil)
-    end
-    return self._password
+    return self._organization_management
   end
   return EntityMod.new(self, data)
 end
@@ -576,34 +507,6 @@ function HankoPublicSDK:ThirdParty(data)
 end
 
 
--- Idiomatic facade: client:Token():list() / client:Token():load({ id = ... })
--- Entity access is capitalised (PascalCase) for parity with the other SDKs.
-function HankoPublicSDK:Token(data)
-  local EntityMod = require("entity.token_entity")
-  if data == nil then
-    if self._token == nil then
-      self._token = EntityMod.new(self, nil)
-    end
-    return self._token
-  end
-  return EntityMod.new(self, data)
-end
-
-
--- Idiomatic facade: client:User():list() / client:User():load({ id = ... })
--- Entity access is capitalised (PascalCase) for parity with the other SDKs.
-function HankoPublicSDK:User(data)
-  local EntityMod = require("entity.user_entity")
-  if data == nil then
-    if self._user == nil then
-      self._user = EntityMod.new(self, nil)
-    end
-    return self._user
-  end
-  return EntityMod.new(self, data)
-end
-
-
 -- Idiomatic facade: client:UserManagement():list() / client:UserManagement():load({ id = ... })
 -- Entity access is capitalised (PascalCase) for parity with the other SDKs.
 function HankoPublicSDK:UserManagement(data)
@@ -613,34 +516,6 @@ function HankoPublicSDK:UserManagement(data)
       self._user_management = EntityMod.new(self, nil)
     end
     return self._user_management
-  end
-  return EntityMod.new(self, data)
-end
-
-
--- Idiomatic facade: client:WebAuthn():list() / client:WebAuthn():load({ id = ... })
--- Entity access is capitalised (PascalCase) for parity with the other SDKs.
-function HankoPublicSDK:WebAuthn(data)
-  local EntityMod = require("entity.web_authn_entity")
-  if data == nil then
-    if self._web_authn == nil then
-      self._web_authn = EntityMod.new(self, nil)
-    end
-    return self._web_authn
-  end
-  return EntityMod.new(self, data)
-end
-
-
--- Idiomatic facade: client:WebauthnLogin():list() / client:WebauthnLogin():load({ id = ... })
--- Entity access is capitalised (PascalCase) for parity with the other SDKs.
-function HankoPublicSDK:WebauthnLogin(data)
-  local EntityMod = require("entity.webauthn_login_entity")
-  if data == nil then
-    if self._webauthn_login == nil then
-      self._webauthn_login = EntityMod.new(self, nil)
-    end
-    return self._webauthn_login
   end
   return EntityMod.new(self, data)
 end

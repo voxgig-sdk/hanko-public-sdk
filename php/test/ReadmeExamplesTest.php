@@ -40,22 +40,13 @@ class ReadmeExamplesTest extends TestCase
 
     // Entity accessor (\$client->Name()) => fixture storage key (lowercase name).
     private const ENTITIES = [
-        "CredentialCreationOption" => "credential_creation_option",
-        "CredentialRequestOption" => "credential_request_option",
-        "Email" => "email",
-        "HankoConfiguration" => "hanko_configuration",
         "JsonWebKey" => "json_web_key",
-        "Passcode" => "passcode",
-        "Password" => "password",
+        "OrganizationManagement" => "organization_management",
         "Saml" => "saml",
         "SessionManagement" => "session_management",
         "Status" => "status",
         "ThirdParty" => "third_party",
-        "Token" => "token",
-        "User" => "user",
         "UserManagement" => "user_management",
-        "WebAuthn" => "web_authn",
-        "WebauthnLogin" => "webauthn_login",
     ];
 
     // Documented SDK method names — used only to recognise the NARROW

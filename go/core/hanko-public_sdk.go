@@ -372,38 +372,6 @@ func (sdk *HankoPublicSDK) Graphql(
 }
 
 
-// CredentialCreationOption returns a CredentialCreationOption entity bound to this client.
-// Idiomatic usage: client.CredentialCreationOption(nil).List(nil, nil) or
-// client.CredentialCreationOption(nil).Load(map[string]any{"id": ...}, nil).
-func (sdk *HankoPublicSDK) CredentialCreationOption(data map[string]any) HankoPublicEntity {
-	return NewCredentialCreationOptionEntityFunc(sdk, data)
-}
-
-
-// CredentialRequestOption returns a CredentialRequestOption entity bound to this client.
-// Idiomatic usage: client.CredentialRequestOption(nil).List(nil, nil) or
-// client.CredentialRequestOption(nil).Load(map[string]any{"id": ...}, nil).
-func (sdk *HankoPublicSDK) CredentialRequestOption(data map[string]any) HankoPublicEntity {
-	return NewCredentialRequestOptionEntityFunc(sdk, data)
-}
-
-
-// Email returns a Email entity bound to this client.
-// Idiomatic usage: client.Email(nil).List(nil, nil) or
-// client.Email(nil).Load(map[string]any{"id": ...}, nil).
-func (sdk *HankoPublicSDK) Email(data map[string]any) HankoPublicEntity {
-	return NewEmailEntityFunc(sdk, data)
-}
-
-
-// HankoConfiguration returns a HankoConfiguration entity bound to this client.
-// Idiomatic usage: client.HankoConfiguration(nil).List(nil, nil) or
-// client.HankoConfiguration(nil).Load(map[string]any{"id": ...}, nil).
-func (sdk *HankoPublicSDK) HankoConfiguration(data map[string]any) HankoPublicEntity {
-	return NewHankoConfigurationEntityFunc(sdk, data)
-}
-
-
 // JsonWebKey returns a JsonWebKey entity bound to this client.
 // Idiomatic usage: client.JsonWebKey(nil).List(nil, nil) or
 // client.JsonWebKey(nil).Load(map[string]any{"id": ...}, nil).
@@ -412,19 +380,11 @@ func (sdk *HankoPublicSDK) JsonWebKey(data map[string]any) HankoPublicEntity {
 }
 
 
-// Passcode returns a Passcode entity bound to this client.
-// Idiomatic usage: client.Passcode(nil).List(nil, nil) or
-// client.Passcode(nil).Load(map[string]any{"id": ...}, nil).
-func (sdk *HankoPublicSDK) Passcode(data map[string]any) HankoPublicEntity {
-	return NewPasscodeEntityFunc(sdk, data)
-}
-
-
-// Password returns a Password entity bound to this client.
-// Idiomatic usage: client.Password(nil).List(nil, nil) or
-// client.Password(nil).Load(map[string]any{"id": ...}, nil).
-func (sdk *HankoPublicSDK) Password(data map[string]any) HankoPublicEntity {
-	return NewPasswordEntityFunc(sdk, data)
+// OrganizationManagement returns a OrganizationManagement entity bound to this client.
+// Idiomatic usage: client.OrganizationManagement(nil).List(nil, nil) or
+// client.OrganizationManagement(nil).Load(map[string]any{"id": ...}, nil).
+func (sdk *HankoPublicSDK) OrganizationManagement(data map[string]any) HankoPublicEntity {
+	return NewOrganizationManagementEntityFunc(sdk, data)
 }
 
 
@@ -460,43 +420,11 @@ func (sdk *HankoPublicSDK) ThirdParty(data map[string]any) HankoPublicEntity {
 }
 
 
-// Token returns a Token entity bound to this client.
-// Idiomatic usage: client.Token(nil).List(nil, nil) or
-// client.Token(nil).Load(map[string]any{"id": ...}, nil).
-func (sdk *HankoPublicSDK) Token(data map[string]any) HankoPublicEntity {
-	return NewTokenEntityFunc(sdk, data)
-}
-
-
-// User returns a User entity bound to this client.
-// Idiomatic usage: client.User(nil).List(nil, nil) or
-// client.User(nil).Load(map[string]any{"id": ...}, nil).
-func (sdk *HankoPublicSDK) User(data map[string]any) HankoPublicEntity {
-	return NewUserEntityFunc(sdk, data)
-}
-
-
 // UserManagement returns a UserManagement entity bound to this client.
 // Idiomatic usage: client.UserManagement(nil).List(nil, nil) or
 // client.UserManagement(nil).Load(map[string]any{"id": ...}, nil).
 func (sdk *HankoPublicSDK) UserManagement(data map[string]any) HankoPublicEntity {
 	return NewUserManagementEntityFunc(sdk, data)
-}
-
-
-// WebAuthn returns a WebAuthn entity bound to this client.
-// Idiomatic usage: client.WebAuthn(nil).List(nil, nil) or
-// client.WebAuthn(nil).Load(map[string]any{"id": ...}, nil).
-func (sdk *HankoPublicSDK) WebAuthn(data map[string]any) HankoPublicEntity {
-	return NewWebAuthnEntityFunc(sdk, data)
-}
-
-
-// WebauthnLogin returns a WebauthnLogin entity bound to this client.
-// Idiomatic usage: client.WebauthnLogin(nil).List(nil, nil) or
-// client.WebauthnLogin(nil).Load(map[string]any{"id": ...}, nil).
-func (sdk *HankoPublicSDK) WebauthnLogin(data map[string]any) HankoPublicEntity {
-	return NewWebauthnLoginEntityFunc(sdk, data)
 }
 
 

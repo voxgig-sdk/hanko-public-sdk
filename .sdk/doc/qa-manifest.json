@@ -1,69 +1,103 @@
 {
   "files": [
-    "SUMMARY.md"
+    "SUMMARY.md",
+    "docs/api/index.html",
+    "docs/api/json_web_key.html",
+    "docs/api/organization_management.html",
+    "docs/api/saml.html",
+    "docs/api/session_management.html",
+    "docs/api/status.html",
+    "docs/api/third_party.html",
+    "docs/api/user_management.html",
+    "docs/features/debug.html",
+    "docs/features/idempotency.html",
+    "docs/features/metrics.html",
+    "docs/features/paging.html",
+    "docs/features/ratelimit.html",
+    "docs/features/retry.html",
+    "docs/features/secrets.html",
+    "docs/features/test.html",
+    "docs/features/timeout.html",
+    "docs/guides/authentication.html",
+    "docs/guides/concepts.html",
+    "docs/guides/errors.html",
+    "docs/guides/first-call.html",
+    "docs/index.html",
+    "docs/sdks/go.html",
+    "docs/sdks/lua.html",
+    "docs/sdks/php.html",
+    "docs/sdks/py.html",
+    "docs/sdks/rb.html",
+    "docs/sdks/ts.html",
+    "docs/tools/go-cli.html",
+    "docs/tools/go-mcp.html"
   ],
   "config": ".sdk/doc/qa/vale.ini",
   "routes": {},
   "quoted": {
     "SUMMARY.md": [
-      "> ## Introduction\n>\n> This is the OpenAPI specification for the [Hanko Public API](https://github.com/teamhanko/hanko/blob/main/backend/README.md#basic-usage).\n>\n> ## Authentication\n>\n> The API uses [JSON Web Tokens](https://www.rfc-editor.org/rfc/rfc7519.html) (JWTs) for authentication.\n> JWTs are verified using [JSON Web Keys](https://www.rfc-editor.org/rfc/rfc7517) (JWK).\n> JWKs can be [configured](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#all-available-config-options)\n> through the `secrets.keys` options. The API also publishes public cryptographic keys as a\n> [JWK set](https://www.rfc-editor.org/rfc/rfc7517#section-2) through the `.well-known/jwks.json` endpoint\n> to enable clients to verify token signatures.\n> JWTs must be provided on requests to protected endpoints using one of the following schemes:\n>\n> ### CookieAuth\n>\n> **Security Scheme Type**: `API Key`\n>\n> **Cookie parameter name**: `hanko`\n>\n> The JWT must be provided in a Cookie with the name `hanko`.\n>\n> ### BearerTokenAuth\n>\n> **Security Scheme Type**: `http`\n>\n> **HTTP Authorization Scheme**: `Bearer`\n>\n> **Bearer format**: `JWT`\n>\n> The JWT must be provided in an HTTP Authorization header with bearer type: `Authorization: Bearer &lt;JWT&gt;`.\n>\n> ## Cross-Origin Resource Sharing\n> Cross-Origin Resource Sharing (CORS) can be currently\n> [configured](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#all-available-config-options)\n> for public endpoints via the `server.public.cors` options.\n>\n> ---",
-      "A list of WebAuthn credentials assigned to the current user",
-      "A list of emails assigned to the current user",
-      "A new credential name.",
+      "> ## Introduction\n>\n> This is the OpenAPI specification for the [Hanko Public API](https://github.com/teamhanko/hanko/blob/main/backend/README.md#start-the-public-api).\n>\n> ## Authentication\n>\n> The API uses [JSON Web Tokens](https://www.rfc-editor.org/rfc/rfc7519.html) (JWTs) for authentication.\n> JWTs are verified using [JSON Web Keys](https://www.rfc-editor.org/rfc/rfc7517) (JWK).\n> JWKs can be [configured](https://github.com/teamhanko/hanko/wiki/config)\n> through the `secrets.keys` options. The API also publishes public cryptographic keys as a\n> [JWK set](https://www.rfc-editor.org/rfc/rfc7517#section-2) through the `.well-known/jwks.json` endpoint\n> to enable clients to verify token signatures.\n> JWTs must be provided on requests to protected endpoints using one of the following schemes:\n>\n> ### CookieAuth\n>\n> **Security Scheme Type**: `API Key`\n>\n> **Cookie parameter name**: `hanko`\n>\n> The JWT must be provided in a Cookie with the name `hanko`.\n>\n> ### BearerTokenAuth\n>\n> **Security Scheme Type**: `http`\n>\n> **HTTP Authorization Scheme**: `Bearer`\n>\n> **Bearer format**: `JWT`\n>\n> The JWT must be provided in an HTTP Authorization header with bearer type: `Authorization: Bearer &lt;JWT&gt;`.\n>\n> ## Cross-Origin Resource Sharing\n> Cross-Origin Resource Sharing (CORS) can be currently\n> [configured](https://github.com/teamhanko/hanko/wiki/config)\n> for public endpoints via the `server.public.cors` options.\n>\n> ---",
       "API is running",
-      "Challenge",
-      "Configuration options concerning passwords",
-      "Controls the behavior regarding email addresses.",
-      "Controls the behavior regarding user account.",
-      "Credential updated successfully",
       "Date-time indicating the expiration of the session. Deprecated, please use `claims.expiration` instead.",
-      "Details about the created user",
-      "Details for a user retrieved by ID",
       "Details for the current user",
-      "Email has been deleted",
-      "Email has been set as primary",
-      "Email successfully added",
-      "Hanko configuration",
-      "Indicated the email has been verified.",
-      "Indicates it&#39;s the primary email address.",
+      "IDs or slugs of roles to check for.",
       "Indicates whether the session is valid or not",
       "JSON Web Key Set",
-      "Lifespan of a passcode in seconds",
       "OK",
+      "Role check result",
       "Session validation response",
-      "Successful initialization",
-      "Successful login",
-      "Successful passcode login finalization",
-      "Successful passcode login initialization",
-      "Successful password creation",
-      "Successful password login",
-      "Successful password update",
-      "Successful registration",
-      "Successful token exchange",
-      "The ID of the created credential",
-      "The ID of the email address",
-      "The ID of the newly created email address",
-      "The ID of the passcode",
+      "The ID of the organization",
+      "The ID of the organization to check",
       "The ID of the user",
-      "The ID of the user on whose behalf WebAuthn login should be performed",
-      "The ID of the user on whose behalf a credential was created",
-      "The ID of the user on whose behalf the token was exchanged.",
-      "The ID of the user to create/set a password for",
       "The ID of the user. Deprecated, use `user_id` instead.",
-      "The actual passcode from the email sent to the user during initialization, a string of 6 decimal digits",
-      "The actual password, its `minLength` defaults to 8 but can be [configured](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config) through the `password.min_password_length` option.",
       "The claims extracted from a JWT.",
-      "The email address",
-      "The email address of the user",
       "The public and unsafe metadata of a user",
-      "The session token (JWT) to validate",
-      "The user has been deleted",
       "The user has been logged out",
-      "Time of creation of the passcode",
       "Time of creation of the user",
       "Time of last update of the user",
-      "Timestamp (in UTC) indicating when the session will expire due to inactivity, assuming no further activity occurs before this time. Only present when idle timeout is configured. The value is capped to the JWT expiration time.",
-      "User"
+      "Timestamp (in UTC) indicating when the session will expire due to inactivity, assuming no further activity occurs before this time. Only present when idle timeout is configured. The value is capped to the JWT expiration time."
+    ],
+    "docs/api/index.html": [
+      "This is the OpenAPI specification for the [Hanko Public API](https://github.com/teamhanko/hanko/blob/main/backend/README.md#start-the-public-api)."
+    ],
+    "docs/api/json_web_key.html": [
+      "Internal server error",
+      "JSON Web Key Set"
+    ],
+    "docs/api/organization_management.html": [
+      "Bad Request",
+      "Internal server error",
+      "Role check result",
+      "Unauthorized"
+    ],
+    "docs/api/saml.html": [
+      "Bad Request",
+      "Found",
+      "Not found",
+      "OK",
+      "Temporary Redirect"
+    ],
+    "docs/api/session_management.html": [
+      "Bad Request",
+      "Internal server error",
+      "Session validation response"
+    ],
+    "docs/api/status.html": [
+      "API is not functioning properly",
+      "API is running"
+    ],
+    "docs/api/third_party.html": [
+      "Redirect to requested redirect URL or to configured site redirect URL"
+    ],
+    "docs/api/user_management.html": [
+      "Bad Request",
+      "Details for the current user",
+      "Internal server error",
+      "The user has been logged out",
+      "Unauthorized"
+    ],
+    "docs/index.html": [
+      "> ## Introduction\n>\n> This is the OpenAPI specification for the [Hanko Public API](https://github.com/teamhanko/hanko/blob/main/backend/README.md#start-the-public-api).\n>\n> ## Authentication\n>\n> The API uses [JSON Web Tokens](https://www.rfc-editor.org/rfc/rfc7519.html) (JWTs) for authentication.\n> JWTs are verified using [JSON Web Keys](https://www.rfc-editor.org/rfc/rfc7517) (JWK).\n> JWKs can be [configured](https://github.com/teamhanko/hanko/wiki/config)\n> through the `secrets.keys` options. The API also publishes public cryptographic keys as a\n> [JWK set](https://www.rfc-editor.org/rfc/rfc7517#section-2) through the `.well-known/jwks.json` endpoint\n> to enable clients to verify token signatures.\n> JWTs must be provided on requests to protected endpoints using one of the following schemes:\n>\n> ### CookieAuth\n>\n> **Security Scheme Type**: `API Key`\n>\n> **Cookie parameter name**: `hanko`\n>\n> The JWT must be provided in a Cookie with the name `hanko`.\n>\n> ### BearerTokenAuth\n>\n> **Security Scheme Type**: `http`\n>\n> **HTTP Authorization Scheme**: `Bearer`\n>\n> **Bearer format**: `JWT`\n>\n> The JWT must be provided in an HTTP Authorization header with bearer type: `Authorization: Bearer &lt;JWT&gt;`.\n>\n> ## Cross-Origin Resource Sharing\n> Cross-Origin Resource Sharing (CORS) can be currently\n> [configured](https://github.com/teamhanko/hanko/wiki/config)\n> for public endpoints via the `server.public.cors` options.\n>\n> ---"
     ]
   }
 }

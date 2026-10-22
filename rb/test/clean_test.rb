@@ -15,8 +15,8 @@ class HankoPublicCleanTest < Minitest::Test
   # Generated: the credential's wire placement is fixed when the SDK is built.
   AUTH = {
     "suppressed" => false,
-    "where" => "cookie",
-    "name" => "hanko",
+    "where" => "header",
+    "name" => "authorization",
     "basic" => false,
   }.freeze
 

@@ -76,22 +76,13 @@ _CLIENT_VARS = ("client", "sdk")
 
 # The API's capitalised semantic entities -> lowercase fixture key.
 _ENTITIES = {
-    "CredentialCreationOption": "credential_creation_option",
-    "CredentialRequestOption": "credential_request_option",
-    "Email": "email",
-    "HankoConfiguration": "hanko_configuration",
     "JsonWebKey": "json_web_key",
-    "Passcode": "passcode",
-    "Password": "password",
+    "OrganizationManagement": "organization_management",
     "Saml": "saml",
     "SessionManagement": "session_management",
     "Status": "status",
     "ThirdParty": "third_party",
-    "Token": "token",
-    "User": "user",
     "UserManagement": "user_management",
-    "WebAuthn": "web_authn",
-    "WebauthnLogin": "webauthn_login",
 }
 
 # The three documents held to the gate, tagged by human label.

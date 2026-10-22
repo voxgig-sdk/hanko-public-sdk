@@ -12,107 +12,6 @@ declare(strict_types=1);
 // registered on the composer classmap autoload. The SDK boundary exchanges
 // assoc-arrays; these classes name the shapes for tooling and typed callers.
 
-/** CredentialCreationOption entity data model. */
-class CredentialCreationOption
-{
-    public ?string $attestation = null;
-    public ?array $authenticatorSelection = null;
-    public ?string $challenge = null;
-    public ?array $pubKeyCredParams = null;
-    public ?array $rp = null;
-    public ?int $timeout = null;
-    public ?array $user = null;
-}
-
-/** Request payload for CredentialCreationOption#create. */
-class CredentialCreationOptionCreateData
-{
-    public ?string $attestation = null;
-    public ?array $authenticatorSelection = null;
-    public ?string $challenge = null;
-    public ?array $pubKeyCredParams = null;
-    public ?array $rp = null;
-    public ?int $timeout = null;
-    public ?array $user = null;
-}
-
-/** CredentialRequestOption entity data model. */
-class CredentialRequestOption
-{
-    public ?array $allowCredentials = null;
-    public ?string $challenge = null;
-    public ?string $rpId = null;
-    public ?int $timeout = null;
-    public ?string $userVerification = null;
-    public ?string $user_id = null;
-}
-
-/** Request payload for CredentialRequestOption#create. */
-class CredentialRequestOptionCreateData
-{
-    public ?array $allowCredentials = null;
-    public ?string $challenge = null;
-    public ?string $rpId = null;
-    public ?int $timeout = null;
-    public ?string $userVerification = null;
-    public ?string $user_id = null;
-}
-
-/** Email entity data model. */
-class Email
-{
-    public string $address;
-    public ?string $id = null;
-    public mixed $identities = null;
-    public mixed $identity = null;
-    public ?bool $is_primary = null;
-    public ?bool $is_verified = null;
-}
-
-/** Request payload for Email#list. */
-class EmailListMatch
-{
-    public ?string $address = null;
-    public ?string $id = null;
-    public mixed $identities = null;
-    public mixed $identity = null;
-    public ?bool $is_primary = null;
-    public ?bool $is_verified = null;
-}
-
-/** Request payload for Email#create. */
-class EmailCreateData
-{
-    public string $address;
-    public ?string $id = null;
-    public mixed $identities = null;
-    public mixed $identity = null;
-    public ?bool $is_primary = null;
-    public ?bool $is_verified = null;
-}
-
-/** Request payload for Email#remove. */
-class EmailRemoveMatch
-{
-    public string $id;
-}
-
-/** HankoConfiguration entity data model. */
-class HankoConfiguration
-{
-    public ?array $account = null;
-    public ?array $emails = null;
-    public ?array $password = null;
-}
-
-/** Request payload for HankoConfiguration#load. */
-class HankoConfigurationLoadMatch
-{
-    public ?array $account = null;
-    public ?array $emails = null;
-    public ?array $password = null;
-}
-
 /** JsonWebKey entity data model. */
 class JsonWebKey
 {
@@ -135,47 +34,19 @@ class JsonWebKeyListMatch
     public ?string $use = null;
 }
 
-/** Passcode entity data model. */
-class Passcode
+/** OrganizationManagement entity data model. */
+class OrganizationManagement
 {
-    public ?string $code = null;
-    public ?string $created_at = null;
-    public ?string $email_id = null;
-    public ?string $id = null;
-    public ?int $ttl = null;
-    public string $user_id;
+    public bool $has_role;
+    public string $organization_id;
+    public array $roles;
 }
 
-/** Request payload for Passcode#create. */
-class PasscodeCreateData
+/** Request payload for OrganizationManagement#create. */
+class OrganizationManagementCreateData
 {
-    public ?string $code = null;
-    public ?string $created_at = null;
-    public ?string $email_id = null;
-    public ?string $id = null;
-    public ?int $ttl = null;
-    public string $user_id;
-}
-
-/** Password entity data model. */
-class Password
-{
-    public string $password;
-    public string $user_id;
-}
-
-/** Request payload for Password#create. */
-class PasswordCreateData
-{
-    public string $password;
-    public string $user_id;
-}
-
-/** Request payload for Password#update. */
-class PasswordUpdateData
-{
-    public ?string $password = null;
-    public ?string $user_id = null;
+    public string $organization_id;
+    public array $roles;
 }
 
 /** Saml entity data model. */
@@ -200,19 +71,27 @@ class SessionManagement
 {
     public array $claims;
     public ?string $expiration_time = null;
+    public string $id;
     public ?string $idle_expires_at = null;
     public ?bool $is_valid = null;
+    public string $name;
+    public ?array $organizations = null;
+    public array $roles;
     public string $session_token;
     public ?string $user_id = null;
 }
 
-/** Request payload for SessionManagement#load. */
-class SessionManagementLoadMatch
+/** Request payload for SessionManagement#list. */
+class SessionManagementListMatch
 {
     public ?array $claims = null;
     public ?string $expiration_time = null;
+    public ?string $id = null;
     public ?string $idle_expires_at = null;
     public ?bool $is_valid = null;
+    public ?string $name = null;
+    public ?array $organizations = null;
+    public ?array $roles = null;
     public ?string $session_token = null;
     public ?string $user_id = null;
 }
@@ -220,12 +99,7 @@ class SessionManagementLoadMatch
 /** Request payload for SessionManagement#create. */
 class SessionManagementCreateData
 {
-    public array $claims;
-    public ?string $expiration_time = null;
-    public ?string $idle_expires_at = null;
-    public ?bool $is_valid = null;
     public string $session_token;
-    public ?string $user_id = null;
 }
 
 /** Status entity data model. */
@@ -246,100 +120,10 @@ class ThirdParty
 /** Request payload for ThirdParty#load. */
 class ThirdPartyLoadMatch
 {
-    public string $provider;
-    public string $redirect_to;
-}
-
-/** Token entity data model. */
-class Token
-{
-    public ?string $user_id = null;
-    public ?string $value = null;
-}
-
-/** Request payload for Token#create. */
-class TokenCreateData
-{
-    public ?string $user_id = null;
-    public ?string $value = null;
-}
-
-/** User entity data model. */
-class User
-{
-    public ?string $created_at = null;
-    public ?string $email = null;
-    public ?string $email_id = null;
-    public ?array $emails = null;
-    public ?string $family_name = null;
-    public ?string $given_name = null;
-    public ?bool $has_webauthn_credential = null;
-    public ?string $id = null;
-    public ?array $metadata = null;
-    public ?array $mfa_config = null;
-    public ?string $name = null;
-    public ?array $passkeys = null;
-    public ?string $picture = null;
-    public ?array $security_keys = null;
-    public ?string $updated_at = null;
-    public ?string $user_id = null;
-    public ?string $username = null;
-    public ?bool $verified = null;
-    public ?array $webauthn_credentials = null;
-}
-
-/** Request payload for User#load. */
-class UserLoadMatch
-{
-    public string $id;
-}
-
-/** Request payload for User#create. */
-class UserCreateData
-{
-    public ?string $created_at = null;
-    public ?string $email = null;
-    public ?string $email_id = null;
-    public ?array $emails = null;
-    public ?string $family_name = null;
-    public ?string $given_name = null;
-    public ?bool $has_webauthn_credential = null;
-    public ?string $id = null;
-    public ?array $metadata = null;
-    public ?array $mfa_config = null;
-    public ?string $name = null;
-    public ?array $passkeys = null;
-    public ?string $picture = null;
-    public ?array $security_keys = null;
-    public ?string $updated_at = null;
-    public ?string $user_id = null;
-    public ?string $username = null;
-    public ?bool $verified = null;
-    public ?array $webauthn_credentials = null;
-}
-
-/** Request payload for User#remove. */
-class UserRemoveMatch
-{
-    public ?string $created_at = null;
-    public ?string $email = null;
-    public ?string $email_id = null;
-    public ?array $emails = null;
-    public ?string $family_name = null;
-    public ?string $given_name = null;
-    public ?bool $has_webauthn_credential = null;
-    public string $id;
-    public ?array $metadata = null;
-    public ?array $mfa_config = null;
-    public ?string $name = null;
-    public ?array $passkeys = null;
-    public ?string $picture = null;
-    public ?array $security_keys = null;
-    public ?string $updated_at = null;
-    public ?string $user_id = null;
-    public ?string $username = null;
-    public ?bool $verified = null;
-    public ?array $webauthn_credentials = null;
+    public ?string $code = null;
+    public ?string $error = null;
+    public ?string $error_description = null;
+    public string $state;
 }
 
 /** UserManagement entity data model. */
@@ -397,117 +181,5 @@ class UserManagementCreateData
     public ?string $updated_at = null;
     public ?string $user_id = null;
     public ?array $username = null;
-}
-
-/** WebAuthn entity data model. */
-class WebAuthn
-{
-    public ?string $aaguid = null;
-    public ?string $attestation_type = null;
-    public ?bool $backup_eligible = null;
-    public ?bool $backup_state = null;
-    public ?string $created_at = null;
-    public ?string $credential_id = null;
-    public ?string $id = null;
-    public ?string $last_used_at = null;
-    public ?bool $mfa_only = null;
-    public ?string $name = null;
-    public ?string $publickey = null;
-    public ?string $rawId = null;
-    public ?array $response = null;
-    public ?array $transports = null;
-    public ?string $type = null;
-    public ?string $user_id = null;
-}
-
-/** Request payload for WebAuthn#list. */
-class WebAuthnListMatch
-{
-    public ?string $aaguid = null;
-    public ?string $attestation_type = null;
-    public ?bool $backup_eligible = null;
-    public ?bool $backup_state = null;
-    public ?string $created_at = null;
-    public ?string $credential_id = null;
-    public ?string $id = null;
-    public ?string $last_used_at = null;
-    public ?bool $mfa_only = null;
-    public ?string $name = null;
-    public ?string $publickey = null;
-    public ?string $rawId = null;
-    public ?array $response = null;
-    public ?array $transports = null;
-    public ?string $type = null;
-    public ?string $user_id = null;
-}
-
-/** Request payload for WebAuthn#create. */
-class WebAuthnCreateData
-{
-    public ?string $aaguid = null;
-    public ?string $attestation_type = null;
-    public ?bool $backup_eligible = null;
-    public ?bool $backup_state = null;
-    public ?string $created_at = null;
-    public ?string $credential_id = null;
-    public ?string $id = null;
-    public ?string $last_used_at = null;
-    public ?bool $mfa_only = null;
-    public ?string $name = null;
-    public ?string $publickey = null;
-    public ?string $rawId = null;
-    public ?array $response = null;
-    public ?array $transports = null;
-    public ?string $type = null;
-    public ?string $user_id = null;
-}
-
-/** Request payload for WebAuthn#update. */
-class WebAuthnUpdateData
-{
-    public string $id;
-    public ?string $aaguid = null;
-    public ?string $attestation_type = null;
-    public ?bool $backup_eligible = null;
-    public ?bool $backup_state = null;
-    public ?string $created_at = null;
-    public ?string $credential_id = null;
-    public ?string $last_used_at = null;
-    public ?bool $mfa_only = null;
-    public ?string $name = null;
-    public ?string $publickey = null;
-    public ?string $rawId = null;
-    public ?array $response = null;
-    public ?array $transports = null;
-    public ?string $type = null;
-    public ?string $user_id = null;
-}
-
-/** Request payload for WebAuthn#remove. */
-class WebAuthnRemoveMatch
-{
-    public string $id;
-}
-
-/** WebauthnLogin entity data model. */
-class WebauthnLogin
-{
-    public ?string $credential_id = null;
-    public ?string $id = null;
-    public ?string $rawId = null;
-    public ?array $response = null;
-    public ?string $type = null;
-    public ?string $user_id = null;
-}
-
-/** Request payload for WebauthnLogin#create. */
-class WebauthnLoginCreateData
-{
-    public ?string $credential_id = null;
-    public ?string $id = null;
-    public ?string $rawId = null;
-    public ?array $response = null;
-    public ?string $type = null;
-    public ?string $user_id = null;
 }
 

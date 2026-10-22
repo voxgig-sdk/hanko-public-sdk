@@ -314,34 +314,6 @@ class HankoPublicSDK
   end
 
 
-  # Canonical facade: client.CredentialCreationOption.list / client.CredentialCreationOption.load({ "id" => ... })
-  def CredentialCreationOption(data = nil)
-    require_relative 'entity/credential_creation_option_entity'
-    CredentialCreationOptionEntity.new(self, data)
-  end
-
-
-  # Canonical facade: client.CredentialRequestOption.list / client.CredentialRequestOption.load({ "id" => ... })
-  def CredentialRequestOption(data = nil)
-    require_relative 'entity/credential_request_option_entity'
-    CredentialRequestOptionEntity.new(self, data)
-  end
-
-
-  # Canonical facade: client.Email.list / client.Email.load({ "id" => ... })
-  def Email(data = nil)
-    require_relative 'entity/email_entity'
-    EmailEntity.new(self, data)
-  end
-
-
-  # Canonical facade: client.HankoConfiguration.list / client.HankoConfiguration.load({ "id" => ... })
-  def HankoConfiguration(data = nil)
-    require_relative 'entity/hanko_configuration_entity'
-    HankoConfigurationEntity.new(self, data)
-  end
-
-
   # Canonical facade: client.JsonWebKey.list / client.JsonWebKey.load({ "id" => ... })
   def JsonWebKey(data = nil)
     require_relative 'entity/json_web_key_entity'
@@ -349,17 +321,10 @@ class HankoPublicSDK
   end
 
 
-  # Canonical facade: client.Passcode.list / client.Passcode.load({ "id" => ... })
-  def Passcode(data = nil)
-    require_relative 'entity/passcode_entity'
-    PasscodeEntity.new(self, data)
-  end
-
-
-  # Canonical facade: client.Password.list / client.Password.load({ "id" => ... })
-  def Password(data = nil)
-    require_relative 'entity/password_entity'
-    PasswordEntity.new(self, data)
+  # Canonical facade: client.OrganizationManagement.list / client.OrganizationManagement.load({ "id" => ... })
+  def OrganizationManagement(data = nil)
+    require_relative 'entity/organization_management_entity'
+    OrganizationManagementEntity.new(self, data)
   end
 
 
@@ -391,38 +356,10 @@ class HankoPublicSDK
   end
 
 
-  # Canonical facade: client.Token.list / client.Token.load({ "id" => ... })
-  def Token(data = nil)
-    require_relative 'entity/token_entity'
-    TokenEntity.new(self, data)
-  end
-
-
-  # Canonical facade: client.User.list / client.User.load({ "id" => ... })
-  def User(data = nil)
-    require_relative 'entity/user_entity'
-    UserEntity.new(self, data)
-  end
-
-
   # Canonical facade: client.UserManagement.list / client.UserManagement.load({ "id" => ... })
   def UserManagement(data = nil)
     require_relative 'entity/user_management_entity'
     UserManagementEntity.new(self, data)
-  end
-
-
-  # Canonical facade: client.WebAuthn.list / client.WebAuthn.load({ "id" => ... })
-  def WebAuthn(data = nil)
-    require_relative 'entity/web_authn_entity'
-    WebAuthnEntity.new(self, data)
-  end
-
-
-  # Canonical facade: client.WebauthnLogin.list / client.WebauthnLogin.load({ "id" => ... })
-  def WebauthnLogin(data = nil)
-    require_relative 'entity/webauthn_login_entity'
-    WebauthnLoginEntity.new(self, data)
   end
 
 

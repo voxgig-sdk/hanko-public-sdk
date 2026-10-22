@@ -173,6 +173,24 @@ class JsonWebKeyEntityTest extends TestCase
         $this->assertSame(2, $client->_cost["total"]["attempts"]);
     }
 
+    public function test_validate_list_response(): void
+    {
+        $cfg = HankoPublicConfig::shared_config();
+        if (!isset($cfg["feature"]["validate"])) {
+            $this->markTestSkipped('feature not present in this SDK: validate');
+        }
+        $opts = ["feature" => ["validate" => ["active" => true, "request" => false, "response" => true]]];
+        $listed = HankoPublicSDK::test(['entity' => ['json_web_key' => ['v1' => []]]], $opts)->JsonWebKey(null)->list(null, null);
+        $this->assertSame(['v1'], array_map(fn($ent) => $ent->data_get()['id'] ?? null, $listed));
+        $err = null;
+        try {
+            HankoPublicSDK::test(['entity' => ['json_web_key' => ['v1' => ['alg' => 1]]]], $opts)->JsonWebKey(null)->list(null, null);
+        } catch (\Throwable $e) {
+            $err = $e;
+        }
+        $this->assertSame('validate_failed', $err->sdk_code ?? null);
+    }
+
     public function test_validate(): void
     {
         $cfg = HankoPublicConfig::shared_config();

@@ -29,7 +29,7 @@ describe("ThirdPartyEntity", function()
       return
     end
     local client = sdk.test(nil, { feature = { validate = { active = true } } })
-    local _, err = client:ThirdParty(nil):load({ ["provider"] = 1, ["redirect_to"] = "x" }, nil)
+    local _, err = client:ThirdParty(nil):load({ ["code"] = 1, ["state"] = "x" }, nil)
     assert.are.equal("validate_failed", type(err) == "table" and err.code or nil)
   end)
 

@@ -4,43 +4,9 @@
 #   guide.aontu
 
 guide: {
-  metrics: count: entity: 16
-  metrics: count: path: 28
-  metrics: count: method: 32
-
-  entity: credential_creation_option: {
-    path: "/webauthn/registration/initialize": {
-      op: create: method: *POST
-      op: create: transform: res: *("`body.publicKey`")|top
-    }
-  }
-
-  entity: credential_request_option: {
-    path: "/webauthn/login/initialize": {
-      op: create: method: *POST
-      op: create: transform: res: *("`body.publicKey`")|top
-    }
-  }
-
-  entity: email: {
-    path: "/emails": {
-      op: create: method: *POST
-      op: list: method: *GET
-    }
-    path: "/emails/{id}": {
-      op: remove: method: *DELETE
-    }
-    path: "/emails/{id}/set_primary": {
-      action: "set_primary": {}
-      op: create: method: *POST
-    }
-  }
-
-  entity: hanko_configuration: {
-    path: "/.well-known/config": {
-      op: load: method: *GET
-    }
-  }
+  metrics: count: entity: 7
+  metrics: count: path: 9
+  metrics: count: method: 10
 
   entity: json_web_key: {
     path: "/.well-known/jwks.json": {
@@ -49,21 +15,8 @@ guide: {
     }
   }
 
-  entity: passcode: {
-    path: "/passcode/login/finalize": {
-      op: create: method: *POST
-    }
-    path: "/passcode/login/initialize": {
-      op: create: method: *POST
-    }
-  }
-
-  entity: password: {
-    path: "/password": {
-      op: update: method: *PUT
-    }
-    path: "/password/login": {
-      action: "login": {}
+  entity: organization_management: {
+    path: "/organizations/roles/check": {
       op: create: method: *POST
     }
   }
@@ -77,16 +30,12 @@ guide: {
       action: "metadata": {}
       op: load: method: *GET
     }
-    path: "/saml/provider": {
-      action: "provider": {}
-      op: load: method: *GET
-    }
   }
 
   entity: session_management: {
     path: "/sessions/validate": {
       op: create: method: *POST
-      op: load: method: *GET
+      op: list: method: *GET
     }
   }
 
@@ -97,29 +46,7 @@ guide: {
   }
 
   entity: third_party: {
-    path: "/thirdparty/auth": {
-      op: load: method: *GET
-    }
     path: "/thirdparty/callback": {
-      op: load: method: *GET
-    }
-  }
-
-  entity: token: {
-    path: "/token": {
-      op: create: method: *POST
-    }
-  }
-
-  entity: user: {
-    path: "/user": {
-      op: create: method: *POST
-      op: remove: method: *DELETE
-    }
-    path: "/users": {
-      op: create: method: *POST
-    }
-    path: "/users/{id}": {
       op: load: method: *GET
     }
   }
@@ -130,25 +57,6 @@ guide: {
     }
     path: "/me": {
       op: list: method: *GET
-    }
-  }
-
-  entity: web_authn: {
-    path: "/webauthn/credentials": {
-      op: list: method: *GET
-    }
-    path: "/webauthn/credentials/{id}": {
-      op: patch: method: *PATCH
-      op: remove: method: *DELETE
-    }
-    path: "/webauthn/registration/finalize": {
-      op: create: method: *POST
-    }
-  }
-
-  entity: webauthn_login: {
-    path: "/webauthn/login/finalize": {
-      op: create: method: *POST
     }
   }
 

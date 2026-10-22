@@ -4,7 +4,7 @@
 
 The PHP SDK for the HankoPublic API — an entity-oriented client using PHP conventions.
 
-The SDK exposes the API as capitalised, semantic **Entities** — for example `$client->CredentialCreationOption()` — with named operations (`list`/`load`/`create`/`update`/`remove`) instead of raw URL paths and query strings. Working with resources and verbs keeps call sites self-describing and reduces cognitive load.
+The SDK exposes the API as capitalised, semantic **Entities** — for example `$client->JsonWebKey()` — with named operations (`list`/`load`/`create`) instead of raw URL paths and query strings. Working with resources and verbs keeps call sites self-describing and reduces cognitive load.
 
 > Other languages, the CLI, and MCP server live alongside this one — see
 > the [top-level README](../README.md).
@@ -18,14 +18,14 @@ from a clone as a Composer path repository:
 ```bash
 git clone https://github.com/voxgig-sdk/hanko-public-sdk
 composer config repositories.hanko-public-sdk path ./hanko-public-sdk/php
-composer require voxgig-sdk/hanko-public-sdk:@dev
+composer require voxgig-sdk/hanko-public:@dev
 ```
 
 
 ## Tutorial: your first API call
 
 This tutorial walks through creating a client, listing entities, and
-loading a specific record. The client sends the API key as the `hanko` cookie.
+loading a specific record.
 
 ### 1. Create a client
 
@@ -38,12 +38,19 @@ $client = new HankoPublicSDK([
 ]);
 ```
 
-### 4. Create, update, and remove
+### 2. List jsonwebkey records
 
 ```php
-// create() returns the ENTITY — call data_get() for the created CredentialCreationOption record.
-$created = $client->CredentialCreationOption()->create(["attestation" => "example_attestation", "authenticatorSelection" => []]);
-
+try {
+    // list() returns entity instances; data_get() reads each record.
+    $jsonwebkeys = $client->JsonWebKey()->list();
+    foreach ($jsonwebkeys as $record) {
+        $item = $record->data_get();
+        echo $item["alg"] . "\n";
+    }
+} catch (\Throwable $err) {
+    echo "Error: " . $err->getMessage();
+}
 ```
 
 
@@ -121,18 +128,15 @@ print_r($fetchdef["headers"]);
 
 ### Use test mode
 
-Create a mock client for unit testing — no server required. Seed fixture
-data via the `entity` option so offline calls resolve without a live server:
+Create a mock client for unit testing — no server required:
 
 ```php
-$client = HankoPublicSDK::test([
-    "entity" => ["user" => ["test01" => ["id" => "test01"]]],
-]);
+$client = HankoPublicSDK::test();
 
-// Entity ops return the ENTITY (throws on error);
+// list() returns entity instances (throws on error);
 // call data_get() for the mock record.
-$user = $client->User()->load(["id" => "test01"]);
-print_r($user->data_get());
+$jsonwebkey = $client->JsonWebKey()->list();
+print_r(array_map(fn($item) => $item->data_get(), $jsonwebkey));
 ```
 
 ### Use a custom fetch function
@@ -213,22 +217,13 @@ Creates a test-mode client with mock transport. Both arguments may be `null`.
 | `get_utility` | `(): Utility` | Copy of the SDK utility object. |
 | `prepare` | `(array $fetchargs): array` | Build an HTTP request definition without sending. |
 | `direct` | `(array $fetchargs): array` | Build and send an HTTP request. |
-| `CredentialCreationOption` | `($data): CredentialCreationOptionEntity` | Create a CredentialCreationOption entity instance. |
-| `CredentialRequestOption` | `($data): CredentialRequestOptionEntity` | Create a CredentialRequestOption entity instance. |
-| `Email` | `($data): EmailEntity` | Create an Email entity instance. |
-| `HankoConfiguration` | `($data): HankoConfigurationEntity` | Create a HankoConfiguration entity instance. |
 | `JsonWebKey` | `($data): JsonWebKeyEntity` | Create a JsonWebKey entity instance. |
-| `Passcode` | `($data): PasscodeEntity` | Create a Passcode entity instance. |
-| `Password` | `($data): PasswordEntity` | Create a Password entity instance. |
+| `OrganizationManagement` | `($data): OrganizationManagementEntity` | Create an OrganizationManagement entity instance. |
 | `Saml` | `($data): SamlEntity` | Create a Saml entity instance. |
 | `SessionManagement` | `($data): SessionManagementEntity` | Create a SessionManagement entity instance. |
 | `Status` | `($data): StatusEntity` | Create a Status entity instance. |
 | `ThirdParty` | `($data): ThirdPartyEntity` | Create a ThirdParty entity instance. |
-| `Token` | `($data): TokenEntity` | Create a Token entity instance. |
-| `User` | `($data): UserEntity` | Create an User entity instance. |
 | `UserManagement` | `($data): UserManagementEntity` | Create an UserManagement entity instance. |
-| `WebAuthn` | `($data): WebAuthnEntity` | Create a WebAuthn entity instance. |
-| `WebauthnLogin` | `($data): WebauthnLoginEntity` | Create a WebauthnLogin entity instance. |
 
 ### Entity interface
 
@@ -239,8 +234,6 @@ All entities share the same interface.
 | `load` | `($reqmatch, $ctrl): mixed` | Load a single entity by match criteria, and return it. |
 | `list` | `(?array $reqmatch = null, $ctrl): mixed` | List entities matching the criteria (call with no argument to list all), one per record. |
 | `create` | `($reqdata, $ctrl): mixed` | Create a new entity, and return it. |
-| `update` | `($reqdata, $ctrl): mixed` | Update an existing entity, and return it. |
-| `remove` | `($reqmatch, $ctrl): mixed` | Remove an entity, and return it marked as deleted. |
 | `data_get` | `(): array` | Get entity data. |
 | `data_set` | `($data): void` | Set entity data. |
 | `match_get` | `(): array` | Get entity match criteria. |
@@ -268,64 +261,6 @@ On error, `ok` is `false` and `$err` contains the error value.
 
 ### Entities
 
-#### CredentialCreationOption
-
-| Field | Description |
-| --- | --- |
-| `attestation` |  |
-| `authenticatorSelection` |  |
-| `challenge` |  |
-| `pubKeyCredParams` |  |
-| `rp` |  |
-| `timeout` |  |
-| `user` |  |
-
-Operations: Create.
-
-API path: `/webauthn/registration/initialize`
-
-#### CredentialRequestOption
-
-| Field | Description |
-| --- | --- |
-| `allowCredentials` |  |
-| `challenge` |  |
-| `rpId` |  |
-| `timeout` |  |
-| `userVerification` |  |
-| `user_id` | The ID of the user on whose behalf WebAuthn login should be performed |
-
-Operations: Create.
-
-API path: `/webauthn/login/initialize`
-
-#### Email
-
-| Field | Description |
-| --- | --- |
-| `address` | The email address |
-| `id` | The ID of the email address |
-| `identities` |  |
-| `identity` |  |
-| `is_primary` | Indicates it's the primary email address. |
-| `is_verified` | Indicated the email has been verified. |
-
-Operations: Create, List, Remove.
-
-API path: `/emails/{id}/set_primary`
-
-#### HankoConfiguration
-
-| Field | Description |
-| --- | --- |
-| `account` | Controls the behavior regarding user account. |
-| `emails` | Controls the behavior regarding email addresses. |
-| `password` | Configuration options concerning passwords |
-
-Operations: Load.
-
-API path: `/.well-known/config`
-
 #### JsonWebKey
 
 | Field | Description |
@@ -341,31 +276,17 @@ Operations: List.
 
 API path: `/.well-known/jwks.json`
 
-#### Passcode
+#### OrganizationManagement
 
 | Field | Description |
 | --- | --- |
-| `code` | The actual passcode from the email sent to the user during initialization, a string of 6 decimal digits |
-| `created_at` | Time of creation of the passcode |
-| `email_id` | The ID of the email address |
-| `id` | The ID of the passcode |
-| `ttl` | Lifespan of a passcode in seconds |
-| `user_id` | The ID of the user |
+| `has_role` |  |
+| `organization_id` | The ID of the organization to check |
+| `roles` | IDs or slugs of roles to check for. |
 
 Operations: Create.
 
-API path: `/passcode/login/finalize`
-
-#### Password
-
-| Field | Description |
-| --- | --- |
-| `password` | The actual password, its `minLength` defaults to 8 but can be [configured](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config) through the `password.min_password_length` option. |
-| `user_id` | The ID of the user to create/set a password for |
-
-Operations: Create, Update.
-
-API path: `/password/login`
+API path: `/organizations/roles/check`
 
 #### Saml
 
@@ -382,12 +303,16 @@ API path: `/saml/callback`
 | --- | --- |
 | `claims` | The claims extracted from a JWT. |
 | `expiration_time` | Date-time indicating the expiration of the session. |
+| `id` | The ID of the organization |
 | `idle_expires_at` | Timestamp (in UTC) indicating when the session will expire due to inactivity, assuming no further activity occurs before this time. |
 | `is_valid` | Indicates whether the session is valid or not |
+| `name` | The name of the organization |
+| `organizations` | The organizations the user belongs to, and the role slugs they hold within each. |
+| `roles` | The slugs of the roles the user holds within this organization |
 | `session_token` | The session token (JWT) to validate |
 | `user_id` | The ID of the user the session is associated with. |
 
-Operations: Create, Load.
+Operations: Create, List.
 
 API path: `/sessions/validate`
 
@@ -407,46 +332,7 @@ API path: `/`
 
 Operations: Load.
 
-API path: `/thirdparty/auth`
-
-#### Token
-
-| Field | Description |
-| --- | --- |
-| `user_id` | The ID of the user on whose behalf the token was exchanged. |
-| `value` |  |
-
-Operations: Create.
-
-API path: `/token`
-
-#### User
-
-| Field | Description |
-| --- | --- |
-| `created_at` | Time of creation of the the user |
-| `email` | The email address of the user |
-| `email_id` | The ID of the newly created email address |
-| `emails` |  |
-| `family_name` |  |
-| `given_name` |  |
-| `has_webauthn_credential` |  |
-| `id` | The ID of the user. |
-| `metadata` | The public and unsafe metadata of a user |
-| `mfa_config` |  |
-| `name` |  |
-| `passkeys` |  |
-| `picture` |  |
-| `security_keys` |  |
-| `updated_at` | Time of last update of the user |
-| `user_id` | The ID of the user |
-| `username` | The username of the user |
-| `verified` |  |
-| `webauthn_credentials` | A list of WebAuthn credentials |
-
-Operations: Create, Load, Remove.
-
-API path: `/user`
+API path: `/thirdparty/callback`
 
 #### UserManagement
 
@@ -471,173 +357,9 @@ Operations: Create, List.
 
 API path: `/logout`
 
-#### WebAuthn
-
-| Field | Description |
-| --- | --- |
-| `aaguid` |  |
-| `attestation_type` |  |
-| `backup_eligible` |  |
-| `backup_state` |  |
-| `created_at` |  |
-| `credential_id` | The ID of the created credential |
-| `id` |  |
-| `last_used_at` |  |
-| `mfa_only` |  |
-| `name` | A new credential name. |
-| `publickey` |  |
-| `rawId` |  |
-| `response` |  |
-| `transports` |  |
-| `type` |  |
-| `user_id` | The ID of the user on whose behalf a credential was created |
-
-Operations: Create, List, Remove, Update.
-
-API path: `/webauthn/registration/finalize`
-
-#### WebauthnLogin
-
-| Field | Description |
-| --- | --- |
-| `credential_id` |  |
-| `id` |  |
-| `rawId` |  |
-| `response` |  |
-| `type` |  |
-| `user_id` |  |
-
-Operations: Create.
-
-API path: `/webauthn/login/finalize`
-
 
 
 ## Entities
-
-
-### CredentialCreationOption
-
-Create an instance: `$credential_creation_option = $client->CredentialCreationOption();`
-
-#### Operations
-
-| Method | Description |
-| --- | --- |
-| `create(data)` | Create a new entity with the given data. |
-
-#### Fields
-
-| Field | Type | Description |
-| --- | --- | --- |
-| `attestation` | `string` |  |
-| `authenticatorSelection` | `array` |  |
-| `challenge` | `string` |  |
-| `pubKeyCredParams` | `array` |  |
-| `rp` | `array` |  |
-| `timeout` | `int` |  |
-| `user` | `array` |  |
-
-#### Example: Create
-
-```php
-$credential_creation_option = $client->CredentialCreationOption()->create([
-]);
-```
-
-
-### CredentialRequestOption
-
-Create an instance: `$credential_request_option = $client->CredentialRequestOption();`
-
-#### Operations
-
-| Method | Description |
-| --- | --- |
-| `create(data)` | Create a new entity with the given data. |
-
-#### Fields
-
-| Field | Type | Description |
-| --- | --- | --- |
-| `allowCredentials` | `array` |  |
-| `challenge` | `string` |  |
-| `rpId` | `string` |  |
-| `timeout` | `int` |  |
-| `userVerification` | `string` |  |
-| `user_id` | `string` | The ID of the user on whose behalf WebAuthn login should be performed |
-
-#### Example: Create
-
-```php
-$credential_request_option = $client->CredentialRequestOption()->create([
-]);
-```
-
-
-### Email
-
-Create an instance: `$email = $client->Email();`
-
-#### Operations
-
-| Method | Description |
-| --- | --- |
-| `create(data)` | Create a new entity with the given data. |
-| `list(match)` | List entities matching the criteria. |
-| `remove(match)` | Remove the matching entity. |
-
-#### Fields
-
-| Field | Type | Description |
-| --- | --- | --- |
-| `address` | `string` | The email address |
-| `id` | `string` | The ID of the email address |
-| `identities` | `mixed` |  |
-| `identity` | `mixed` |  |
-| `is_primary` | `bool` | Indicates it's the primary email address. |
-| `is_verified` | `bool` | Indicated the email has been verified. |
-
-#### Example: List
-
-```php
-// list() returns an array of Email entities, one per record (throws on error).
-$emails = $client->Email()->list();
-```
-
-#### Example: Create
-
-```php
-$email = $client->Email()->create([
-    "address" => null, // string
-]);
-```
-
-
-### HankoConfiguration
-
-Create an instance: `$hanko_configuration = $client->HankoConfiguration();`
-
-#### Operations
-
-| Method | Description |
-| --- | --- |
-| `load(match)` | Load a single entity by match criteria. |
-
-#### Fields
-
-| Field | Type | Description |
-| --- | --- | --- |
-| `account` | `array` | Controls the behavior regarding user account. |
-| `emails` | `array` | Controls the behavior regarding email addresses. |
-| `password` | `array` | Configuration options concerning passwords |
-
-#### Example: Load
-
-```php
-// load() returns the ENTITY — call data_get() for the HankoConfiguration record (throws on error).
-$hanko_configuration = $client->HankoConfiguration()->load();
-```
 
 
 ### JsonWebKey
@@ -669,9 +391,9 @@ $json_web_keys = $client->JsonWebKey()->list();
 ```
 
 
-### Passcode
+### OrganizationManagement
 
-Create an instance: `$passcode = $client->Passcode();`
+Create an instance: `$organization_management = $client->OrganizationManagement();`
 
 #### Operations
 
@@ -683,46 +405,16 @@ Create an instance: `$passcode = $client->Passcode();`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `code` | `string` | The actual passcode from the email sent to the user during initialization, a string of 6 decimal digits |
-| `created_at` | `string` | Time of creation of the passcode |
-| `email_id` | `string` | The ID of the email address |
-| `id` | `string` | The ID of the passcode |
-| `ttl` | `int` | Lifespan of a passcode in seconds |
-| `user_id` | `string` | The ID of the user |
+| `has_role` | `bool` |  |
+| `organization_id` | `string` | The ID of the organization to check |
+| `roles` | `array` | IDs or slugs of roles to check for. |
 
 #### Example: Create
 
 ```php
-$passcode = $client->Passcode()->create([
-    "user_id" => null, // string
-]);
-```
-
-
-### Password
-
-Create an instance: `$password = $client->Password();`
-
-#### Operations
-
-| Method | Description |
-| --- | --- |
-| `create(data)` | Create a new entity with the given data. |
-| `update(data)` | Update an existing entity. |
-
-#### Fields
-
-| Field | Type | Description |
-| --- | --- | --- |
-| `password` | `string` | The actual password, its `minLength` defaults to 8 but can be [configured](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config) through the `password.min_password_length` option. |
-| `user_id` | `string` | The ID of the user to create/set a password for |
-
-#### Example: Create
-
-```php
-$password = $client->Password()->create([
-    "password" => null, // string
-    "user_id" => null, // string
+$organization_management = $client->OrganizationManagement()->create([
+    "organization_id" => null, // string
+    "roles" => null, // array
 ]);
 ```
 
@@ -737,6 +429,13 @@ Create an instance: `$saml = $client->Saml();`
 | --- | --- |
 | `create(data)` | Create a new entity with the given data. |
 | `load(match)` | Load a single entity by match criteria. |
+
+#### Example: Load
+
+```php
+// load() returns the ENTITY — call data_get() for the Saml record (throws on error).
+$saml = $client->Saml()->load(["domain" => "domain"]);
+```
 
 #### Example: Create
 
@@ -755,7 +454,7 @@ Create an instance: `$session_management = $client->SessionManagement();`
 | Method | Description |
 | --- | --- |
 | `create(data)` | Create a new entity with the given data. |
-| `load(match)` | Load a single entity by match criteria. |
+| `list(match)` | List entities matching the criteria. |
 
 #### Fields
 
@@ -763,23 +462,26 @@ Create an instance: `$session_management = $client->SessionManagement();`
 | --- | --- | --- |
 | `claims` | `array` | The claims extracted from a JWT. |
 | `expiration_time` | `string` | Date-time indicating the expiration of the session. |
+| `id` | `string` | The ID of the organization |
 | `idle_expires_at` | `string` | Timestamp (in UTC) indicating when the session will expire due to inactivity, assuming no further activity occurs before this time. |
 | `is_valid` | `bool` | Indicates whether the session is valid or not |
+| `name` | `string` | The name of the organization |
+| `organizations` | `array` | The organizations the user belongs to, and the role slugs they hold within each. |
+| `roles` | `array` | The slugs of the roles the user holds within this organization |
 | `session_token` | `string` | The session token (JWT) to validate |
 | `user_id` | `string` | The ID of the user the session is associated with. |
 
-#### Example: Load
+#### Example: List
 
 ```php
-// load() returns the ENTITY — call data_get() for the SessionManagement record (throws on error).
-$session_management = $client->SessionManagement()->load();
+// list() returns an array of SessionManagement entities, one per record (throws on error).
+$session_managements = $client->SessionManagement()->list();
 ```
 
 #### Example: Create
 
 ```php
 $session_management = $client->SessionManagement()->create([
-    "claims" => null, // array
     "session_token" => null, // string
 ]);
 ```
@@ -817,83 +519,7 @@ Create an instance: `$third_party = $client->ThirdParty();`
 
 ```php
 // load() returns the ENTITY — call data_get() for the ThirdParty record (throws on error).
-$third_party = $client->ThirdParty()->load(["provider" => "provider", "redirect_to" => "redirect_to"]);
-```
-
-
-### Token
-
-Create an instance: `$token = $client->Token();`
-
-#### Operations
-
-| Method | Description |
-| --- | --- |
-| `create(data)` | Create a new entity with the given data. |
-
-#### Fields
-
-| Field | Type | Description |
-| --- | --- | --- |
-| `user_id` | `string` | The ID of the user on whose behalf the token was exchanged. |
-| `value` | `string` |  |
-
-#### Example: Create
-
-```php
-$token = $client->Token()->create([
-]);
-```
-
-
-### User
-
-Create an instance: `$user = $client->User();`
-
-#### Operations
-
-| Method | Description |
-| --- | --- |
-| `create(data)` | Create a new entity with the given data. |
-| `load(match)` | Load a single entity by match criteria. |
-| `remove(match)` | Remove the matching entity. |
-
-#### Fields
-
-| Field | Type | Description |
-| --- | --- | --- |
-| `created_at` | `string` | Time of creation of the the user |
-| `email` | `string` | The email address of the user |
-| `email_id` | `string` | The ID of the newly created email address |
-| `emails` | `array` |  |
-| `family_name` | `string` |  |
-| `given_name` | `string` |  |
-| `has_webauthn_credential` | `bool` |  |
-| `id` | `string` | The ID of the user. |
-| `metadata` | `array` | The public and unsafe metadata of a user |
-| `mfa_config` | `array` |  |
-| `name` | `string` |  |
-| `passkeys` | `array` |  |
-| `picture` | `string` |  |
-| `security_keys` | `array` |  |
-| `updated_at` | `string` | Time of last update of the user |
-| `user_id` | `string` | The ID of the user |
-| `username` | `string` | The username of the user |
-| `verified` | `bool` |  |
-| `webauthn_credentials` | `array` | A list of WebAuthn credentials |
-
-#### Example: Load
-
-```php
-// load() returns the ENTITY — call data_get() for the User record (throws on error).
-$user = $client->User()->load(["id" => "user_id"]);
-```
-
-#### Example: Create
-
-```php
-$user = $client->User()->create([
-]);
+$third_party = $client->ThirdParty()->load(["state" => "state"]);
 ```
 
 
@@ -941,87 +567,9 @@ $user_management = $client->UserManagement()->create([
 ]);
 ```
 
-
-### WebAuthn
-
-Create an instance: `$web_authn = $client->WebAuthn();`
-
-#### Operations
-
-| Method | Description |
-| --- | --- |
-| `create(data)` | Create a new entity with the given data. |
-| `list(match)` | List entities matching the criteria. |
-| `remove(match)` | Remove the matching entity. |
-| `update(data)` | Update an existing entity. |
-
-#### Fields
-
-| Field | Type | Description |
-| --- | --- | --- |
-| `aaguid` | `string` |  |
-| `attestation_type` | `string` |  |
-| `backup_eligible` | `bool` |  |
-| `backup_state` | `bool` |  |
-| `created_at` | `string` |  |
-| `credential_id` | `string` | The ID of the created credential |
-| `id` | `string` |  |
-| `last_used_at` | `string` |  |
-| `mfa_only` | `bool` |  |
-| `name` | `string` | A new credential name. |
-| `publickey` | `string` |  |
-| `rawId` | `string` |  |
-| `response` | `array` |  |
-| `transports` | `array` |  |
-| `type` | `string` |  |
-| `user_id` | `string` | The ID of the user on whose behalf a credential was created |
-
-#### Example: List
-
-```php
-// list() returns an array of WebAuthn entities, one per record (throws on error).
-$web_authns = $client->WebAuthn()->list();
-```
-
-#### Example: Create
-
-```php
-$web_authn = $client->WebAuthn()->create([
-]);
-```
-
-
-### WebauthnLogin
-
-Create an instance: `$webauthn_login = $client->WebauthnLogin();`
-
-#### Operations
-
-| Method | Description |
-| --- | --- |
-| `create(data)` | Create a new entity with the given data. |
-
-#### Fields
-
-| Field | Type | Description |
-| --- | --- | --- |
-| `credential_id` | `string` |  |
-| `id` | `string` |  |
-| `rawId` | `string` |  |
-| `response` | `array` |  |
-| `type` | `string` |  |
-| `user_id` | `string` |  |
-
-#### Example: Create
-
-```php
-$webauthn_login = $client->WebauthnLogin()->create([
-]);
-```
-
 ## Features
 
-This SDK ships 8 optional features. Each is **inactive until you
+This SDK ships 9 optional features. Each is **inactive until you
 switch it on**, so an SDK you have not configured behaves exactly as if none of
 them existed — no retries, no cache, no logging, no measurable overhead.
 
@@ -1036,10 +584,11 @@ above:
 | [`paging`](#paging) | Paging |
 | [`ratelimit`](#ratelimit) | Rate limiting |
 | [`retry`](#retry) | Retry |
+| [`secrets`](#secrets) | Secrets |
 | [`test`](#test) | Test transport |
 | [`timeout`](#timeout) | Timeout |
 
-> **Order matters for `ratelimit`, `retry`, `timeout`.** These wrap the
+> **Order matters for `ratelimit`, `retry`, `secrets`, `timeout`.** These wrap the
 > transport, so each one wraps whatever is already installed: the order you
 > activate them in IS the nesting order. Activating them as an ordered list
 > rather than a map is what fixes that order.
@@ -1130,6 +679,24 @@ Set `feature.retry.active` to enable it, then override any of the options above.
 transport features decides what it sees. A feature activated later wraps one
 activated earlier.
 
+### secrets
+
+Secrets.
+
+| Option | Default |
+|---|---|
+| `active` | `false` |
+| `cache` | `true` |
+| `exchange` | `{active: false, method: 'POST', path: 'auth/token', refresh: '', request: 'refresh_token', response: 'access_token', retries: 1, statuses: [401]}` |
+| `name` | `'apikey'` |
+| `providers` | `[]` |
+
+Set `feature.secrets.active` to enable it, then override any of the options above.
+
+`secrets` wraps the transport, so its position among the other
+transport features decides what it sees. A feature activated later wraps one
+activated earlier.
+
 ### test
 
 Test transport.
@@ -1200,6 +767,7 @@ The SDK ships with built-in features:
 - **PagingFeature**: Paging
 - **RatelimitFeature**: Rate limiting
 - **RetryFeature**: Retry
+- **SecretsFeature**: Secrets
 - **TestFeature**: Test transport
 - **TimeoutFeature**: Timeout
 

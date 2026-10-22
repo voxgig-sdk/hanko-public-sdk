@@ -42,33 +42,13 @@ $client = HankoPublicSDK::test();
 
 ### Instance Methods
 
-#### `CredentialCreationOption($data = null)`
-
-Create a new `CredentialCreationOptionEntity` instance. Pass `null` for no initial data.
-
-#### `CredentialRequestOption($data = null)`
-
-Create a new `CredentialRequestOptionEntity` instance. Pass `null` for no initial data.
-
-#### `Email($data = null)`
-
-Create a new `EmailEntity` instance. Pass `null` for no initial data.
-
-#### `HankoConfiguration($data = null)`
-
-Create a new `HankoConfigurationEntity` instance. Pass `null` for no initial data.
-
 #### `JsonWebKey($data = null)`
 
 Create a new `JsonWebKeyEntity` instance. Pass `null` for no initial data.
 
-#### `Passcode($data = null)`
+#### `OrganizationManagement($data = null)`
 
-Create a new `PasscodeEntity` instance. Pass `null` for no initial data.
-
-#### `Password($data = null)`
-
-Create a new `PasswordEntity` instance. Pass `null` for no initial data.
+Create a new `OrganizationManagementEntity` instance. Pass `null` for no initial data.
 
 #### `Saml($data = null)`
 
@@ -86,25 +66,9 @@ Create a new `StatusEntity` instance. Pass `null` for no initial data.
 
 Create a new `ThirdPartyEntity` instance. Pass `null` for no initial data.
 
-#### `Token($data = null)`
-
-Create a new `TokenEntity` instance. Pass `null` for no initial data.
-
-#### `User($data = null)`
-
-Create a new `UserEntity` instance. Pass `null` for no initial data.
-
 #### `UserManagement($data = null)`
 
 Create a new `UserManagementEntity` instance. Pass `null` for no initial data.
-
-#### `WebAuthn($data = null)`
-
-Create a new `WebAuthnEntity` instance. Pass `null` for no initial data.
-
-#### `WebauthnLogin($data = null)`
-
-Create a new `WebauthnLoginEntity` instance. Pass `null` for no initial data.
 
 #### `options_map(): array`
 
@@ -139,263 +103,6 @@ hatch: it does **not** throw. It returns a result array
 
 Prepare a fetch definition without sending the request. Returns the
 `$fetchdef` array. Throws on error.
-
-
----
-
-## CredentialCreationOptionEntity
-
-```php
-$credential_creation_option = $client->CredentialCreationOption();
-```
-
-### Fields
-
-| Field | Type | Required | Description |
-| --- | --- | --- | --- |
-| `attestation` | `string` | No |  |
-| `authenticatorSelection` | `array` | No |  |
-| `challenge` | `string` | No |  |
-| `pubKeyCredParams` | `array` | No |  |
-| `rp` | `array` | No |  |
-| `timeout` | `int` | No |  |
-| `user` | `array` | No |  |
-
-### Operations
-
-#### `create(array $reqdata, ?array $ctrl = null): mixed`
-
-Create a new entity with the given data. Returns the created entity and throws on error.
-
-```php
-$result = $client->CredentialCreationOption()->create([
-]);
-```
-
-### Common Methods
-
-#### `data_get(): array`
-
-Get the entity data. Returns a copy of the current data.
-
-#### `data_set($data): void`
-
-Set the entity data.
-
-#### `match_get(): array`
-
-Get the entity match criteria.
-
-#### `match_set($match): void`
-
-Set the entity match criteria.
-
-#### `make(): CredentialCreationOptionEntity`
-
-Create a new `CredentialCreationOptionEntity` instance with the same client and
-options.
-
-#### `get_name(): string`
-
-Return the entity name.
-
-
----
-
-## CredentialRequestOptionEntity
-
-```php
-$credential_request_option = $client->CredentialRequestOption();
-```
-
-### Fields
-
-| Field | Type | Required | Description |
-| --- | --- | --- | --- |
-| `allowCredentials` | `array` | No |  |
-| `challenge` | `string` | No |  |
-| `rpId` | `string` | No |  |
-| `timeout` | `int` | No |  |
-| `userVerification` | `string` | No |  |
-| `user_id` | `string` | No | The ID of the user on whose behalf WebAuthn login should be performed |
-
-### Operations
-
-#### `create(array $reqdata, ?array $ctrl = null): mixed`
-
-Create a new entity with the given data. Returns the created entity and throws on error.
-
-```php
-$result = $client->CredentialRequestOption()->create([
-]);
-```
-
-### Common Methods
-
-#### `data_get(): array`
-
-Get the entity data. Returns a copy of the current data.
-
-#### `data_set($data): void`
-
-Set the entity data.
-
-#### `match_get(): array`
-
-Get the entity match criteria.
-
-#### `match_set($match): void`
-
-Set the entity match criteria.
-
-#### `make(): CredentialRequestOptionEntity`
-
-Create a new `CredentialRequestOptionEntity` instance with the same client and
-options.
-
-#### `get_name(): string`
-
-Return the entity name.
-
-
----
-
-## EmailEntity
-
-```php
-$email = $client->Email();
-```
-
-### Fields
-
-| Field | Type | Required | Description |
-| --- | --- | --- | --- |
-| `address` | `string` | Yes | The email address |
-| `id` | `string` | No | The ID of the email address |
-| `identities` | `mixed` | No |  |
-| `identity` | `mixed` | No |  |
-| `is_primary` | `bool` | No | Indicates it's the primary email address. |
-| `is_verified` | `bool` | No | Indicated the email has been verified. |
-
-### Field Usage by Operation
-
-| Field | list | create | remove |
-| --- | --- | --- | --- |
-| `address` | Yes | - | - |
-| `id` | - | - | - |
-| `identities` | - | - | - |
-| `identity` | - | - | - |
-| `is_primary` | - | - | - |
-| `is_verified` | - | - | - |
-
-### Operations
-
-#### `create(array $reqdata, ?array $ctrl = null): mixed`
-
-Create a new entity with the given data. Returns the created entity and throws on error.
-
-```php
-$result = $client->Email()->create([
-  "address" => null, // string
-]);
-```
-
-#### `list(?array $reqmatch = null, ?array $ctrl = null): mixed`
-
-List entities matching the given criteria (call with no argument to list all). Returns an array of entities, one per record, and throws on error.
-
-```php
-$results = $client->Email()->list();
-```
-
-#### `remove(array $reqmatch, ?array $ctrl = null): mixed`
-
-Remove the entity matching the given criteria. Returns the entity, marked as deleted, and throws on error.
-
-```php
-$result = $client->Email()->remove(["id" => "id"]);
-```
-
-### Common Methods
-
-#### `data_get(): array`
-
-Get the entity data. Returns a copy of the current data.
-
-#### `data_set($data): void`
-
-Set the entity data.
-
-#### `match_get(): array`
-
-Get the entity match criteria.
-
-#### `match_set($match): void`
-
-Set the entity match criteria.
-
-#### `make(): EmailEntity`
-
-Create a new `EmailEntity` instance with the same client and
-options.
-
-#### `get_name(): string`
-
-Return the entity name.
-
-
----
-
-## HankoConfigurationEntity
-
-```php
-$hanko_configuration = $client->HankoConfiguration();
-```
-
-### Fields
-
-| Field | Type | Required | Description |
-| --- | --- | --- | --- |
-| `account` | `array` | No | Controls the behavior regarding user account. |
-| `emails` | `array` | No | Controls the behavior regarding email addresses. |
-| `password` | `array` | No | Configuration options concerning passwords |
-
-### Operations
-
-#### `load(array $reqmatch, ?array $ctrl = null): mixed`
-
-Load a single entity matching the given criteria. Returns the entity, whose record `data_get()` reads, and throws on error.
-
-```php
-$result = $client->HankoConfiguration()->load();
-```
-
-### Common Methods
-
-#### `data_get(): array`
-
-Get the entity data. Returns a copy of the current data.
-
-#### `data_set($data): void`
-
-Set the entity data.
-
-#### `match_get(): array`
-
-Get the entity match criteria.
-
-#### `match_set($match): void`
-
-Set the entity match criteria.
-
-#### `make(): HankoConfigurationEntity`
-
-Create a new `HankoConfigurationEntity` instance with the same client and
-options.
-
-#### `get_name(): string`
-
-Return the entity name.
 
 
 ---
@@ -457,22 +164,19 @@ Return the entity name.
 
 ---
 
-## PasscodeEntity
+## OrganizationManagementEntity
 
 ```php
-$passcode = $client->Passcode();
+$organization_management = $client->OrganizationManagement();
 ```
 
 ### Fields
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `code` | `string` | No | The actual passcode from the email sent to the user during initialization, a string of 6 decimal digits |
-| `created_at` | `string` | No | Time of creation of the passcode |
-| `email_id` | `string` | No | The ID of the email address |
-| `id` | `string` | No | The ID of the passcode |
-| `ttl` | `int` | No | Lifespan of a passcode in seconds |
-| `user_id` | `string` | Yes | The ID of the user |
+| `has_role` | `bool` | Yes |  |
+| `organization_id` | `string` | Yes | The ID of the organization to check |
+| `roles` | `array` | Yes | IDs or slugs of roles to check for. |
 
 ### Operations
 
@@ -481,8 +185,9 @@ $passcode = $client->Passcode();
 Create a new entity with the given data. Returns the created entity and throws on error.
 
 ```php
-$result = $client->Passcode()->create([
-  "user_id" => null, // string
+$result = $client->OrganizationManagement()->create([
+  "organization_id" => null, // string
+  "roles" => null, // array
 ]);
 ```
 
@@ -504,75 +209,9 @@ Get the entity match criteria.
 
 Set the entity match criteria.
 
-#### `make(): PasscodeEntity`
+#### `make(): OrganizationManagementEntity`
 
-Create a new `PasscodeEntity` instance with the same client and
-options.
-
-#### `get_name(): string`
-
-Return the entity name.
-
-
----
-
-## PasswordEntity
-
-```php
-$password = $client->Password();
-```
-
-### Fields
-
-| Field | Type | Required | Description |
-| --- | --- | --- | --- |
-| `password` | `string` | Yes | The actual password, its `minLength` defaults to 8 but can be [configured](https://github.com/teamhanko/hanko/blob/main/backend/docs/Config.md#hanko-backend-config) through the `password.min_password_length` option. |
-| `user_id` | `string` | Yes | The ID of the user to create/set a password for |
-
-### Operations
-
-#### `create(array $reqdata, ?array $ctrl = null): mixed`
-
-Create a new entity with the given data. Returns the created entity and throws on error.
-
-```php
-$result = $client->Password()->create([
-  "password" => null, // string
-  "user_id" => null, // string
-]);
-```
-
-#### `update(array $reqdata, ?array $ctrl = null): mixed`
-
-Update an existing entity. The data must include the entity `id`. Returns the updated entity and throws on error.
-
-```php
-$result = $client->Password()->update([
-  // Fields to update
-]);
-```
-
-### Common Methods
-
-#### `data_get(): array`
-
-Get the entity data. Returns a copy of the current data.
-
-#### `data_set($data): void`
-
-Set the entity data.
-
-#### `match_get(): array`
-
-Get the entity match criteria.
-
-#### `match_set($match): void`
-
-Set the entity match criteria.
-
-#### `make(): PasswordEntity`
-
-Create a new `PasswordEntity` instance with the same client and
+Create a new `OrganizationManagementEntity` instance with the same client and
 options.
 
 #### `get_name(): string`
@@ -604,6 +243,10 @@ Declares a `application/x-www-form-urlencoded` body, which this SDK does not enc
 #### `load(array $reqmatch, ?array $ctrl = null): mixed`
 
 Load a single entity matching the given criteria. Returns the entity, whose record `data_get()` reads, and throws on error.
+
+```php
+$result = $client->Saml()->load(["domain" => "domain"]);
+```
 
 ### Common Methods
 
@@ -647,8 +290,12 @@ $session_management = $client->SessionManagement();
 | --- | --- | --- | --- |
 | `claims` | `array` | Yes | The claims extracted from a JWT. |
 | `expiration_time` | `string` | No | Date-time indicating the expiration of the session. |
+| `id` | `string` | Yes | The ID of the organization |
 | `idle_expires_at` | `string` | No | Timestamp (in UTC) indicating when the session will expire due to inactivity, assuming no further activity occurs before this time. |
 | `is_valid` | `bool` | No | Indicates whether the session is valid or not |
+| `name` | `string` | Yes | The name of the organization |
+| `organizations` | `array` | No | The organizations the user belongs to, and the role slugs they hold within each. |
+| `roles` | `array` | Yes | The slugs of the roles the user holds within this organization |
 | `session_token` | `string` | Yes | The session token (JWT) to validate |
 | `user_id` | `string` | No | The ID of the user the session is associated with. |
 
@@ -660,17 +307,16 @@ Create a new entity with the given data. Returns the created entity and throws o
 
 ```php
 $result = $client->SessionManagement()->create([
-  "claims" => null, // array
   "session_token" => null, // string
 ]);
 ```
 
-#### `load(array $reqmatch, ?array $ctrl = null): mixed`
+#### `list(?array $reqmatch = null, ?array $ctrl = null): mixed`
 
-Load a single entity matching the given criteria. Returns the entity, whose record `data_get()` reads, and throws on error.
+List entities matching the given criteria (call with no argument to list all). Returns an array of entities, one per record, and throws on error.
 
 ```php
-$result = $client->SessionManagement()->load();
+$results = $client->SessionManagement()->list();
 ```
 
 ### Common Methods
@@ -762,7 +408,7 @@ $third_party = $client->ThirdParty();
 Load a single entity matching the given criteria. Returns the entity, whose record `data_get()` reads, and throws on error.
 
 ```php
-$result = $client->ThirdParty()->load(["provider" => "provider", "redirect_to" => "redirect_to"]);
+$result = $client->ThirdParty()->load(["state" => "state"]);
 ```
 
 ### Common Methods
@@ -786,171 +432,6 @@ Set the entity match criteria.
 #### `make(): ThirdPartyEntity`
 
 Create a new `ThirdPartyEntity` instance with the same client and
-options.
-
-#### `get_name(): string`
-
-Return the entity name.
-
-
----
-
-## TokenEntity
-
-```php
-$token = $client->Token();
-```
-
-### Fields
-
-| Field | Type | Required | Description |
-| --- | --- | --- | --- |
-| `user_id` | `string` | No | The ID of the user on whose behalf the token was exchanged. |
-| `value` | `string` | No |  |
-
-### Operations
-
-#### `create(array $reqdata, ?array $ctrl = null): mixed`
-
-Create a new entity with the given data. Returns the created entity and throws on error.
-
-```php
-$result = $client->Token()->create([
-]);
-```
-
-### Common Methods
-
-#### `data_get(): array`
-
-Get the entity data. Returns a copy of the current data.
-
-#### `data_set($data): void`
-
-Set the entity data.
-
-#### `match_get(): array`
-
-Get the entity match criteria.
-
-#### `match_set($match): void`
-
-Set the entity match criteria.
-
-#### `make(): TokenEntity`
-
-Create a new `TokenEntity` instance with the same client and
-options.
-
-#### `get_name(): string`
-
-Return the entity name.
-
-
----
-
-## UserEntity
-
-```php
-$user = $client->User();
-```
-
-### Fields
-
-| Field | Type | Required | Description |
-| --- | --- | --- | --- |
-| `created_at` | `string` | No | Time of creation of the the user |
-| `email` | `string` | No | The email address of the user |
-| `email_id` | `string` | No | The ID of the newly created email address |
-| `emails` | `array` | No |  |
-| `family_name` | `string` | No |  |
-| `given_name` | `string` | No |  |
-| `has_webauthn_credential` | `bool` | No |  |
-| `id` | `string` | No | The ID of the user. |
-| `metadata` | `array` | No | The public and unsafe metadata of a user |
-| `mfa_config` | `array` | No |  |
-| `name` | `string` | No |  |
-| `passkeys` | `array` | No |  |
-| `picture` | `string` | No |  |
-| `security_keys` | `array` | No |  |
-| `updated_at` | `string` | No | Time of last update of the user |
-| `user_id` | `string` | No | The ID of the user |
-| `username` | `string` | No | The username of the user |
-| `verified` | `bool` | No |  |
-| `webauthn_credentials` | `array` | No | A list of WebAuthn credentials |
-
-### Field Usage by Operation
-
-| Field | load | create | remove |
-| --- | --- | --- | --- |
-| `created_at` | - | - | - |
-| `email` | - | Yes | - |
-| `email_id` | - | - | - |
-| `emails` | - | - | - |
-| `family_name` | - | - | - |
-| `given_name` | - | - | - |
-| `has_webauthn_credential` | - | - | - |
-| `id` | - | - | - |
-| `metadata` | - | - | - |
-| `mfa_config` | - | - | - |
-| `name` | - | - | - |
-| `passkeys` | - | - | - |
-| `picture` | - | - | - |
-| `security_keys` | - | - | - |
-| `updated_at` | - | - | - |
-| `user_id` | - | - | - |
-| `username` | - | - | - |
-| `verified` | - | - | - |
-| `webauthn_credentials` | - | - | - |
-
-### Operations
-
-#### `create(array $reqdata, ?array $ctrl = null): mixed`
-
-Create a new entity with the given data. Returns the created entity and throws on error.
-
-```php
-$result = $client->User()->create([
-]);
-```
-
-#### `load(array $reqmatch, ?array $ctrl = null): mixed`
-
-Load a single entity matching the given criteria. Returns the entity, whose record `data_get()` reads, and throws on error.
-
-```php
-$result = $client->User()->load(["id" => "user_id"]);
-```
-
-#### `remove(array $reqmatch, ?array $ctrl = null): mixed`
-
-Remove the entity matching the given criteria. Returns the entity, marked as deleted, and throws on error.
-
-```php
-$result = $client->User()->remove(["id" => "user_id"]);
-```
-
-### Common Methods
-
-#### `data_get(): array`
-
-Get the entity data. Returns a copy of the current data.
-
-#### `data_set($data): void`
-
-Set the entity data.
-
-#### `match_get(): array`
-
-Get the entity match criteria.
-
-#### `match_set($match): void`
-
-Set the entity match criteria.
-
-#### `make(): UserEntity`
-
-Create a new `UserEntity` instance with the same client and
 options.
 
 #### `get_name(): string`
@@ -1034,159 +515,6 @@ Return the entity name.
 
 ---
 
-## WebAuthnEntity
-
-```php
-$web_authn = $client->WebAuthn();
-```
-
-### Fields
-
-| Field | Type | Required | Description |
-| --- | --- | --- | --- |
-| `aaguid` | `string` | No |  |
-| `attestation_type` | `string` | No |  |
-| `backup_eligible` | `bool` | No |  |
-| `backup_state` | `bool` | No |  |
-| `created_at` | `string` | No |  |
-| `credential_id` | `string` | No | The ID of the created credential |
-| `id` | `string` | No |  |
-| `last_used_at` | `string` | No |  |
-| `mfa_only` | `bool` | No |  |
-| `name` | `string` | No | A new credential name. |
-| `publickey` | `string` | No |  |
-| `rawId` | `string` | No |  |
-| `response` | `array` | No |  |
-| `transports` | `array` | No |  |
-| `type` | `string` | No |  |
-| `user_id` | `string` | No | The ID of the user on whose behalf a credential was created |
-
-### Operations
-
-#### `create(array $reqdata, ?array $ctrl = null): mixed`
-
-Create a new entity with the given data. Returns the created entity and throws on error.
-
-```php
-$result = $client->WebAuthn()->create([
-]);
-```
-
-#### `list(?array $reqmatch = null, ?array $ctrl = null): mixed`
-
-List entities matching the given criteria (call with no argument to list all). Returns an array of entities, one per record, and throws on error.
-
-```php
-$results = $client->WebAuthn()->list();
-```
-
-#### `remove(array $reqmatch, ?array $ctrl = null): mixed`
-
-Remove the entity matching the given criteria. Returns the entity, marked as deleted, and throws on error.
-
-```php
-$result = $client->WebAuthn()->remove(["id" => "id"]);
-```
-
-#### `update(array $reqdata, ?array $ctrl = null): mixed`
-
-Update an existing entity. The data must include the entity `id`. Returns the updated entity and throws on error.
-
-```php
-$result = $client->WebAuthn()->update([
-  "id" => "id",
-  // Fields to update
-]);
-```
-
-### Common Methods
-
-#### `data_get(): array`
-
-Get the entity data. Returns a copy of the current data.
-
-#### `data_set($data): void`
-
-Set the entity data.
-
-#### `match_get(): array`
-
-Get the entity match criteria.
-
-#### `match_set($match): void`
-
-Set the entity match criteria.
-
-#### `make(): WebAuthnEntity`
-
-Create a new `WebAuthnEntity` instance with the same client and
-options.
-
-#### `get_name(): string`
-
-Return the entity name.
-
-
----
-
-## WebauthnLoginEntity
-
-```php
-$webauthn_login = $client->WebauthnLogin();
-```
-
-### Fields
-
-| Field | Type | Required | Description |
-| --- | --- | --- | --- |
-| `credential_id` | `string` | No |  |
-| `id` | `string` | No |  |
-| `rawId` | `string` | No |  |
-| `response` | `array` | No |  |
-| `type` | `string` | No |  |
-| `user_id` | `string` | No |  |
-
-### Operations
-
-#### `create(array $reqdata, ?array $ctrl = null): mixed`
-
-Create a new entity with the given data. Returns the created entity and throws on error.
-
-```php
-$result = $client->WebauthnLogin()->create([
-]);
-```
-
-### Common Methods
-
-#### `data_get(): array`
-
-Get the entity data. Returns a copy of the current data.
-
-#### `data_set($data): void`
-
-Set the entity data.
-
-#### `match_get(): array`
-
-Get the entity match criteria.
-
-#### `match_set($match): void`
-
-Set the entity match criteria.
-
-#### `make(): WebauthnLoginEntity`
-
-Create a new `WebauthnLoginEntity` instance with the same client and
-options.
-
-#### `get_name(): string`
-
-Return the entity name.
-
-
----
-
 ## Features
 
 | Feature | Version | Description |
@@ -1197,6 +525,7 @@ Return the entity name.
 | `paging` | 0.0.1 | Paging |
 | `ratelimit` | 0.0.1 | Rate limiting |
 | `retry` | 0.0.1 | Retry |
+| `secrets` | 0.1.0 | Secrets |
 | `test` | 0.0.1 | Test transport |
 | `timeout` | 0.0.1 | Timeout |
 
@@ -1212,6 +541,7 @@ $client = new HankoPublicSDK([
     "paging" => ["active" => true],
     "ratelimit" => ["active" => true],
     "retry" => ["active" => true],
+    "secrets" => ["active" => true],
     "test" => ["active" => true],
     "timeout" => ["active" => true],
   ],
@@ -1230,7 +560,7 @@ transport, and the order you list them in is the order they nest.
 
 #### Ordering
 
-`ratelimit`, `retry`, `timeout` wrap the transport. Each
+`ratelimit`, `retry`, `secrets`, `timeout` wrap the transport. Each
 wraps whatever is already installed, so **activation order is nesting order**:
 a feature activated later sits OUTSIDE one activated earlier, and sees the call
 first.
@@ -1424,6 +754,31 @@ another when you do not.
 **Usage**
 
 Set `feature.retry.active` to true in the client options, and override any option above in the same entry. Every option keeps
+its default unless you name it.
+
+**Considerations**
+
+- Wraps the transport: its place in the activation order decides what it
+  sees. See [Ordering](#ordering) above.
+- Inactive by default: leaving it out costs nothing at runtime.
+
+#### `secrets`
+
+Secrets.
+
+**Configuration**
+
+| Option | Default |
+|---|---|
+| `active` | `false` |
+| `cache` | `true` |
+| `exchange` | `{active: false, method: 'POST', path: 'auth/token', refresh: '', request: 'refresh_token', response: 'access_token', retries: 1, statuses: [401]}` |
+| `name` | `'apikey'` |
+| `providers` | `[]` |
+
+**Usage**
+
+Set `feature.secrets.active` to true in the client options, and override any option above in the same entry. Every option keeps
 its default unless you name it.
 
 **Considerations**

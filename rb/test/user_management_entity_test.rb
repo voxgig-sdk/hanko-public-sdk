@@ -134,6 +134,20 @@ class UserManagementEntityTest < Minitest::Test
     assert_operator hook.unexpected, :>, fired
   end
 
+  def test_validate_list_response
+    cfg = HankoPublicConfig.shared_config
+    unless cfg["feature"].is_a?(Hash) && cfg["feature"].key?("validate")
+      skip("feature not present in this SDK: validate")
+    end
+    opts = { "feature" => { "validate" => { "active" => true, "request" => false, "response" => true } } }
+    listed = HankoPublicSDK.test({ "entity" => { "user_management" => { "v1" => {  } } } }, opts).UserManagement(nil).list(nil, nil)
+    assert_equal ["v1"], listed.map { |ent| ent.data_get["id"] }
+    err = assert_raises(StandardError) do
+      HankoPublicSDK.test({ "entity" => { "user_management" => { "v1" => { "created_at" => 1 } } } }, opts).UserManagement(nil).list(nil, nil)
+    end
+    assert_equal "validate_failed", err.code
+  end
+
   def test_validate
     cfg = HankoPublicConfig.shared_config
     unless cfg["feature"].is_a?(Hash) && cfg["feature"].key?("validate")

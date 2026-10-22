@@ -33,7 +33,7 @@ class ThirdPartyEntityTest extends TestCase
         $client = HankoPublicSDK::test(null, ["feature" => ["validate" => ["active" => true]]]);
         $err = null;
         try {
-            $client->ThirdParty(null)->load(["provider" => 1, "redirect_to" => 'x'], null);
+            $client->ThirdParty(null)->load(["code" => 1, "state" => 'x'], null);
         } catch (\Throwable $e) {
             $err = $e;
         }
